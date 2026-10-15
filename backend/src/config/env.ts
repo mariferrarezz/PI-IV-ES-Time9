@@ -1,0 +1,15 @@
+import "dotenv/config";
+
+function required(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`Variável de ambiente ausente: ${name}`);
+  }
+  return value;
+}
+
+export const env = {
+  port: Number(process.env.PORT ?? 3000),
+  mongodbUri: required("MONGODB_URI"),
+  firebaseProjectId: required("FIREBASE_PROJECT_ID"),
+};

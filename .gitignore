@@ -1,0 +1,31 @@
+# Node / backend
+node_modules/
+dist/
+.env
+*.log
+
+# Flutter / mobile
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+*.iml
+.idea/
+.gradle/
+local.properties
+ios/Pods/
+
+# Java
+target/
+out/
+*.class
+
+# Firebase emulators
+.firebase/
+firebase-debug.log
+firebase-export-*/
+
+# Sistema / editor
+.DS_Store
+.vscode/
