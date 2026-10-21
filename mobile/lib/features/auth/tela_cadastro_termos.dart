@@ -46,7 +46,9 @@ class _TelaCadastroTermosState extends State<TelaCadastroTermos> {
       if (_passoAtual < _totalPassos) {
         _passoAtual++;
       } else {
-        print('Cadastro finalizado');
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Cadastro finalizado.')));
       }
     });
   }

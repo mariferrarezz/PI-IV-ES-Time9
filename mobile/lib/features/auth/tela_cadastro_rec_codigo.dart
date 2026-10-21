@@ -258,7 +258,7 @@ class _TelaCadastroRecCodigoState extends State<TelaCadastroRecCodigo> {
                 ),
               ),
               const SizedBox(height: 40),
-              
+
               SizedBox(
                 width: double.infinity,
                 height: 52.0,
