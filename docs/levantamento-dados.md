@@ -15,13 +15,17 @@ Foram consideradas:
 - As decisões discutidas durante o levantamento.
 
 
+### 2.1 Decisão de escopo do MVP
+
+A geolocalização foi adiada para uma versão futura para reduzir o escopo do MVP e priorizar as funcionalidades principais. Município e estado da propriedade permanecem no modelo. Detalhes descritivos podem utilizar os campos de observações já existentes, sem criar novos campos.
+
 ## 3. Funcionalidades que utilizam o banco de dados
 
 | Funcionalidade | Dados necessários |
 |---|---|
 | Cadastrar e editar perfil | Identificação do usuário, dados pessoais e aceite dos termos |
 | Responder ao questionário | Perfil inicial de cultivo e dificuldades declaradas |
-| Gerenciar propriedades | Identificação, localização, área e responsável |
+| Gerenciar propriedades | Identificação, município, estado, área e responsável |
 | Gerenciar talhões | Áreas de cultivo pertencentes às propriedades |
 | Registrar plantações | Cultura, talhão, safra e período de cultivo |
 | Consultar banco de conhecimento | Problemas agrícolas, sintomas, prevenção, controle e fontes |
@@ -50,7 +54,7 @@ Foram consideradas:
 | Avaliação de tratamento | Registrar o resultado observado posteriormente |
 | Imagem | Representar uma fotografia ou ilustração vinculada ao sistema |
 | Fonte de conhecimento | Identificar a origem das informações técnicas |
-| Alerta | Representar um aviso ao usuário, condicionado ao escopo |
+| Alerta | Avisar no aplicativo o responsável pela propriedade sobre ocorrência cadastrada com intensidade alta |
 
 
 ## 5. Convenções do dicionário de dados
@@ -71,21 +75,28 @@ Foram consideradas:
 | Identificador | Identificador | Obrigatório | Sistema |
 | Identificador Firebase | Texto | Obrigatório | Firebase/backend |
 | Nome completo | Texto | Obrigatório | Produtor |
-| CPF | Texto | Obrigatório no protótipo; finalidade a validar | Produtor |
+| CPF | Texto (String com 11 dígitos, sem pontuação) | Obrigatório, conforme a tela existente | Produtor |
 | Telefone | Texto | Obrigatório no protótipo | Produtor |
-| Canal preferido para código | Texto | Condicional à manutenção da funcionalidade | Produtor |
+| Canal preferido para código (canalCodigoPreferido) | Texto (String: sms ou email) | Obrigatório ao concluir a etapa de escolha do canal | Produtor |
 | Foto de perfil | Imagem | Opcional | Produtor |
 | Versão dos termos aceitos | Texto | Obrigatório | Sistema |
 | Data de aceite | Data | Obrigatório | Sistema, após aceite |
 | Questionário inicial | Conjunto de respostas | Opcional até a conclusão dessa etapa | Produtor |
 
+O CPF será armazenado como `cpf`, uma String com exatamente 11 dígitos, sem pontuação; a aplicação valida os dígitos verificadores. Não será definido índice único para CPF sem decisão específica.
+
+`canalCodigoPreferido` registra a escolha entre `sms` e `email` e deve estar preenchido ao concluir a etapa de escolha do canal. Envio e verificação pertencem ao fluxo de autenticação, não ao perfil do MongoDB. A viabilidade do envio por ambos os canais ainda precisa ser conferida na implementação da autenticação.
+
 O e-mail de acesso e a senha são administrados pelo Firebase Authentication. Senha, confirmação de senha e códigos de autenticação não serão armazenados no banco da aplicação.
+
+### 6.1.1 Requisitos planejados para dados pessoais
+
+Estes são requisitos planejados, sem comprovação de controles implementados ou de política de privacidade concluída. CPF e telefone serão utilizados somente nas finalidades documentadas de cadastro e autenticação. O acesso aos dados pessoais será restrito ao próprio usuário e a pessoas autorizadas, conforme a função e a necessidade. CPF e telefone não deverão constar em alertas nem em logs da aplicação. Exemplos, testes e massa de dados deverão utilizar dados fictícios. A exclusão de conta ficará indisponível no aplicativo nesta versão. A política de retenção, anonimização e atendimento a solicitações de exclusão permanece pendente; a ausência de exclusão automática não autoriza armazenamento permanente.
 
 ### 6.2 Questionário inicial
 
 | Atributo | Tipo | Obrigatoriedade | Origem |
 |---|---|---|---|
-| Identificador | Identificador | Obrigatório | Sistema |
 | Versão das perguntas | Texto | Ao concluir | Sistema |
 | Porte declarado da propriedade | Texto | Ao concluir | Produtor |
 | Faixa de quantidade de culturas | Texto | Ao concluir | Produtor |
@@ -97,10 +108,23 @@ O e-mail de acesso e a senha são administrados pelo Firebase Authentication. Se
 | Data de conclusão | Data | Ao concluir | Sistema |
 
 - Porte: pequena, média ou grande.
+
+O porte informado no questionário é declaratório, com as opções pequena, média e grande (`pequena`, `media` e `grande` no MongoDB). Não será calculado automaticamente pela área nem apresentado como classificação oficial. A resposta não será usada para impor restrições de área ou de quantidade de propriedades. Essa regra está definida e não constitui pendência de modelagem.
+
 - Quantidade de culturas: uma, duas, três ou quatro ou mais.
 - Problemas: pragas, doenças ou ainda não identificados.
 - Frequência: raramente, às vezes, frequentemente ou sempre.
 - Identificação autônoma: sim, não ou às vezes.
+
+O questionário será incorporado ao usuário, sem identificador próprio na proposta atual da BD3. Seu acesso ocorre pelo usuário ao qual pertence.
+
+### 6.2.1 Áreas informadas
+
+Todas as áreas são informadas manualmente em hectares, sem necessidade de coordenadas, e devem ser números positivos e finitos quando preenchidas. A área total da propriedade não equivale à área cultivada. A área plantada não pode ultrapassar a área do talhão; a aplicação confere essa comparação entre documentos, enquanto o MongoDB valida o tipo numérico e a positividade. O porte do questionário permanece declaratório, sem cálculo automático com base na área.
+
+A área total da propriedade (`propriedades.areaTotalHa`) é Número opcional; a área do talhão (`talhoes.areaHa`) é Número obrigatório; a área plantada (`plantacoes.areaPlantadaHa`) é Número opcional. Campos opcionais sem informação devem ser omitidos, sem usar zero para representar desconhecimento.
+
+A análise da distribuição das áreas e os indicadores de área afetada são possibilidades futuras. Não representam funcionalidades implementadas ou requisitos desta versão e não autorizam novos campos, cálculos, índices ou restrições automaticamente. Eventuais indicadores deverão ter sua definição e interpretação discutidas antes da implementação; não somar registros de área afetada como se representassem necessariamente áreas distintas.
 
 ### 6.3 Propriedade
 
@@ -112,7 +136,6 @@ O e-mail de acesso e a senha são administrados pelo Firebase Authentication. Se
 | Município | Texto | Obrigatório | Produtor |
 | Estado | Texto | Obrigatório | Produtor |
 | Área total em hectares | Número | Opcional | Produtor |
-| Localização | Coordenadas | Opcional | Produtor/GPS |
 | Observações | Texto | Opcional | Produtor |
 | Situação ativa ou arquivada | Situação | Obrigatório | Sistema/produtor |
 
@@ -124,7 +147,6 @@ O e-mail de acesso e a senha são administrados pelo Firebase Authentication. Se
 | Propriedade | Propriedade | Obrigatório | Produtor |
 | Nome | Texto | Obrigatório | Produtor |
 | Área em hectares | Número | Obrigatório | Produtor |
-| Localização | Coordenadas | Opcional | Produtor/GPS |
 | Observações | Texto | Opcional | Produtor |
 | Situação ativa ou arquivada | Situação | Obrigatório | Sistema/produtor |
 
@@ -190,7 +212,6 @@ O e-mail de acesso e a senha são administrados pelo Firebase Authentication. Se
 | Sintomas observados | Texto | Obrigatório | Produtor |
 | Intensidade | Texto | Obrigatório | Produtor |
 | Área afetada em hectares | Número | Opcional | Produtor |
-| Localização | Coordenadas | Opcional | Produtor/GPS |
 | Imagens | Lista de imagens | Opcional na proposta inicial | Produtor |
 | Situação | Texto | Obrigatório | Sistema/produtor |
 | Data de encerramento | Data | Quando encerrada | Sistema |
@@ -210,8 +231,7 @@ O e-mail de acesso e a senha são administrados pelo Firebase Authentication. Se
 | Observações | Texto | Obrigatório | Produtor |
 | Intensidade | Texto | Quando houver problema observado | Produtor |
 | Evolução | Texto | Opcional | Produtor |
-| Área afetada | Número | Opcional | Produtor |
-| Localização | Coordenadas | Opcional | Produtor/GPS |
+| Área afetada em hectares | Número | Opcional | Produtor |
 | Imagens | Lista de imagens | Opcional | Produtor |
 | Próxima inspeção | Data | Opcional | Produtor |
 
@@ -226,7 +246,7 @@ O e-mail de acesso e a senha são administrados pelo Firebase Authentication. Se
 | Tipo de medida | Texto | Obrigatório | Produtor |
 | Descrição | Texto | Obrigatório | Produtor |
 | Data de aplicação | Data | Obrigatório | Produtor |
-| Área tratada | Número | Opcional | Produtor |
+| Área tratada em hectares | Número | Opcional | Produtor |
 | Produto utilizado | Texto | Opcional | Produtor |
 | Quantidade utilizada | Número | Se informar unidade | Produtor |
 | Unidade | Texto | Se informar quantidade | Produtor |
@@ -250,7 +270,6 @@ O e-mail de acesso e a senha são administrados pelo Firebase Authentication. Se
 
 | Atributo | Tipo | Obrigatoriedade | Origem |
 |---|---|---|---|
-| Identificador | Identificador | Obrigatório | Sistema |
 | URL | Texto | Obrigatório | Cloudinary |
 | Identificador do arquivo | Texto | Obrigatório | Cloudinary |
 | Legenda | Texto | Opcional | Produtor/equipe |
@@ -260,7 +279,11 @@ O e-mail de acesso e a senha são administrados pelo Firebase Authentication. Se
 
 Os arquivos ficam no Cloudinary.
 
+A imagem será um objeto incorporado, sem identificador próprio na proposta atual da BD3. O identificador do arquivo corresponde a `publicId`, que identifica o recurso externo no Cloudinary; não será criado um identificador interno adicional.
+
 ### 6.13 Fonte de conhecimento
+
+Uma fonte pode ser cadastrada antes de ser vinculada a um problema agrícola. Os problemas agrícolas continuam exigindo fontes.
 
 | Atributo | Tipo | Obrigatoriedade | Origem |
 |---|---|---|---|
@@ -273,30 +296,29 @@ Os arquivos ficam no Cloudinary.
 
 ### 6.14 Alerta
 
+As intensidades permanecem `baixa`, `media` e `alta`. A aplicação gera um alerta somente no cadastro de uma ocorrência com intensidade `alta`, com tipo `ocorrencia_intensidade_alta`. O destinatário é o responsável pela propriedade, obtido pelo vínculo ocorrência → plantação → talhão → propriedade → usuário responsável. O contexto é a ocorrência cadastrada. A exibição ocorre somente dentro do aplicativo, sem envio por e-mail, SMS ou notificação push. Deve existir apenas um alerta desse tipo por ocorrência, inclusive em tentativas repetidas. Alterações posteriores de intensidade e registros de monitoramento não geram esse alerta. A aplicação gera o alerta; o MongoDB apenas o armazena e aplica as restrições configuradas.
+
+Título e mensagem descrevem o alerta. A leitura é registrada por `lidoEm` opcional, sem incluir `regraOrigem`. A prevenção de duplicidade é detalhada na BD4.
+
 
 | Atributo | Tipo | Obrigatoriedade | Origem |
 |---|---|---|---|
 | Identificador | Identificador | Obrigatório | Sistema |
-| Destinatário | Usuário | Obrigatório | Sistema |
+| Destinatário | Responsável pela propriedade | Obrigatório | Aplicação, pelos vínculos da ocorrência |
 | Tipo | Texto | Obrigatório | Sistema |
 | Título | Texto | Obrigatório | Sistema |
 | Mensagem | Texto | Obrigatório | Sistema |
 | Prioridade | Texto | Obrigatório | Regra definida |
-| Motivo de geração | Texto | Obrigatório | Sistema |
-| Contexto principal | Registro relacionado | Obrigatório | Sistema |
+| Contexto principal | Ocorrência cadastrada | Obrigatório | Aplicação |
 | Data de criação | Data | Obrigatório | Sistema |
 | Data de leitura | Data | Opcional | Sistema |
 | Data de expiração | Data | Opcional | Sistema |
-
-### 6.15 Localização
-
-Quando informada, a localização possui latitude e longitude numéricas, ambas obrigatórias.
 
 ## 7. Operações previstas
 
 | Elemento | Cadastro | Consulta | Alteração | Exclusão ou arquivamento |
 |---|---|---|---|---|
-| Usuário | Próprio perfil | Próprio perfil | Dados e preferências | Exclusão de conta a definir |
+| Usuário | Próprio perfil | Próprio usuário e pessoas autorizadas, conforme função e necessidade | Dados e preferências, conforme autorização | Exclusão de conta indisponível no aplicativo nesta versão |
 | Questionário | Próprias respostas | Próprias respostas | Respostas atuais | Acompanha o perfil |
 | Propriedade | Responsável | Registros autorizados | Dados da propriedade | Arquivar se houver histórico |
 | Talhão | Responsável | Registros autorizados | Nome, área e observações | Arquivar se houver histórico |

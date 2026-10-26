@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "876820020562",
+    "project_id": "projeto-integrador-4-8c129",
+    "storage_bucket": "projeto-integrador-4-8c129.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876820020562:android:bf3f91efeda9f8b4d8ce8b",
+        "android_client_info": {
+          "package_name": "com.example.sentinela"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQo_AGzCr-jdJ-17SCamaGI0mVTIHz_4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
