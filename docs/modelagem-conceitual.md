@@ -31,7 +31,6 @@ As entidades cujos registros podem ser alterados também terão datas de criaç�
 
 ## 3. Relacionamentos e cardinalidades
 
-
 - 0..1: zero ou um.
 - 1: exatamente um.
 - 0..N: zero ou vários.
@@ -84,7 +83,7 @@ Todas as áreas são informadas manualmente em hectares, sem necessidade de coor
 | Área do talhão | talhoes.areaHa | Número | Obrigatório |
 | Área plantada | plantacoes.areaPlantadaHa | Número | Opcional |
 
-A análise da distribuição das áreas e os indicadores de área afetada são possibilidades futuras. Não representam funcionalidades implementadas ou requisitos desta versão e não autorizam novos campos, cálculos, índices ou restrições automaticamente. Eventuais indicadores deverão ter sua definição e interpretação discutidas antes da implementação; não somar registros de área afetada como se representassem necessariamente áreas distintas.
+A análise da distribuição das áreas e os indicadores de área afetada são possibilidades futuras. Estão fora do escopo desta versão e exigem requisitos específicos para novos campos, cálculos, índices ou restrições. Eventuais indicadores deverão ter sua definição e interpretação discutidas antes da implementação; não somar registros de área afetada como se representassem necessariamente áreas distintas.
 
 - O porte informado no questionário é declaratório, com as opções pequena, média e grande (`pequena`, `media` e `grande` no MongoDB). Não será calculado automaticamente pela área nem apresentado como classificação oficial. A resposta não será usada para impor restrições de área ou de quantidade de propriedades. Essa regra está definida e não constitui pendência de modelagem.
 
@@ -100,7 +99,7 @@ A análise da distribuição das áreas e os indicadores de área afetada são p
 
 ### 3.4 Requisitos planejados para dados pessoais
 
-Estes são requisitos planejados, sem comprovação de controles implementados ou de política de privacidade concluída. CPF e telefone serão utilizados somente nas finalidades documentadas de cadastro e autenticação. O acesso aos dados pessoais será restrito ao próprio usuário e a pessoas autorizadas, conforme a função e a necessidade. CPF e telefone não deverão constar em alertas nem em logs da aplicação. Exemplos, testes e massa de dados deverão utilizar dados fictícios. A exclusão de conta ficará indisponível no aplicativo nesta versão. A política de retenção, anonimização e atendimento a solicitações de exclusão permanece pendente; a ausência de exclusão automática não autoriza armazenamento permanente.
+CPF e telefone serão utilizados somente nas finalidades documentadas de cadastro e autenticação. O acesso aos dados pessoais será restrito ao próprio usuário e a pessoas autorizadas, conforme a função e a necessidade. CPF e telefone não deverão constar em alertas nem em logs da aplicação. Exemplos, testes e massa de dados deverão utilizar dados fictícios. A exclusão de conta ficará indisponível no aplicativo nesta versão. A política de retenção, anonimização e atendimento a solicitações de exclusão ainda deve ser definida; a ausência de exclusão automática não autoriza armazenamento permanente.
 
 ## 4. Diagramas conceituais
 
@@ -192,4 +191,3 @@ As decisões abaixo constituem a base do modelo e devem ser revisadas pela equip
 Município e estado da propriedade permanecem no modelo, assim como os relacionamentos entre propriedade, talhão, plantação, ocorrência e monitoramento. Detalhes descritivos podem utilizar os campos de observações já existentes, sem novos atributos.
 
 A representação de questionário, imagem, avaliação e fonte como entidades não determina que cada uma terá uma coleção própria no MongoDB.
-

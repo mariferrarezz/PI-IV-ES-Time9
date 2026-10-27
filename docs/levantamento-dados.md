@@ -14,7 +14,6 @@ Foram consideradas:
 - As funcionalidades previstas para o projeto.
 - As decisões discutidas durante o levantamento.
 
-
 ### 2.1 Decisão de escopo do MVP
 
 A geolocalização foi adiada para uma versão futura para reduzir o escopo do MVP e priorizar as funcionalidades principais. Município e estado da propriedade permanecem no modelo. Detalhes descritivos podem utilizar os campos de observações já existentes, sem criar novos campos.
@@ -56,7 +55,6 @@ A geolocalização foi adiada para uma versão futura para reduzir o escopo do M
 | Fonte de conhecimento | Identificar a origem das informações técnicas |
 | Alerta | Avisar no aplicativo o responsável pela propriedade sobre ocorrência cadastrada com intensidade alta |
 
-
 ## 5. Convenções do dicionário de dados
 
 - Obrigatório: necessário para concluir o registro correspondente.
@@ -91,7 +89,7 @@ O e-mail de acesso e a senha são administrados pelo Firebase Authentication. Se
 
 ### 6.1.1 Requisitos planejados para dados pessoais
 
-Estes são requisitos planejados, sem comprovação de controles implementados ou de política de privacidade concluída. CPF e telefone serão utilizados somente nas finalidades documentadas de cadastro e autenticação. O acesso aos dados pessoais será restrito ao próprio usuário e a pessoas autorizadas, conforme a função e a necessidade. CPF e telefone não deverão constar em alertas nem em logs da aplicação. Exemplos, testes e massa de dados deverão utilizar dados fictícios. A exclusão de conta ficará indisponível no aplicativo nesta versão. A política de retenção, anonimização e atendimento a solicitações de exclusão permanece pendente; a ausência de exclusão automática não autoriza armazenamento permanente.
+CPF e telefone serão utilizados somente nas finalidades documentadas de cadastro e autenticação. O acesso aos dados pessoais será restrito ao próprio usuário e a pessoas autorizadas, conforme a função e a necessidade. CPF e telefone não deverão constar em alertas nem em logs da aplicação. Exemplos, testes e massa de dados deverão utilizar dados fictícios. A exclusão de conta ficará indisponível no aplicativo nesta versão. A política de retenção, anonimização e atendimento a solicitações de exclusão ainda deve ser definida; a ausência de exclusão automática não autoriza armazenamento permanente.
 
 ### 6.2 Questionário inicial
 
@@ -124,7 +122,7 @@ Todas as áreas são informadas manualmente em hectares, sem necessidade de coor
 
 A área total da propriedade (`propriedades.areaTotalHa`) é Número opcional; a área do talhão (`talhoes.areaHa`) é Número obrigatório; a área plantada (`plantacoes.areaPlantadaHa`) é Número opcional. Campos opcionais sem informação devem ser omitidos, sem usar zero para representar desconhecimento.
 
-A análise da distribuição das áreas e os indicadores de área afetada são possibilidades futuras. Não representam funcionalidades implementadas ou requisitos desta versão e não autorizam novos campos, cálculos, índices ou restrições automaticamente. Eventuais indicadores deverão ter sua definição e interpretação discutidas antes da implementação; não somar registros de área afetada como se representassem necessariamente áreas distintas.
+A análise da distribuição das áreas e os indicadores de área afetada são possibilidades futuras. Estão fora do escopo desta versão e exigem requisitos específicos para novos campos, cálculos, índices ou restrições. Eventuais indicadores deverão ter sua definição e interpretação discutidas antes da implementação; não somar registros de área afetada como se representassem necessariamente áreas distintas.
 
 ### 6.3 Propriedade
 
@@ -198,7 +196,6 @@ A análise da distribuição das áreas e os indicadores de área afetada são p
 | Data de revisão | Data | Obrigatório | Equipe/sistema |
 | Situação | Situação | Obrigatório | Equipe/sistema |
 
-
 ### 6.8 Ocorrência
 
 | Atributo | Tipo | Obrigatoriedade | Origem |
@@ -217,7 +214,6 @@ A análise da distribuição das áreas e os indicadores de área afetada são p
 | Data de encerramento | Data | Quando encerrada | Sistema |
 | Motivo de encerramento | Texto | Quando encerrada | Produtor |
 
-
 ### 6.9 Monitoramento
 
 | Atributo | Tipo | Obrigatoriedade | Origem |
@@ -234,7 +230,6 @@ A análise da distribuição das áreas e os indicadores de área afetada são p
 | Área afetada em hectares | Número | Opcional | Produtor |
 | Imagens | Lista de imagens | Opcional | Produtor |
 | Próxima inspeção | Data | Opcional | Produtor |
-
 
 ### 6.10 Tratamento ou medida de controle
 
@@ -300,7 +295,6 @@ As intensidades permanecem `baixa`, `media` e `alta`. A aplicação gera um aler
 
 Título e mensagem descrevem o alerta. A leitura é registrada por `lidoEm` opcional, sem incluir `regraOrigem`. A prevenção de duplicidade é detalhada na BD4.
 
-
 | Atributo | Tipo | Obrigatoriedade | Origem |
 |---|---|---|---|
 | Identificador | Identificador | Obrigatório | Sistema |
@@ -325,14 +319,10 @@ Título e mensagem descrevem o alerta. A leitura é registrada por `lidoEm` opci
 | Cultura | Equipe autorizada | Usuários autenticados | Equipe autorizada | Desativar quando utilizada |
 | Plantação | Responsável | Registros autorizados | Dados do cultivo | Encerrar para preservar histórico |
 | Problema agrícola | Equipe autorizada | Usuários autenticados | Equipe autorizada | Desativar quando utilizado |
-| Ocorrência | Produtor | Registros autorizados | Dados e situação | Regra final pendente |
-| Monitoramento | Produtor | Registros autorizados | Correções | Regra final pendente |
-| Tratamento | Produtor | Registros autorizados | Correções | Regra final pendente |
-| Avaliação | Produtor | Registros autorizados | Correções | Regra final pendente |
+| Ocorrência | Produtor | Registros autorizados | Dados e situação | Conforme as regras de exclusão do BD4 |
+| Monitoramento | Produtor | Registros autorizados | Correções | Conforme as regras de exclusão do BD4 |
+| Tratamento | Produtor | Registros autorizados | Correções | Conforme as regras de exclusão do BD4 |
+| Avaliação | Produtor | Registros autorizados | Correções | Conforme as regras de exclusão do BD4 |
 | Imagem | Usuário autorizado | Conforme o contexto | Legenda | Remover arquivo e vínculo conforme regra |
 | Fonte | Equipe autorizada | Conforme acesso à base | Dados bibliográficos | Preservar se utilizada |
 | Alerta | Sistema | Destinatário | Registrar leitura | Retenção a definir |
-
-
-
-

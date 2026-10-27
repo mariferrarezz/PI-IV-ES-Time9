@@ -1,14 +1,10 @@
 # BD3 — Modelagem das coleções do MongoDB
 
-## 2. Objetivo
+## 1. Objetivo
 
 Transformar o modelo conceitual do Sentinela em uma estrutura adequada ao MongoDB, definindo coleções, documentos, campos, tipos, obrigatoriedade, referências e dados incorporados.
 
-### 2.1 Escopo do MVP
-
-A geolocalização foi adiada para uma versão futura para reduzir o escopo do MVP e priorizar as funcionalidades principais. Município e estado da propriedade permanecem no modelo. Detalhes descritivos podem utilizar os campos de observações já existentes, sem criar novos campos.
-
-## 3. Convenções
+## 2. Convenções
 
 - Banco utilizado: sentinela.
 - Todos os documentos das coleções possuem _id do tipo ObjectId.
@@ -27,19 +23,19 @@ A geolocalização foi adiada para uma versão futura para reduzir o escopo do M
 - Datas de criação e atualização são preenchidas pelo sistema.
 - O backend identifica o autor pela autenticação e verifica a autorização de acesso.
 
-Os limites específicos de município, informações de disseminação, orientação para buscar agrônomo, sintomas da ocorrência, motivo de encerramento, produto utilizado e nome do responsável pela aplicação estão definidos na BD4, seção 4.3.1. A revisão coletiva permanece pendente. Opcionais e condicionais mantêm sua obrigatoriedade; limites se aplicam quando preenchidos. O formato de telefone está definido na seção 6.1; a regra de `publicId` está definida na seção 5.1 e na BD4, seção 4.3.2, sem limite máximo arbitrário.
+Os limites específicos de município, informações de disseminação, orientação para buscar agrônomo, sintomas da ocorrência, motivo de encerramento, produto utilizado e nome do responsável pela aplicação estão definidos na BD4, seção 3.3.1. Opcionais e condicionais mantêm sua obrigatoriedade; limites se aplicam quando preenchidos. O formato de telefone está definido na seção 5.1; a regra de `publicId` está definida na seção 4.1 e na BD4, seção 3.3.2, sem limite máximo arbitrário.
 
-### 3.1 Campos permitidos nos schemas
+### 2.1 Campos permitidos nos schemas
 
-Os schemas usarão `additionalProperties: false` em cada objeto. Este registro não representa aprovação coletiva da equipe nem aplicação no banco.
+Os schemas usarão `additionalProperties: false` em cada objeto.
 
-As tabelas da seção 6 descrevem os campos permitidos em cada coleção, incluindo `_id`, datas e campos opcionais ou condicionais. Todos deverão constar em `properties`; a presença em `properties` não torna um campo obrigatório. Manter `required` conforme a obrigatoriedade já definida.
+As tabelas da seção 5 descrevem os campos permitidos em cada coleção, incluindo `_id`, datas e campos opcionais ou condicionais. Todos deverão constar em `properties`; a presença em `properties` não torna um campo obrigatório. Manter `required` conforme a obrigatoriedade já definida.
 
 Cada objeto incorporado terá suas próprias declarações de `properties` e `additionalProperties: false`. O fechamento do documento principal não fecha automaticamente os objetos internos. Nos arrays de objetos, aplicar a mesma definição ao schema de cada item em `items`. Arrays de Strings ou ObjectIds mantêm as regras dos valores escalares.
 
 Não acrescentar identificadores ou datas automaticamente aos objetos incorporados. `$oid` e `$date` nos exemplos são representações Extended JSON de valores BSON, não propriedades extras dos documentos.
 
-### 3.2 Áreas em hectares
+### 2.2 Áreas em hectares
 
 Todas as áreas são informadas manualmente em hectares, sem necessidade de coordenadas, e devem ser números positivos e finitos quando preenchidas. A área total da propriedade não equivale à área cultivada. A área plantada não pode ultrapassar a área do talhão; a aplicação confere essa comparação entre documentos, enquanto o MongoDB valida o tipo numérico e a positividade. O porte do questionário permanece declaratório, sem cálculo automático com base na área.
 
@@ -51,9 +47,9 @@ Todas as áreas são informadas manualmente em hectares, sem necessidade de coor
 
 A unidade em hectares também se aplica a `areaAfetadaHa` e `areaTratadaHa`, preservando a obrigatoriedade e as condições existentes. Campos opcionais sem informação são omitidos; zero não representa área desconhecida. Permanecem as demais regras de compatibilidade de áreas da BD4.
 
-A análise da distribuição das áreas e os indicadores de área afetada são possibilidades futuras. Não representam funcionalidades implementadas ou requisitos desta versão e não autorizam novos campos, cálculos, índices ou restrições automaticamente. Eventuais indicadores deverão ter sua definição e interpretação discutidas antes da implementação; não somar registros de área afetada como se representassem necessariamente áreas distintas.
+A análise da distribuição das áreas e os indicadores de área afetada são possibilidades futuras. Estão fora do escopo desta versão e exigem requisitos específicos para novos campos, cálculos, índices ou restrições. Eventuais indicadores deverão ter sua definição e interpretação discutidas antes da implementação; não somar registros de área afetada como se representassem necessariamente áreas distintas.
 
-## 4. Coleções propostas
+## 3. Coleções propostas
 
 | Coleção | Finalidade |
 |---|---|
@@ -70,9 +66,9 @@ A análise da distribuição das áreas e os indicadores de área afetada são p
 | avaliacoes_tratamento | Resultados observados após tratamentos |
 | alertas | Avisos aos usuários |
 
-## 5. Objetos incorporados compartilhados
+## 4. Objetos incorporados compartilhados
 
-### 5.1 Imagem
+### 4.1 Imagem
 
 | Campo | Tipo | Obrigatório |
 |---|---|---|
@@ -86,9 +82,9 @@ Os arquivos ficam no Cloudinary. O MongoDB guarda somente os metadados. A imagem
 
 `publicId` é uma String obrigatória quando houver um objeto de imagem, inclusive em cada item de um array de imagens. A aplicação deve preenchê-la com o valor retornado pelo Cloudinary e preservá-lo integralmente, sem trim, alteração de maiúsculas/minúsculas ou outra transformação. Não aceitar String vazia ou composta apenas por espaços; verificar esse conteúdo sem modificar o identificador. Não aplicar regras de URL ao `publicId` nem definir `maxLength` arbitrário. Caso seja necessário um limite, conferir primeiro a documentação oficial do Cloudinary. Essa obrigatoriedade interna não torna a imagem obrigatória; a obrigatoriedade de cada campo de imagem permanece como já definida.
 
-## 6. Estrutura das coleções
+## 5. Estrutura das coleções
 
-### 6.1 usuarios
+### 5.1 usuarios
 
 **Objetivo:** armazenar o perfil vinculado à conta do Firebase.
 
@@ -122,9 +118,9 @@ O cadastro aceita somente celulares brasileiros. `telefone` é String obrigatór
 
 #### Requisitos planejados para dados pessoais
 
-Estes são requisitos planejados, sem comprovação de controles implementados ou de política de privacidade concluída. CPF e telefone serão utilizados somente nas finalidades documentadas de cadastro e autenticação. O acesso aos dados pessoais será restrito ao próprio usuário e a pessoas autorizadas, conforme a função e a necessidade. CPF e telefone não deverão constar em alertas nem em logs da aplicação. Exemplos, testes e massa de dados deverão utilizar dados fictícios. A exclusão de conta ficará indisponível no aplicativo nesta versão. A política de retenção, anonimização e atendimento a solicitações de exclusão permanece pendente; a ausência de exclusão automática não autoriza armazenamento permanente.
+CPF e telefone serão utilizados somente nas finalidades documentadas de cadastro e autenticação. O acesso aos dados pessoais será restrito ao próprio usuário e a pessoas autorizadas, conforme a função e a necessidade. CPF e telefone não deverão constar em alertas nem em logs da aplicação. Exemplos, testes e massa de dados deverão utilizar dados fictícios. A exclusão de conta ficará indisponível no aplicativo nesta versão. A política de retenção, anonimização e atendimento a solicitações de exclusão ainda deve ser definida; a ausência de exclusão automática não autoriza armazenamento permanente.
 
-Essas definições não criam campos ou coleções adicionais nem alteram tipos e obrigatoriedade. A aplicação deverá controlar autorizações e impedir a inclusão desses valores em titulo, mensagem ou outros campos de alertas e nos logs; Schema Validation não comprova finalidade, autorização ou anonimização.
+A aplicação deverá controlar autorizações e impedir a inclusão desses valores em titulo, mensagem ou outros campos de alertas e nos logs; Schema Validation não comprova finalidade, autorização ou anonimização.
 
 #### Campos de termos
 
@@ -148,7 +144,7 @@ O questionário é incorporado ao documento do usuário, sem identificador próp
 | identificaProblemasSozinho | String | S |
 | concluidoEm | Date | S |
 
-### 6.2 propriedades
+### 5.2 propriedades
 
 **Objetivo:** armazenar propriedades e seus responsáveis.
 
@@ -171,7 +167,7 @@ O questionário é incorporado ao documento do usuário, sem identificador próp
 | criadoEm | Date | S |
 | atualizadoEm | Date | S |
 
-### 6.3 talhoes
+### 5.3 talhoes
 
 **Objetivo:** armazenar as áreas de cultivo de cada propriedade.
 
@@ -192,7 +188,7 @@ O questionário é incorporado ao documento do usuário, sem identificador próp
 | criadoEm | Date | S |
 | atualizadoEm | Date | S |
 
-### 6.4 culturas
+### 5.4 culturas
 
 **Objetivo:** manter um catálogo compartilhado.
 
@@ -213,8 +209,7 @@ O questionário é incorporado ao documento do usuário, sem identificador próp
 | criadoEm | Date | S |
 | atualizadoEm | Date | S |
 
-
-### 6.5 plantacoes
+### 5.5 plantacoes
 
 **Objetivo:** representar uma cultura cultivada em um talhão e período.
 
@@ -244,11 +239,11 @@ O questionário é incorporado ao documento do usuário, sem identificador próp
 
 Cada talhão pode ter várias plantações ao longo do tempo, mas no máximo uma com status `ativa`. Para iniciar outra plantação no mesmo talhão, a atual deverá estar encerrada. Cultivos simultâneos, consorciados e áreas sobrepostas ficam fora do escopo desta versão. O histórico das plantações encerradas será preservado; a cardinalidade histórica talhão → plantações permanece 1:N, permitindo talhões ainda sem plantação.
 
-A aplicação confere essa regra antes de cadastrar ou ativar uma plantação. O índice único parcial em `plantacoes`, com chave `{ talhaoId: 1 }` e filtro `{ status: "ativa" }`, garante a restrição inclusive em operações concorrentes, conforme a BD4, seção 9. Ele não substitui automaticamente o índice composto de consultas. Antes de criá-lo na BD5, conferir plantações ativas duplicadas por talhão, sem correção ou exclusão automática.
+A aplicação confere essa regra antes de cadastrar ou ativar uma plantação. A regra de no máximo uma plantação ativa por talhão permanece válida, inclusive em operações concorrentes. O mecanismo de garantia no banco para operações concorrentes ainda deve ser definido. Antes da futura implementação, conferir plantações ativas duplicadas por talhão, sem correção ou exclusão automática.
 
-Ocorrências não serão incorporadas à plantação. Ao finalizar o cultivo, a plantação deverá ser encerrada, preservando os vínculos e o histórico, conforme a definição na BD4, seção 8.2.
+Ocorrências não serão incorporadas à plantação. Ao finalizar o cultivo, a plantação deverá ser encerrada, preservando os vínculos e o histórico, conforme a definição na BD4, seção 7.2.
 
-### 6.6 problemas_agricolas
+### 5.6 problemas_agricolas
 
 **Objetivo:** reunir conhecimento sobre pragas, doenças e deficiências.
 
@@ -294,7 +289,7 @@ Ocorrências não serão incorporadas à plantação. Ao finalizar o cultivo, a 
 
 O conteúdo deverá estar completo e revisado antes de ser disponibilizado.
 
-### 6.7 fontes_conhecimento
+### 5.7 fontes_conhecimento
 
 **Objetivo:** permitir que uma publicação seja utilizada por diferentes problemas agrícolas.
 
@@ -315,7 +310,7 @@ O conteúdo deverá estar completo e revisado antes de ser disponibilizado.
 | criadoEm | Date | S |
 | atualizadoEm | Date | S |
 
-### 6.8 ocorrencias
+### 5.8 ocorrencias
 
 **Objetivo:** registrar problemas observados nas plantações.
 
@@ -348,9 +343,9 @@ O conteúdo deverá estar completo e revisado antes de ser disponibilizado.
 | criadoEm | Date | S |
 | atualizadoEm | Date | S |
 
-As transições permitidas são `aberta → em_acompanhamento`, `aberta → encerrada` e `em_acompanhamento → encerrada`. Não há reabertura nesta versão: uma nova observação após o encerramento deverá gerar outra ocorrência. `encerradoEm` e `motivoEncerramento` são obrigatórios quando encerrada e devem estar ausentes nos demais status. O motivo explica a finalização do acompanhamento; encerrar não comprova resolução do problema. A aplicação verifica as transições, autorização, referências e dependentes; o MongoDB valida a estrutura e os valores permitidos. Este registro não representa aprovação coletiva nem implementação.
+As transições permitidas são `aberta → em_acompanhamento`, `aberta → encerrada` e `em_acompanhamento → encerrada`. Não há reabertura nesta versão: uma nova observação após o encerramento deverá gerar outra ocorrência. `encerradoEm` e `motivoEncerramento` são obrigatórios quando encerrada e devem estar ausentes nos demais status. O motivo explica a finalização do acompanhamento; encerrar não comprova resolução do problema. A aplicação verifica as transições, autorização, referências e dependentes; o MongoDB valida a estrutura e os valores permitidos.
 
-### 6.9 monitoramentos
+### 5.9 monitoramentos
 
 **Objetivo:** registrar inspeções e acompanhamentos.
 
@@ -385,7 +380,7 @@ Cada inspeção será um documento independente.
 
 O monitoramento pode existir sem ocorrência. Quando houver ocorrência vinculada, ela deverá pertencer à mesma plantação.
 
-### 6.10 tratamentos
+### 5.10 tratamentos
 
 **Objetivo:** registrar medidas de controle realizadas.
 
@@ -416,7 +411,7 @@ O monitoramento pode existir sem ocorrência. Quando houver ocorrência vinculad
 | criadoEm | Date | S |
 | atualizadoEm | Date | S |
 
-### 6.11 avaliacoes_tratamento
+### 5.11 avaliacoes_tratamento
 
 **Objetivo:** registrar resultados observados em diferentes momentos.
 
@@ -442,8 +437,7 @@ O monitoramento pode existir sem ocorrência. Quando houver ocorrência vinculad
 | criadoEm | Date | S |
 | atualizadoEm | Date | S |
 
-
-### 6.12 alertas
+### 5.12 alertas
 
 **Objetivo:** armazenar avisos destinados aos usuários.
 
@@ -475,30 +469,30 @@ As intensidades permanecem `baixa`, `media` e `alta`. A aplicação gera um aler
 | expiraEm | Date | N |
 | criadoEm | Date | S |
 
-Para esse alerta, `tipo` é `ocorrencia_intensidade_alta` e `contexto.tipo` é `ocorrencia`. `contexto.id` recebe o `_id` da ocorrência. `lidoEm` é opcional e fica ausente até a leitura; não incluir `regraOrigem`. A BD4 define a prevenção de duplicidades por tipo e ocorrência. O alerta `ocorrencia_intensidade_alta` terá `prioridade: "alta"`. Essa prioridade reflete a intensidade informada pelo produtor; não representa diagnóstico ou classificação técnica de risco. Este registro não representa aprovação coletiva da equipe.
+Para esse alerta, `tipo` é `ocorrencia_intensidade_alta` e `contexto.tipo` é `ocorrencia`. `contexto.id` recebe o `_id` da ocorrência. `lidoEm` é opcional e fica ausente até a leitura; não incluir `regraOrigem`. A BD4 define a prevenção de duplicidades por tipo e ocorrência. O alerta `ocorrencia_intensidade_alta` terá `prioridade: "alta"`. Essa prioridade reflete a intensidade informada pelo produtor; não representa diagnóstico ou classificação técnica de risco.
 
 #### Campos de contexto
 
 O objeto `alertas.contexto` aceita somente `tipo` (String, obrigatório; `ocorrencia` para o tipo inicial) e `id` (ObjectId da ocorrência, obrigatório), sem `_id` próprio. As linhas `contexto.tipo` e `contexto.id` representam campos internos do objeto.
 
-### 6.13 Conferência dos objetos incorporados
+### 5.13 Conferência dos objetos incorporados
 
 Cada objeto abaixo deverá declarar seus campos em `properties` e usar `additionalProperties: false`. Nos arrays, essa definição pertence ao schema de cada item em `items`.
 
 | Objeto ou item | Campos permitidos | Definição de tipos e obrigatoriedade |
 |---|---|---|
-| usuarios.termos | versao, aceitoEm | Seção 6.1 |
-| usuarios.questionario | versao, portePropriedade, quantidadeCulturas, culturasIds, outraCultura, problemasFrequentes, frequenciaProblemas, identificaProblemasSozinho, concluidoEm | Seção 6.1 |
-| usuarios.fotoPerfil e culturas.imagem | url, publicId, legenda, enviadaPor, enviadaEm | Seção 5.1 |
-| Cada item de imagens em problemas_agricolas, ocorrencias, monitoramentos e tratamentos | url, publicId, legenda, enviadaPor, enviadaEm | Seção 5.1 |
-| Cada item de problemas_agricolas.formasControle | tipo, descricao, observacoes | Seção 6.6 |
-| alertas.contexto | tipo, id | Seção 6.12 |
+| usuarios.termos | versao, aceitoEm | Seção 5.1 |
+| usuarios.questionario | versao, portePropriedade, quantidadeCulturas, culturasIds, outraCultura, problemasFrequentes, frequenciaProblemas, identificaProblemasSozinho, concluidoEm | Seção 5.1 |
+| usuarios.fotoPerfil e culturas.imagem | url, publicId, legenda, enviadaPor, enviadaEm | Seção 4.1 |
+| Cada item de imagens em problemas_agricolas, ocorrencias, monitoramentos e tratamentos | url, publicId, legenda, enviadaPor, enviadaEm | Seção 4.1 |
+| Cada item de problemas_agricolas.formasControle | tipo, descricao, observacoes | Seção 5.6 |
+| alertas.contexto | tipo, id | Seção 5.12 |
 
 Nenhum desses objetos recebe identificador interno adicional. Suas datas são somente as já previstas: `aceitoEm` em termos, `concluidoEm` em questionario e `enviadaEm` em imagens. Nos documentos principais, todas as coleções declaram `_id` e `criadoEm`; as demais coleções também declaram `atualizadoEm`, mas alertas não possui esse campo. Datas opcionais e condicionais de cada coleção permanecem nas respectivas tabelas.
 
 Campos opcionais como `legenda`, `outraCultura`, `observacoes`, `lidoEm` e `expiraEm` devem continuar declarados, sem alterar sua obrigatoriedade ou as condições existentes. A geolocalização continua fora do escopo do MVP.
 
-## 7. Exemplos de documentos
+## 6. Exemplos de documentos
 
 Os exemplos são fictícios e utilizam Extended JSON:
 
@@ -507,9 +501,9 @@ Os exemplos são fictícios e utilizam Extended JSON:
 
 Eles não são comandos de inserção nem massa de dados definitiva. As datas foram simplificadas para demonstrar a estrutura.
 
-### 7.1 usuarios
+### 6.1 usuarios
 
-O exemplo seleciona `pragas` e `doencas` juntos. Também são válidas as seleções isoladas `["pragas"]`, `["doencas"]` e `["nao_identificado"]`. `nao_identificado` não pode ser combinado com outra resposta. A regra completa está na seção 5.2 da BD4.
+O exemplo seleciona `pragas` e `doencas` juntos. Também são válidas as seleções isoladas `["pragas"]`, `["doencas"]` e `["nao_identificado"]`. `nao_identificado` não pode ser combinado com outra resposta. A regra completa está na seção 4.2 da BD4.
 
 Exemplo fictício de perfil após a escolha do canal. O CPF é ilustrativo, sem vínculo com pessoa real; não constitui massa de dados ou comprovação de identidade.
 
@@ -542,7 +536,7 @@ Exemplo fictício de perfil após a escolha do canal. O CPF é ilustrativo, sem 
 }
 ```
 
-### 7.2 propriedades
+### 6.2 propriedades
 
 ```json
 {
@@ -558,7 +552,7 @@ Exemplo fictício de perfil após a escolha do canal. O CPF é ilustrativo, sem 
 }
 ```
 
-### 7.3 talhoes
+### 6.3 talhoes
 
 ```json
 {
@@ -572,7 +566,7 @@ Exemplo fictício de perfil após a escolha do canal. O CPF é ilustrativo, sem 
 }
 ```
 
-### 7.4 culturas
+### 6.4 culturas
 
 ```json
 {
@@ -585,7 +579,7 @@ Exemplo fictício de perfil após a escolha do canal. O CPF é ilustrativo, sem 
 }
 ```
 
-### 7.5 plantacoes
+### 6.5 plantacoes
 
 ```json
 {
@@ -600,7 +594,7 @@ Exemplo fictício de perfil após a escolha do canal. O CPF é ilustrativo, sem 
 }
 ```
 
-### 7.6 problemas_agricolas
+### 6.6 problemas_agricolas
 
 Conteúdo fictício, mantido inativo.
 
@@ -631,7 +625,7 @@ Conteúdo fictício, mantido inativo.
 }
 ```
 
-### 7.7 fontes_conhecimento
+### 6.7 fontes_conhecimento
 
 ```json
 {
@@ -643,7 +637,7 @@ Conteúdo fictício, mantido inativo.
 }
 ```
 
-### 7.8 ocorrencias
+### 6.8 ocorrencias
 
 ```json
 {
@@ -660,7 +654,7 @@ Conteúdo fictício, mantido inativo.
 }
 ```
 
-### 7.9 monitoramentos
+### 6.9 monitoramentos
 
 ```json
 {
@@ -678,7 +672,7 @@ Conteúdo fictício, mantido inativo.
 }
 ```
 
-### 7.10 tratamentos
+### 6.10 tratamentos
 
 ```json
 {
@@ -693,7 +687,7 @@ Conteúdo fictício, mantido inativo.
 }
 ```
 
-### 7.11 avaliacoes_tratamento
+### 6.11 avaliacoes_tratamento
 
 ```json
 {
@@ -708,9 +702,9 @@ Conteúdo fictício, mantido inativo.
 }
 ```
 
-### 7.12 alertas
+### 6.12 alertas
 
-Exemplo vinculado à ocorrência da seção 7.8. `usuarioId` corresponde ao responsável pela propriedade da seção 7.2. A prioridade `alta` reflete a intensidade informada pelo produtor, sem representar diagnóstico ou classificação técnica de risco. A ausência de `lidoEm` representa um alerta ainda não lido.
+Exemplo vinculado à ocorrência da seção 6.8. `usuarioId` corresponde ao responsável pela propriedade da seção 6.2. A prioridade `alta` reflete a intensidade informada pelo produtor, sem representar diagnóstico ou classificação técnica de risco. A ausência de `lidoEm` representa um alerta ainda não lido.
 
 ```json
 {
@@ -728,8 +722,7 @@ Exemplo vinculado à ocorrência da seção 7.8. `usuarioId` corresponde ao resp
 }
 ```
 
-
-## 8. Consultas consideradas
+## 7. Consultas consideradas
 
 | Necessidade | Caminho de consulta |
 |---|---|
@@ -749,7 +742,7 @@ Exemplo vinculado à ocorrência da seção 7.8. `usuarioId` corresponde ao resp
 
 Consultas por propriedade podem exigir múltiplas consultas ou agregações.
 
-## 9. Decisões de embedding e referencing
+## 8. Decisões de embedding e referencing
 
 | Decisão | Justificativa |
 |---|---|
@@ -769,18 +762,18 @@ Consultas por propriedade podem exigir múltiplas consultas ou agregações.
 | Manter lidoEm | Registrar leitura sem campo booleano redundante |
 | Não utilizar regraOrigem | O alerta é descrito por titulo e mensagem, sem campo adicional de origem |
 
-### 9.1 Exclusão e preservação
+### 8.1 Exclusão e preservação
 
-As regras abaixo estão detalhadas na BD4, seção 8.2. A revisão coletiva permanece pendente e não há comprovação de implementação:
+As regras abaixo estão detalhadas na BD4, seção 7.2:
 
 - Desativar propriedades, talhões, culturas e problemas agrícolas já utilizados, preservando vínculos e histórico pelos campos existentes.
 - Excluir cadastros feitos por engano somente sem dependentes e após conferir autorização e vínculos, respeitando as restrições específicas de preservação.
-- Encerrar plantações ao finalizar o cultivo e ocorrências com data e motivo, conforme a seção 6.8.
+- Encerrar plantações ao finalizar o cultivo e ocorrências com data e motivo, conforme a seção 5.8.
 - Preservar monitoramentos, tratamentos e avaliações, admitindo correções autorizadas e sem exclusão comum nesta versão.
-- Manter indisponível a exclusão de conta nesta versão; a política de tratamento de dados pessoais permanece pendente.
-- A aplicação verifica autorização, referências, dependentes e transições; o MongoDB valida estrutura e valores permitidos. Não foram acrescentados campos para essas decisões.
+- Manter indisponível a exclusão de conta nesta versão; a política de tratamento de dados pessoais ainda deve ser definida.
+- A aplicação verifica autorização, referências, dependentes e transições; o MongoDB valida estrutura e valores permitidos.
 
-## 10. Crescimento e duplicação
+## 9. Crescimento e duplicação
 
 - Usuários não armazenam arrays com todas as propriedades.
 - Propriedades não armazenam arrays com todos os talhões.
@@ -794,4 +787,3 @@ As regras abaixo estão detalhadas na BD4, seção 8.2. A revisão coletiva perm
 - Nomes e cadastros completos não serão duplicados por padrão.
 
 plantacaoId no monitoramento permite registrar inspeções sem ocorrência. Quando ocorrenciaId estiver presente, os vínculos deverão ser consistentes.
-
