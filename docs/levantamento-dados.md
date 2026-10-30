@@ -35,6 +35,13 @@ A geolocalização foi adiada para uma versão futura para reduzir o escopo do M
 | Adicionar imagens | Fotografias de perfil, ilustrações e evidências |
 | Consultar histórico e dashboard | Registros existentes, filtros e cálculos |
 | Consultar alertas | Avisos e situação de leitura |
+| Participar da Comunidade | Experiências voluntárias, adoção como planejamento e denúncias, sem acesso aos registros privados |
+
+### 3.1 Dashboard do MVP
+
+Somente dados autorizados do usuário autenticado: total de propriedades ativas, talhões ativos, plantações ativas, ocorrências agrupadas por status e alertas não lidos. Há visão geral e filtro opcional por propriedade para talhões, plantações e ocorrências; propriedades e alertas permanecem totais gerais do usuário. A contagem de ocorrências inclui histórico de propriedades e plantações encerradas, sem exclusão implícita por situação dos pais. Os vínculos e filtros de cada indicador estão na BD3, seção 7.2.
+
+O dashboard usa os status aberta, em acompanhamento e encerrada (`aberta`, `em_acompanhamento` e `encerrada` no banco), preservando seus significados. Acompanhamento não exige tratamento e encerramento não comprova resolução; não usar “em tratamento” ou “resolvida” como equivalentes.
 
 ## 4. Elementos identificados
 
@@ -54,6 +61,9 @@ A geolocalização foi adiada para uma versão futura para reduzir o escopo do M
 | Imagem | Representar uma fotografia ou ilustração vinculada ao sistema |
 | Fonte de conhecimento | Identificar a origem das informações técnicas |
 | Alerta | Avisar no aplicativo o responsável pela propriedade sobre ocorrência cadastrada com intensidade alta |
+| Experiência da Comunidade | Cópia explícita e moderada de um relato escolhido pelo autor |
+| Adoção de método | Planejamento próprio baseado em uma versão da experiência |
+| Denúncia da Comunidade | Relato restrito à moderação sobre uma publicação |
 
 ## 5. Convenções do dicionário de dados
 
@@ -73,6 +83,7 @@ A geolocalização foi adiada para uma versão futura para reduzir o escopo do M
 | Identificador | Identificador | Obrigatório | Sistema |
 | Identificador Firebase | Texto | Obrigatório | Firebase/backend |
 | Nome completo | Texto | Obrigatório | Produtor |
+| Nome público (nomePublico) | Texto | Opcional no perfil; exigido para enviar experiência | Escolhido pelo produtor, sem preenchimento automático pelo nome completo |
 | CPF | Texto (String com 11 dígitos, sem pontuação) | Obrigatório, conforme a tela existente | Produtor |
 | Telefone | Texto | Obrigatório no protótipo | Produtor |
 | Canal preferido para código (canalCodigoPreferido) | Texto (String: sms ou email) | Obrigatório ao concluir a etapa de escolha do canal | Produtor |
@@ -122,6 +133,8 @@ Todas as áreas são informadas manualmente em hectares, sem necessidade de coor
 
 A área total da propriedade (`propriedades.areaTotalHa`) é Número opcional; a área do talhão (`talhoes.areaHa`) é Número obrigatório; a área plantada (`plantacoes.areaPlantadaHa`) é Número opcional. Campos opcionais sem informação devem ser omitidos, sem usar zero para representar desconhecimento.
 
+A soma das áreas dos talhões ativos não pode ultrapassar a área total da propriedade, quando informada; pode ser menor. A aplicação verifica a regra ao criar, alterar ou reativar talhões e ao reduzir a área total, preservando-a também em operações concorrentes. A aplicação rejeita valores não finitos; a validação de tipo numérico e positividade no banco não substitui essa verificação.
+
 A análise da distribuição das áreas e os indicadores de área afetada são possibilidades futuras. Estão fora do escopo desta versão e exigem requisitos específicos para novos campos, cálculos, índices ou restrições. Eventuais indicadores deverão ter sua definição e interpretação discutidas antes da implementação; não somar registros de área afetada como se representassem necessariamente áreas distintas.
 
 ### 6.3 Propriedade
@@ -159,6 +172,8 @@ A análise da distribuição das áreas e os indicadores de área afetada são p
 | Imagem ilustrativa | Imagem | Opcional | Equipe |
 | Situação | Situação | Obrigatório | Equipe/sistema |
 
+Cada cultura possui zero ou uma imagem representativa, incorporada como objeto opcional. Sem imagem cadastrada, o aplicativo poderá exibir uma imagem padrão, sem gravá-la obrigatoriamente no documento.
+
 ### 6.6 Plantação
 
 | Atributo | Tipo | Obrigatoriedade | Origem |
@@ -174,6 +189,8 @@ A análise da distribuição das áreas e os indicadores de área afetada são p
 | Data de encerramento | Data | Quando encerrada | Produtor |
 | Observações | Texto | Opcional | Produtor |
 
+Plantações encerradas preservam todo o histórico para consulta autorizada e não recebem novas ocorrências, monitoramentos, tratamentos ou avaliações de tratamento, inclusive lançamentos atrasados com data anterior ao encerramento. Edições e exclusões dos registros vinculados ficam bloqueadas pela operação comum do aplicativo, preservando os registros existentes. A aplicação verifica o estado da plantação pelos vínculos antes dessas operações; referências ObjectId e índices não garantem esses bloqueios. Procedimentos específicos de privacidade e tratamento de dados pessoais são distintos dessas operações comuns e dependem da política própria, sem autorizar remoções automáticas.
+
 ### 6.7 Problema agrícola
 
 | Atributo | Tipo | Obrigatoriedade | Origem |
@@ -188,13 +205,15 @@ A análise da distribuição das áreas e os indicadores de área afetada são p
 | Partes afetadas | Lista de textos | Opcional | Pesquisa da equipe |
 | Condições favoráveis | Lista de textos | Opcional | Pesquisa da equipe |
 | Informações de disseminação | Texto | Opcional, quando aplicável | Pesquisa da equipe |
-| Medidas preventivas | Lista de textos | Obrigatório para disponibilizar o conteúdo | Equipe |
-| Formas de controle | Lista de medidas | Obrigatório para disponibilizar o conteúdo | Equipe |
+| Medidas preventivas | Lista de textos | Obrigatório em todo cadastro, inclusive inativo | Equipe |
+| Formas de controle | Lista de medidas | Obrigatório em todo cadastro, inclusive inativo | Equipe |
 | Orientação para buscar agrônomo | Texto | Opcional | Equipe |
 | Imagens ilustrativas | Lista de imagens | Opcional | Equipe |
 | Fontes | Lista de fontes | Obrigatório | Equipe |
 | Data de revisão | Data | Obrigatório | Equipe/sistema |
 | Situação | Situação | Obrigatório | Equipe/sistema |
+
+Todo cadastro de problema agrícola deve estar completo, mesmo inativo, conforme os campos obrigatórios da BD3. Não há rascunhos incompletos no MVP. A inativação impede novas seleções para registros e preserva os vínculos históricos; a revisão continua necessária antes da disponibilização.
 
 ### 6.8 Ocorrência
 
@@ -231,6 +250,8 @@ A análise da distribuição das áreas e os indicadores de área afetada são p
 | Imagens | Lista de imagens | Opcional | Produtor |
 | Próxima inspeção | Data | Opcional | Produtor |
 
+As inspeções serão consultadas por plantação, das mais recentes às mais antigas, com desempate pelo identificador. A listagem permite todas, somente com ocorrência ou somente sem ocorrência, preservando a consulta de acompanhamento por ocorrência.
+
 ### 6.10 Tratamento ou medida de controle
 
 | Atributo | Tipo | Obrigatoriedade | Origem |
@@ -248,6 +269,8 @@ A análise da distribuição das áreas e os indicadores de área afetada são p
 | Responsável pela aplicação | Texto | Opcional | Produtor |
 | Observações | Texto | Opcional | Produtor |
 | Imagens | Lista de imagens | Opcional | Produtor |
+
+Novos tratamentos somente são permitidos em plantações ativas e ocorrências abertas ou em acompanhamento. Ocorrências encerradas bloqueiam novos tratamentos, inclusive lançamentos atrasados com data anterior ao encerramento.
 
 ### 6.11 Avaliação de tratamento
 
@@ -310,6 +333,8 @@ Título e mensagem descrevem o alerta. A leitura é registrada por `lidoEm` opci
 
 ## 7. Operações previstas
 
+As permissões abaixo estão sujeitas às regras específicas de encerramento da seção 6.6 e da BD4: em plantação encerrada, a consulta autorizada continua disponível, mas os novos registros indicados, as edições e as exclusões de registros privados vinculados ficam bloqueados na operação comum, inclusive correções e alterações de imagens vinculadas. A exceção explícita para criar/editar cópias públicas de experiências está na seção 8.4 e não modifica os documentos privados. Isso não define procedimentos de privacidade ou tratamento de dados pessoais.
+
 | Elemento | Cadastro | Consulta | Alteração | Exclusão ou arquivamento |
 |---|---|---|---|---|
 | Usuário | Próprio perfil | Próprio usuário e pessoas autorizadas, conforme função e necessidade | Dados e preferências, conforme autorização | Exclusão de conta indisponível no aplicativo nesta versão |
@@ -326,3 +351,47 @@ Título e mensagem descrevem o alerta. A leitura é registrada por `lidoEm` opci
 | Imagem | Usuário autorizado | Conforme o contexto | Legenda | Remover arquivo e vínculo conforme regra |
 | Fonte | Equipe autorizada | Conforme acesso à base | Dados bibliográficos | Preservar se utilizada |
 | Alerta | Sistema | Destinatário | Registrar leitura | Retenção a definir |
+| Experiência da Comunidade | Autor, voluntariamente após prévia | Feed/detalhe com campos públicos; autor/equipe conforme autorização | Autor edita cópia e submete à nova revisão | Retirar/ocultar disponibilidade, sem exclusão automática |
+| Adoção de método | Produtor após revisar planejamento próprio | Somente próprio usuário e acesso autorizado necessário | Planejamento/realização conforme proposta e bloqueios de encerramento | Cancelamento proposto, sem apagar histórico |
+| Denúncia | Usuário autenticado | Equipe de moderação | Análise/decisão pela equipe | Sem exclusão ou ocultação automática da publicação |
+
+## 8. Comunidade
+
+### 8.1 Escopo e dados compartilhados
+
+No MVP, todo acesso à Comunidade exige autenticação, inclusive feed, detalhes e fotos compartilhadas; “público” distingue conteúdo compartilhado de documentos privados, sem acesso anônimo. O feed usa a primeira aprovação e `_id` decrescentes. Edições suspendem a exibição até nova aprovação, preservando a data original e a posição temporal.
+
+A Comunidade permite compartilhar voluntariamente ocorrências e experiências de tratamento, consultar relatos e adotar um método como referência. Nada é publicado automaticamente. Não há comentários, curtidas, seguidores, chat ou filtro regional no MVP. Relatos e resultados não são recomendações oficiais, diagnósticos ou comprovação de eficácia. Encerramento mantém o significado existente de finalização do acompanhamento, sem comprovar resolução.
+
+O autor seleciona uma ocorrência própria e pode incluir um tratamento dessa ocorrência e uma avaliação desse tratamento. Informa título, relato e escolhe as fotos. Antes do envio, confere uma prévia com exatamente os campos públicos, incluindo o nome público escolhido, cultura, problema/tipo, status relatado e, quando selecionados, método e resultado. Sem avaliação compartilhada, exibir “Resultado ainda não informado”. Sem método compartilhado, o relato pode ser consultado, mas não oferece adoção de método.
+
+| Dados | Finalidade e visibilidade |
+|---|---|
+| Autor e referências à ocorrência, tratamento e avaliação | ObjectIds internos para autoria e consistência; não dão acesso público ao perfil ou aos registros privados |
+| Nome público, cultura, problema/tipo e status relatado | Identificação pública do relato, copiada de forma explícita; nome público não é o nome completo automático |
+| Título, relato, método e resultado selecionados | Conteúdo público escolhido e conferido pelo autor, submetido à moderação |
+| Fotos selecionadas | Somente cópias autorizadas para compartilhamento; não publicar o álbum privado |
+| Município e UF opcionais | Região informada voluntariamente para a publicação; sem filtro regional |
+| Versão, publicação e revisão | Identificar o conteúdo aprovado e preservar a versão adotada |
+
+Telefone, CPF, nome completo automático, endereço, coordenadas e nome da propriedade não integram o conteúdo público. A aplicação e a revisão devem conferir também textos e imagens, pois excluir campos estruturados não remove dados pessoais inseridos no relato ou em uma foto. Publicação é uma cópia: alterações privadas não atualizam silenciosamente o relato. A API da Comunidade retorna uma lista explícita de campos públicos, sem serializar o documento inteiro ou permitir navegar por referências internas.
+
+### 8.2 Adoção e resultado próprio
+
+O ciclo confirmado é planejada → realizada ou cancelada. A criação do tratamento efetivamente realizado deve marcar a adoção realizada e manter o vínculo. Impedir duas adoções planejadas da mesma experiência para a mesma ocorrência, inclusive entre versões e em operações concorrentes; realizadas/canceladas preservam o histórico sem ocupar essa restrição.
+
+“Adotar como referência” prepara um planejamento para uma ocorrência própria, com revisão do produtor antes da confirmação. Exige autorização, plantação ativa e ocorrência aberta ou em acompanhamento. Não cria tratamento realizado, não altera a experiência original e não preenche produtos ou dosagens como recomendação para o destino. Após a intervenção, o produtor registra os dados reais em `tratamentos` e vincula esse registro à adoção. O resultado é registrado em `avaliacoes_tratamento`, sem outra cópia de avaliação na adoção.
+
+A compatibilidade confirmada exige a mesma cultura e o mesmo problema agrícola cadastrado; ocorrências sem problema identificado não permitem adoção nesse critério. A adoção guarda a experiência, a versão e uma cópia do método; retirada posterior do feed não deve destruir seu histórico. As operações e a integridade estão na BD4, seção 14.
+
+### 8.3 Moderação e retirada
+
+Uma publicação oculta somente pode ser liberada por moderador após análise; o autor não pode contornar o bloqueio por edição ou reenvio. Denúncia segue pendente → analisada, com decisão registrada. Não existe estado intermediário em_analise e denunciar não oculta automaticamente.
+
+Na demonstração do MVP, a equipe revisa publicações antes da entrada no feed. Aprovação não representa validação agronômica profissional. O ciclo mínimo prevê envio pendente, aprovação, rejeição, ocultação pela moderação e retirada pelo autor. Conteúdo aprovado alterado volta à revisão e não aparece no feed até nova aprovação. Denúncias têm motivo, descrição opcional, denunciante e decisão restritos à moderação; denunciar não oculta automaticamente.
+
+Retirar do feed não significa excluir documentos, apagar adoções ou executar procedimentos de privacidade. Não se presume que o fluxo de demonstração seja suficiente para operação pública real: política de moderação, recursos, proteção dos arquivos e procedimentos de privacidade precisam de definição antes dessa abertura.
+
+### 8.4 Relação com plantações encerradas
+
+Continuam os bloqueios de novas ocorrências, monitoramentos, tratamentos e avaliações, além de edições e exclusões comuns dos registros privados vinculados. Está permitido compartilhar uma cópia de experiência histórica e editar sua cópia pública mediante nova revisão, inclusive com plantação de origem encerrada; isso não libera alterações nos registros privados. Planejar, alterar ou realizar adoções ligadas a plantação de destino encerrada continua bloqueado na operação comum. Retirar/ocultar a publicação permanece operação de disponibilidade pública, distinta de excluir registros privados e de procedimentos de privacidade.

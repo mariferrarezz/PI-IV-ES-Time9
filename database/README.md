@@ -8,7 +8,7 @@ Esta pasta organiza os arquivos de configuração do banco do projeto Sentinela.
 |---|---|
 | `collections/` | Comandos de criação das coleções. |
 | `validators/` | Validações dos documentos no MongoDB. |
-| `indexes/` | Espaço para comandos de criação dos índices a definir. |
+| `indexes/` | Espaço para futura implementação dos índices definidos na BD4, seção 8. |
 | `tests/` | Testes iniciais da estrutura do banco e verificação dos índices. |
 | `seed/` | Futura massa de dados de teste, prevista para a BD6. |
 
@@ -33,10 +33,14 @@ Os comandos de configuração utilizam MongoDB Playgrounds. As pastas contêm ar
 A configuração segue os documentos técnicos:
 
 - [BD3 — Modelagem das coleções do MongoDB](../docs/modelagem-mongodb.md): coleções, campos, tipos, obrigatoriedade e relacionamentos.
-- [BD4 — Definição de regras, validações e índices](../docs/regras-validacoes-indices.md): regras de integridade e validações.
+- [BD4 — Definição de regras, validações e índices](../docs/regras-validacoes-indices.md): regras de integridade, validações e conjunto inicial de índices na seção 8.
 
-Antes da configuração, conferir a compatibilidade do backend com a modelagem.
+A configuração do banco segue a BD3 e a BD4. O backend existente é uma estrutura inicial e não determina os campos ou os índices do modelo.
 
-Antes de configurar índices, definir as consultas atendidas e os requisitos de integridade. Manter lidoEm opcional nos alertas, sem incluir regraOrigem.
+As consultas atendidas, a ordem das chaves e as opções estão definidas na BD4, seção 8. O próximo passo da BD5 será preparar os Playgrounds de criação e conferência desses índices conforme o modelo documentado, auditando dados existentes quando houver. O desenvolvimento funcional do backend não é pré-requisito para essa definição ou para os testes diretos das consultas no banco.
+
+Conferir os índices efetivamente existentes, inclusive o automático de `_id`, antes de configurar. Auditar duplicidades de `firebaseUid`, plantações ativas por talhão e alertas do evento inicial por ocorrência antes de criar os índices únicos e parciais. Interromper para análise se houver conflitos, sem apagar ou corrigir dados automaticamente. Manter `lidoEm` opcional nos alertas, sem incluir `regraOrigem`.
 
 A análise dos índices deverá utilizar `explain("executionStats")`, observando a escolha natural do MongoDB, sem `hint` na verificação inicial. A comparação antes/depois será realizada em banco de teste separado, sem remover índices do banco Sentinela. Os testes de desempenho com volume representativo dependerão da massa de dados da BD6.
+
+Na BD5, verificar chaves e opções criadas e executar as consultas exatas da BD4 com o mesmo filtro, projeção, ordenação e limite. Incluir problemas por cultura e por cultura + tipo, verificando o multikey, além dos históricos e da listagem de propriedades por `usuarioId`. Registrar índice/plano vencedor, SORT quando houver, `nReturned`, `totalDocsExamined`, `totalKeysExamined` e `executionTimeMillis`, conforme a seção 10.3 da BD4. Separar testes de integridade das medições de leitura. A definição documental não comprova ganho de desempenho; relatar resultados somente após os testes.

@@ -47,6 +47,8 @@ Todas as áreas são informadas manualmente em hectares, sem necessidade de coor
 
 A unidade em hectares também se aplica a `areaAfetadaHa` e `areaTratadaHa`, preservando a obrigatoriedade e as condições existentes. Campos opcionais sem informação são omitidos; zero não representa área desconhecida. Permanecem as demais regras de compatibilidade de áreas da BD4.
 
+A soma de `areaHa` dos talhões com `ativo: true` de uma propriedade não pode ultrapassar `areaTotalHa`, quando informada, e pode ser menor. A aplicação confere a regra ao criar, alterar ou reativar talhões e ao reduzir a área da propriedade, inclusive em operações concorrentes. A aplicação rejeita valores não finitos; os tipos BSON numéricos e a positividade no banco não substituem essa verificação.
+
 A análise da distribuição das áreas e os indicadores de área afetada são possibilidades futuras. Estão fora do escopo desta versão e exigem requisitos específicos para novos campos, cálculos, índices ou restrições. Eventuais indicadores deverão ter sua definição e interpretação discutidas antes da implementação; não somar registros de área afetada como se representassem necessariamente áreas distintas.
 
 ## 3. Coleções propostas
@@ -65,6 +67,9 @@ A análise da distribuição das áreas e os indicadores de área afetada são p
 | tratamentos | Medidas de controle realizadas |
 | avaliacoes_tratamento | Resultados observados após tratamentos |
 | alertas | Avisos aos usuários |
+| experiencias_comunidade | Cópias voluntárias de experiências, sujeitas à moderação |
+| adocoes_tratamento | Planejamentos próprios baseados em métodos compartilhados |
+| denuncias_comunidade | Denúncias e decisões restritas à moderação |
 
 ## 4. Objetos incorporados compartilhados
 
@@ -99,6 +104,7 @@ Os arquivos ficam no Cloudinary. O MongoDB guarda somente os metadados. A imagem
 | _id | ObjectId | S |
 | firebaseUid | String | S |
 | nomeCompleto | String | S |
+| nomePublico | String (2 a 80 caracteres) | N no perfil; exigido pela aplicação ao enviar experiência |
 | cpf | String (11 dígitos, sem pontuação) | S, conforme a tela existente |
 | telefone | String (14 caracteres; +55, DDD e celular iniciado por 9) | S |
 | canalCodigoPreferido | String (sms ou email) | C — obrigatório ao concluir a etapa de escolha do canal |
@@ -209,6 +215,8 @@ O questionário é incorporado ao documento do usuário, sem identificador próp
 | criadoEm | Date | S |
 | atualizadoEm | Date | S |
 
+Cada cultura possui zero ou uma imagem representativa em `culturas.imagem`, objeto opcional. Sem imagem, o aplicativo poderá usar uma imagem padrão, sem incluir novo campo ou documento.
+
 ### 5.5 plantacoes
 
 **Objetivo:** representar uma cultura cultivada em um talhão e período.
@@ -239,9 +247,13 @@ O questionário é incorporado ao documento do usuário, sem identificador próp
 
 Cada talhão pode ter várias plantações ao longo do tempo, mas no máximo uma com status `ativa`. Para iniciar outra plantação no mesmo talhão, a atual deverá estar encerrada. Cultivos simultâneos, consorciados e áreas sobrepostas ficam fora do escopo desta versão. O histórico das plantações encerradas será preservado; a cardinalidade histórica talhão → plantações permanece 1:N, permitindo talhões ainda sem plantação.
 
-A aplicação confere essa regra antes de cadastrar ou ativar uma plantação. A regra de no máximo uma plantação ativa por talhão permanece válida, inclusive em operações concorrentes. O mecanismo de garantia no banco para operações concorrentes ainda deve ser definido. Antes da futura implementação, conferir plantações ativas duplicadas por talhão, sem correção ou exclusão automática.
+A aplicação confere essa regra antes de cadastrar ou ativar uma plantação. A regra de no máximo uma plantação ativa por talhão permanece válida, inclusive em operações concorrentes. A garantia no banco será o índice único parcial definido na BD4, seção 8.1. Antes da futura implementação, conferir plantações ativas duplicadas por talhão, sem correção ou exclusão automática.
 
 Ocorrências não serão incorporadas à plantação. Ao finalizar o cultivo, a plantação deverá ser encerrada, preservando os vínculos e o histórico, conforme a definição na BD4, seção 7.2.
+
+Quando `status: "encerrada"`, a aplicação bloqueia novas ocorrências, monitoramentos, tratamentos e avaliações de tratamento ligados à plantação, inclusive lançamentos atrasados com data anterior ao encerramento. Também bloqueia edições e exclusões dos registros vinculados pela operação comum do aplicativo, preservando todo o histórico para consulta autorizada. O tratamento chega à plantação por sua ocorrência; a avaliação, por tratamento → ocorrência → plantação. A aplicação deve resolver esses vínculos e verificar as condições antes da operação; referências ObjectId, índices e validação estrutural não garantem o bloqueio entre documentos. Não apagar registros existentes. Esses bloqueios não se confundem com procedimentos específicos de privacidade e tratamento de dados pessoais, que dependem de política própria e não autorizam remoções automáticas.
+
+A Comunidade permite criar uma cópia pública de experiência histórica de plantação encerrada e editar essa cópia mediante nova revisão (seção 10). Essa permissão não libera edição dos documentos privados de origem nem novos registros agronômicos. Adoções de destino continuam sujeitas aos bloqueios de encerramento.
 
 ### 5.6 problemas_agricolas
 
@@ -287,7 +299,11 @@ Ocorrências não serão incorporadas à plantação. Ao finalizar o cultivo, a 
 | descricao | String | S |
 | observacoes | String | N |
 
+`tipo` é uma String com valores `praga`, `doenca` ou `deficiencia`, conforme a BD4. `culturasAfetadasIds` é um array de ObjectIds que referenciam `_id` de `culturas`, sem copiar nomes ou substituir o catálogo por textos. A busca por uma cultura compara seu ObjectId com os elementos do array.
+
 O conteúdo deverá estar completo e revisado antes de ser disponibilizado.
+
+Todo cadastro deve cumprir os campos obrigatórios mesmo com `ativo: false`; não há rascunhos incompletos no MVP. A inativação impede novas seleções para registros, preservando as referências e a consulta histórica.
 
 ### 5.7 fontes_conhecimento
 
@@ -411,6 +427,8 @@ O monitoramento pode existir sem ocorrência. Quando houver ocorrência vinculad
 | criadoEm | Date | S |
 | atualizadoEm | Date | S |
 
+Novos tratamentos exigem que a ocorrência esteja `aberta` ou `em_acompanhamento` e sua plantação esteja `ativa`. A aplicação bloqueia novos tratamentos em ocorrência `encerrada`, inclusive lançamentos atrasados com data anterior ao encerramento. Essa verificação não altera o status automaticamente. Novas avaliações, edições e exclusões estão sujeitas ao bloqueio por encerramento da plantação definido na seção 5.5.
+
 ### 5.11 avaliacoes_tratamento
 
 **Objetivo:** registrar resultados observados em diferentes momentos.
@@ -491,6 +509,8 @@ Cada objeto abaixo deverá declarar seus campos em `properties` e usar `addition
 Nenhum desses objetos recebe identificador interno adicional. Suas datas são somente as já previstas: `aceitoEm` em termos, `concluidoEm` em questionario e `enviadaEm` em imagens. Nos documentos principais, todas as coleções declaram `_id` e `criadoEm`; as demais coleções também declaram `atualizadoEm`, mas alertas não possui esse campo. Datas opcionais e condicionais de cada coleção permanecem nas respectivas tabelas.
 
 Campos opcionais como `legenda`, `outraCultura`, `observacoes`, `lidoEm` e `expiraEm` devem continuar declarados, sem alterar sua obrigatoriedade ou as condições existentes. A geolocalização continua fora do escopo do MVP.
+
+As coleções e os objetos adicionais da Comunidade estão na seção 10 e também devem constar nos futuros schemas fechados. `usuarios.nomePublico` passa a integrar os campos permitidos do perfil, sem tornar a participação na Comunidade obrigatória.
 
 ## 6. Exemplos de documentos
 
@@ -731,16 +751,49 @@ Exemplo vinculado à ocorrência da seção 6.8. `usuarioId` corresponde ao resp
 | Listar talhões da propriedade | talhoes por propriedadeId |
 | Consultar cultivos por talhão e safra | plantacoes por talhaoId, safra e status |
 | Consultar problemas de uma cultura | problemas_agricolas por culturasAfetadasIds |
+| Consultar problemas de uma cultura e tipo | problemas_agricolas por culturasAfetadasIds e tipo; por exemplo, pragas que afetam a batata |
 | Consultar fontes de um problema | fontes_conhecimento pelos fontesIds |
 | Listar ocorrências | ocorrencias por plantacaoId, dataObservacao e status |
 | Consultar histórico por talhão | Plantações do talhão e suas ocorrências |
-| Consultar evolução | monitoramentos por ocorrenciaId e data |
+| Consultar evolução | monitoramentos por ocorrenciaId e dataObservacao |
+| Listar inspeções da plantação | monitoramentos por plantacaoId; todas, com ocorrência ou sem ocorrência; dataObservacao e _id decrescentes |
 | Consultar medidas realizadas | tratamentos por ocorrenciaId |
 | Consultar resultados | avaliacoes_tratamento por tratamentoId |
 | Consultar alertas não lidos | alertas por usuarioId e ausência de lidoEm |
 | Montar dashboard | Agregações sobre registros autorizados |
+| Consultar Comunidade e moderação | Feed, detalhes públicos, experiências próprias, adoções próprias e denúncias conforme seção 10.6 |
 
 Consultas por propriedade podem exigir múltiplas consultas ou agregações.
+
+### 7.1 Filtros e ordenações previstos
+
+As consultas da tabela representam funcionalidades previstas. O backend existente é uma estrutura inicial, sem implementação funcional que determine a modelagem. As coleções, os campos e as consultas deste documento são a referência para os índices da BD4 e para o futuro desenvolvimento.
+
+Para a consulta prevista “pragas que afetam a batata”, a aplicação recebe o ObjectId da cultura selecionada no catálogo e consulta `problemas_agricolas` com `{ culturasAfetadasIds: culturaId, tipo: "praga" }`. Sem `tipo`, o filtro é `{ culturasAfetadasIds: culturaId }`. `culturaId` representa aqui um valor BSON ObjectId, não um novo campo. Não há ordenação definida para essas duas consultas; na exibição de conteúdo disponível, acrescentar `ativo: true`, conforme a regra de revisão da BD4.
+
+As ocorrências por plantação e os monitoramentos por ocorrência ou por plantação serão ordenados por `dataObservacao` decrescente e `_id` decrescente. Tratamentos por ocorrência usarão `dataAplicacao` decrescente e `_id` decrescente; avaliações por tratamento usarão `dataAvaliacao` decrescente e `_id` decrescente. Alertas não lidos serão filtrados por `usuarioId` e `{ lidoEm: { $exists: false } }`, ordenados por `criadoEm` decrescente e `_id` decrescente. O `_id` desempata datas iguais. Essas são definições para as consultas futuras, com paginação conforme a BD4, seção 10.2.
+
+A referência `monitoramentos.plantacaoId` já é ObjectId obrigatório (seção 5.9); nenhuma referência nova é necessária. A consulta usa `{ plantacaoId }`. O filtro opcional de vínculo acrescenta `{ ocorrenciaId: { $exists: true } }` ou `{ ocorrenciaId: { $exists: false } }`; sem esse filtro, retorna todas as inspeções. `null` não representa ausência. Quando presente, a ocorrência deve pertencer à mesma plantação. A consulta por `{ ocorrenciaId }` continua disponível.
+
+Plantações serão filtradas por `talhaoId`, com `safra` e `status` opcionais; ocorrências, por `plantacaoId`, com período em `dataObservacao` e `status` opcionais. A evolução por ocorrência poderá restringir um período em `dataObservacao`. Os limites de período serão valores BSON Date. Não há ordenação definida para perfil, propriedades, talhões, plantações e fontes; não presumir ordenação alfabética ou por criação nessas consultas.
+
+Os índices correspondentes estão na [BD4, seção 8](regras-validacoes-indices.md#8-índices). O histórico por talhão reúne suas plantações e ocorrências; a ordenação global entre plantações ainda precisa ser especificada se exigida pela tela. As consultas e contagens do dashboard estão na seção 7.2; a implementação do pipeline é posterior.
+
+### 7.2 Dashboard do MVP
+
+O dashboard usa somente registros autorizados do usuário autenticado. Resolver sua identidade Firebase em `usuarios.firebaseUid` e obter `usuarios._id`; `propriedades.usuarioId` e `alertas.usuarioId` usam esse ObjectId. O filtro opcional de propriedade deve pertencer ao usuário; identificador válido sem autorização não permite acesso.
+
+| Indicador | Vínculos, filtros e agrupamento |
+|---|---|
+| Total de propriedades ativas | Contar `propriedades` com `usuarioId` do usuário e `ativa: true`. Sempre geral, sem aplicar a seleção de propriedade. |
+| Total de talhões ativos | Obter as propriedades do usuário (todas, sem impor `ativa: true` aos pais), ou somente a propriedade selecionada e autorizada. Contar `talhoes` com `propriedadeId` nesse conjunto e `ativo: true`. |
+| Total de plantações ativas | Obter os talhões das propriedades autorizadas no escopo selecionado, sem impor `ativo: true` aos talhões. Contar `plantacoes` com `talhaoId` nesse conjunto e `status: "ativa"`. |
+| Quantidade de ocorrências por status | Obter todas as plantações dos talhões do escopo autorizado e agrupar `ocorrencias` por `status`, contando documentos com `plantacaoId` nesse conjunto. Não filtrar propriedades/talhões ativos nem plantações ativas para excluir histórico. |
+| Quantidade de alertas não lidos | Contar `alertas` com `usuarioId` do usuário e `lidoEm: { $exists: false }`. Sempre geral, independente do filtro de propriedade. |
+
+Somente talhões, plantações e ocorrências recebem o filtro opcional por propriedade. A visão geral usa todas as propriedades autorizadas. Cada indicador de atividade filtra a situação do próprio documento contado; não há exclusão implícita pelo estado do pai. Não contar múltiplas vezes o mesmo registro ao reunir vínculos. Grupos sem ocorrências devem ser apresentados com zero. Não há filtro temporal ou ordenação de histórico nesses totais.
+
+Agrupar os status persistidos `aberta`, `em_acompanhamento` e `encerrada` (seção 5.8), exibindo aberta, em acompanhamento e encerrada. Acompanhamento pode ocorrer sem tratamento e encerramento não comprova resolução. Não exibir “em tratamento” ou “resolvida” como equivalentes e não introduzir novos status.
 
 ## 8. Decisões de embedding e referencing
 
@@ -769,7 +822,7 @@ As regras abaixo estão detalhadas na BD4, seção 7.2:
 - Desativar propriedades, talhões, culturas e problemas agrícolas já utilizados, preservando vínculos e histórico pelos campos existentes.
 - Excluir cadastros feitos por engano somente sem dependentes e após conferir autorização e vínculos, respeitando as restrições específicas de preservação.
 - Encerrar plantações ao finalizar o cultivo e ocorrências com data e motivo, conforme a seção 5.8.
-- Preservar monitoramentos, tratamentos e avaliações, admitindo correções autorizadas e sem exclusão comum nesta versão.
+- Preservar monitoramentos, tratamentos e avaliações, sem exclusão comum nesta versão. Correções autorizadas permanecem sujeitas ao bloqueio de edições após o encerramento da plantação; nessa situação, a operação comum permite consultar o histórico, sem novas avaliações, edições ou exclusões dos registros vinculados.
 - Manter indisponível a exclusão de conta nesta versão; a política de tratamento de dados pessoais ainda deve ser definida.
 - A aplicação verifica autorização, referências, dependentes e transições; o MongoDB valida estrutura e valores permitidos.
 
@@ -787,3 +840,114 @@ As regras abaixo estão detalhadas na BD4, seção 7.2:
 - Nomes e cadastros completos não serão duplicados por padrão.
 
 plantacaoId no monitoramento permite registrar inspeções sem ocorrência. Quando ocorrenciaId estiver presente, os vínculos deverão ser consistentes.
+
+## 10. Modelagem da Comunidade
+
+As funcionalidades e a separação público/privado seguem a BD1, seção 8. Os campos e enums abaixo especificam o mínimo para os fluxos confirmados, sem representar implementação ou validação pela equipe. As decisões de primeira aprovação, edição suspensa, liberação de ocultas pela moderação, adoção/denúncia e acesso somente autenticado estão harmonizadas com a BD4 §14. Nenhum desses fluxos modifica automaticamente os registros privados.
+
+### 10.1 experiencias_comunidade
+
+| Campo | Tipo | Obrigatoriedade e finalidade |
+|---|---|---|
+| _id | ObjectId | S |
+| autorId | ObjectId → usuarios | S; interno |
+| ocorrenciaOrigemId | ObjectId → ocorrencias | S; interno, ocorrência própria |
+| tratamentoOrigemId | ObjectId → tratamentos | N; interno, da ocorrência de origem |
+| avaliacaoOrigemId | ObjectId → avaliacoes_tratamento | C se compartilhar resultado; exige tratamentoOrigemId correspondente; interno |
+| nomePublico | String | S; cópia do nome escolhido, não do nome completo |
+| culturaId | ObjectId → culturas | S; da plantação de origem |
+| culturaNome | String | S; rótulo copiado para publicação |
+| problemaAgricolaId | ObjectId → problemas_agricolas | N; problema da ocorrência quando identificado |
+| problemaNome | String | C quando houver problemaAgricolaId; rótulo copiado |
+| tipoProblema | String | S; praga, doenca, deficiencia ou nao_identificado |
+| statusOcorrencia | String | S; cópia de aberta, em_acompanhamento ou encerrada |
+| titulo | String | S |
+| relato | String | S |
+| fotos | Array<Object> | N; até 5 fotos explicitamente selecionadas |
+| metodo | Object | C quando houver tratamentoOrigemId; método compartilhado |
+| resultadoRelatado | Object | C quando houver avaliacaoOrigemId; cópia da avaliação selecionada |
+| regiao | Object | N; município/UF informados voluntariamente |
+| versao | Number (BSON int ou long) | S; inteiro positivo, começa em 1 |
+| moderacao | Object | S; estado e última decisão restritos ao sistema/à equipe |
+| publicadoEm | Date | C a partir da primeira aprovação; mantido nas revisões posteriores |
+| criadoEm | Date | S |
+| atualizadoEm | Date | S |
+
+Referências de origem existem para checagem interna, não para navegação pública. Não armazenar `propriedadeId`, `plantacaoId` ou `talhaoId` redundantes. Cultura/problema são referências de catálogo para os filtros; os nomes, tipo e status publicados são cópias explícitas, sem atualização silenciosa. `nomePublico` no perfil é opcional, mas deve ser escolhido antes do envio; cada experiência mantém sua cópia e mudanças do perfil não a reescrevem.
+
+### 10.2 adocoes_tratamento
+
+| Campo | Tipo | Obrigatoriedade e finalidade |
+|---|---|---|
+| _id | ObjectId | S |
+| usuarioId | ObjectId → usuarios | S; obtido da autenticação |
+| experienciaId | ObjectId → experiencias_comunidade | S; referência histórica |
+| experienciaVersao | Number (BSON int ou long) | S; versão positiva adotada |
+| ocorrenciaId | ObjectId → ocorrencias | S; destino próprio, sem propriedadeId redundante |
+| metodoCopiado | Object | S; cópia imutável do método da versão adotada |
+| planejamento | Object | S; revisado pelo produtor antes da confirmação |
+| status | String | S; planejada, realizada ou cancelada |
+| tratamentoId | ObjectId → tratamentos | C quando realizada; ausente nos demais estados |
+| criadoEm | Date | S |
+| atualizadoEm | Date | S |
+
+Criar a adoção somente após revisão/confirmação do planejamento; a prévia não exige rascunho persistido. O ciclo confirmado é `planejada → realizada` ou `planejada → cancelada`, sem reabertura. A criação do tratamento efetivamente realizado deve preencher `adocoes_tratamento.tratamentoId` e marcar a adoção realizada como operação consistente da aplicação. Não adicionar referência inversa redundante a tratamentos. A regra de unicidade confirmada é uma adoção planejada por `{ experienciaId, ocorrenciaId }`, inclusive entre versões e sob concorrência, garantida pelo único parcial da BD4 §14.6.1. Realizadas/canceladas não ocupam essa restrição. Não foi exigida unicidade do tratamento vinculado. Avaliações continuam na coleção existente, sem resultado duplicado na adoção.
+
+### 10.3 denuncias_comunidade
+
+| Campo | Tipo | Obrigatoriedade e finalidade |
+|---|---|---|
+| _id | ObjectId | S |
+| experienciaId | ObjectId → experiencias_comunidade | S |
+| denuncianteId | ObjectId → usuarios | S; interno, não público |
+| motivo | String | S; dados_pessoais, conteudo_inadequado, informacao_perigosa ou outro |
+| descricao | String | N; texto restrito à moderação |
+| status | String | S; pendente ou analisada |
+| decisao | String | C em analisada; manter_publicacao ou ocultar_publicacao |
+| justificativa | String | C em analisada; restrita à moderação |
+| analisadoPor | ObjectId → usuarios | C em analisada; moderador autorizado |
+| analisadoEm | Date | C em analisada |
+| criadoEm | Date | S |
+| atualizadoEm | Date | S |
+
+Denunciar não altera automaticamente a disponibilidade. A transição confirmada é `pendente → analisada`: decisão, justificativa, responsável e data são obrigatórios em analisada e ausentes em pendente. A decisão de ocultar atualiza a moderação da experiência, preservando documentos e adoções. Múltiplas denúncias podem existir; não criar unicidade por denunciante/publicação sem regra específica. Identidade do denunciante e textos da análise nunca integram o feed.
+
+### 10.4 Objetos incorporados da Comunidade
+
+| Objeto | Campos permitidos e tipos | Obrigatoriedade interna |
+|---|---|---|
+| Cada foto em experiencias_comunidade.fotos | url: String HTTPS; publicId: String Cloudinary; legenda: String | url/publicId S; legenda N; sem identificadores ou autoria extras |
+| experiencias_comunidade.metodo e adocoes_tratamento.metodoCopiado | tipoMedida: String; descricao: String; observacoes: String | tipoMedida/descricao S; observacoes N |
+| experiencias_comunidade.resultadoRelatado | resultado: String; dataAvaliacao: Date; observacoes: String | resultado/dataAvaliacao S; observacoes N, selecionadas pelo autor |
+| experiencias_comunidade.regiao | municipio: String; estado: String | Ambos N; ao menos um presente se houver objeto |
+| experiencias_comunidade.moderacao | status: String; revisadoPor: ObjectId → usuarios; revisadoEm: Date; motivo: String | status S; demais conforme a decisão na BD4 §14.3; internos |
+| adocoes_tratamento.planejamento | descricao: String; dataPrevista: Date; observacoes: String | descricao S; demais N; não representa aplicação realizada |
+
+Todos esses objetos usam `additionalProperties: false`, com `properties`, `required` e `items` próprios, sem `_id` ou timestamps extras. O tipo do método usa manual, cultural, biologica, quimica ou outra. O resultado usa melhora_observada, sem_mudanca, piora_observada ou inconclusivo. Não incluir produtos, quantidades, unidades ou dosagens estruturados no método copiado/planejamento; a descrição compartilhada continua relato, não prescrição. Dados reais da intervenção são informados pelo produtor em tratamentos, sem preenchimento automático.
+
+### 10.5 Projeção pública, arquivos e versões
+
+No MVP, todas as rotas da Comunidade e a entrega das fotos compartilhadas exigem usuário autenticado. “Público” significa compartilhado entre usuários autenticados, não acesso anônimo. A autenticação não libera dados privados de origem ou funções de moderação.
+
+A resposta pública usa somente `_id` da experiência, `versao`, `nomePublico`, `culturaId`, `culturaNome`, `problemaAgricolaId`/`problemaNome` quando presentes, `tipoProblema`, `statusOcorrencia`, `titulo`, `relato`, `metodo`, `resultadoRelatado`, `regiao`, `publicadoEm` e fotos contendo apenas URL e legenda. Não retornar `autorId`, referências de origem, `publicId` dos arquivos, dados de moderação, adoções, denúncias ou o documento privado de usuário. Os ObjectIds públicos de cultura/problema são do catálogo, sem dar acesso aos registros privados. A API pública da Comunidade não é uma rota para o perfil nem autoriza acesso a propriedade, ocorrência ou tratamento de origem.
+
+Não copiar automaticamente fotos: selecionar, conferir na prévia e preparar recursos de compartilhamento separados dos privados, com somente os metadados permitidos. Proposta técnica: cópias próprias para a Comunidade, sem reutilizar URLs de acesso privado; remover metadados de localização/identificação e controlar disponibilidade dos arquivos conforme retirada/ocultação. A proteção efetiva das URLs e da entrega dos arquivos deve ser definida antes de exposição pública real. `publicId` segue a preservação integral definida na BD4; não retornar esse identificador na projeção pública.
+
+Proposta de versão simples: manter uma experiência por documento, incrementar `versao` a cada alteração de conteúdo público ou recópia explícita de dados de origem e exigir nova revisão. Alterar dados privados não muda versão pública automaticamente. A adoção conserva `experienciaVersao` e `metodoCopiado`, mesmo que o documento da experiência avance de versão. Não é proposto histórico ilimitado de versões incorporadas. Mudanças de estado de moderação sem mudança de conteúdo não incrementam a versão.
+
+Regra confirmada do feed: `publicadoEm` da primeira aprovação, preenchido pelo sistema e preservado em novas revisões; ordenar por `{ publicadoEm: -1, _id: -1 }`. Antes da primeira aprovação, a data fica ausente. Edições suspendem a exibição até nova aprovação e retornam à posição da publicação original, sem promover o relato antigo.
+
+Quando retirada, oculta, rejeitada ou pendente, a experiência não aparece no feed nem no detalhe público; retornar indisponibilidade sem divulgar motivo interno. Não excluir automaticamente documentos ou adoções. Autor e equipe mantêm acesso autorizado; quem já adotou consulta sua própria cópia do método e versão, sem acesso ao conteúdo retirado completo ou aos dados privados de origem. Novas adoções exigem a versão atualmente aprovada e disponível, verificada novamente na confirmação. O autor não pode converter publicação oculta em retirada ou pendente para contornar a moderação; somente moderador pode liberar após análise, retornando a pendente para nova aprovação, conforme BD4 §14.3.
+
+### 10.6 Consultas previstas da Comunidade
+
+| Necessidade | Filtro e ordenação |
+|---|---|
+| Feed | `moderacao.status: "aprovada"`; filtros opcionais de igualdade por culturaId, problemaAgricolaId e tipoProblema; `{ publicadoEm: -1, _id: -1 }` |
+| Detalhe público | `_id` e `moderacao.status: "aprovada"`, com projeção pública; sem acesso por origem privada |
+| Experiências próprias | autorId autenticado, estado de moderação opcional; `{ criadoEm: -1, _id: -1 }`; não aplicar projeção interna a outros usuários |
+| Adoções próprias | usuarioId autenticado, status opcional; `{ criadoEm: -1, _id: -1 }`; detalhe por `_id` com autorização |
+| Conferir adoção planejada do mesmo par | `{ experienciaId, ocorrenciaId, status: "planejada" }`, sem ordenação; consulta prévia não substitui o índice único parcial nem a autorização |
+| Fila de publicações para moderação | moderacao.status, inicialmente pendente; `{ criadoEm: 1, _id: 1 }`, mais antigas primeiro |
+| Fila de denúncias | status: pendente; consulta das analisadas por status: analisada; `{ criadoEm: 1, _id: 1 }`; somente moderação |
+| Denúncias de uma experiência | experienciaId; `{ criadoEm: -1, _id: -1 }`; somente moderação |

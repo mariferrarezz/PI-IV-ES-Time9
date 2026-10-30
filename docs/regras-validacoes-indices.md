@@ -10,12 +10,14 @@ Definir regras de integridade, validações e índices para manter os dados cons
 |---|---|---|
 | Presença de campos obrigatórios | Sim, com Schema Validation | Sim, antes de salvar |
 | Tipos BSON dos campos | Sim | Sim, validar e converter |
+| Finitude de áreas e quantidades | Tipo numérico e positividade não substituem a verificação de finitude | Rejeitar NaN e infinitos antes de salvar |
 | Valores permitidos de status | Sim, com enum | Sim |
 | Limites de texto, número e lista | Sim | Sim |
-| Unicidade de firebaseUid | Mecanismo de garantia no banco a definir | Tratar erro de duplicidade |
+| Unicidade de firebaseUid | Índice único definido na seção 8.1, a implementar na BD5 | Tratar erro de duplicidade |
 | Existência de documentos referenciados | Não automaticamente | Sim |
 | Autorização do usuário | Não pelo Schema Validation | Sim |
 | Compatibilidade entre referências | Não automaticamente | Sim |
+| Bloqueios de registros vinculados a plantação encerrada | ObjectId, índices e validação estrutural não verificam o estado de outro documento | Resolver vínculos e verificar o estado antes de permitir a operação |
 | Transições de status | Não apenas pelo schema | Sim |
 | Comparações entre datas | Possível em validadores adicionais; não previsto no schema básico | Sim |
 | Existência do arquivo no Cloudinary | Não | Sim |
@@ -101,10 +103,13 @@ A entrada manual e a unidade em hectares também se aplicam às áreas afetadas 
 - Área de talhão não pode superar a área total da propriedade, quando conhecida.
 - Área plantada não pode superar a área do talhão.
 - Área afetada e área tratada não podem superar a área plantada, quando conhecida.
-- Áreas sobrepostas ficam fora do escopo desta versão. A soma das áreas dos talhões ativos deve ser compatível com a área da propriedade, quando conhecida; a aplicação confere essa compatibilidade sem introduzir campos geográficos.
+- Áreas sobrepostas ficam fora do escopo desta versão. A soma de `areaHa` dos talhões com `ativo: true` deve ser menor ou igual a `propriedades.areaTotalHa`, quando informada; pode ser menor. A aplicação verifica a soma ao criar, alterar ou reativar talhões e ao reduzir a área total da propriedade. Se a alteração mover um talhão entre propriedades, conferir as propriedades afetadas. Sem área total informada, não inventar um teto nem substituir ausência por zero.
+- A regra da soma deve permanecer válida também em operações concorrentes. Verificações isoladas seguidas de gravação não bastam para preservar a soma diante de alterações simultâneas; o mecanismo de coordenação será definido na implementação, sem exigir uma solução específica nesta etapa.
 - Não estabelecer limite máximo arbitrário de propriedade sem requisito do domínio.
 
 Na aplicação, áreas e quantidades serão números. O schema aceitará os tipos BSON numéricos int, long, double e decimal, com as restrições correspondentes. O backend utilizará uma representação consistente.
+
+A aplicação deve rejeitar valores não finitos (NaN e infinitos) antes da gravação, além de exigir valor maior que zero. O banco valida os tipos numéricos aceitos e a positividade; essas restrições isoladas não garantem finitude. O exemplo da seção 6.3 não deve ser interpretado como garantia completa dessa regra ou das comparações entre documentos.
 
 A precisão de apresentação não deve alterar o valor armazenado sem uma regra explícita.
 
@@ -192,7 +197,7 @@ Se questionario existir, exigir:
 | Campo | Valores permitidos |
 |---|---|
 | portePropriedade | pequena, media, grande |
-| quantidadeCulturas | 1, 2, 3, 4_ou_mais |
+| quantidadeCulturas | Strings: `"1"`, `"2"`, `"3"`, `"4_ou_mais"` |
 | problemasFrequentes | pragas, doencas, nao_identificado |
 | frequenciaProblemas | raramente, as_vezes, frequentemente, sempre |
 | identificaProblemasSozinho | sim, nao, as_vezes |
@@ -256,6 +261,7 @@ Se questionario existir, exigir:
 - A conferência por nome não será uma garantia técnica de unicidade nesta versão.
 - Cultura inativa permanece disponível no histórico, mas não em novas seleções.
 - Desativar cultura não apaga suas plantações anteriores.
+- Cada cultura possui zero ou uma imagem representativa, em objeto opcional conforme a BD3. Sem imagem, o aplicativo poderá exibir uma imagem padrão; não exigir seu armazenamento nem adicionar outro campo.
 
 ### 4.6 plantacoes
 
@@ -276,8 +282,12 @@ Se questionario existir, exigir:
 - Encerramento não pode ser futuro.
 - Quando ativa, dataEncerramento deve estar ausente.
 - Cada talhão pode ter várias plantações ao longo do tempo, mas no máximo uma com status `ativa`. Para iniciar outra plantação no mesmo talhão, a atual deverá estar encerrada. Cultivos simultâneos, consorciados e áreas sobrepostas ficam fora do escopo desta versão. O histórico das plantações encerradas será preservado; a cardinalidade histórica talhão → plantações permanece 1:N, permitindo talhões ainda sem plantação.
-- A aplicação confere a existência de plantação ativa antes de cadastrar ou ativar outra no mesmo talhão. Uma consulta prévia isolada não impede conflitos concorrentes: a garantia dessa restrição no banco, inclusive com concorrência, requer um mecanismo de controle de concorrência no banco. A aplicação deve tratar erro de duplicidade sem apagar ou encerrar automaticamente a plantação existente.
+- A aplicação confere a existência de plantação ativa antes de cadastrar ou ativar outra no mesmo talhão. Uma consulta prévia isolada não impede conflitos concorrentes: a garantia dessa restrição no banco será o índice único parcial da seção 8.1, a implementar na BD5. A aplicação deve tratar erro de duplicidade sem apagar ou encerrar automaticamente a plantação existente.
 - Preservar o histórico quando a cultura do talhão mudar.
+- Em plantação encerrada, a aplicação bloqueia novas ocorrências, monitoramentos, tratamentos e avaliações de tratamento, inclusive lançamentos atrasados com data anterior ao encerramento. Também bloqueia edições e exclusões dos registros vinculados pela operação comum do aplicativo, preservando todo o histórico para consulta autorizada, sem apagar os registros existentes.
+- Antes dessas operações, a aplicação verifica o estado da plantação e os vínculos: ocorrência/monitoramento → plantação, tratamento → ocorrência → plantação e avaliação → tratamento → ocorrência → plantação. O bloqueio de edição abrange os campos e objetos incorporados dos registros vinculados. ObjectIds, índices e Schema Validation estrutural não garantem essas regras entre documentos; uma data anterior ao encerramento não permite contornar a verificação.
+- Os bloqueios da operação comum não definem nem substituem procedimentos específicos de privacidade e tratamento de dados pessoais (seção 7.2.1). Esses procedimentos dependem de política própria; não há autorização para remoção ou anonimização automática.
+- A publicação voluntária de uma cópia de experiência histórica e a edição dessa cópia pública mediante nova revisão são permitidas pela decisão específica da Comunidade (seção 14), inclusive com plantação de origem encerrada. Isso não libera alterações nos registros privados; adoções de destino continuam sujeitas aos bloqueios de plantação encerrada.
 
 ### 4.7 problemas_agricolas
 
@@ -310,6 +320,7 @@ Se questionario existir, exigir:
 - Manutenção restrita à equipe autorizada.
 - revisadoEm não pode ser futuro.
 - Conteúdo somente fica ativo após revisão.
+- Todo cadastro deve cumprir os campos obrigatórios e os mínimos das listas mesmo inativo. Não há rascunhos incompletos no MVP. A inativação impede novas seleções para registros, preservando vínculos e consultas históricas.
 - Não gerar diagnóstico ou urgência automaticamente a partir do nome do problema.
 
 ### 4.8 fontes_conhecimento
@@ -353,7 +364,7 @@ Se questionario existir, exigir:
 **Regras:**
 
 - Plantação e autor devem existir.
-- Para novos registros, o cultivo e seus responsáveis devem permitir a operação.
+- Para novas ocorrências, a plantação deve estar ativa; plantação encerrada bloqueia inclusive lançamentos atrasados (seção 4.6). Conferir a autorização sobre a propriedade e as demais condições existentes dos cadastros relacionados.
 - Se problemaAgricolaId existir, o problema deve ser compatível com o tipo e a cultura.
 - Se tipo for nao_identificado, problemaAgricolaId deve estar ausente.
 - Área afetada deve ser positiva e não superior à área plantada conhecida.
@@ -393,6 +404,7 @@ Se questionario existir, exigir:
 
 - Plantação e autor devem existir.
 - Se houver ocorrência, ela deve pertencer à mesma plantação.
+- A plantação deve estar ativa para novos monitoramentos, inclusive quando não houver ocorrência vinculada. Bloquear lançamentos atrasados em plantação encerrada, conforme a seção 4.6.
 - Se problemaObservado for false, intensidade e areaAfetadaHa devem estar ausentes.
 - Sem ocorrência vinculada, evolucao deve estar ausente ou ser nao_avaliada.
 - Data de observação não pode ser futura.
@@ -413,7 +425,7 @@ Se questionario existir, exigir:
 **Regras:**
 
 - Ocorrência e autor devem existir.
-- A ocorrência deve permitir novos tratamentos.
+- Novos tratamentos exigem plantação `ativa` e ocorrência `aberta` ou `em_acompanhamento`. Bloquear novos tratamentos em ocorrência `encerrada`, inclusive lançamentos atrasados com data anterior ao encerramento, mesmo que a plantação permaneça ativa. Plantação encerrada também bloqueia o cadastro independentemente do status da ocorrência. A aplicação confere as duas condições antes de salvar, sem alterar status automaticamente.
 - Aplicação não pode ser futura.
 - Aplicação não deve anteceder a observação inicial da ocorrência.
 - Quantidade e área informadas devem ser positivas.
@@ -438,9 +450,10 @@ Se questionario existir, exigir:
 **Regras:**
 
 - Tratamento e autor devem existir.
+- A aplicação resolve tratamento → ocorrência → plantação e exige plantação ativa para nova avaliação. Plantação encerrada bloqueia inclusive avaliações lançadas com data anterior ao encerramento; edições e exclusões comuns de avaliações vinculadas também ficam bloqueadas, conforme a seção 4.6.
 - Avaliação não pode anteceder a aplicação.
 - Avaliação não pode ser futura.
-- Se houver monitoramento, ele deve ser compatível com a plantação e, quando informada, com a ocorrência do tratamento.
+- Se houver monitoramento, ele deve pertencer à mesma plantação do tratamento, obtida por sua ocorrência. Se o monitoramento possuir `ocorrenciaId`, esse identificador deve ser o mesmo `ocorrenciaId` do tratamento; a condição refere-se à ocorrência opcional do monitoramento, não à referência obrigatória do tratamento.
 - O monitoramento utilizado deve ter data entre a aplicação e a avaliação.
 - Resultado representa observação, sem comprovação automática de eficácia.
 
@@ -480,8 +493,8 @@ As intensidades permanecem `baixa`, `media` e `alta`. A aplicação gera um aler
 
 - A identidade deste evento é a combinação de `tipo`, `contexto.tipo` e `contexto.id`, sem `usuarioId`: trocar o destinatário não deve permitir um segundo alerta para a mesma ocorrência.
 - A aplicação deverá usar essa combinação como filtro de um upsert com `$setOnInsert`, preenchendo o alerta somente se ainda não existir. Repetições não deverão apagar `lidoEm` ou reescrever um alerta existente.
-- Uma consulta de existência seguida de inserção não impede duplicidade em operações concorrentes. O mecanismo de garantia dessa restrição no banco ainda deve ser definido; a aplicação deverá tratar o conflito de duplicidade como evento já registrado, sem esconder outros erros.
-- A regra de não duplicidade se aplica ao evento com `tipo: "ocorrencia_intensidade_alta"` e `contexto.tipo: "ocorrencia"`. A solução de indexação ainda deve ser definida; antes da implementação, auditar duplicidades existentes, sem apagar documentos automaticamente.
+- Uma consulta de existência seguida de inserção não impede duplicidade em operações concorrentes. A garantia no banco será o índice único parcial da seção 8.1, a implementar na BD5; a aplicação deverá tratar o conflito de duplicidade como evento já registrado, sem esconder outros erros.
+- A regra de não duplicidade se aplica ao evento com `tipo: "ocorrencia_intensidade_alta"` e `contexto.tipo: "ocorrencia"`. O índice da seção 8.1 fica restrito a esse evento; antes da implementação, auditar duplicidades existentes, sem apagar documentos automaticamente.
 - A restrição garante no máximo um alerta, mas não garante sua geração. A aplicação deverá prever falhas entre salvar a ocorrência e salvar o alerta, com repetição segura do mesmo evento de cadastro; não deve varrer ocorrências antigas como novos eventos nem gerar alertas em simples edições. O mecanismo de recuperação ainda precisa ser definido na implementação.
 
 ## 5. Limites de listas
@@ -625,8 +638,9 @@ As regras de exclusão e preservação são:
 - Desativar propriedades, talhões, culturas e problemas agrícolas já utilizados, usando os campos existentes e preservando vínculos e histórico.
 - Permitir excluir cadastros feitos por engano somente quando não tiverem dependentes, após a aplicação conferir autorização e vínculos. Essa permissão não substitui as restrições específicas de preservação abaixo.
 - Encerrar plantações ao finalizar o cultivo, preservando os registros relacionados.
+- Plantação encerrada não recebe novas ocorrências, monitoramentos, tratamentos ou avaliações de tratamento, inclusive lançamentos atrasados; edições e exclusões dos registros vinculados ficam bloqueadas na operação comum do aplicativo, conforme a seção 4.6. Preservar todos os registros e permitir a consulta autorizada do histórico. A aplicação verifica essas condições; referências ObjectId e índices não as garantem.
 - Encerrar ocorrências com data (`encerradoEm`) e motivo (`motivoEncerramento`) obrigatórios, conforme a seção 4.9. Encerramento significa finalização do acompanhamento, sem comprovar resolução do problema.
-- Preservar monitoramentos, tratamentos e avaliações, permitindo correções autorizadas, sem exclusão comum nesta versão, mesmo que não tenham dependentes.
+- Preservar monitoramentos, tratamentos e avaliações, sem exclusão comum nesta versão, mesmo que não tenham dependentes. Correções autorizadas somente quando não incidirem os bloqueios de edição por encerramento da plantação; a permissão geral de correção não prevalece sobre esse bloqueio.
 - Exclusão de conta indisponível nesta versão. A política de tratamento de dados pessoais ainda deve ser definida. Não aplicar remoção ou anonimização automática sem essa definição.
 - A aplicação verifica autorização, referências, dependentes e transições de status. O MongoDB valida estrutura e valores permitidos; o Schema Validation não confere a existência de dependentes em outras coleções.
 
@@ -648,7 +662,62 @@ Se o sistema permitir exclusões concorrentes, as verificações deverão ser co
 
 ## 8. Índices
 
-Índices a definir.
+### 8.1 Conjunto inicial para o modelo da BD3
+
+As especificações abaixo definem o conjunto inicial de índices com base nas coleções, regras e consultas previstas na BD3, incluindo os filtros e as ordenações da seção 7.1. Serão implementadas na BD5; não são comandos executados nem confirmação do estado do Atlas. A estrutura inicial do backend não determina este conjunto.
+
+Nos filtros e nas chaves, `_id`, `usuarioId`, `propriedadeId`, `talhaoId`, `plantacaoId`, `ocorrenciaId`, `tratamentoId` e `contexto.id` são ObjectIds. `culturasAfetadasIds` é Array<ObjectId>; `firebaseUid`, `safra`, `status`, `tipo` e `contexto.tipo` são Strings. `dataObservacao`, `dataAplicacao`, `dataAvaliacao`, `criadoEm` e `lidoEm` são datas BSON; `ativo` é Boolean. `lidoEm` ausente significa não lido, sem substituição por null. Os pontos em `contexto.tipo` e `contexto.id` indicam campos do objeto incorporado. `1` indica ordem crescente e `-1`, decrescente. Salvo indicação expressa, os índices não são únicos, parciais, sparse ou TTL.
+
+| Coleção | Campos na ordem escolhida | Tipo | Consulta atendida e ordenação | Justificativa e opções |
+|---|---|---|---|---|
+| usuarios | `{ firebaseUid: 1 }` | Simples, único | Igualdade por `firebaseUid` ao abrir perfil; sem ordenação | `unique: true`, pois a seção 4.1 exige um perfil por identidade Firebase. Não adicionar outro índice simples não único. |
+| propriedades | `{ usuarioId: 1 }` | Simples | Propriedades por `usuarioId`; sem ordenação; acesso às propriedades para o dashboard | Começa pelo responsável. No total de ativas, `ativa: true` é filtro residual; não impõe unicidade de nome. |
+| talhoes | `{ propriedadeId: 1 }` | Simples | Talhões por `propriedadeId`; sem ordenação; vínculos e contagem do dashboard | Delimita propriedades autorizadas, isoladas ou em conjunto; `ativo: true` é residual quando exigido pelo indicador. |
+| plantacoes | `{ talhaoId: 1, safra: 1, status: 1 }` | Composto | Igualdade por talhão, opcionalmente safra e status; sem ordenação | O prefixo atende ao histórico por talhão e a talhão + safra. Sem safra, status não forma prefixo contíguo; não presumir a mesma eficiência. |
+| plantacoes | `{ talhaoId: 1 }` | Simples, único e parcial | Plantação ativa por `{ talhaoId, status: "ativa" }`; contagem de ativas por talhões autorizados no dashboard | `unique: true`, `partialFilterExpression: { status: "ativa" }`. Garante no máximo uma ativa por talhão e permite várias encerradas. Não é redundante com o composto e não atende ao histórico completo. |
+| problemas_agricolas | `{ culturasAfetadasIds: 1, tipo: 1 }` | Composto multikey | Igualdade por cultura, com ou sem `tipo`; sem ordenação; na exibição, também `ativo: true` | Não único. Cultura primeiro reutiliza o prefixo nas duas consultas. `ativo` é residual. Detalhes na seção 8.2. |
+| ocorrencias | `{ plantacaoId: 1, dataObservacao: -1, _id: -1 }` | Composto | Por `plantacaoId`, período e status opcionais; ordem `{ dataObservacao: -1, _id: -1 }`; delimitação de ocorrências no dashboard | Prioriza o histórico por plantação com desempate estável. Status é residual; no dashboard, agrupar e contar exige ler os status, sem prometer consulta coberta. |
+| monitoramentos | `{ ocorrenciaId: 1, dataObservacao: -1, _id: -1 }` | Composto | Evolução por `ocorrenciaId`, período opcional; ordem `{ dataObservacao: -1, _id: -1 }` | Igualdade antes da data; preserva a consulta por ocorrência, diferente da consulta por plantação. |
+| tratamentos | `{ ocorrenciaId: 1, dataAplicacao: -1, _id: -1 }` | Composto | Medidas por `ocorrenciaId`; ordem `{ dataAplicacao: -1, _id: -1 }` | Reúne as medidas da ocorrência e sua sequência temporal, sem índice simples adicional por ocorrência. |
+| avaliacoes_tratamento | `{ tratamentoId: 1, dataAvaliacao: -1, _id: -1 }` | Composto | Resultados por `tratamentoId`; ordem `{ dataAvaliacao: -1, _id: -1 }` | Apoia o histórico de avaliações, sem impor avaliação única. |
+| alertas | `{ usuarioId: 1, criadoEm: -1, _id: -1 }` | Composto | `{ usuarioId, lidoEm: { $exists: false } }`; ordem `{ criadoEm: -1, _id: -1 }`; total geral de não lidos no dashboard | Restringe ao destinatário. Ausência de `lidoEm` é residual, sem consulta coberta. Não usar sparse em `lidoEm` nem filtro parcial com `$exists: false`. |
+| alertas | `{ tipo: 1, "contexto.tipo": 1, "contexto.id": 1 }` | Composto, único e parcial | Busca/upsert por tipo e ocorrência, sem ordenação, conforme seção 4.13.1 | `unique: true`, `partialFilterExpression: { tipo: "ocorrencia_intensidade_alta", "contexto.tipo": "ocorrencia" }`. Não incluir destinatário, pois permitiria duplicar o evento. Não estende a regra a futuros tipos. |
+| monitoramentos | `{ plantacaoId: 1, dataObservacao: -1, _id: -1 }` | Composto | Inspeções por plantação; todas, com ocorrência ou sem ocorrência; ordem `{ dataObservacao: -1, _id: -1 }` | Índice adicional não único e não parcial. `plantacaoId` já é ObjectId obrigatório na BD3. Atende à nova listagem com e sem vínculo, usando a ordenação e o desempate. Presença/ausência de `ocorrenciaId` é filtro residual. |
+
+Conferir dados incompatíveis e duplicidades antes de criar índices únicos; interromper para análise sem corrigir ou excluir dados automaticamente. O backend deve tratar conflitos de duplicidade. Os índices não verificam existência das referências nem garantem que o alerta será gerado; a recuperação de falhas continua necessária.
+
+### 8.2 Cultura e tipo: índice composto multikey
+
+O filtro `{ culturasAfetadasIds: culturaId, tipo: "praga" }` procura um elemento do array e o tipo escalar no mesmo documento. O catálogo `culturas` permanece referenciado por ObjectId. A ordem `{ culturasAfetadasIds: 1, tipo: 1 }` atende tanto cultura isolada quanto cultura + tipo pelo prefixo; inverter os campos priorizaria buscas por tipo e perderia o prefixo da busca somente por cultura. Como ambos são igualdades na consulta combinada, a escolha decorre da reutilização entre consultas, não de uma seletividade presumida.
+
+O MongoDB torna o índice multikey automaticamente porque `culturasAfetadasIds` é array. Um documento pode gerar várias chaves. `tipo` permanece escalar; não acrescentar outro campo de array ao mesmo índice composto. Não usar `unique`: vários problemas do mesmo tipo podem afetar a mesma cultura. O índice não substitui a validação de referências ou de itens repetidos no array. Não prometer consulta coberta ao retornar o array nem ordenação por nome; nenhuma dessas capacidades é requisito destas duas buscas.
+
+### 8.3 Integridade, cobertura e redundâncias evitadas
+
+O índice único parcial de plantações aplica a regra explícita da BD3, seção 5.5, e da seção 4.6 deste documento: no máximo uma plantação com status `ativa` por talhão. O índice único parcial de alertas aplica a regra da BD3, seção 5.12, e das seções 4.13 e 4.13.1: um alerta do tipo `ocorrencia_intensidade_alta` por ocorrência. São restrições de integridade já documentadas, não novas regras introduzidas pela indexação. Os filtros das consultas que usarem esses índices parciais devem incluir suas condições para não omitir resultados fora do subconjunto indexado.
+
+Consultas por `_id` podem localizar o documento pelo índice automático e conferir a autorização na aplicação; dispensam outro índice composto apenas para essa busca. O mesmo vale para as referências consultadas por `_id` no modelo: culturas selecionadas, problema identificado, cadeia de autorização e `fontes_conhecimento` com `{ _id: { $in: fontesIds } }`. Não duplicar o índice automático. Objetos incorporados, como o questionário, são recuperados junto ao perfil e não exigem índice próprio para esse acesso.
+
+O histórico por talhão utiliza o prefixo `talhaoId` em plantações e, depois, `plantacaoId` em ocorrências (ou `$in` com as plantações encontradas). A ordenação global entre várias plantações pode exigir SORT/mesclagem; o índice por plantação não garante ordem global por data. Não criar índice próprio para essa navegação sem consulta adicional definida.
+
+Não adicionar índices simples que já sejam prefixos não únicos dos compostos acima. `_id` nos históricos faz parte da ordenação conjunta e do desempate, sem duplicar a finalidade do índice automático. Os dois índices de monitoramentos começam por vínculos diferentes: um atende à plantação, outro à ocorrência; não são redundantes. Não incluir `ocorrenciaId` antes da data no índice por plantação, pois a listagem de todas as inspeções também deve manter ordem temporal. Buscas somente por tipo, conferências de dependentes e catálogos por nome exigirão consultas concretas e avaliação própria antes de novos índices. Não criar TTL sem política de retenção, nem unicidade para CPF, telefone ou nomes.
+
+O conjunto da seção 8.1 preserva os 12 índices anteriores e acrescenta o índice de inspeções por plantação, totalizando 13 além dos automáticos de `_id`. A avaliação do dashboard está na seção 8.5. A ordenação global do histórico entre plantações e a retenção de alertas não justificam novos índices ou TTL sem requisitos adicionais. Ajustes motivados por seletividade, filtros residuais e custo de escrita dependerão de `explain("executionStats")` e das medições da seção 10.
+
+### 8.4 Referências técnicas
+
+- [MongoDB — índices compostos e prefixos](https://www.mongodb.com/docs/manual/core/indexes/index-types/index-compound/).
+- [MongoDB — índices multikey e restrições em compostos](https://www.mongodb.com/docs/manual/core/indexes/index-types/index-multikey/).
+- [MongoDB — índices parciais, operadores aceitos e unicidade](https://www.mongodb.com/docs/manual/core/index-partial/).
+- [MongoDB — explain e estatísticas de execução](https://www.mongodb.com/docs/manual/reference/explain-results/).
+
+### 8.5 Consultas do dashboard e avaliação dos índices
+
+As regras de autorização, vínculos, filtros opcionais e agrupamentos estão na BD3, seção 7.2. Propriedades ativas e alertas não lidos são totais gerais do usuário; talhões, plantações e ocorrências aceitam filtro opcional por propriedade autorizada. O dashboard não recebe dados pessoais nem registros fora desses vínculos.
+
+O acesso parte de `propriedades.usuarioId`, segue para `talhoes.propriedadeId` e `plantacoes.talhaoId`, chegando a `ocorrencias.plantacaoId`. Os índices existentes delimitam cada conjunto autorizado, por igualdade ou `$in` com os identificadores obtidos. O total de plantações ativas inclui `status: "ativa"` e pode usar o índice único parcial por talhão; o agrupamento de ocorrências precisa de todas as plantações do escopo, inclusive encerradas, usando o composto por talhão em vez do parcial para obter o histórico. Alertas usam o índice por `usuarioId`, conferindo ausência de `lidoEm` nos documentos.
+
+Não se define índice adicional só para o dashboard neste conjunto inicial: os caminhos de vínculo já estão indexados e os filtros residuais de atividade e leitura são explícitos. Compostos com atividade ou status poderiam reduzir leituras em distribuições específicas, mas acrescentariam custo de armazenamento/escrita e precisam de evidência. Agrupar ocorrências por status não implica exigir ordenação temporal ou inserir status no índice do histórico. Contagens e agrupamentos ainda podem percorrer muitos documentos; não prometer ganho ou consulta coberta. A implementação do pipeline e a medição ficam para etapas posteriores, com avaliação por indicador e por escopo.
 
 ## 9. Decisão de escopo: geolocalização adiada
 
@@ -664,11 +733,13 @@ O MVP não prevê armazenamento de coordenadas geográficas, validações desses
 - Propriedades do produtor.
 - Talhões da propriedade.
 - Plantações por talhão.
-- Problemas por cultura.
+- Problemas por cultura e por cultura + tipo.
 - Histórico de ocorrências.
 - Evolução dos monitoramentos.
+- Inspeções por plantação, com filtro opcional de presença ou ausência de ocorrência.
 - Tratamentos e avaliações.
 - Alertas do responsável pela propriedade.
+- Totais e agrupamentos do dashboard, na visão geral e por propriedade autorizada, conforme a BD3, seção 7.2.
 
 ### 10.1.1 Possibilidades futuras de análise de áreas
 
@@ -707,7 +778,7 @@ Comparar documentos e chaves examinados com os resultados retornados, existênci
 1. Após a massa da BD6, preparar banco de teste separado do `sentinela`, com dados sintéticos e volume, distribuição e seletividade representativos.
 2. Preparar uma linha de base em banco novo, com as mesmas coleções e dados e apenas os índices padrão. Se o banco de teste já tiver outros índices, preparar outro banco; não remover índices do banco principal para simular a linha de base. Não conectar a aplicação a esse laboratório sem restrições de integridade.
 3. Registrar consultas e todas as métricas da seção 10.3 na fase antes. Preservar os dados durante a comparação.
-4. Após a conferência prévia dos dados e do ambiente, implementar no ambiente de teste somente os índices que vierem a ser definidos e validados para as consultas avaliadas e repetir exatamente as consultas na fase depois.
+4. Após a conferência prévia dos dados e do ambiente, implementar no ambiente de teste os índices da seção 8 aplicáveis às consultas avaliadas e repetir exatamente as consultas na fase depois.
 5. Manter recursos, carga e condições comparáveis; identificar aquecimento de cache e fazer múltiplas amostras por fase. Registrar tempos sem ocultar variações e analisar também os planos e o trabalho examinado.
 6. Registrar tamanho dos índices e executar os testes de integridade separados das medições de leitura. Ensaios de escrita devem usar cópias equivalentes da massa sintética, para não alterar os dados entre as consultas comparadas.
 7. Relatar benefício, ausência de benefício ou regressão somente com evidência. Os testes com volume representativo dependem da BD6.
@@ -735,7 +806,7 @@ O benefício esperado nas consultas deve ser comparado com esse custo. Evitar í
 
 ## 12. Casos de teste futuros e resultados esperados
 
-Executar os casos de teste em banco isolado e, quando indicado, no fluxo da aplicação. Usar um documento válido de cada coleção como base e alterar somente o campo sob teste. Repetir os testes gerais nas 12 coleções, cobrindo os objetos incorporados presentes.
+Executar os casos de teste em banco isolado e, quando indicado, no fluxo da aplicação. Usar um documento válido de cada coleção como base e alterar somente o campo sob teste. Repetir os testes gerais nas coleções definidas na BD3, incluindo as três propostas da Comunidade (15 no total), cobrindo os objetos incorporados presentes.
 
 | Caso | Camada responsável | Resultado esperado |
 |---|---|---|
@@ -755,6 +826,8 @@ Executar os casos de teste em banco isolado e, quando indicado, no fluxo da apli
 | Canal fora de sms/email; escolha ausente ao concluir a etapa | MongoDB para enum; aplicação para etapa | Rejeitar enum inválido; a aplicação impede concluir a escolha sem o campo. Ausência anterior à conclusão permanece permitida. |
 | Área total e área plantada ausentes, com área do talhão válida | MongoDB | Aceitar a ausência dos campos opcionais; rejeitar ausência da área obrigatória do talhão. |
 | Área plantada maior que a do talhão, ou igual/menor e positiva | Aplicação | Rejeitar quando maior; aceitar igualdade ou valor menor se as demais regras forem atendidas. |
+| Área ou quantidade não finita (NaN ou infinito) | Aplicação | Rejeitar antes da gravação; não considerar tipo numérico e positividade no banco como garantia de finitude. |
+| Soma das áreas dos talhões ativos ao criar, alterar ou reativar talhão ou reduzir área total | Aplicação | Aceitar soma menor ou igual à área total informada; rejeitar excesso. Preservar a restrição em operações concorrentes, sem exigir mecanismo específico neste documento. |
 | Áreas informadas sem coordenadas; área total diferente da cultivada | Banco e aplicação | Não exigir coordenadas nem igualdade entre área total e cultivada; preservar as verificações existentes de compatibilidade. |
 | Porte declarado pequena, media ou grande, independentemente da área ou quantidade de propriedades | MongoDB e aplicação | Aceitar o valor permitido sem cálculo por área ou classificação oficial; não restringir área ou quantidade de propriedades com base nessa resposta. |
 | problemasFrequentes válido | MongoDB | Aceitar pragas, doencas ou nao_identificado isolados e pragas/doencas juntos, em qualquer ordem. |
@@ -764,11 +837,18 @@ Executar os casos de teste em banco isolado e, quando indicado, no fluxo da apli
 | Exclusão de documento com dependentes; referência inválida encontrada | Aplicação | Impedir exclusão com dependentes conforme as regras da seção 7.2; registrar inconsistência sem apagar filhos automaticamente. Monitoramentos, tratamentos e avaliações não têm exclusão comum; exclusão de conta indisponível. |
 | Campos condicionais de encerramento, acessadoEm com URL e quantidade/unidade | MongoDB nas condições estruturais; aplicação antes de salvar | Rejeitar falta de campos exigidos pela condição; impedir campos de encerramento quando a regra exige ausência. |
 | Datas em ordem inválida ou futura onde proibida; área superior à área relacionada | Aplicação | Rejeitar conforme as comparações documentadas; o schema básico não consulta outros documentos nem aplica as comparações temporais. |
-| Duas plantações ativas para o mesmo talhão, inclusive cadastros ou ativações concorrentes | Aplicação; garantia no MongoDB a definir | A aplicação verifica a regra de no máximo uma ativa; a garantia no banco ainda deve ser definida. Não encerrar ou excluir a outra automaticamente. |
+| Duas plantações ativas para o mesmo talhão, inclusive cadastros ou ativações concorrentes | Aplicação e índice único parcial da seção 8.1, após implementação | Rejeitar a segunda ativa. Não encerrar ou excluir a outra automaticamente. |
 | Plantação atual encerrada e novo cultivo no mesmo talhão | Aplicação e MongoDB | Permitir nova plantação ativa se as demais regras forem atendidas, preservando o histórico das encerradas e a relação histórica 1:N. |
+| Novas ocorrências, monitoramentos, tratamentos ou avaliações em plantação encerrada, inclusive com data anterior ao encerramento | Aplicação | Resolver os vínculos até a plantação e rejeitar o cadastro; preservar registros existentes e consulta autorizada de todo o histórico. ObjectId e índices não dispensam essa verificação. |
+| Edição ou exclusão de registro vinculado à plantação encerrada na operação comum, inclusive correções e objetos incorporados | Aplicação | Rejeitar a operação e preservar o registro. Não interpretar o bloqueio como definição de procedimentos específicos de privacidade e tratamento de dados pessoais. |
+| Tratamento em plantação ativa com ocorrência aberta, em acompanhamento ou encerrada | Aplicação | Permitir nas duas primeiras, se as demais regras forem atendidas; rejeitar em encerrada, inclusive lançamentos atrasados. |
+| Cultura com imagem opcional ausente ou presente | MongoDB e aplicação nas respectivas funções | Aceitar ausência ou um único objeto válido; o aplicativo pode exibir imagem padrão sem exigir sua gravação. Rejeitar array no campo imagem. |
+| Problema agrícola inativo com campos obrigatórios ou mínimos de listas ausentes | MongoDB | Rejeitar; inatividade não autoriza rascunho incompleto. Preservar referências históricas ao inativar. |
+| Inspeções por plantação: todas, com ocorrência e sem ocorrência | Aplicação e avaliação futura do índice | Filtrar pelo plantacaoId autorizado e pela presença/ausência de ocorrenciaId quando solicitado; ordenar por dataObservacao e _id decrescentes, sem perder inspeções sem ocorrência. |
+| Dashboard geral ou por propriedade | Aplicação e avaliação futura das consultas | Contar somente vínculos autorizados; manter propriedades e alertas gerais. Ocorrências incluem histórico dos pais e são agrupadas em aberta/em_acompanhamento/encerrada, sem alegar resolução. Propriedade de outro usuário não autoriza consulta. |
 | Conferência de plantações ativas duplicadas antes da implementação | Conferência antes da configuração | Registrar ativas duplicadas por talhão e interromper a criação para análise, sem corrigir ou excluir dados automaticamente. |
-| firebaseUid duplicado | Aplicação trata conflito; garantia no MongoDB a definir | Rejeitar a segunda identidade duplicada; retornar conflito controlado. O mecanismo de garantia no banco ainda deve ser definido. |
-| Cadastro de ocorrência alta e repetição do mesmo evento, inclusive concorrente | Aplicação; garantia no MongoDB a definir | Exatamente um alerta do tipo para a ocorrência; destinatário responsável e contexto corretos; repetição preserva lidoEm. O alerta deve ter prioridade alta, sem diagnóstico ou classificação técnica de risco. Não executar esse cenário de ponta a ponta antes de definir a recuperação de falhas. |
+| firebaseUid duplicado | Índice único da seção 8.1, após implementação; aplicação trata conflito | Rejeitar a segunda identidade duplicada; retornar conflito controlado. |
+| Cadastro de ocorrência alta e repetição do mesmo evento, inclusive concorrente | Aplicação e índice único parcial da seção 8.1, após implementação | Exatamente um alerta do tipo para a ocorrência; destinatário responsável e contexto corretos; repetição preserva lidoEm. O alerta deve ter prioridade alta, sem diagnóstico ou classificação técnica de risco. Não executar esse cenário de ponta a ponta antes de definir a recuperação de falhas. |
 | Ocorrência cadastrada com intensidade baixa/media, edição para alta ou monitoramento alto | Aplicação | Não gerar esse alerta; geração restrita ao evento de cadastro de ocorrência alta. |
 | Objeto de imagem sem publicId, com tipo diferente de String, vazio ou somente espaços | MongoDB | Rejeitar; a ausência de uma imagem opcional continua permitida. |
 | publicId retornado pelo Cloudinary | Aplicação | Armazenar exatamente o valor recebido, sem trim ou regras de URL; não rejeitar por máximo arbitrário. |
@@ -777,8 +857,141 @@ Executar os casos de teste em banco isolado e, quando indicado, no fluxo da apli
 | Geração de alertas ou logs, inclusive de erro | Aplicação, em testes futuros com dados fictícios | Não incluir CPF ou telefone. Conferir os textos e registros produzidos, não somente os campos do schema. |
 | Exclusão de conta pelo aplicativo nesta versão | Aplicação | Operação indisponível; não interpretar essa indisponibilidade como permissão de retenção permanente. |
 | Conferência dos documentos existentes antes de strict/error e fechamento dos objetos | Conferência antes da configuração | Registrar documentos/campos incompatíveis e solicitar análise; não apagar nem corrigir automaticamente. |
-| Índices e consultas da seção 10.3 | Conferência de estrutura e avaliação no banco de teste | Conferir os índices que forem definidos; registrar plano/métricas reais, sem exigir ganho de tempo como resultado obrigatório. |
+| Índices da seção 8 e consultas da seção 10.3 | Conferência de estrutura e avaliação no banco de teste | Conferir chaves, ordem e opções dos índices implementados; registrar plano/métricas reais, sem exigir ganho de tempo como resultado obrigatório. |
+
+Os casos abaixo são cenários futuros da proposta de Comunidade, sem execução nesta etapa:
+
+| Caso | Camada responsável | Resultado esperado |
+|---|---|---|
+| Enviar experiência de outra pessoa ou combinar avaliação/tratamento de cadeias diferentes | Aplicação | Rejeitar; referências válidas não bastam para autoria e consistência |
+| Consultar feed ou detalhe em pendente/rejeitada/oculta/retirada | Aplicação | Não retornar conteúdo público nem dados internos; autor/equipe usam acesso separado e autorizado |
+| Resposta da Comunidade e fotos selecionadas | Aplicação e revisão de conteúdo | Somente campos da projeção pública, sem perfil/IDs de origem, dados pessoais privados ou fotos não selecionadas |
+| Experiência sem avaliação compartilhada | Banco para estrutura; aplicação para apresentação | Aceitar ausência do resultado e exibir “Resultado ainda não informado”, sem inventar eficácia |
+| Alteração privada após compartilhamento | Aplicação | Manter a cópia pública; nenhuma atualização silenciosa |
+| Edição de experiência já aprovada | Aplicação | Nova versão pendente fora do feed; exigir revisão da nova versão antes de exibir |
+| Publicar/editar cópia pública de origem encerrada | Aplicação | Permitir mediante seleção/prévia/revisão; continuar rejeitando alterações nos registros privados |
+| Adoção incompatível, não identificada, de versão desatualizada ou publicação indisponível | Aplicação | Rejeitar; comparar mesma cultura e problema cadastrado e verificar estado/versão na confirmação |
+| Adoção confirmada e posterior intervenção | Aplicação | Criar somente planejamento inicialmente; tratamento real informado depois, na ocorrência correta; avaliações na coleção existente |
+| Duas confirmações de adoção planejada da mesma experiência/ocorrência, entre versões ou concorrentes | Aplicação e único parcial da seção 14.6.1 após implementação | Rejeitar a duplicada sem apagar histórico; realizadas/canceladas ficam fora da restrição; tratar conflito controlado |
+| Criação do tratamento efetivamente realizado por adoção | Aplicação | Manter tratamentoId e estado realizada consistentes com o tratamento gravado; repetição não gera outro tratamento para a mesma adoção |
+| Acesso sem autenticação a feed, detalhe, fotos ou operações | Aplicação | Negar acesso no MVP; compartilhado não significa acesso anônimo |
+| Plantação de destino encerrada | Aplicação | Bloquear nova adoção e alterações comuns, realização de tratamento e novas avaliações, inclusive atrasadas; preservar consulta própria |
+| Experiência retirada após adoção | Aplicação | Impedir novas adoções e detalhe público; manter método/versionamento já copiados na adoção própria |
+| Denúncia e decisão | Aplicação | Não ocultar automaticamente; restringir denunciante/descrição/decisão à moderação e preservar consistência ao ocultar |
+| Denúncia pendente ou analisada | Banco para condições estruturais; aplicação para transição | Aceitar somente os dois estados; exigir decisão, justificativa, analisadoPor e analisadoEm em analisada e ausência desses campos em pendente |
+| Feed com datas iguais, filtros combinados e mudanças de aprovação | Aplicação e avaliação futura dos índices | Paginação por data + _id; somente aprovadas; observar filtros residuais, custo e uso real dos parciais |
 
 ## 13. Considerações de implementação
 
 A prioridade do alerta `ocorrencia_intensidade_alta` está definida como `alta`, conforme a seção 4.13. A recuperação de falhas na geração, a viabilidade de SMS/e-mail, a implementação da normalização e da conferência de DDD conforme a regra de telefone já definida, a paginação e a convenção de datas sem horário são detalhes a resolver nos fluxos da aplicação. A política de exclusão e preservação está definida na seção 7.2, com exclusão de conta indisponível. A política de tratamento de dados pessoais e a retenção de alertas ainda devem ser definidas; não criar TTL ou novas unicidades para antecipá-las. A geolocalização está fora do escopo do MVP.
+
+Os status de ocorrência aceitos para novos tratamentos estão definidos na seção 4.11. O encerramento da plantação bloqueia novas ocorrências, monitoramentos, tratamentos e avaliações, inclusive lançamentos atrasados, além de edições e exclusões comuns dos registros vinculados, conforme as seções 4.6 e 7.2; preservar todo o histórico para consulta autorizada. A aplicação verifica essas condições, sem atribuir a garantia a ObjectIds ou índices. Procedimentos específicos de privacidade e tratamento de dados pessoais permanecem distintos desses bloqueios e dependem de política própria. O dashboard possui indicadores, vínculos e filtros definidos na BD3, seção 7.2; somente a construção do pipeline e sua avaliação são posteriores. A ordenação global do histórico entre plantações não faz parte das ordenações já definidas por plantação e só exigirá nova decisão se a tela a requerer. A revisão e validação das decisões pela equipe são confirmação externa e não são comprovadas por este documento.
+
+## 14. Comunidade: regras e proposta técnica mínima
+
+O escopo confirmado está na BD1, seção 8; entidades e vínculos na BD2, seção 6; campos e projeções na BD3, seção 10. Permanecem os 13 índices anteriores. Estão confirmados: primeira aprovação como data estável do feed, suspensão após edição até nova aprovação, liberação de ocultas exclusiva da moderação, adoção planejada → realizada/cancelada, unicidade de adoção planejada por experiência/ocorrência, denúncia pendente → analisada e acesso somente autenticado. Limites e detalhes técnicos mínimos abaixo orientam a modelagem; não representam validação externa pela equipe. Não usar a Comunidade para modificar silenciosamente registros privados.
+
+### 14.1 Tipos, obrigatoriedade e limites propostos
+
+Aplicar as regras gerais de ausência em vez de null, textos não vazios, datas BSON, ObjectIds, campos fechados e objetos sem identificadores próprios. A BD3 §10 lista todos os campos permitidos e as condições. `versao` e `experienciaVersao` aceitam somente BSON int/long, inteiros maiores ou iguais a 1. Exigir enums escalares; arrays não substituem um campo String. Datas de criação, atualização, publicação e decisão são geradas pelo sistema. `dataPrevista` de planejamento pode ser futura; datas copiadas de aplicação/avaliação mantêm as regras dos registros de origem.
+
+| Campo/conteúdo | Limite ou formato proposto |
+|---|---|
+| usuarios.nomePublico e experiencias_comunidade.nomePublico | String de 2 a 80 caracteres, escolhida pelo produtor; sem unicidade de nome público |
+| titulo | String de 1 a 150 caracteres |
+| relato | String de 1 a 5000 caracteres |
+| culturaNome e problemaNome | String de 1 a 200 caracteres; cópias dos rótulos autorizados do catálogo |
+| metodo.descricao, metodoCopiado.descricao e planejamento.descricao | String de 1 a 5000 caracteres |
+| Observações dos objetos metodo, metodoCopiado, resultadoRelatado e planejamento | String de 1 a 5000 caracteres quando presentes |
+| Fotos da experiência | Array opcional de até 5 objetos; sem repetição de publicId, conferida pela aplicação; cada foto escolhida explicitamente |
+| Foto.url, publicId e legenda | HTTPS até 2048 caracteres; publicId original não vazio, sem máximo arbitrário; legenda opcional até 300 caracteres |
+| regiao.municipio e regiao.estado | Município de 1 a 150 caracteres; estado como uma das 27 siglas de UF. Ambos opcionais, ao menos um se houver objeto; não copiar localização privada automaticamente |
+| moderacao.motivo, denuncia.descricao e denuncia.justificativa | String de 1 a 2000 caracteres quando presentes |
+
+Enums propostos de moderação: `pendente`, `aprovada`, `rejeitada`, `oculta`, `retirada`. A disponibilidade pública é derivada exclusivamente de `moderacao.status: "aprovada"`, sem booleano redundante. `tipoProblema` e `statusOcorrencia` preservam os enums atuais da ocorrência; métodos e resultados preservam os enums existentes da BD3. A ausência de `resultadoRelatado` é exibida como “Resultado ainda não informado”, sem criar um resultado fictício.
+
+### 14.2 Autoria, seleção e fronteira pública
+
+A aplicação identifica o autor pelo token e confere a ocorrência própria pela cadeia ocorrência → plantação → talhão → propriedade → usuarioId. Não basta a ocorrência ter sido registrada pelo mesmo usuário para dispensar a autorização sobre a propriedade. Quando selecionados, tratamento deve pertencer à ocorrência, e avaliação deve pertencer ao tratamento selecionado. Conferir cultura da plantação, problema/tipo da ocorrência e acesso às fotos. Exigir nome público escolhido; não usar nome completo como fallback.
+
+Copiar somente campos explicitamente aprovados pelo autor na prévia e usar a projeção pública da BD3 §10.5. Não publicar documentos privados, identificadores de origem, CPF, telefone, endereço, coordenadas ou nome da propriedade. A aplicação deve conferir o conteúdo livre e a equipe deve revisar textos e imagens, inclusive informações identificáveis; Schema Validation não detecta dados pessoais inseridos em prosa ou em pixels. Somente fotos selecionadas recebem recursos de compartilhamento próprios. A seleção não autoriza a divulgação de outras fotos do registro.
+
+Confirmar o envio contra a versão exibida na prévia: se a origem ou seleção mudar antes da confirmação, exigir nova prévia em vez de publicar silenciosamente outro conteúdo. Mudanças privadas posteriores não reescrevem a experiência. Compartilhar origem encerrada e editar sua cópia pública é permitido mediante nova revisão, sem alterar origem, estado ou bloqueios privados. Uma referência interna não confere acesso público ao destino.
+
+### 14.3 Moderação, versões e retirada
+
+| Operação | Responsável e efeito proposto |
+|---|---|
+| Enviar | Autor autorizado após prévia; moderacao.status pendente, versão 1; sem publicação automática |
+| Aprovar | Moderador autorizado; aprovada, revisadoPor e revisadoEm obrigatórios; preencher publicadoEm somente na primeira aprovação |
+| Rejeitar | Moderador autorizado; rejeitada, com revisadoPor/revisadoEm/motivo obrigatórios; fora do feed |
+| Editar conteúdo e reenviar | Somente autor; incrementar versão e voltar a pendente; remover decisão anterior dos campos de última revisão, preservar publicadoEm quando já existente e exigir nova prévia/revisão |
+| Ocultar | Moderador autorizado; oculta, com responsável, data e motivo; sem exclusão física |
+| Retirar | Autor autorizado em pendente/aprovada/rejeitada; retirada; suspender feed e detalhe público, sem remover adoções ou origem privada. Se já oculta, não converter o estado para contornar a restrição da moderação |
+| Reenviar rejeitada ou retirada | Autor; nova versão pendente e nova revisão, nunca aprovação automática |
+
+Somente conteúdo pendente pode ser aprovado/rejeitado. Ocultação é decisão da equipe: autor não pode editar/reenviar ou converter em retirada para contornar o bloqueio. Somente moderador autorizado pode liberar após análise; o retorno a pendente exige nova aprovação antes da exibição. A aplicação identifica o responsável pela moderação, sem confiar em papel enviado pelo cliente nem inventar campo de papel no perfil sem definição do controle de acesso.
+
+`revisadoPor`/`revisadoEm` são condicionais em aprovada/rejeitada/oculta; `motivo` é obrigatório em rejeitada/oculta e opcional em aprovada. No estado pendente esses campos de última decisão ficam ausentes; retirada não inventa revisão da equipe e pode preservar a última decisão existente. A autoria da retirada é conferida pela aplicação; `atualizadoEm` registra a operação. Essas informações são internas e não compõem a resposta pública. Esse modelo mínimo guarda a última decisão, não um registro completo de auditoria de todas as ações.
+
+Em aprovada, exigir `publicadoEm` Date. Nos demais estados, a data só pode existir se houve aprovação anterior; não removê-la para simular uma nova publicação. Essa condição histórica e a comparação `criadoEm ≤ publicadoEm ≤ atualizadoEm` são conferidas pela aplicação. `revisadoEm` não pode ser futuro ou anterior à criação; `analisadoEm` da denúncia não pode ser futuro ou anterior à criação da denúncia.
+
+A data de ordenação confirmada é a primeira aprovação (`publicadoEm`), não `criadoEm`, com desempate por `_id` decrescente. Preservar a data em revisões evita promover relato antigo por edição. Toda alteração pública, incluindo nome, fotos, região e resultado copiado, incrementa versão e suspende a exibição até nova aprovação. Conferir a versão esperada na gravação e na aprovação para não aprovar versão diferente da revisada em operações concorrentes. A aprovação para a banca é revisão de conteúdo, não validação agronômica profissional nem comprovação de prontidão para operação pública real.
+
+Retirada/ocultação impede novas adoções e acesso público ao conteúdo completo, incluindo entrega dos arquivos de compartilhamento. O comportamento real de URLs, cache e revogação precisa ser projetado antes da abertura pública. Adoções existentes conservam versão e método copiado para consulta própria; não passam a referenciar a versão nova automaticamente. Não há cascata de exclusão, TTL ou expurgo automático. Procedimentos de privacidade são específicos, separados da retirada do feed, sem assumir retenção permanente.
+
+### 14.4 Adoção como planejamento
+
+Antes de confirmar, a aplicação verifica: usuário autenticado e autorizado sobre a ocorrência de destino, plantação ativa, ocorrência aberta ou em acompanhamento, experiência aprovada/disponível com método, versão ainda igual à revisada, mesma cultura e mesmo problema agrícola cadastrado. Comparar ObjectIds dos catálogos, não nomes livres; se o problema não estiver identificado em origem ou destino, não permitir adoção. Verificar novamente na confirmação, inclusive se houver retirada/moderação concorrente. Não basta o método existir no documento para ele estar disponível publicamente.
+
+Preservar experienciaId, experienciaVersao e metodoCopiado. O produtor revisa o planejamento antes de confirmar; não preencher produtos, doses, quantidades ou tratamento realizado automaticamente. O ciclo confirmado é `planejada → realizada` ou `planejada → cancelada`; planejamento pode ser ajustado enquanto planejada, preservando a cópia de origem. A criação do tratamento efetivamente realizado, com dados reais e na ocorrência correta, deve preencher tratamentoId e marcar a adoção realizada. A aplicação mantém a consistência entre gravação do tratamento, vínculo e transição diante de falhas/concorrência; o mecanismo técnico é posterior. Repetir a confirmação de realização não deve gerar outro tratamento para a mesma adoção. Resultado próprio permanece nas avaliações do tratamento.
+
+Não permitir duas adoções planejadas para o mesmo par experienciaId/ocorrenciaId, mesmo se mudarem a versão ou o usuário. A aplicação verifica e trata conflito; o índice único parcial da seção 14.6.1 garante a restrição entre documentos, inclusive com concorrência. Uma consulta prévia isolada não a garante. A restrição não limita realizadas/canceladas nem exige apagar histórico.
+
+Planejada exige tratamentoId ausente; realizada exige referência existente ao tratamento correto; cancelada exige tratamentoId ausente. Não há transição automática por leitura do feed nem alteração da experiência original por adoção. Uma experiência posteriormente retirada conserva apenas a referência histórica e a cópia adotada; não atualizar o planejamento automaticamente. Fechamento da plantação bloqueia novas adoções e alterações comuns das adoções existentes, inclusive realização/cancelamento; preservar consulta própria do histórico. Novos tratamentos/avaliações continuam sujeitos aos bloqueios anteriores, incluindo lançamentos atrasados.
+
+### 14.5 Denúncias e responsabilidades
+
+Usuário autenticado pode denunciar uma experiência disponível; autor da denúncia vem do token. Motivos: dados_pessoais, conteudo_inadequado, informacao_perigosa ou outro. Descrição opcional limitada, sem publicação no feed. O fluxo confirmado é `pendente → analisada`, sem reabertura automática: analisadoPor, analisadoEm, decisao e justificativa são obrigatórios em analisada e ausentes em pendente. Denúncia pendente não oculta a publicação automaticamente. A decisão manter_publicacao não aprova ou libera uma experiência rejeitada/retirada/oculta; ocultar_publicacao exige atualização consistente da experiência pela moderação. Não revelar identidade do denunciante ao público nem ao autor da publicação.
+
+No MVP, autenticação é obrigatória para feed, detalhes, fotos e todas as operações da Comunidade. Moderadores também exigem autorização específica. A projeção compartilhada não autoriza navegação pelos registros privados; a aplicação deve conferir autenticação e autorização a cada acesso, inclusive na entrega dos arquivos.
+
+| Verificação | Banco | Aplicação |
+|---|---|---|
+| Campos, tipos BSON, enums, tamanhos e condições internas | Schema Validation com objetos fechados e condições estruturais | Validar antes de salvar |
+| Autoria, propriedade dos registros, papéis e referências existentes | Não garantidos por ObjectId/índices | Resolver cadeia e negar acesso indevido |
+| Consistência cultura/problema/ocorrência/tratamento/avaliação | Não consulta outros documentos automaticamente | Conferir origem e destino |
+| Publicação voluntária, prévia, moderação e projeção pública | Schema não comprova consentimento ou revisão humana | Controlar operações, permissões e campos retornados |
+| Versão aprovada/adotada, transições e concorrência | Índices propostos não garantem o fluxo | Conferir versão/estado e preservar consistência |
+| Seleção de fotos, dados pessoais em conteúdo, arquivos públicos | Não verificável pelo schema | Seleção explícita, revisão e controle de entrega dos recursos |
+| Bloqueios por encerramento e distinção de cópia histórica | Não garantidos por referências ou índices | Preservar bloqueios privados e da adoção, permitindo somente a cópia pública autorizada |
+
+Referências de origem, adoções e denúncias passam a ser dependentes na política da seção 7.2: não apagar fisicamente pais referenciados nem remover filhos automaticamente. Retirada do feed não exclui documentos. As decisões de comportamento confirmadas não substituem a validação externa da documentação pela equipe.
+
+### 14.6 Índices adicionais propostos pelas consultas
+
+Preservar integralmente os 13 índices da seção 8.1. A tabela reavalia os nove candidatos anteriores e recomenda oito para o conjunto inicial; o candidato por tipo fica adiado, sem retirar o filtro do produto. Não há índices criados nesta etapa. Todos os nove candidatos são não únicos, sem sparse ou TTL. Na tabela, **P** significa exatamente `partialFilterExpression: { "moderacao.status": "aprovada" }`; as consultas de feed sempre incluem essa igualdade. Índices sem P são completos, sem filtro parcial. Autenticação/autorização são verificadas pela aplicação, não pelos índices.
+
+| Coleção | Chaves exatas na ordem | Opções e avaliação | Consulta: filtro e ordenação | Justificativa, redundâncias e limitações |
+|---|---|---|---|---|
+| experiencias_comunidade | `{ publicadoEm: -1, _id: -1 }` | P; manter no conjunto inicial | `{ "moderacao.status": "aprovada" }`; ordem `{ publicadoEm: -1, _id: -1 }` | Feed geral paginado; índices que começam por cultura/problema não substituem sua ordenação global. Tipo isolado pode ser residual; pode exigir muitas leituras. |
+| experiencias_comunidade | `{ culturaId: 1, publicadoEm: -1, _id: -1 }` | P; manter no conjunto inicial | Aprovada + culturaId por igualdade; ordem `{ publicadoEm: -1, _id: -1 }` | Delimita cultura antes da ordenação. Não redundante com feed geral; problema/tipo combinados permanecem residuais quando não forem o caminho escolhido. |
+| experiencias_comunidade | `{ problemaAgricolaId: 1, publicadoEm: -1, _id: -1 }` | P; manter no conjunto inicial | Aprovada + problemaAgricolaId por igualdade; ordem `{ publicadoEm: -1, _id: -1 }` | Busca específica confirmada sem exigir cultura no prefixo. Campo opcional não se torna obrigatório; usar para problema identificado, não para busca por ausência. |
+| experiencias_comunidade | `{ tipoProblema: 1, publicadoEm: -1, _id: -1 }` | P se futuramente adotado; adiar no MVP inicial | Aprovada + tipoProblema por igualdade; ordem `{ publicadoEm: -1, _id: -1 }` | Não é redundância estrutural, mas tipo tem poucos valores e não há evidência de volume/seletividade que justifique mais um índice inicial. Manter filtro residual no feed geral ou no caminho cultura/problema quando informados; medir leituras antes de reconsiderar. |
+| experiencias_comunidade | `{ autorId: 1, criadoEm: -1, _id: -1 }` | Sem parcial; manter | autorId autenticado, estado opcional; ordem `{ criadoEm: -1, _id: -1 }` | Lista todos os estados próprios; estado é residual. Não substituído pelos parciais aprovados ou pela fila por estado. |
+| experiencias_comunidade | `{ "moderacao.status": 1, criadoEm: 1, _id: 1 }` | Sem parcial; manter | Estado por igualdade, inclusive pendente/oculta; ordem `{ criadoEm: 1, _id: 1 }` | Fila mais antiga primeiro; vínculo/ordem diferentes da listagem própria e do feed por publicadoEm. Não garante ordem global ao consultar vários estados sem ordenar/mesclar. |
+| adocoes_tratamento | `{ usuarioId: 1, criadoEm: -1, _id: -1 }` | Sem parcial; manter | usuarioId autenticado, status opcional; ordem `{ criadoEm: -1, _id: -1 }` | Histórico próprio, incluindo realizadas/canceladas; status residual. Único parcial da seção 14.6.1 não atende a esse histórico/ordenação. |
+| denuncias_comunidade | `{ status: 1, criadoEm: 1, _id: 1 }` | Sem parcial; manter | status pendente ou analisada por igualdade; ordem `{ criadoEm: 1, _id: 1 }` | Fila e consulta por estado, sem estado em_analise. Não duplica o caminho por experiência. |
+| denuncias_comunidade | `{ experienciaId: 1, criadoEm: -1, _id: -1 }` | Sem parcial; manter | experienciaId por igualdade; ordem `{ criadoEm: -1, _id: -1 }` | Histórico das denúncias da publicação para análise; a fila por status não oferece esse prefixo/ordenação. Não usar como garantia de existência da experiência. |
+
+Detalhes por `_id` usam o automático com verificação de estado/autorização. Não criar índice simples que duplique prefixo de composto não único. Filtros combinados escolhem um caminho de feed e conferem os demais critérios como residuais, sem índice para cada combinação. Os índices de feed usam campos escalares, sem fotos/método. Não indexar nome público, região ou textos sem consulta confirmada. A restrição de adoção planejada abaixo tem regra explícita; não estendê-la a nomes, publicações por ocorrência, tratamento vinculado ou denúncias.
+
+Contagem recomendada: 13 anteriores preservados + 8 adicionais de consulta + 1 único parcial de integridade = 22, excluindo automáticos de `_id`. A igualdade com o total anteriormente proposto é coincidência: o índice por tipo foi adiado e entrou uma restrição diferente, sem substituir sua finalidade. Não há alteração ou substituição dos 13 anteriores. Testar futuramente os filtros isolados/combinados, sobretudo tipo residual, filas, estados fora dos parciais e paginação com datas iguais. Medir espaço e escritas, inclusive saída/entrada dos parciais nas revisões e nas transições de adoção. Definição não comprova ganho de desempenho.
+
+#### 14.6.1 Índice único parcial de adoções planejadas
+
+| Coleção | Chaves exatas e ordem | Opções exatas | Regra/consulta | Justificativa e limites |
+|---|---|---|---|---|
+| adocoes_tratamento | `{ experienciaId: 1, ocorrenciaId: 1 }` | `unique: true`, `partialFilterExpression: { status: "planejada" }` | No máximo uma planejada por par; busca `{ experienciaId, ocorrenciaId, status: "planejada" }`, sem ordenação | Garante a regra mesmo com concorrência; não incluir usuarioId nem experienciaVersao, pois permitiria duplicar o mesmo par. A ordem começa pela experiência compartilhada e depois pelo destino; ambas são igualdades nessa busca, sem impor seletividade presumida. Não substitui o índice do histórico próprio. |
+
+experienciaId e ocorrenciaId são ObjectIds obrigatórios escalares. O filtro parcial é somente por status, sem excluir silenciosamente tipos inválidos da restrição; Schema Validation deve rejeitar tipos incorretos/ausências. Realizadas/canceladas ficam fora da unicidade, preservando histórico e permitindo nova planejada após a saída da anterior desse estado. Antes da futura criação, auditar duplicidades planejadas e dados incompatíveis; interromper para análise, sem apagar/corrigir automaticamente. A aplicação trata conflito de duplicidade. O índice não verifica autoria, existência das referências, compatibilidade de cultura/problema, estado da plantação ou consistência do tratamento realizado.
