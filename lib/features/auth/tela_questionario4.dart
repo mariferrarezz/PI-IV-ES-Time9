@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'tela_culturaEspecifica.dart';
+import 'tela_cultura_especifica.dart';
 
 
 class TelaQuestionario4 extends StatefulWidget {
