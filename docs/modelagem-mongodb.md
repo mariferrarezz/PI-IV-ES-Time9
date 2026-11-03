@@ -286,7 +286,19 @@ A Comunidade permite criar uma cópia pública de experiência histórica de pla
 | orientacaoBuscaAgronomo | String (1 a 5000 caracteres) | N |
 | imagens | Array<Object de imagem> | N |
 | fontesIds | Array<ObjectId> | S |
-| revisadoEm | Date | S |
+| revisadoEm | Date | C — obrigatório no legado sem revisaoEditorial e na revisão aprovada; opcional na pendente |
+| codigoEditorial | String | N; rastreabilidade, sem unicidade imposta |
+| chips | Array<String> | N; até 4 rótulos editoriais |
+| niveisAtencao | Object | N; baixo, medio e alto obrigatórios no objeto |
+| ondeOlhar | String | N |
+| dicaDeCampo | String | N |
+| danos | Array<String> | N |
+| perdaEstimada | String | N; explicação textual, não percentual calculado |
+| epocaPropicia | String | N |
+| abrangenciaCulturas | String | N; qualifica o alcance, sem substituir referências |
+| tratamentoIntro | String | N |
+| boasPraticas | Array<String> | N |
+| revisaoEditorial | Object | N para compatibilidade; obrigatório no fluxo editorial das novas fichas |
 | ativo | Boolean | S |
 | criadoEm | Date | S |
 | atualizadoEm | Date | S |
@@ -301,9 +313,34 @@ A Comunidade permite criar uma cópia pública de experiência histórica de pla
 
 `tipo` é uma String com valores `praga`, `doenca` ou `deficiencia`, conforme a BD4. `culturasAfetadasIds` é um array de ObjectIds que referenciam `_id` de `culturas`, sem copiar nomes ou substituir o catálogo por textos. A busca por uma cultura compara seu ObjectId com os elementos do array.
 
+Cada forma de controle também permite `classe` (String opcional) e `exemplosControle` (Array<String> opcional, inclusive vazio). `tipo` e `descricao` permanecem obrigatórios. Exemplos podem incluir agentes biológicos; não são todos princípios ativos químicos nem representam indicação automática de uso. Classes mistas exigem classificação técnica ou separação, sem preencher `tipo: outra` apenas por falta de informação.
+
+#### Seções da ficha e origem editorial
+
+| Seção | Campos de persistência e transformação |
+|---|---|
+| Cabeçalho | nomeComum ← nomePopular; nomeCientifico; tipo (`PRAGA` → `praga`, `DOENÇA` → `doenca`); descricao como resumo; chips; imagens |
+| Níveis de atenção | niveisAtencao.baixo/medio/alto ← nivelBaixo/nivelMedio/nivelAlto; textos qualitativos sem equivalência automática com intensidade, alerta ou limiar de aplicação |
+| Identificar | sintomas, partesAfetadas quando conhecidas, ondeOlhar e dicaDeCampo |
+| Causa | Identificação do agente em nomeCientifico; danos e perdaEstimada em campos próprios. O catálogo não fornece explicação causal independente; não inventá-la nem criar campo sem conteúdo definido. |
+| Onde ocorre | culturasAfetadasIds; abrangenciaCulturas preserva a redação de culturasAfetadas e suas ressalvas; condicoesFavoraveis ← climaFavoravel; epocaPropicia |
+| Prevenir | medidasPreventivas ← prevencao |
+| Tratar | tratamentoIntro; formasControle (classe ← classe, exemplosControle ← exemplosPrincipiosAtivos, observacoes ← observacao; tipo/descricao preparados após revisão); boasPraticas; orientacaoBuscaAgronomo ← avisoAgronomo |
+| Fontes | fontesIds referencia documentos reais de fontes_conhecimento; não incorporar fontes do JSON diretamente |
+
+As seções não devem ser concatenadas em `descricao`. Os novos campos são opcionais no banco para aceitar documentos antigos; a aplicação confere as seções aplicáveis à nova ficha antes de disponibilizá-la. Textos ausentes não são fabricados. `textoBotao` é derivado de `tipo` na interface. `codigoEditorial` não substitui `_id`. Preservar o JSON editorial de preparação sem importação direta; a conferência de compatibilidade com o validador pertence ao processo de importação, não a um campo da ficha.
+
+`imagens` continua opcional e aceita até 5 objetos válidos; o primeiro item é a imagem principal. Array ausente ou vazio permite apresentação padrão no aplicativo. Não armazenar `fotoPrincipal: null` nem imagens fictícias; alteração da ordem altera a principal. Os metadados continuam os da seção 4.1.
+
+`revisaoEditorial` aceita somente `status` (String obrigatória no objeto: `pendente` ou `aprovada`), `observacoes` (String opcional), `registroAgrofitConferido` e `fotoPendente` (Booleans opcionais). `niveisAtencao` aceita somente `baixo`, `medio` e `alto` (Strings obrigatórias no objeto). Todos os objetos são fechados, sem `_id` ou datas internas adicionais. Limites na BD4 §4.7.1.
+
+Na adaptação futura, `rascunho_para_revisao_tecnica` do JSON corresponde a `revisaoEditorial.status: pendente`, preservando observacoes e os indicadores disponíveis, com ativo false e sem data fictícia de revisão. O campo editorial niveisAtencao (ressalva textual) não é o objeto homônimo de persistência: a interface deve apresentar a ressalva junto dos três textos, sem substituir baixo/medio/alto. A referência editorial à escala 1–5 precisa ser harmonizada com as intensidades documentadas, sem criar equivalência automática. Não importar o objeto editorial inteiro, pois contém campos de preparação não permitidos no schema.
+
 O conteúdo deverá estar completo e revisado antes de ser disponibilizado.
 
-Todo cadastro deve cumprir os campos obrigatórios mesmo com `ativo: false`; não há rascunhos incompletos no MVP. A inativação impede novas seleções para registros, preservando as referências e a consulta histórica.
+Todo cadastro deve cumprir os demais campos obrigatórios e listas mínimas mesmo com `ativo: false`. Permitir ficha completa pendente de revisão com `revisaoEditorial.status: pendente`, `ativo: false` e `revisadoEm` ausente. Aprovação exige `revisadoEm` real e não ativa automaticamente o conteúdo. Em nova revisão pendente, a data anterior pode permanecer como última revisão, sem aprovar o conteúdo atual. Conteúdo incompleto permanece no material editorial externo; não flexibilizar referências ou os demais obrigatórios.
+
+Documentos antigos sem `revisaoEditorial` continuam estruturalmente válidos com `revisadoEm` obrigatório, sem alteração de IDs ou referências. Ausência de status não significa aprovação automática pela API, mesmo com `ativo: true` e data existente. Para novas disponibilizações/seleções, a aplicação exige revisão explícita aprovada e `ativo: true`; consulta histórica autorizada preserva os vínculos. Qualquer edição de conteúdo revisado exige retorno a pendente e `ativo: false`, preservando o histórico; a aplicação deve fazê-lo na mesma operação. O schema valida o documento resultante, não detecta revisão humana nem comparação com a versão anterior.
 
 ### 5.7 fontes_conhecimento
 
@@ -503,7 +540,9 @@ Cada objeto abaixo deverá declarar seus campos em `properties` e usar `addition
 | usuarios.questionario | versao, portePropriedade, quantidadeCulturas, culturasIds, outraCultura, problemasFrequentes, frequenciaProblemas, identificaProblemasSozinho, concluidoEm | Seção 5.1 |
 | usuarios.fotoPerfil e culturas.imagem | url, publicId, legenda, enviadaPor, enviadaEm | Seção 4.1 |
 | Cada item de imagens em problemas_agricolas, ocorrencias, monitoramentos e tratamentos | url, publicId, legenda, enviadaPor, enviadaEm | Seção 4.1 |
-| Cada item de problemas_agricolas.formasControle | tipo, descricao, observacoes | Seção 5.6 |
+| Cada item de problemas_agricolas.formasControle | tipo, descricao, observacoes, classe, exemplosControle | Seção 5.6 |
+| problemas_agricolas.niveisAtencao | baixo, medio, alto | Seção 5.6 |
+| problemas_agricolas.revisaoEditorial | status, observacoes, registroAgrofitConferido, fotoPendente | Seção 5.6 |
 | alertas.contexto | tipo, id | Seção 5.12 |
 
 Nenhum desses objetos recebe identificador interno adicional. Suas datas são somente as já previstas: `aceitoEm` em termos, `concluidoEm` em questionario e `enviadaEm` em imagens. Nos documentos principais, todas as coleções declaram `_id` e `criadoEm`; as demais coleções também declaram `atualizadoEm`, mas alertas não possui esse campo. Datas opcionais e condicionais de cada coleção permanecem nas respectivas tabelas.
@@ -769,7 +808,7 @@ Consultas por propriedade podem exigir múltiplas consultas ou agregações.
 
 As consultas da tabela representam funcionalidades previstas. O backend existente é uma estrutura inicial, sem implementação funcional que determine a modelagem. As coleções, os campos e as consultas deste documento são a referência para os índices da BD4 e para o futuro desenvolvimento.
 
-Para a consulta prevista “pragas que afetam a batata”, a aplicação recebe o ObjectId da cultura selecionada no catálogo e consulta `problemas_agricolas` com `{ culturasAfetadasIds: culturaId, tipo: "praga" }`. Sem `tipo`, o filtro é `{ culturasAfetadasIds: culturaId }`. `culturaId` representa aqui um valor BSON ObjectId, não um novo campo. Não há ordenação definida para essas duas consultas; na exibição de conteúdo disponível, acrescentar `ativo: true`, conforme a regra de revisão da BD4.
+Para a consulta prevista “pragas que afetam a batata”, a aplicação recebe o ObjectId da cultura selecionada no catálogo e consulta `problemas_agricolas` com `{ culturasAfetadasIds: culturaId, tipo: "praga" }`. Sem `tipo`, o filtro é `{ culturasAfetadasIds: culturaId }`. `culturaId` representa aqui um valor BSON ObjectId, não um novo campo. Não há ordenação definida para essas duas consultas; para novas seleções/exibição do catálogo disponível, acrescentar `ativo: true` e `"revisaoEditorial.status": "aprovada"`, conforme a BD4. Documentos legados sem status não recebem aprovação implícita; histórico autorizado permanece separado.
 
 As ocorrências por plantação e os monitoramentos por ocorrência ou por plantação serão ordenados por `dataObservacao` decrescente e `_id` decrescente. Tratamentos por ocorrência usarão `dataAplicacao` decrescente e `_id` decrescente; avaliações por tratamento usarão `dataAvaliacao` decrescente e `_id` decrescente. Alertas não lidos serão filtrados por `usuarioId` e `{ lidoEm: { $exists: false } }`, ordenados por `criadoEm` decrescente e `_id` decrescente. O `_id` desempata datas iguais. Essas são definições para as consultas futuras, com paginação conforme a BD4, seção 10.2.
 

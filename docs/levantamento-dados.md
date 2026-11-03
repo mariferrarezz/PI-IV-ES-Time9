@@ -210,10 +210,12 @@ Plantações encerradas preservam todo o histórico para consulta autorizada e n
 | Orientação para buscar agrônomo | Texto | Opcional | Equipe |
 | Imagens ilustrativas | Lista de imagens | Opcional | Equipe |
 | Fontes | Lista de fontes | Obrigatório | Equipe |
-| Data de revisão | Data | Obrigatório | Equipe/sistema |
+| Data de revisão | Data | Condicional: revisão aprovada ou cadastro legado sem estado editorial; opcional na revisão pendente | Equipe/sistema |
 | Situação | Situação | Obrigatório | Equipe/sistema |
 
-Todo cadastro de problema agrícola deve estar completo, mesmo inativo, conforme os campos obrigatórios da BD3. Não há rascunhos incompletos no MVP. A inativação impede novas seleções para registros e preserva os vínculos históricos; a revisão continua necessária antes da disponibilização.
+Todo cadastro de problema agrícola deve cumprir os demais obrigatórios da BD3, mesmo inativo. Ficha completa pode ficar pendente de revisão, com ativo false e sem data de revisão fictícia; não persistir rascunhos incompletos. A revisão aprovada exige data real. Documentos antigos mantêm sua compatibilidade estrutural, mas a ausência de estado editorial não significa aprovação automática pela API. A inativação impede novas seleções e preserva vínculos históricos.
+
+A ficha mantém separadas as seções de cabeçalho e níveis qualitativos de atenção, identificação, causa/danos, onde ocorre, prevenção e tratamento. Os campos adicionais, classes e exemplos de controle, limites (inclusive até 4 chips) e revisão editorial estão definidos na BD3 §5.6 e BD4 §4.7. A primeira imagem é a principal, e imagens continuam opcionais. Preservar referências reais a culturas/fontes e não transformar textos de atenção em diagnóstico, prescrição ou alerta automático.
 
 ### 6.8 Ocorrência
 

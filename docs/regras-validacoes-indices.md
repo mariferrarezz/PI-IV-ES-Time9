@@ -296,7 +296,7 @@ Se questionario existir, exigir:
 - _id, nomeComum, tipo e descricao.
 - culturasAfetadasIds e sintomas.
 - medidasPreventivas e formasControle.
-- fontesIds, revisadoEm e ativo.
+- fontesIds e ativo.
 - criadoEm e atualizadoEm.
 
 **Opcionais:**
@@ -308,6 +308,10 @@ Se questionario existir, exigir:
 - orientacaoBuscaAgronomo.
 - imagens.
 
+**Ficha completa, campos adicionais opcionais no banco:** codigoEditorial, chips, niveisAtencao, ondeOlhar, dicaDeCampo, danos, perdaEstimada, epocaPropicia, abrangenciaCulturas, tratamentoIntro, boasPraticas e revisaoEditorial. Seções e correspondências editoriais na BD3 §5.6; não concatenar as seções em descricao.
+
+**Condicional:** revisadoEm obrigatório em revisão aprovada e em documentos legados sem revisaoEditorial; opcional na revisão pendente. Se presente, sempre Date, nunca null.
+
 **Valores de tipo:** praga, doenca ou deficiencia.
 
 **Regras:**
@@ -318,10 +322,41 @@ Se questionario existir, exigir:
 - Tipo de controle: manual, cultural, biologica, quimica ou outra.
 - Informações de controle devem possuir fundamentação nas fontes.
 - Manutenção restrita à equipe autorizada.
-- revisadoEm não pode ser futuro.
-- Conteúdo somente fica ativo após revisão.
-- Todo cadastro deve cumprir os campos obrigatórios e os mínimos das listas mesmo inativo. Não há rascunhos incompletos no MVP. A inativação impede novas seleções para registros, preservando vínculos e consultas históricas.
+- revisadoEm, quando presente, não pode ser futuro; a aplicação confere a data e a revisão real. Não preencher pela geração do JSON, leitura ou importação.
+- Com revisaoEditorial presente, pendente exige ativo: false; aprovada exige revisadoEm. Aprovação pode permanecer inativa. Essas condições internas são verificadas no schema.
+- Todo cadastro deve cumprir os demais obrigatórios e mínimos das listas mesmo inativo. Permitir ficha completa pendente de revisão sem revisadoEm; cadastros incompletos continuam fora da coleção. A inativação impede novas seleções, preservando vínculos históricos.
+- Documento antigo sem revisaoEditorial conserva revisadoEm obrigatório e todos os demais requisitos anteriores; os novos campos são opcionais. Não reescrever nem excluir documentos para adicionar status. Ausência de revisaoEditorial não aprova conteúdo automaticamente na API, mesmo que ativo seja true.
+- A aplicação exige revisão explícita aprovada e ativo: true para novas disponibilizações/seleções. Edição do conteúdo revisado volta a pendente e ativo: false na mesma operação; revisadoEm anterior pode permanecer como última revisão, sem aprovar o conteúdo atual. Schema não comprova transição, autoria, revisão humana nem imutabilidade histórica.
+- A primeira imagem de imagens é a principal. Imagens continuam opcionais (inclusive array vazio); sem imagem válida, usar apresentação padrão sem metadados fictícios. Reordenar o array altera a principal e integra edição de conteúdo.
 - Não gerar diagnóstico ou urgência automaticamente a partir do nome do problema.
+
+#### 4.7.1 Campos da ficha e limites
+
+Campos novos são opcionais para compatibilidade com o legado; a aplicação confere o conteúdo das seções aplicáveis à nova ficha antes da disponibilização, sem fabricar informações ausentes. Não interpretar nomes de seções como novos campos de agrupamento: somente niveisAtencao e revisaoEditorial são novos objetos incorporados. Manter tipos, limites e referências dos campos anteriores.
+
+| Campo | Tipo BSON e limites | Obrigatoriedade |
+|---|---|---|
+| codigoEditorial | String, 1–100 caracteres | Opcional; sem índice único ou substituição de _id |
+| chips | Array<String>, 0–4 itens; cada texto 1–150 caracteres | Opcional |
+| niveisAtencao | Object fechado | Opcional; baixo, medio e alto obrigatórios quando presente |
+| niveisAtencao.baixo, .medio, .alto | String, 1–1000 caracteres cada | Obrigatórios no objeto |
+| ondeOlhar, dicaDeCampo | String, 1–5000 caracteres cada | Opcionais |
+| danos | Array<String>, 1–50 itens; cada texto 1–1000 caracteres | Opcional |
+| perdaEstimada | String, 1–5000 caracteres | Opcional; texto explicativo, não percentual ou cálculo |
+| epocaPropicia | String, 1–5000 caracteres | Opcional |
+| abrangenciaCulturas | String, 1–1000 caracteres | Opcional; preserva texto e ressalvas de culturasAfetadas, sem substituir culturasAfetadasIds |
+| tratamentoIntro | String, 1–5000 caracteres | Opcional |
+| boasPraticas | Array<String>, 1–30 itens; cada texto 1–1000 caracteres | Opcional |
+| formasControle[].classe | String, 1–200 caracteres | Opcional; tipo e descricao continuam obrigatórios |
+| formasControle[].exemplosControle | Array<String>, 0–30 itens; cada texto 1–200 caracteres | Opcional; inclui agentes biológicos e não equivale a prescrição |
+| revisaoEditorial | Object fechado | Opcional no banco; aplicação exige no fluxo novo |
+| revisaoEditorial.status | String: pendente ou aprovada | Obrigatório no objeto |
+| revisaoEditorial.observacoes | String, 1–5000 caracteres | Opcional |
+| revisaoEditorial.registroAgrofitConferido, .fotoPendente | bool | Opcionais; flags não comprovam revisão, registro ou adequação técnica |
+
+Ausência é diferente de null: não aceitar null nesses campos. Textos devem conter caractere não branco. Objetos não recebem _id nem datas internas adicionais; aplicar additionalProperties: false também aos novos objetos e manter o fechamento dos itens de formasControle. Não impor unicidade aos novos rótulos ou exemplos sem regra específica.
+
+Níveis são textos qualitativos de atenção, não limiares agronômicos ou equivalência automática com baixa/media/alta. Não associar à escala 1–5 do material editorial. Preservar introdução, classes, exemplos e ressalvas separadamente, com classificação técnica nos enums existentes de formasControle.tipo; não inferir tipo outra para suprir falta de revisão. Fontes devem ter identificação bibliográfica real e IDs existentes, culturas devem ter correspondência confirmada, e imagens usam os metadados da BD3 §4.1. O JSON editorial original permanece material de preparação, sem importação direta. codigoEditorial e os campos editoriais não justificam novos índices; preservar os 22 definidos.
 
 ### 4.8 fontes_conhecimento
 
@@ -515,6 +550,10 @@ Listas opcionais continuam opcionais; seus limites se aplicam quando forem preen
 | formasControle | 1 a 30 |
 | partesAfetadas | Até 30 |
 | condicoesFavoraveis | Até 50 |
+| problemas_agricolas.chips | Até 4; demais limites da ficha na seção 4.7.1 |
+| problemas_agricolas.danos | 1 a 50, quando presente |
+| problemas_agricolas.boasPraticas | 1 a 30, quando presente |
+| problemas_agricolas.formasControle[].exemplosControle | Até 30, inclusive vazio |
 
 - Itens de listas textuais: até 1000 caracteres.
 - Descrição de forma de controle: até 5000 caracteres.
@@ -553,7 +592,7 @@ A exclusividade de publicId entre objetos de imagem será conferida pelo backend
 Os schemas usarão `additionalProperties: false`.
 
 - Declarar em `properties` todos os campos legítimos descritos na BD3: `_id`, datas e campos opcionais ou condicionais. A obrigatoriedade existente permanece definida por `required` e pelas condições documentadas; declarar um campo não o torna obrigatório.
-- Aplicar o fechamento separadamente ao documento principal e a cada objeto incorporado: termos, questionario, fotoPerfil, imagem e contexto. Cada objeto deve declarar seus respectivos campos conforme a BD3.
+- Aplicar o fechamento separadamente ao documento principal e a cada objeto incorporado: termos, questionario, fotoPerfil, imagem, contexto e, em problemas_agricolas, niveisAtencao e revisaoEditorial. Cada objeto deve declarar seus respectivos campos conforme a BD3.
 - Nos arrays `imagens` e `formasControle`, declarar em `items` o schema de cada objeto, com `bsonType: "object"`, `properties`, `required` conforme a definição existente e `additionalProperties: false`. O fechamento do documento principal não se propaga automaticamente.
 - Objetos incorporados e itens de arrays não recebem `_id` ou datas adicionais automaticamente. A BD3, seção 5.13, lista seus campos permitidos. Os marcadores Extended JSON dos exemplos não são campos dos documentos.
 - Arrays de Strings ou ObjectIds mantêm as validações de seus itens, sem `additionalProperties` em valores escalares. As demais regras, incluindo problemasFrequentes, permanecem inalteradas.
@@ -675,7 +714,7 @@ Nos filtros e nas chaves, `_id`, `usuarioId`, `propriedadeId`, `talhaoId`, `plan
 | talhoes | `{ propriedadeId: 1 }` | Simples | Talhões por `propriedadeId`; sem ordenação; vínculos e contagem do dashboard | Delimita propriedades autorizadas, isoladas ou em conjunto; `ativo: true` é residual quando exigido pelo indicador. |
 | plantacoes | `{ talhaoId: 1, safra: 1, status: 1 }` | Composto | Igualdade por talhão, opcionalmente safra e status; sem ordenação | O prefixo atende ao histórico por talhão e a talhão + safra. Sem safra, status não forma prefixo contíguo; não presumir a mesma eficiência. |
 | plantacoes | `{ talhaoId: 1 }` | Simples, único e parcial | Plantação ativa por `{ talhaoId, status: "ativa" }`; contagem de ativas por talhões autorizados no dashboard | `unique: true`, `partialFilterExpression: { status: "ativa" }`. Garante no máximo uma ativa por talhão e permite várias encerradas. Não é redundante com o composto e não atende ao histórico completo. |
-| problemas_agricolas | `{ culturasAfetadasIds: 1, tipo: 1 }` | Composto multikey | Igualdade por cultura, com ou sem `tipo`; sem ordenação; na exibição, também `ativo: true` | Não único. Cultura primeiro reutiliza o prefixo nas duas consultas. `ativo` é residual. Detalhes na seção 8.2. |
+| problemas_agricolas | `{ culturasAfetadasIds: 1, tipo: 1 }` | Composto multikey | Igualdade por cultura, com ou sem `tipo`; sem ordenação; no catálogo disponível, também `ativo: true` e `"revisaoEditorial.status": "aprovada"` | Não único. Cultura primeiro reutiliza o prefixo nas duas consultas. Atividade e revisão são filtros residuais; não alterar chaves nem adicionar índice. Detalhes na seção 8.2. |
 | ocorrencias | `{ plantacaoId: 1, dataObservacao: -1, _id: -1 }` | Composto | Por `plantacaoId`, período e status opcionais; ordem `{ dataObservacao: -1, _id: -1 }`; delimitação de ocorrências no dashboard | Prioriza o histórico por plantação com desempate estável. Status é residual; no dashboard, agrupar e contar exige ler os status, sem prometer consulta coberta. |
 | monitoramentos | `{ ocorrenciaId: 1, dataObservacao: -1, _id: -1 }` | Composto | Evolução por `ocorrenciaId`, período opcional; ordem `{ dataObservacao: -1, _id: -1 }` | Igualdade antes da data; preserva a consulta por ocorrência, diferente da consulta por plantação. |
 | tratamentos | `{ ocorrenciaId: 1, dataAplicacao: -1, _id: -1 }` | Composto | Medidas por `ocorrenciaId`; ordem `{ dataAplicacao: -1, _id: -1 }` | Reúne as medidas da ocorrência e sua sequência temporal, sem índice simples adicional por ocorrência. |
@@ -844,6 +883,11 @@ Executar os casos de teste em banco isolado e, quando indicado, no fluxo da apli
 | Tratamento em plantação ativa com ocorrência aberta, em acompanhamento ou encerrada | Aplicação | Permitir nas duas primeiras, se as demais regras forem atendidas; rejeitar em encerrada, inclusive lançamentos atrasados. |
 | Cultura com imagem opcional ausente ou presente | MongoDB e aplicação nas respectivas funções | Aceitar ausência ou um único objeto válido; o aplicativo pode exibir imagem padrão sem exigir sua gravação. Rejeitar array no campo imagem. |
 | Problema agrícola inativo com campos obrigatórios ou mínimos de listas ausentes | MongoDB | Rejeitar; inatividade não autoriza rascunho incompleto. Preservar referências históricas ao inativar. |
+| Ficha completa pendente, ativo false, sem revisadoEm | MongoDB | Aceitar; rejeitar pendente ativa. Aceitar data real de revisão anterior quando preenchida, sem aprovação implícita. |
+| Revisão aprovada sem revisadoEm; legado sem revisaoEditorial e sem revisadoEm | MongoDB | Rejeitar em ambos; aceitar os documentos antigos completos com a data já existente, sem exigir novos campos. |
+| Legado ativo sem status editorial; edição de conteúdo aprovado | Aplicação | Não aprovar legado por ausência de status; conferir revisão explícita antes de nova disponibilização. Edição retorna a pendente e ativo false; preservar vínculos históricos. |
+| Chips com 4/5 itens; níveis incompletos; campos extras nos objetos editoriais | MongoDB | Aceitar até 4 chips válidos; rejeitar 5, nível obrigatório ausente, null e campos extras. |
+| Ficha com/sem imagem; principal e seções separadas | Aplicação e MongoDB nas respectivas funções | Imagens opcionais; primeiro item é principal. Não criar fotos fictícias nem juntar seções em descricao; conferir reconstrução da ficha e ressalvas. |
 | Inspeções por plantação: todas, com ocorrência e sem ocorrência | Aplicação e avaliação futura do índice | Filtrar pelo plantacaoId autorizado e pela presença/ausência de ocorrenciaId quando solicitado; ordenar por dataObservacao e _id decrescentes, sem perder inspeções sem ocorrência. |
 | Dashboard geral ou por propriedade | Aplicação e avaliação futura das consultas | Contar somente vínculos autorizados; manter propriedades e alertas gerais. Ocorrências incluem histórico dos pais e são agrupadas em aberta/em_acompanhamento/encerrada, sem alegar resolução. Propriedade de outro usuário não autoriza consulta. |
 | Conferência de plantações ativas duplicadas antes da implementação | Conferência antes da configuração | Registrar ativas duplicadas por talhão e interromper a criação para análise, sem corrigir ou excluir dados automaticamente. |
