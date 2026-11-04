@@ -277,7 +277,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.12"
-<<<<<<< HEAD
   typed_data:
     dependency: transitive
     description:
@@ -286,23 +285,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
-=======
->>>>>>> b53b703de97be24b9a1171aba4aadb11888d55b6
   vector_math:
     dependency: transitive
     description:
       name: vector_math
-<<<<<<< HEAD
       sha256: "92b9910f66ed1057fd4da7b040ae7c74cafacf885bdc81be496928d5049b032d"
       url: "https://pub.dev"
     source: hosted
     version: "2.4.3"
-=======
-      sha256: fa49e1674cb84acb900141714e6c6e1f9ae099827c24d141430ff6819db4e1bc
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.4.4"
->>>>>>> b53b703de97be24b9a1171aba4aadb11888d55b6
   vm_service:
     dependency: transitive
     description:
