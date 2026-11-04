@@ -6,6 +6,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
+const {textoCRLF, confereHashTexto} = require('./integridade-texto-bd6.cjs');
 const {createRequire} = require('node:module');
 const raiz = path.resolve(__dirname, '../..');
 const backend = createRequire(path.join(raiz, 'backend/package.json'));
@@ -100,7 +101,7 @@ function carregar() {
   const textos = arquivos.map(n => fs.readFileSync(arquivoSeed(n), 'utf8'));
   const [manifesto, sinteticos, catalogo, pesquisa] = textos.map(t => JSON.parse(t));
   const original = fs.readFileSync(path.join(__dirname, 'catalogo-completo-sentinela.json'));
-  if (hash(original) !== manifesto.originalEditorial.sha256) falhar('original_editorial_alterado');
+  if (!confereHashTexto(original, manifesto.originalEditorial.sha256)) falhar('original_editorial_alterado');
   const codigosEditoriais = new Set(JSON.parse(original.toString('utf8')).map(d => d.codigoEditorial));
   const configs = {};
   for (const nome of Object.keys(sinteticos)) {
@@ -132,7 +133,9 @@ function carregar() {
     aliasesFontes[reg.idReservado.$oid] = [...new Set([...primarias.flatMap(f => [f.urlOriginal, ...f.urlsDeVerificacao]), ...novas.flatMap(f => [f.url, f.texto])].filter(Boolean))];
   }
   const pacote = {manifesto, dados, porId, configs, indices, aliasesFontes, codigosEditoriais};
-  pacote.impressao = hash(textos.join('\n') + assinatura(configs) + assinatura(indices));
+  // A impressão histórica foi registrada com os arquivos em CRLF e separador LF.
+  // Canonizar cada arquivo mantém esse contrato sem depender do checkout do Git.
+  pacote.impressao = hash(textos.map(textoCRLF).join('\n') + assinatura(configs) + assinatura(indices));
   conferirLocal(pacote);
   return pacote;
 }

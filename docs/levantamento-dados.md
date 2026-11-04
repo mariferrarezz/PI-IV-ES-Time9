@@ -217,6 +217,8 @@ Todo cadastro de problema agrícola deve cumprir os demais obrigatórios da BD3,
 
 A ficha mantém separadas as seções de cabeçalho e níveis qualitativos de atenção, identificação, causa/danos, onde ocorre, prevenção e tratamento. Os campos adicionais, classes e exemplos de controle, limites (inclusive até 4 chips) e revisão editorial estão definidos na BD3 §5.6 e BD4 §4.7. A primeira imagem é a principal, e imagens continuam opcionais. Preservar referências reais a culturas/fontes e não transformar textos de atenção em diagnóstico, prescrição ou alerta automático.
 
+Exclusivamente no desenvolvimento, o BD6 aplicou a exceção acadêmica explícita da BD3 §5.6 e BD4 §14.4 à ficha existente de Lagarta-do-cartucho: aprovação editorial e data simuladas para testar adoções, sem revisão agronômica real. As outras 39 fichas permanecem pendentes/inativas. Ver [estado final e limites da evidência](../database/evidencias-bd6.md#única-alteração-editorial-simulada). Isso não altera a exigência geral de revisão real nem autoriza uso em produção.
+
 ### 6.8 Ocorrência
 
 | Atributo | Tipo | Obrigatoriedade | Origem |

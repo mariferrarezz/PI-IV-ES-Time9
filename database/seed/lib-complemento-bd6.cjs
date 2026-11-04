@@ -5,6 +5,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const {confereHashTexto} = require('./integridade-texto-bd6.cjs');
 const {createRequire} = require('node:module');
 const lib = require('./lib-bd6.cjs');
 const raiz = __dirname;
@@ -16,7 +17,7 @@ const todos = new Map(base.porId);
 const oid = v => v.$oid;
 const tempo = v => Date.parse(v.$date);
 for (const [arquivo, hash] of Object.entries(manifesto.arquivosPrincipaisPreservadosSha256)) {
-  assert.equal(crypto.createHash('sha256').update(fs.readFileSync(lib.arquivoSeed(arquivo))).digest('hex'), hash, arquivo);
+  assert(confereHashTexto(fs.readFileSync(lib.arquivoSeed(arquivo)), hash), arquivo);
 }
 assert.equal(base.impressao, manifesto.estadoLotePrincipal.impressaoPacotePreConferido);
 assert.equal(base.porId.size, 185);
