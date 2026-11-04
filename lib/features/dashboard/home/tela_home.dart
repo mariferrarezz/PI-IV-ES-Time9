@@ -137,7 +137,7 @@ class _TelaHomeState extends State<TelaHome> {
                               Text(
                                 'Fazenda Boa Vista',
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xFF00501E),
                                 ),
@@ -187,7 +187,7 @@ class _TelaHomeState extends State<TelaHome> {
                                     Text(
                                       'Talhões',
                                       style: TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 10,
                                         color: Color(0xFF4C6652),
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -236,7 +236,7 @@ class _TelaHomeState extends State<TelaHome> {
                                     Text(
                                       'Alertas ativos',
                                       style: TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 10,
                                         color: Color(0xFF8C6658),
                                         fontWeight: FontWeight.w500,
                                       ),

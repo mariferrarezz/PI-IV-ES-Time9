@@ -563,7 +563,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 tipoTextColor: const Color(0xFF00501E),
                 descricao: 'Manchas e amarelecimento das folhas',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/ferrugem.png',
+                imagemPath: 'assets/images/doencas/Ferrugem_asiatica_soja.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -573,7 +573,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 tipoTextColor: const Color(0xFFD96B27),
                 descricao: 'Folhas raspadas e perfuradas',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/lagarta.png',
+                imagemPath: 'assets/images/pragas/lagarta_cartucho.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -583,7 +583,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 tipoTextColor: const Color(0xFF00501E),
                 descricao: 'Pó branco sobre a superfície foliar',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/oidio.png',
+                imagemPath: 'assets/images/doencas/oidio.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -594,7 +594,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Inseto sugador que causa amarelecimento e queda das folhas.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/mosca_branca.png',
+                imagemPath: 'assets/images/pragas/mosca_branca.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -605,7 +605,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Apresentam um centro escuro, anéis concêntricos e halo amarelado.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/mancha_alvo.png',
+                imagemPath: 'assets/images/doencas/mancha_alvo.png',
               ),
               const SizedBox(height: 12),
 
@@ -618,7 +618,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Ataca grãos e vagens em formação, reduzindo rendimento e qualidade.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/percevejo_marrom.png',
+                imagemPath: 'assets/images/pragas/percevejo_marrom.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -629,7 +629,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Desfolhadora voraz que consome a área foliar da soja.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/lagarta_soja.png',
+                imagemPath: 'assets/images/pragas/lagarta_soja.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -640,7 +640,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Danifica folhas, estruturas reprodutivas, maçãs e espigas.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/helicoverpa.png',
+                imagemPath: 'assets/images/pragas/helicoverpa.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -651,7 +651,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Perfura os frutos de café provocando queda e perda de peso.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/broca_cafe.png',
+                imagemPath: 'assets/images/pragas/broca_cafe.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -662,7 +662,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Cria minas nas folhas levando à desfolha precoce do cafezal.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/bicho_mineiro.png',
+                imagemPath: 'assets/images/pragas/bicho_mineiro.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -673,7 +673,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Abre galerias nos colmos de cana facilitando tombamento e podridões.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/broca_cana.png',
+                imagemPath: 'assets/images/pragas/broca_cana.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -684,7 +684,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Suga seiva de hortaliças e diversas culturas, transmitindo vírus.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/pulgao.png',
+                imagemPath: 'assets/images/pragas/pulgao.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -695,7 +695,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Provoca teias e bronzeamento/necrose em folhas de tomate, morango e feijão.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/acaro_rajado.png',
+                imagemPath: 'assets/images/pragas/acaro_rajado.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -706,7 +706,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Raspam tecidos foliares em tomate, cebola e feijão, transmitindo tospovírus.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/tripes.png',
+                imagemPath: 'assets/images/pragas/tripes.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -717,7 +717,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Abre galerias transparentes em folhas e perfura frutos do tomateiro.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/traca_tomateiro.png',
+                imagemPath: 'assets/images/pragas/traca_tomateiro.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -728,7 +728,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Besouro defoliador que perfura folhas de feijoeiro e hortaliças.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/vaquinha.png',
+                imagemPath: 'assets/images/pragas/vaquinha.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -739,7 +739,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Corta plântulas jovens de milho e hortaliças rentes ao solo.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/lagarta_rosca.png',
+                imagemPath: 'assets/images/pragas/lagarta_rosca.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -750,7 +750,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Corta vegetação intensamente para cultivo do fungo simbionte.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/formigas_cortadeiras.png',
+                imagemPath: 'assets/images/pragas/formiga_cortadeira.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -761,7 +761,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Deposita ovos in frutos, provocando apodrecimento e inviabilização.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/mosca_frutas.png',
+                imagemPath: 'assets/images/pragas/mosca_frutas.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -772,7 +772,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Sugador de seiva que favorece o aparecimento de fumagina em café e citros.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/cochonilha.png',
+                imagemPath: 'assets/images/pragas/cochonilha.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -783,7 +783,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Danifica folhas de couve, repolho e brócolis abrindo furos característicos.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/traca_cruciferas.png',
+                imagemPath: 'assets/images/pragas/traca_crucifera.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -794,7 +794,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Larvas constroem serpentinas nas folhas de tomate, melão e pepino.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/mosca_minadora.png',
+                imagemPath: 'assets/images/pragas/mosca_minadora.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -805,7 +805,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Ataca raízes de cenoura e tomate formando galhas que impedem a absorção de nutrientes.',
                 acao: 'Identificação e controle',
-                imagemPath: 'assets/images/nematoide_galhas.png',
+                imagemPath: 'assets/images/pragas/nematoide_galhas.png',
               ),
               const SizedBox(height: 12),
 
@@ -818,7 +818,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Lesões deprimidas e escuras em folhas, vagens e frutos de soja, feijão e fruteiras.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/antracnose.png',
+                imagemPath: 'assets/images/doencas/antracnose.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -829,7 +829,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Micélio branco cotonoso sobre hastes e vagens em soja, feijão e hortaliças.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/mofo_branco.png',
+                imagemPath: 'assets/images/doencas/mofo_branco.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -840,7 +840,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Murcha acelerada e necrose rápida em folhagens de tomate e batata.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/requeima.png',
+                imagemPath: 'assets/images/doencas/requeima.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -851,7 +851,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Manchas foliares escuras com anéis concêntricos em batata e tomate.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/pinta_preta.png',
+                imagemPath: 'assets/images/doencas/pinta_preta.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -862,7 +862,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Pustulas alaranjadas na face inferior das folhas provocando queda de folhagem no café.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/ferrugem_cafe.png',
+                imagemPath: 'assets/images/doencas/ferrugem_cafeeiro.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -873,7 +873,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Manchas castanhas com centro claro ("olho-de-pombo") nas folhas e frutos de café.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/cercosporiose_cafe.png',
+                imagemPath: 'assets/images/doencas/cercosporiose_cafe.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -884,7 +884,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Lesões esbranquiçadas e circulares espalhadas pelas folhas do milho.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/mancha_branca_milho.png',
+                imagemPath: 'assets/images/doencas/mancha_branca_milho.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -895,7 +895,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Eflorescência acinzentada/branca no verso das folhas em uva, cebola e cucurbitáceas.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/mildio.png',
+                imagemPath: 'assets/images/doencas/mildio.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -906,7 +906,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Colapso e murchamento repentino dos tecidos vasculares em tomate e batata.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/murcha_bacteriana.png',
+                imagemPath: 'assets/images/doencas/murcha_bacteriana.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -917,7 +917,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Deformação e bolhas com murchamento foliar verde-claro/escuro no feijão.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/mosaico_feijoeiro.png',
+                imagemPath: 'assets/images/doencas/mosaico_comum_feijoeiro.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -928,7 +928,8 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Lesões castanhas delimitadas pelas nervuras das folhas de feijão.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/mancha_angular.png',
+                imagemPath:
+                    'assets/images/doencas/mancha_angular_feijoeiro.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -939,7 +940,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Amarelecimento univalve e secamento de ramos em tomate, feijão e banana.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/murcha_fusario.png',
+                imagemPath: 'assets/images/doencas/murcha_fusario.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -950,7 +951,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Estrias avermelhadas/escuras que causam a morte foliar na bananeira.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/sigatoka_negra.png',
+                imagemPath: 'assets/images/doencas/sigatoka_negra.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -961,7 +962,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Amarelecimento assimétrico das folhas e deformação de frutos de citros.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/greening.png',
+                imagemPath: 'assets/images/doencas/greening.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -972,7 +973,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Lesões amarelas em forma de "V" nas bordas das folhas em couve e repolho.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/podridao_negra.png',
+                imagemPath: 'assets/images/doencas/podridao_negra.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -983,7 +984,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Pequenas pontuações encharcadas com halo amarelado em tomate e pimentão.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/mancha_bacteriana.png',
+                imagemPath: 'assets/images/doencas/mancha_bacteriana.png',
               ),
               const SizedBox(height: 12),
               _buildCatalogoCard(
@@ -994,7 +995,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
                 descricao:
                     'Queima das extremidades foliares em cenoura reduzindo produtividade.',
                 acao: 'Sintomas e tratamento',
-                imagemPath: 'assets/images/alternariose.png',
+                imagemPath: 'assets/images/doencas/alternariose.png',
               ),
             ],
           ),
