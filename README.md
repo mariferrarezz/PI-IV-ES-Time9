@@ -14,7 +14,7 @@ Aplicativo de gestão e monitoramento de pragas e doenças em plantações, volt
 | `servidor-java/` | Servidor Java (sem Spring Boot) |
 | `firebase.json` | Config do Firebase Auth + Emulator Suite |
 | `docs/` | Modelagem do banco, diagramas e decisões |
-| `docker-compose.yml` | MongoDB local |
+| `database/` | Scripts, configuração e evidências do MongoDB Atlas |
 
 ## Fluxo do backend
 
@@ -24,6 +24,6 @@ Cada módulo em `backend/src/modules/<nome>/` segue esse padrão.
 
 ## Como começar
 
-1. `docker compose up -d` para subir o MongoDB local.
-2. Backend: copiar `backend/.env.example` para `backend/.env` e preencher.
+1. Banco: utilizar o ambiente MongoDB Atlas do Sentinela e seguir os [pré-requisitos e a ordem de configuração](database/README.md#reprodução-pelo-mongodb-playground). Não há `docker-compose.yml` neste repositório; MongoDB local não é um pré-requisito do ambiente atual.
+2. Backend: copiar `backend/.env.example` para `backend/.env` e preencher localmente `MONGODB_URI` e as demais variáveis necessárias. O exemplo local não configura automaticamente uma conexão Atlas. Obter o acesso autorizado com a equipe; não versionar nem compartilhar credenciais. A conexão do backend não comprova compatibilidade do CRUD: conferir as [divergências atuais de propriedades](database/README.md#compatibilidade-do-backend-de-propriedades).
 3. Mobile: dentro de `mobile/`, rodar `flutter create .` para gerar o projeto Flutter (as pastas de `lib/` já existem).

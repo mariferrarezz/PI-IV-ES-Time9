@@ -1,11 +1,11 @@
-// Executar pelo Run All. false = confer?ncia somente de leitura.
-// N?o executar aplica??o no banco principal apenas para repetir evid?ncias j? confirmadas.
+// Executar pelo Run All. false = conferência somente de leitura.
+// Não executar aplicação no banco principal apenas para repetir evidências já confirmadas.
 use('sentinela');
-const bancoDestino = 'sentinela'; // Para reprodu??o isolada: 'sentinela_testes_bd5'.
+const bancoDestino = 'sentinela'; // Para reprodução isolada: 'sentinela_testes_bd5'.
 const aplicar = false;
-if (!['sentinela', 'sentinela_testes_bd5'].includes(bancoDestino)) throw new Error('Banco n?o permitido.');
+if (!['sentinela', 'sentinela_testes_bd5'].includes(bancoDestino)) throw new Error('Banco não permitido.');
 const alvo = db.getSiblingDB(bancoDestino);
-// Chaves e op??es exatas do BD4; _id_ e ?ndices adicionais n?o entram nos 22.
+// Chaves e opções exatas do BD4; _id_ e índices adicionais não entram nos 22.
 const indices = [
   {
     "colecao": "usuarios",
@@ -248,7 +248,7 @@ const indices = [
   }
 ];
 
-// Normaliza objetos, mas preserva a ordem dos arrays e das chaves dos ?ndices.
+// Normaliza objetos, mas preserva a ordem dos arrays e das chaves dos índices.
 function normalizar(valor) {
   if (Array.isArray(valor)) return valor.map(normalizar);
   if (valor && typeof valor === 'object') return Object.fromEntries(
@@ -276,7 +276,7 @@ const conferencias = [];
 for (const esperado of indices) {
   const info = alvo.getCollectionInfos({name: esperado.colecao})[0];
   if (!info || info.type !== 'collection') {
-    conferencias.push({nome: esperado.nome, colecao: esperado.colecao, situacao: 'bloqueado: cole??o ausente ou tipo incompat?vel'});
+    conferencias.push({nome: esperado.nome, colecao: esperado.colecao, situacao: 'bloqueado: coleção ausente ou tipo incompatível'});
     continue;
   }
   const existentes = alvo.getCollection(esperado.colecao).getIndexes();
@@ -284,11 +284,11 @@ for (const esperado of indices) {
   const porChave = existentes.filter(i => mesmaChave(i.key, esperado.key));
   const equivalente = porChave.find(i => mesmasOpcoes(i, esperado));
   let situacao = porNome && (!mesmaChave(porNome.key, esperado.key) || !mesmasOpcoes(porNome, esperado))
-    ? 'bloqueado: nome com defini??o divergente' : equivalente ? 'equivalente; preservar' :
-      porChave.length ? 'bloqueado: chaves com op??es divergentes' : 'ausente; pode criar';
-  if (info.options && info.options.collation) situacao = 'bloqueado: collation da cole??o requer an?lise';
+    ? 'bloqueado: nome com definição divergente' : equivalente ? 'equivalente; preservar' :
+      porChave.length ? 'bloqueado: chaves com opções divergentes' : 'ausente; pode criar';
+  if (info.options && info.options.collation) situacao = 'bloqueado: collation da coleção requer análise';
   let gruposDuplicados = 0;
-  // Auditoria dos quatro ?nicos, com os filtros parciais EXATOS. N?o imprime valores agrupados.
+  // Auditoria dos quatro únicos, com os filtros parciais EXATOS. Não imprime valores agrupados.
   if (esperado.opcoes.unique) {
     const grupo = Object.fromEntries(Object.keys(esperado.key).map((campo, i) => ['k' + i, '$' + campo]));
     const contagem = alvo.getCollection(esperado.colecao).aggregate([
@@ -297,7 +297,7 @@ for (const esperado of indices) {
       {$match: {quantidade: {$gt: 1}}}, {$count: 'grupos'}
     ]).toArray();
     gruposDuplicados = contagem.length ? Number(contagem[0].grupos) : 0;
-    if (gruposDuplicados) situacao = 'bloqueado: duplicidades no filtro do ?ndice';
+    if (gruposDuplicados) situacao = 'bloqueado: duplicidades no filtro do índice';
   }
   conferencias.push({colecao: esperado.colecao, nome: esperado.nome, situacao,
     nomeEquivalente: equivalente ? equivalente.name : null, gruposDuplicados});
@@ -322,7 +322,7 @@ const listagem = [...new Set(indices.map(i => i.colecao))].map(nome => {
   const info = alvo.getCollectionInfos({name: nome})[0];
   return {colecao: nome, indices: info && info.type === 'collection' ? alvo.getCollection(nome).getIndexes() : []};
 });
-({banco: bancoDestino, modo: aplicar ? 'aplica??o' : 'somente leitura', bloqueado,
+({banco: bancoDestino, modo: aplicar ? 'aplicação' : 'somente leitura', bloqueado,
   previstos: indices.length, correspondentes: verificacao.filter(i => i.correspondente).length,
   conferencias, criados, verificacao, listagem,
-  observacao: 'Preserva TODOS os ?ndices existentes, inclusive _id_ e ownerUid_1. Auditoria n?o ? snapshot nem prova de refer?ncias; executar ap?s conferir schemas e documentos. Em erro, conferir cria??o parcial antes de continuar.'});
+  observacao: 'Preserva TODOS os índices existentes, inclusive _id_ e ownerUid_1. Auditoria não é snapshot nem prova de referências; executar após conferir schemas e documentos. Em erro, conferir criação parcial antes de continuar.'});

@@ -1,0 +1,1865 @@
+{
+  "versao": 1,
+  "namespace": "sentinela_bd6_v1_20261103",
+  "finalidade": "BD6 v1 - exclusivo desenvolvimento/testes",
+  "bancoProposto": "sentinela",
+  "isoladoBd5": "sentinela_testes_bd5",
+  "insercoesExecutadas": false,
+  "condicoesAntesDeInserir": [
+    "Aceite formal do BD5 e acesso da equipe ainda pendentes.",
+    "Identificar dois dos tres IPs /32 informados.",
+    "Conferir IDs e correspondencias existentes no destino; nao presumir ausencia.",
+    "Validar schema completo e referencias antes de qualquer escrita.",
+    "Dados sinteticos: nenhum consentimento, identidade, autenticacao ou moderacao real comprovados."
+  ],
+  "originalEditorial": {
+    "arquivo": "catalogo-completo-sentinela.json",
+    "sha256": "34c8b175ea332a72ebd50ffe8b3375448725ca6e5388c72f4759f8174aeb821b",
+    "preservarIntegralmente": true
+  },
+  "ids": {
+    "metodo": "Primeiros 24 hex de SHA256(namespace:alias); IDs reservados para novos documentos, nunca afirmados como existentes.",
+    "conflito": "Se ID existir com conteudo divergente, interromper; nao sobrescrever. Se equivalente existir com outro ID, resolver explicitamente o mapa antes de inserir."
+  },
+  "documentos": [
+    {
+      "alias": "usuario_a",
+      "colecao": "usuarios",
+      "idReservado": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "usuario_b",
+      "colecao": "usuarios",
+      "idReservado": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_01",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "c9993429c69f67a2ee18e04f"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_02",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "559bf4979ecb3182ccbf1b0d"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_03",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "9163438741438ab6d37756e3"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_04",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "8b734f3a8294a077b8648721"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_05",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "bfdf9421542b0b69bc41dfdb"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_06",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "b743c7ad373244dffa71508b"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_07",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "20b6e9737d3719d65f117f21"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_08",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "a33803547f8999e54975177e"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_09",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "babb531549d35e9e88f6a641"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_10",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "60d7d226bfdf51e103f5543e"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_11",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "3d55a111c7af4e22015c6bb7"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_12",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "8f685641f95aaeee980c8032"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_13",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "f04d5232bcbcda1037cdb0e3"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_14",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "be5a344855dc024909a066f3"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_15",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "16185968f588446ba9b0c836"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_16",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "4f6643e529a4df921e59fb77"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_17",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "aa25df93def915ff3f79a05d"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_18",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "90ab211166d6d38d65d7eed8"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_19",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "5e2256bbbb94905cf44a51bc"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_20",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "27209c9c90b9e794c157608e"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "propriedade_a_sem_ocorrencias",
+      "colecao": "propriedades",
+      "idReservado": {
+        "$oid": "17dca01d6874b360a8b0a434"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "talhao_a_sem_ocorrencias_1",
+      "colecao": "talhoes",
+      "idReservado": {
+        "$oid": "a6a34252509e87311b6ab400"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "talhao_a_sem_ocorrencias_2",
+      "colecao": "talhoes",
+      "idReservado": {
+        "$oid": "b5869116fcaa6fb0434c6e8d"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "propriedade_a_com_ocorrencias",
+      "colecao": "propriedades",
+      "idReservado": {
+        "$oid": "4b9722b67309fa8722909084"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "talhao_a_com_ocorrencias_1",
+      "colecao": "talhoes",
+      "idReservado": {
+        "$oid": "7052121418906bee74d9c72b"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "talhao_a_com_ocorrencias_2",
+      "colecao": "talhoes",
+      "idReservado": {
+        "$oid": "07c779fb5b21d0b1898ea4db"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "propriedade_b_com_ocorrencias",
+      "colecao": "propriedades",
+      "idReservado": {
+        "$oid": "7e11128c68c88b2807f6b439"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "talhao_b_com_ocorrencias_1",
+      "colecao": "talhoes",
+      "idReservado": {
+        "$oid": "c00289731fb972600284b87b"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "talhao_b_com_ocorrencias_2",
+      "colecao": "talhoes",
+      "idReservado": {
+        "$oid": "4e0448106f170e8d7bc9fa9b"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "plantacao_a_sem_ocorrencias_1",
+      "colecao": "plantacoes",
+      "idReservado": {
+        "$oid": "92161e2b231b69ebb01e03ce"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "plantacao_a_sem_ocorrencias_2",
+      "colecao": "plantacoes",
+      "idReservado": {
+        "$oid": "e8391ccd314d068c4865593c"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "plantacao_a_com_ocorrencias_1",
+      "colecao": "plantacoes",
+      "idReservado": {
+        "$oid": "f98879d75c77dc508f29af45"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "plantacao_a_com_ocorrencias_2",
+      "colecao": "plantacoes",
+      "idReservado": {
+        "$oid": "b100385fef525b6c26d50d7b"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "plantacao_b_com_ocorrencias_1",
+      "colecao": "plantacoes",
+      "idReservado": {
+        "$oid": "0b2e8fb74c25322369485c7c"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "plantacao_b_com_ocorrencias_2",
+      "colecao": "plantacoes",
+      "idReservado": {
+        "$oid": "7d13db782410d0d31ddd1a3f"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "plantacao_historica_a",
+      "colecao": "plantacoes",
+      "idReservado": {
+        "$oid": "0bfe4c59268ea5b381c5605b"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "plantacao_historica_b",
+      "colecao": "plantacoes",
+      "idReservado": {
+        "$oid": "f373f856f1fd9802a0ce70d4"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "ocorrencia_historica_a",
+      "colecao": "ocorrencias",
+      "idReservado": {
+        "$oid": "4cfb91e41773d4cdffcff8db"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "tratamento_historica_a",
+      "colecao": "tratamentos",
+      "idReservado": {
+        "$oid": "8b9bd100ddd997353b4559c5"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "monitoramento_historica_a",
+      "colecao": "monitoramentos",
+      "idReservado": {
+        "$oid": "b4ed3e6b31dad83fc58c089e"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "avaliacao_historica_a",
+      "colecao": "avaliacoes_tratamento",
+      "idReservado": {
+        "$oid": "6bc1bdc5b3925872759217db"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "ocorrencia_historica_b",
+      "colecao": "ocorrencias",
+      "idReservado": {
+        "$oid": "271ce01d23c1ed173b92c992"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "tratamento_historica_b",
+      "colecao": "tratamentos",
+      "idReservado": {
+        "$oid": "4efb32fb43d918586d0707ad"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "monitoramento_historica_b",
+      "colecao": "monitoramentos",
+      "idReservado": {
+        "$oid": "0bdc9dfef310d9b025256dab"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "avaliacao_historica_b",
+      "colecao": "avaliacoes_tratamento",
+      "idReservado": {
+        "$oid": "df544af50ba6ef02b185c199"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "ocorrencia_atual_a",
+      "colecao": "ocorrencias",
+      "idReservado": {
+        "$oid": "193330f259e52a07c0f94e52"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "tratamento_atual_a",
+      "colecao": "tratamentos",
+      "idReservado": {
+        "$oid": "1d66368b4b4a8784e055e365"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "monitoramento_atual_a",
+      "colecao": "monitoramentos",
+      "idReservado": {
+        "$oid": "35744f5345b53a341357ee9f"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "avaliacao_atual_a",
+      "colecao": "avaliacoes_tratamento",
+      "idReservado": {
+        "$oid": "1d927a527f2521b4e9f209e0"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "ocorrencia_atual_b",
+      "colecao": "ocorrencias",
+      "idReservado": {
+        "$oid": "dadf6eb8860bde51f585edf5"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "tratamento_atual_b",
+      "colecao": "tratamentos",
+      "idReservado": {
+        "$oid": "45c7637b10a32d39f314ae64"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "monitoramento_atual_b",
+      "colecao": "monitoramentos",
+      "idReservado": {
+        "$oid": "12e324e8ad20c6bdfaa16d93"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "avaliacao_atual_b",
+      "colecao": "avaliacoes_tratamento",
+      "idReservado": {
+        "$oid": "ba4398cdcb787815e9051309"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "inspecao_a_1",
+      "colecao": "monitoramentos",
+      "idReservado": {
+        "$oid": "0a077f137d92d7a6fd7ad5ff"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "inspecao_a_2",
+      "colecao": "monitoramentos",
+      "idReservado": {
+        "$oid": "efe23c4b5267301a48620b0b"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "inspecao_b_1",
+      "colecao": "monitoramentos",
+      "idReservado": {
+        "$oid": "3f074cf534d07928b11f0db1"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "inspecao_b_2",
+      "colecao": "monitoramentos",
+      "idReservado": {
+        "$oid": "f446409b607e2218b5e70476"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "alerta_atual_a",
+      "colecao": "alertas",
+      "idReservado": {
+        "$oid": "288b62dc177e074ac3ca7171"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "experiencia_pendente_a",
+      "colecao": "experiencias_comunidade",
+      "idReservado": {
+        "$oid": "0b4533a1664d2f8047fd6a92"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "experiencia_pendente_b",
+      "colecao": "experiencias_comunidade",
+      "idReservado": {
+        "$oid": "2eec0b66dbaf8f79cddc17c2"
+      },
+      "origem": "novo_sintetico_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_01",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "1cfef4c79d0432139833342c"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_04",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "fb1ff2277ebed6b105d71d13"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_05",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "19215f9dc0acb734e42ca9ed"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_06",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "6b58bc3edd3e33e5b0d62c0b"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_07",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "47c3d5f75babaf6141849768"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_08",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "98344efa901f963f3b69d42f"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_09",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "2511bbcaca8c99e48c9f7b24"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_10",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "45785d284b25b105eb135beb"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_11",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "3d155230ecb8f1c8a0861c9e"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_12",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "f0bcab26b57d1f637a0628ef"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_13",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "5c627fb50ac4690153962d71"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_14",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "be229b0bec0d757891bdbb83"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_15",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "5fad290d522ad036d3a4943b"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_16",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "422dd296ebb7d8e2a122b70d"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_18",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "6420126780e6d500e0b623f2"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_19",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "3d1db3fa03f06766fae17960"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_20",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "65f8c6c87cfac2d7284cb422"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_21",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "cc6a601ec192a027db8eb24d"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_22",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "302764def46b72af513153a5"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_25",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "cfa39562178169b855bd2a34"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_26",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "14c9d3daf677f62e5c159c03"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_27",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "b6dd865909e53d1958934c09"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_28",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "3ad5f3238f9a686eb250d417"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_31",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "7a494795be31c6ca638e325f"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_32",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "6758adaa37400eb0a6205ff2"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_33",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "2eacf12b07edc73ca06e0f72"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_34",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "7a452e2c499b52f9de797dbf"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_35",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "b6b12931c16a74b5959a0323"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_36",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "8fb1b392838e0855a7ffce1e"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_37",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "93491181896e7bcaeed510fa"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_40",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "b6d33f5278ca2c0014cded34"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_43",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "f78614648bc0656acfb3102f"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_46",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "f2ddc7cba501f8ce8b9a57c9"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_48",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "fc9a9ff4733637d043e58412"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_49",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "58bc0d1937678e4fd6776402"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_50",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "60d0cc2a8d783b0e3550ee15"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_51",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "b7d520d971d54360053c1464"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_52",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "e999c74deeb67288c128489b"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_53",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "bd9e82bd56c017a036ae778f"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_54",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "5c87586f6ffa1e5cea13197e"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_55",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "e7e82560c1240194c581664b"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_56",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "28478a93bbf9f52140908ef6"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_57",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "d16b8ec23d5692ec9fb771d2"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_58",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "c7ef5e430a35e051437369b1"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_59",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "83b96011db30ae7cc07dcb05"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_60",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "130868274e8f316aecf7770e"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_61",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "38f2bf7d0033121463a1ed0e"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_62",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "80bb7950625bb4cec9a7274e"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_63",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "8a3c738eedb87b212ab88ac0"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_64",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "1ee6b3a1109c726223092652"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_65",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "ba74ab1293782b1d0f544f11"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_67",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "0a786cb718662d7197afcb56"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_68",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "3e3b31cdf28991416902ccb3"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_69",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "4b6781e0345718bf07df98e3"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_70",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "7c91d588c19f7eb17604205f"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_71",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "f5859d76414b196ccf9e3049"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_72",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "2d2205dd272c2f12e12082c0"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_73",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "486ffbba264d20cc54aa3f1f"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_74",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "0076621e934ef5b852503d0d"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_75",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "fb76a3f2ff89568307cddd6b"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_76",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "cfd41f038cecb5e734cb9a39"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_77",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "602351661279ec95fb236b83"
+      },
+      "origem": "publicacao_identificada_pesquisa_local",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_percevejo-marrom",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "57311454bff5200d841c3280"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_broca-do-cafe",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "bfe1c3b5c2810266e3aefd2c"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_bicho-mineiro",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "3f1f94c62d7d6e923777d22c"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_broca-da-cana",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "8c5d8c1339cd0299dac273bc"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_pulgao",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "95eaf28747ee47ed33a62b1a"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_tripes",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "fd276b1e25d2e5a71e9bd6d9"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_traca-das-cruciferas",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "b941bc75240597298ea7b597"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_mosca-minadora",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "564436a9c0e751eb4031e0db"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_nematoide-das-galhas",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "199cc9e5fc2418ce3bb9a63e"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_oidio",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "86507831156b1ff3fd2932a8"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_pinta-preta",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "07bf7d48f396e28796281524"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_mancha-branca-do-milho",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "a50c79c4db7b8e622cf3729b"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_mildio",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "5bce6834908487974c032b14"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_murcha-bacteriana",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "4c9f7fb4a4f7f1c3d50a3f2b"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_mosaico-comum-do-feijoeiro",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "6c071814805ee8c041f2546b"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_mancha-angular-do-feijoeiro",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "692a343fcec0808c8b2475c1"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_murcha-de-fusario",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "a1bd74b42536b3064074db23"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_sigatoka-negra",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "3b218b525fec28c1eeaf43c9"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_alternariose-queima-das-folhas",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "e7edd75e5b9831a78ca1b2f8"
+      },
+      "origem": "catalogo_transformado_pendente_inativo",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_02",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "98e9e5740480910884bed230"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_17",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "0b7e748c7574cdec7e4f4b0d"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_24",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "b2551a880b1ef9d2c2d2b9e1"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_29",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "93ae2e67955c0abd74986e64"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_38",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "bfd977fa8af226886174088a"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_41",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "5ce24fcfdc0425712a0a3f6b"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_42",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "579474f8a5c8cb3a1545e0ab"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_45",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "f48c6399d8ea0dc07295370d"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_alt_brassicas",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "f25f45cae478143ce5aedca4"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_alt_cafe",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "ba07420d47f3773a90338050"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_alt_tomate_2005",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "661271a24dc33331fd5cc3d0"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_alt_bemisia",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "5c74d515ba2058b418580adc"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_alt_rosca_milho",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "88a4aeb1ce14fc485f4ecc96"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_alt_antracnose_sementes",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "179704293a32789a3d4a3a94"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_alt_hlb_adapar",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "5b8cfe0c25e028cf86e8d878"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_lagarta-do-cartucho",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "88b8a8ae41cde9df3d9c5df2"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_mosca-branca",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "b7bc362ec6dbdbdfec80dfac"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_lagarta-da-soja",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "a3baaa3d8c49575032c3bc25"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_helicoverpa",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "a4147a02566c5075a8df2482"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_acaro-rajado",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "384d4c48caff17b6514f9485"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_traca-do-tomateiro",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "01c794a1467f6580a6136ea4"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_vaquinha",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "c142a6cb88c67ac09dff913b"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_lagarta-rosca",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "59ed5392ef60c622e75479e5"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_cochonilha",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "de5d5603f0dd9778fa6db447"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_ferrugem-asiatica-da-soja",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "6ca10b74507fc5173de1a8f0"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_mancha-alvo",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "7fc8830d7db005925842f44d"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_antracnose",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "dd522a5871aee9e845c590f4"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_mofo-branco",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "c8536a794a7e3018f7effb3c"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_requeima",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "54b9e4f111f345240e77d662"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_ferrugem-do-cafeeiro",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "5c7e6d3f64ea31175c2cb130"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_cercosporiose-do-cafe",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "aa4f16ea4e200ce75e1c4dc3"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_mancha-bacteriana",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "d763c6a26c4c0c29e523c77a"
+      },
+      "origem": "pesquisa_e_preparacao_local_pendente",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_alt_mip_feijoeiro",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "13ef3fd49a7678673b570e2e"
+      },
+      "origem": "suporte_primario_especifico_de_hospedeiro",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_alt_acaro_tomate",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "64bfeeb488d80e638f9c1a17"
+      },
+      "origem": "suporte_primario_especifico_de_hospedeiro",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "fonte_alt_cochonilha_cafe",
+      "colecao": "fontes_conhecimento",
+      "idReservado": {
+        "$oid": "76b1e0333dea59c24766cfe3"
+      },
+      "origem": "suporte_primario_especifico_de_hospedeiro",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_21",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "7c65ddd462d37010c4910328"
+      },
+      "origem": "recorte_inicial_documentado_autorizado_pelo_usuario",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_22",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "3f88ebda2fb430b00e22bc67"
+      },
+      "origem": "recorte_inicial_documentado_autorizado_pelo_usuario",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "cultura_23",
+      "colecao": "culturas",
+      "idReservado": {
+        "$oid": "fc2531ff6249b836531f4749"
+      },
+      "origem": "recorte_inicial_documentado_autorizado_pelo_usuario",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_formigas-cortadeiras",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "acdd6417d3f98291c103ddb5"
+      },
+      "origem": "ficha_completa_pendente_inativa_sem_controle_nao_confirmado",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_mosca-das-frutas",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "f8d08afc72f6b12c18ac4d5f"
+      },
+      "origem": "ficha_completa_pendente_inativa_sem_controle_nao_confirmado",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_greening-hlb",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "cd5cdfaddd260b04b03db5af"
+      },
+      "origem": "ficha_completa_pendente_inativa_sem_controle_nao_confirmado",
+      "existenciaNoAtlas": "nao_conferida"
+    },
+    {
+      "alias": "problema_podridao-negra-das-cruciferas",
+      "colecao": "problemas_agricolas",
+      "idReservado": {
+        "$oid": "34455477181a9bab6a9b2c92"
+      },
+      "origem": "ficha_completa_pendente_inativa_sem_controle_nao_confirmado",
+      "existenciaNoAtlas": "nao_conferida"
+    }
+  ],
+  "contagens": [
+    {
+      "colecao": "usuarios",
+      "preparadosLocalmente": 2,
+      "alvo": 2,
+      "alvoCondicional": false
+    },
+    {
+      "colecao": "propriedades",
+      "preparadosLocalmente": 3,
+      "alvo": 3,
+      "alvoCondicional": false
+    },
+    {
+      "colecao": "talhoes",
+      "preparadosLocalmente": 6,
+      "alvo": 6,
+      "alvoCondicional": false
+    },
+    {
+      "colecao": "culturas",
+      "preparadosLocalmente": 23,
+      "alvo": 23,
+      "alvoCondicional": false
+    },
+    {
+      "colecao": "plantacoes",
+      "preparadosLocalmente": 8,
+      "alvo": 8,
+      "alvoCondicional": false
+    },
+    {
+      "colecao": "problemas_agricolas",
+      "preparadosLocalmente": 40,
+      "alvo": 40,
+      "alvoCondicional": false
+    },
+    {
+      "colecao": "fontes_conhecimento",
+      "preparadosLocalmente": 80,
+      "alvo": 86,
+      "alvoCondicional": true,
+      "nota": "76 obras potenciais originais mais 10 novas fontes primarias; meta nao representa insercao."
+    },
+    {
+      "colecao": "ocorrencias",
+      "preparadosLocalmente": 4,
+      "alvo": 12,
+      "alvoCondicional": true
+    },
+    {
+      "colecao": "monitoramentos",
+      "preparadosLocalmente": 8,
+      "alvo": 8,
+      "alvoCondicional": false
+    },
+    {
+      "colecao": "tratamentos",
+      "preparadosLocalmente": 4,
+      "alvo": 6,
+      "alvoCondicional": true
+    },
+    {
+      "colecao": "avaliacoes_tratamento",
+      "preparadosLocalmente": 4,
+      "alvo": 4,
+      "alvoCondicional": false
+    },
+    {
+      "colecao": "alertas",
+      "preparadosLocalmente": 1,
+      "alvo": 4,
+      "alvoCondicional": true
+    },
+    {
+      "colecao": "experiencias_comunidade",
+      "preparadosLocalmente": 2,
+      "alvo": 6,
+      "alvoCondicional": true
+    },
+    {
+      "colecao": "adocoes_tratamento",
+      "preparadosLocalmente": 0,
+      "alvo": 3,
+      "alvoCondicional": true
+    },
+    {
+      "colecao": "denuncias_comunidade",
+      "preparadosLocalmente": 0,
+      "alvo": 3,
+      "alvoCondicional": true
+    }
+  ],
+  "estadosDeTeste": {
+    "revisaoTecnica": "Nenhuma realizada ou simulada como real; 40 fichas permanecem pendentes/inativas.",
+    "moderacao": "Somente experiencias pendentes preparadas; outros estados sao cenarios ainda nao materializados.",
+    "termos": "Versao e datas ficticias somente para testes estruturais; nao representam aceite humano.",
+    "identidade": "CPF sintetico com DV e telefone em formato valido nao comprovam identidade/posse; nao enviar SMS nem criar conta real."
+  },
+  "repeticao": "Conferir por manifesto/ID e conteudo; iguais sao preservados, divergentes bloqueiam. Sem limpeza, upsert destrutivo ou novos IDs por execucao.",
+  "ciclosHistoricos": [
+    {
+      "plantacaoAlias": "plantacao_historica_a",
+      "ocorrenciaAlias": "ocorrencia_historica_a",
+      "ordem": [
+        "Inserir plantacao historica como ativa e sem dataEncerramento; ainda sem atual no mesmo talhao.",
+        "Inserir ocorrencia historica como aberta e sem campos de encerramento.",
+        "Inserir tratamento, monitoramento e avaliacao em ordem de datas.",
+        "Encerrar ocorrencia com data/motivo do snapshot.",
+        "Encerrar plantacao com data do snapshot.",
+        "So depois inserir plantacao atual do mesmo talhao."
+      ],
+      "snapshotNaoInserirDiretamente": "O JSON descreve estado final. A futura rotina precisa construir esse ciclo, sem inserir filhos apos encerrar o pai e sem reabrir estados em repeticao."
+    },
+    {
+      "plantacaoAlias": "plantacao_historica_b",
+      "ocorrenciaAlias": "ocorrencia_historica_b",
+      "ordem": [
+        "Inserir plantacao historica como ativa e sem dataEncerramento; ainda sem atual no mesmo talhao.",
+        "Inserir ocorrencia historica como aberta e sem campos de encerramento.",
+        "Inserir tratamento, monitoramento e avaliacao em ordem de datas.",
+        "Encerrar ocorrencia com data/motivo do snapshot.",
+        "Encerrar plantacao com data do snapshot.",
+        "So depois inserir plantacao atual do mesmo talhao."
+      ],
+      "snapshotNaoInserirDiretamente": "O JSON descreve estado final. A futura rotina precisa construir esse ciclo, sem inserir filhos apos encerrar o pai e sem reabrir estados em repeticao."
+    }
+  ],
+  "catalogoBloqueado": [],
+  "dependenciasCenarios": {
+    "identificados": "8 ocorrencias aguardam fichas das 40 explicitamente aprovadas e ativas, por revisao real.",
+    "adocoes": "3 aguardam experiencia aprovada com metodo, problema identificado igual e cultura igual em origem/destino, autorizacao e destino ativo.",
+    "denuncias": "Dependem de experiencia disponivel no fluxo de aplicacao; snapshots de disponibilidade e decisao podem ser simulados explicitamente no isolado, sem aprovacao humana real.",
+    "moderacao": "Estados de moderacao podem ser snapshots sinteticos explicitos em banco isolado, sem aprovacao humana real. Nao demonstram autorizacao da API nem aprovam tecnicamente o catalogo."
+  },
+  "catalogoPreparado": {
+    "arquivo": "catalogo-pendente-bd6.json",
+    "prontas": 40,
+    "total": 40,
+    "culturasCompartilhadas": "20 culturas identicas ao arquivo sintetico mais tres recortes autorizados; total 23, inserir/reutilizar uma unica vez.",
+    "fontes": 80,
+    "estados": "Todas as fichas pendentes/inativas, sem revisadoEm.",
+    "ids": "Reservas locais, nao comprovacao de existencia no Atlas.",
+    "datas": "Datas de preparacao local; convencao UTC de dia editorial em pesquisa-catalogo-bd6.json."
+  },
+  "simulacoesComunidade": {
+    "ambienteProposto": "sentinela_testes_bd6, separado da massa compartilhada e do isolado BD5; nao criado/configurado nesta etapa",
+    "estadosPossiveis": [
+      "pendente",
+      "aprovada",
+      "rejeitada",
+      "oculta",
+      "retirada"
+    ],
+    "natureza": "Snapshots sinteticos explicitamente identificados, nao aprovacao real da equipe; nenhum desses snapshots adicionais foi gerado nesta etapa.",
+    "adocoes": "Schemas aceitam referencias ObjectId, mas nao conferem disponibilidade/compatibilidade. Novas ocorrencias identificadas dependem do catalogo disponivel segundo BD4; as 40 fichas permanecem pendentes/inativas. Aprovacao simulada da experiencia nao resolve essa dependencia nem prova autorizacao."
+  },
+  "pendenciasDeConteudoNaoBloqueantes": [
+    "Controle protetor da podridao-negra preservado apenas no mapeamento.",
+    "Seis identidades bibliograficas originais nao confirmadas; alternativas parciais documentadas.",
+    "Revisao tecnica e imagens continuam pendentes, sem aprovacao ou ativacao automatica."
+  ],
+  "reproducao": {
+    "ambiente": "Node no terminal do VS Code, sem executar Playgrounds",
+    "preConferencia": "pre-conferir-bd6.cjs",
+    "insercao": "inserir-bd6.cjs --aplicar",
+    "validacao": "validar-massa-bd6.cjs",
+    "biblioteca": "lib-bd6.cjs",
+    "testeSomenteLocal": "../tests/verificar-preparacao-bd6.cjs",
+    "transacaoUnica": true,
+    "sobrescrevePreexistentes": false,
+    "criaConfiguracao": false,
+    "execucaoAtlasComprovada": false
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "bancoPrevisto": "sentinela",
+  "natureza": "SIMULACAO ACADEMICA; SEM revisao agronomica real",
+  "conexaoAtlasExecutada": false,
+  "alteracaoAplicadaNoAtlas": false,
+  "documentosNovosPreparados": 8,
+  "fichasNovas": 0,
+  "fichaExistenteComAlteracaoPlanejada": "88b8a8ae41cde9df3d9c5df2",
+  "estadoAnteriorIntegralPreservado": "alteracao-ficha.json: antes",
+  "manifestosHistoricosPreservados": true,
+  "extensaoDosManifestos": "manifesto.json",
+  "verificacoesLocais": {
+    "principal": {"gruposAprovados": 10, "falhas": 0},
+    "complemento": {"gruposAprovados": 8, "falhas": 0},
+    "demonstracao": {"gruposAprovados": 10, "falhas": 0},
+    "sintaxe": "aprovada",
+    "diffCheck": "sem erros; aviso preexistente de finais de linha em avaliar-consultas-bd5.mongodb.js"
+  },
+  "limites": [
+    "Testes com mocks, sem comprovacao de transacoes ou permissoes no Atlas.",
+    "A observacao nao impede que filtros usuais exibam a ficha simulada no desenvolvimento.",
+    "Nenhuma revisao agronomica real, eficacia ou autorizacao pela API comprovada.",
+    "Os demais 191 documentos existentes permanecem intocados no plano."
+  ]
+}

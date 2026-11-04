@@ -1,0 +1,181 @@
+{
+  "namespace": "sentinela_testes_bd6_adocoes_v1",
+  "banco": "sentinela_testes_bd6",
+  "simulacao": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada",
+  "executadoNoAtlas": false,
+  "fichaBase": {
+    "codigoEditorial": "lagarta-do-cartucho",
+    "nomeComum": "Lagarta-do-cartucho",
+    "arquivo": "../catalogo-pendente-bd6.json",
+    "revisaoRealComprovada": false
+  },
+  "aliases": {
+    "usuario_a": {
+      "colecao": "usuarios",
+      "id": {
+        "$oid": "7650ca1c4d53eb798e0478b9"
+      }
+    },
+    "propriedade_a": {
+      "colecao": "propriedades",
+      "id": {
+        "$oid": "2beee07cf0b61ffc37f5c571"
+      }
+    },
+    "talhao_a": {
+      "colecao": "talhoes",
+      "id": {
+        "$oid": "d90ed5ab7dfc4bc8111cb8fa"
+      }
+    },
+    "usuario_b": {
+      "colecao": "usuarios",
+      "id": {
+        "$oid": "1d98ef2259aa3870943821c9"
+      }
+    },
+    "propriedade_b": {
+      "colecao": "propriedades",
+      "id": {
+        "$oid": "8e0457e0e98e89021e70d3ed"
+      }
+    },
+    "talhao_b": {
+      "colecao": "talhoes",
+      "id": {
+        "$oid": "9e321ca21e0685a974ae9fa6"
+      }
+    },
+    "cultura_milho": {
+      "colecao": "culturas",
+      "id": {
+        "$oid": "1b7983da51a7aa49dc2c3e68"
+      }
+    },
+    "fonte_1": {
+      "colecao": "fontes_conhecimento",
+      "id": {
+        "$oid": "edb68afdf38a724577cde596"
+      }
+    },
+    "fonte_2": {
+      "colecao": "fontes_conhecimento",
+      "id": {
+        "$oid": "cde8ad65f7e94f436fd31536"
+      }
+    },
+    "fonte_3": {
+      "colecao": "fontes_conhecimento",
+      "id": {
+        "$oid": "e04add68c47c38068d16e06a"
+      }
+    },
+    "problema_catalogo": {
+      "colecao": "problemas_agricolas",
+      "id": {
+        "$oid": "a0ce8ef75d217b2d6848e2c6"
+      }
+    },
+    "plantacao_a": {
+      "colecao": "plantacoes",
+      "id": {
+        "$oid": "b0605e63e8af9e32727d94d9"
+      }
+    },
+    "ocorrencia_a": {
+      "colecao": "ocorrencias",
+      "id": {
+        "$oid": "6aba1a3f0cbe4144e7a1ee38"
+      }
+    },
+    "plantacao_b": {
+      "colecao": "plantacoes",
+      "id": {
+        "$oid": "81ff91ba24d1aa6c12cf8a82"
+      }
+    },
+    "ocorrencia_b": {
+      "colecao": "ocorrencias",
+      "id": {
+        "$oid": "00e0617f63d5d055d4737363"
+      }
+    },
+    "tratamento_a": {
+      "colecao": "tratamentos",
+      "id": {
+        "$oid": "babe31b1955ac15e7ce4044c"
+      }
+    },
+    "tratamento_b": {
+      "colecao": "tratamentos",
+      "id": {
+        "$oid": "321d9d37187d12647967d9f6"
+      }
+    },
+    "avaliacao_a": {
+      "colecao": "avaliacoes_tratamento",
+      "id": {
+        "$oid": "5d70a012c81d174fe9ca4360"
+      }
+    },
+    "experiencia": {
+      "colecao": "experiencias_comunidade",
+      "id": {
+        "$oid": "82b987f5217accc0626c50c1"
+      }
+    },
+    "adocao_planejada": {
+      "colecao": "adocoes_tratamento",
+      "id": {
+        "$oid": "e84a87d6deeba47b1b0df766"
+      }
+    },
+    "adocao_realizada": {
+      "colecao": "adocoes_tratamento",
+      "id": {
+        "$oid": "0cbaa16b40204c01bb86eeef"
+      }
+    },
+    "adocao_cancelada": {
+      "colecao": "adocoes_tratamento",
+      "id": {
+        "$oid": "0b765584e6f94513393abca5"
+      }
+    }
+  },
+  "contagens": {
+    "usuarios": 2,
+    "propriedades": 2,
+    "talhoes": 2,
+    "culturas": 1,
+    "plantacoes": 2,
+    "problemas_agricolas": 1,
+    "fontes_conhecimento": 3,
+    "ocorrencias": 2,
+    "monitoramentos": 0,
+    "tratamentos": 2,
+    "avaliacoes_tratamento": 1,
+    "alertas": 0,
+    "experiencias_comunidade": 1,
+    "adocoes_tratamento": 3,
+    "denuncias_comunidade": 0
+  },
+  "compartilhadoPreservadoSha256": {
+    "manifesto-bd6.json": "53a39d9b452090af4a82e7e3b63ef402ea0ef17863919acf8da6aeec2b35270e",
+    "documentos-sinteticos-bd6.json": "d8b1a3441aadf9f08e9e807a8e5d02886aeda122d15fcdb10e6ee83253022b2b",
+    "catalogo-pendente-bd6.json": "76ac157a32f67b2face0ba34e3d0930caaa21c8de6b396b4bbf883122beb42b8",
+    "pesquisa-catalogo-bd6.json": "5a47b214d22db689c463c3c7e55a0ef80b26a3ca086027819230f21bb8737856",
+    "catalogo-completo-sentinela.json": "34c8b175ea332a72ebd50ffe8b3375448725ca6e5388c72f4759f8174aeb821b",
+    "comunidade-complementar-bd6.json": "9b265979e070ff73dfc0b15e9428741a791c3e43e8741a2a0e114ce45b3a740e",
+    "manifesto-comunidade-complementar-bd6.json": "c5e03eb63f4e377518d559716b4da6d4434a41dc667bb9ca856c522865c0c652"
+  },
+  "restricoes": [
+    "Nunca usar sentinela nem sentinela_testes_bd5; destino fixo.",
+    "Somente esta copia da ficha recebe ativo true, revisao aprovada e data explicitamente simulados.",
+    "Tres adocoes independentes do mesmo par: uma planejada, outras fora do filtro parcial; nao sao tres estados de um unico documento.",
+    "Tratamento B posterior ao planejamento e vinculado apenas a realizada.",
+    "Usuario B atua como moderador ficticio; nao atribuir papel no perfil nem inferir autorizacao da API.",
+    "Sem imagens, produtos ou fontes inventadas; fontes copiadas mantem limites editoriais.",
+    "Nao alterar qualquer preexistente divergente; repeticao identica sem duplicacoes."
+  ]
+}

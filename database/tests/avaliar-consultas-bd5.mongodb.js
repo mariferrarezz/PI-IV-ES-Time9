@@ -34,6 +34,32 @@ const adocao = experiencia && usuario && banco.adocoes_tratamento.findOne({
 const destino = adocao && banco.ocorrencias.findOne({_id: adocao.ocorrenciaId}, {_id: 1, plantacaoId: 1});
 const destinoConferido = destino && plantacao && destino.plantacaoId.equals(plantacao._id);
 
+// Sanitiza somente a apresentação; os filtros efetivamente consultados não mudam.
+function sanitizarIdentificadores(valor) {
+  if (!valor || typeof valor !== 'object') return valor;
+  if (['Int32', 'Long', 'Double', 'Decimal128'].includes(valor._bsontype)) return valor;
+  if (valor._bsontype) return '[valor BSON omitido]';
+  if (valor instanceof Date) return valor;
+  if (Array.isArray(valor)) return valor.map(sanitizarIdentificadores);
+  return Object.fromEntries(Object.entries(valor).map(([chave, item]) => [chave,
+    chave === '$oid' || (chave === 'firebaseUid' && typeof item === 'string')
+      ? '[identificador omitido]' : sanitizarIdentificadores(item)]));
+}
+function sanitizarPlano(valor, campo = '') {
+  // Esses trechos podem conter valores, IDs codificados e nomes de servidores.
+  if (['filter', 'parsedQuery', 'indexBounds', 'startKey', 'endKey',
+    'slotBasedPlan', 'namespace', 'serverInfo', 'shards'].includes(campo)) return '[conteúdo omitido]';
+  if (valor === null || valor === undefined) return valor;
+  if (typeof valor === 'string') {
+    return ['stage', 'indexName', 'direction'].includes(campo) ? valor : '[valor omitido]';
+  }
+  if (typeof valor !== 'object') return valor;
+  if (['Int32', 'Long', 'Double', 'Decimal128'].includes(valor._bsontype)) return valor;
+  if (valor._bsontype || valor instanceof Date) return '[valor BSON omitido]';
+  if (Array.isArray(valor)) return valor.map(item => sanitizarPlano(item, campo));
+  return Object.fromEntries(Object.entries(valor).map(([chave, item]) => [chave, sanitizarPlano(item, chave)]));
+}
+
 // Examina apenas planos vencedores/estágios executados: exclui planos rejeitados.
 function resumir(explain) {
   const indices = new Set(), estagios = new Set(), planos = [];
@@ -74,7 +100,7 @@ function resumir(explain) {
     observacao: retornados !== undefined && Number(retornados) === 0
       ? 'Sem resultados: não demonstra eficiência para casos com correspondências.'
       : 'Massa pequena e fictícia; não comprova desempenho em produção.',
-    planoVencedor: planos
+    planoVencedor: planos.map(plano => sanitizarPlano(plano))
   };
 }
 function avaliar(nome, colecao, filtro, ordem, apoio, pipeline) {
@@ -91,7 +117,7 @@ function avaliar(nome, colecao, filtro, ordem, apoio, pipeline) {
       if (ordem) cursor = cursor.sort(ordem);
       explicacao = cursor.limit(limite).explain('executionStats');
     }
-    // firebaseUid é usado internamente na consulta, mas não é impresso.
+    // Mascara identificadores no filtro externo e nos planos retornados.
     resultados.push({consulta: nome, colecao, situacao: 'executada',
       filtro: colecao === 'usuarios' ? {firebaseUid: '[valor do usuário fictício conferido]'} : filtro,
       ordenacao: ordem || null, projecao: pipeline ? 'definida no pipeline' : projecao,
@@ -163,10 +189,10 @@ const relatorio = {
     'SORT indica ordenação bloqueante em memória, com possível uso de disco conforme ambiente; SORT_MERGE não equivale a SORT.',
     'COLLSCAN e índice não escolhido não são falhas automáticas com massa pequena.',
     'Métricas ausentes ficam null e precisam de inspeção do explain completo; não equivalem a zero.',
-    'Planos vencedores preservados para análise, sem planos rejeitados nem documentos.',
+    'Planos vencedores sanitizados: estágios, índices e métricas preservados; filtros, limites e texto SBE omitidos.',
     'Consultas de moderação são avaliação técnica; não comprovam autorização de moderador ou da API.',
     'Sem benchmark antes/depois, garantia de desempenho, snapshot único ou validação pela equipe.'
   ]
 };
 // Retorna o objeto ao Playground Result, sem abreviar arrays no painel de saída.
-relatorio;
+sanitizarIdentificadores(relatorio);

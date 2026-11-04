@@ -1,0 +1,25 @@
+{
+  "ambientePrevisto": "sentinela_testes_bd6",
+  "somenteLocal": true,
+  "conectouAoAtlas": false,
+  "configuracaoAplicadaNoServidor": false,
+  "insercaoExecutadaNoServidor": false,
+  "documentosPreparados": 22,
+  "fichasCopiadas": 1,
+  "codigoEditorial": "lagarta-do-cartucho",
+  "revisaoTecnicaRealComprovada": false,
+  "adocoes": ["planejada", "realizada", "cancelada"],
+  "schemasLidos": 15,
+  "indicesLidos": 22,
+  "comandoTesteLocal": "node database/tests/verificar-adocoes-isoladas-bd6.cjs",
+  "gruposAprovados": 10,
+  "falhas": 0,
+  "sintaxeVerificada": true,
+  "hashesCompartilhadosPreservados": true,
+  "limites": [
+    "Configuracao, transacoes, referencias e repeticao testadas em memoria; nao no servidor.",
+    "Nenhuma comprovacao de autorizacao pela API, revisao tecnica humana ou aceite da equipe.",
+    "Disponibilidade dos cenarios depende da futura execucao autorizada no banco isolado.",
+    "As tres adocoes do ambiente compartilhado continuam bloqueadas; seus arquivos nao foram alterados."
+  ]
+}

@@ -1,0 +1,629 @@
+{
+  "usuarios": [
+    {
+      "_id": {
+        "$oid": "7650ca1c4d53eb798e0478b9"
+      },
+      "firebaseUid": "sentinela_testes_bd6_adocoes_v1_a",
+      "nomeCompleto": "Pessoa Ficticia Isolada BD6 A",
+      "nomePublico": "Produtor Teste Isolado A",
+      "cpf": "12345678909",
+      "telefone": "+5511990000001",
+      "canalCodigoPreferido": "sms",
+      "termos": {
+        "versao": "SIMULACAO-PARA-TESTES",
+        "aceitoEm": {
+          "$date": "2026-11-01T07:00:00.000Z"
+        }
+      },
+      "criadoEm": {
+        "$date": "2026-11-01T07:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-01T07:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "1d98ef2259aa3870943821c9"
+      },
+      "firebaseUid": "sentinela_testes_bd6_adocoes_v1_b",
+      "nomeCompleto": "Pessoa Ficticia Isolada BD6 B",
+      "nomePublico": "Produtor Teste Isolado B",
+      "cpf": "98765432100",
+      "telefone": "+5511990000002",
+      "canalCodigoPreferido": "sms",
+      "termos": {
+        "versao": "SIMULACAO-PARA-TESTES",
+        "aceitoEm": {
+          "$date": "2026-11-01T07:00:00.000Z"
+        }
+      },
+      "criadoEm": {
+        "$date": "2026-11-01T07:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-01T07:00:00.000Z"
+      }
+    }
+  ],
+  "propriedades": [
+    {
+      "_id": {
+        "$oid": "2beee07cf0b61ffc37f5c571"
+      },
+      "usuarioId": {
+        "$oid": "7650ca1c4d53eb798e0478b9"
+      },
+      "nome": "SIMULACAO BD6 - Propriedade a",
+      "municipio": "Campinas",
+      "estado": "SP",
+      "areaTotalHa": 10,
+      "ativa": true,
+      "observacoes": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada",
+      "criadoEm": {
+        "$date": "2026-11-01T07:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-01T07:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "8e0457e0e98e89021e70d3ed"
+      },
+      "usuarioId": {
+        "$oid": "1d98ef2259aa3870943821c9"
+      },
+      "nome": "SIMULACAO BD6 - Propriedade b",
+      "municipio": "Campinas",
+      "estado": "SP",
+      "areaTotalHa": 10,
+      "ativa": true,
+      "observacoes": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada",
+      "criadoEm": {
+        "$date": "2026-11-01T07:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-01T07:00:00.000Z"
+      }
+    }
+  ],
+  "talhoes": [
+    {
+      "_id": {
+        "$oid": "d90ed5ab7dfc4bc8111cb8fa"
+      },
+      "propriedadeId": {
+        "$oid": "2beee07cf0b61ffc37f5c571"
+      },
+      "nome": "SIMULACAO BD6 - Talhao a",
+      "areaHa": 2,
+      "ativo": true,
+      "criadoEm": {
+        "$date": "2026-11-01T07:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-01T07:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "9e321ca21e0685a974ae9fa6"
+      },
+      "propriedadeId": {
+        "$oid": "8e0457e0e98e89021e70d3ed"
+      },
+      "nome": "SIMULACAO BD6 - Talhao b",
+      "areaHa": 2,
+      "ativo": true,
+      "criadoEm": {
+        "$date": "2026-11-01T07:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-01T07:00:00.000Z"
+      }
+    }
+  ],
+  "culturas": [
+    {
+      "_id": {
+        "$oid": "1b7983da51a7aa49dc2c3e68"
+      },
+      "nome": "Milho",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    }
+  ],
+  "plantacoes": [
+    {
+      "_id": {
+        "$oid": "b0605e63e8af9e32727d94d9"
+      },
+      "talhaoId": {
+        "$oid": "d90ed5ab7dfc4bc8111cb8fa"
+      },
+      "culturaId": {
+        "$oid": "1b7983da51a7aa49dc2c3e68"
+      },
+      "safra": "2026/2027",
+      "dataPlantio": {
+        "$date": "2026-11-01T09:00:00.000Z"
+      },
+      "areaPlantadaHa": 1.5,
+      "status": "ativa",
+      "observacoes": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada",
+      "criadoEm": {
+        "$date": "2026-11-01T09:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-01T09:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "81ff91ba24d1aa6c12cf8a82"
+      },
+      "talhaoId": {
+        "$oid": "9e321ca21e0685a974ae9fa6"
+      },
+      "culturaId": {
+        "$oid": "1b7983da51a7aa49dc2c3e68"
+      },
+      "safra": "2026/2027",
+      "dataPlantio": {
+        "$date": "2026-11-01T09:00:00.000Z"
+      },
+      "areaPlantadaHa": 1.5,
+      "status": "ativa",
+      "observacoes": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada",
+      "criadoEm": {
+        "$date": "2026-11-01T09:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-01T09:00:00.000Z"
+      }
+    }
+  ],
+  "problemas_agricolas": [
+    {
+      "codigoEditorial": "lagarta-do-cartucho",
+      "nomeCientifico": "Spodoptera frugiperda",
+      "descricao": "Lagarta que raspa e perfura folhas, frequentemente abrigada no cartucho do milho.",
+      "chips": [
+        "Milho",
+        "Temperaturas quentes"
+      ],
+      "sintomas": [
+        "Folhas raspadas",
+        "Perfurações nas folhas abertas",
+        "Fezes no cartucho"
+      ],
+      "ondeOlhar": "Examine folhas novas e o interior do cartucho.",
+      "dicaDeCampo": "Abra o cartucho com cuidado e procure lagartas vivas.",
+      "danos": [
+        "Desfolha",
+        "Destruição do cartucho",
+        "Comprometimento de espigas"
+      ],
+      "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+      "epocaPropicia": "Da emergência ao desenvolvimento vegetativo; também pode atacar espigas.",
+      "tratamentoIntro": "Combine monitoramento e controle biológico, avaliando lagartas pequenas e condições locais.",
+      "boasPraticas": [
+        "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+        "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+        "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+      ],
+      "nomeComum": "Lagarta-do-cartucho",
+      "tipo": "praga",
+      "niveisAtencao": {
+        "baixo": "Sinais localizados (folhas raspadas): registre o foco e acompanhe a evolução com identificação técnica.",
+        "medio": "Sinais em expansão (perfurações nas folhas abertas): intensifique a amostragem e solicite avaliação do manejo.",
+        "alto": "Danos extensos (desfolha) ou progressão rápida: procure assistência agronômica com prioridade."
+      },
+      "abrangenciaCulturas": "Milho.",
+      "condicoesFavoraveis": [
+        "Temperaturas quentes",
+        "A influência de chuva e umidade varia com a espécie e a região."
+      ],
+      "medidasPreventivas": [
+        "Monitorar desde a emergência",
+        "Manejar plantas voluntárias",
+        "Preservar inimigos naturais",
+        "Cumprir o refúgio recomendado para milho Bt"
+      ],
+      "orientacaoBuscaAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+      "ativo": true,
+      "revisaoEditorial": {
+        "status": "aprovada",
+        "observacoes": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada; status e data exclusivamente simulados para elegibilidade estrutural; nao disponibilizar em ambiente compartilhado.",
+        "registroAgrofitConferido": false,
+        "fotoPendente": true
+      },
+      "_id": {
+        "$oid": "a0ce8ef75d217b2d6848e2c6"
+      },
+      "culturasAfetadasIds": [
+        {
+          "$oid": "1b7983da51a7aa49dc2c3e68"
+        }
+      ],
+      "fontesIds": [
+        {
+          "$oid": "edb68afdf38a724577cde596"
+        },
+        {
+          "$oid": "cde8ad65f7e94f436fd31536"
+        },
+        {
+          "$oid": "e04add68c47c38068d16e06a"
+        }
+      ],
+      "formasControle": [
+        {
+          "classe": "Biológicos microbianos",
+          "exemplosControle": [
+            "Bacillus thuringiensis",
+            "Spodoptera frugiperda multiple nucleopolyhedrovirus"
+          ],
+          "observacoes": "Exemplos educativos, sem confirmação de registro atual para cada cultura e alvo; não equivalem a recomendação de aplicação.",
+          "tipo": "biologica",
+          "descricao": "Biológicos microbianos"
+        }
+      ],
+      "criadoEm": {
+        "$date": "2026-11-01T07:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-01T08:00:00.000Z"
+      },
+      "revisadoEm": {
+        "$date": "2026-11-01T08:00:00.000Z"
+      }
+    }
+  ],
+  "fontes_conhecimento": [
+    {
+      "_id": {
+        "$oid": "edb68afdf38a724577cde596"
+      },
+      "titulo": "Pragas da Fase Vegetativa e Reprodutiva",
+      "instituicaoOuAutor": "Embrapa Milho e Sorgo — Ageitec",
+      "url": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/pragas-e-doencas/pragas/pragas-da-fase-vegetativa-e-reprodutiva",
+      "acessadoEm": {
+        "$date": "2026-11-03T00:00:00.000Z"
+      },
+      "criadoEm": {
+        "$date": "2026-11-03T23:56:49.203Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-03T23:56:49.203Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "cde8ad65f7e94f436fd31536"
+      },
+      "titulo": "Manejo da lagarta-do-cartucho, Spodoptera frugiperda, em milho",
+      "instituicaoOuAutor": "Embrapa Milho e Sorgo",
+      "url": "https://www.embrapa.br/documents/1344498/2767891/manejo-da-lagarta-do-cartucho-em-milho.pdf/a2f4a72a-9889-4c38-b88d-31e29556911d",
+      "acessadoEm": {
+        "$date": "2026-11-03T00:00:00.000Z"
+      },
+      "criadoEm": {
+        "$date": "2026-11-04T00:12:13.990Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-04T00:12:13.990Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "e04add68c47c38068d16e06a"
+      },
+      "titulo": "Manejo integrado de Spodoptera frugiperda na cultura do milho: efeito de diferentes combinações de Bacillus thuringiensis, baculovirus e inseticida químico.",
+      "instituicaoOuAutor": "AGUIAR, F. M. et al.",
+      "url": "https://www.alice.cnptia.embrapa.br/handle/doc/1176367",
+      "acessadoEm": {
+        "$date": "2026-11-03T00:00:00.000Z"
+      },
+      "criadoEm": {
+        "$date": "2026-11-03T23:56:49.203Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-03T23:56:49.203Z"
+      }
+    }
+  ],
+  "ocorrencias": [
+    {
+      "_id": {
+        "$oid": "6aba1a3f0cbe4144e7a1ee38"
+      },
+      "plantacaoId": {
+        "$oid": "b0605e63e8af9e32727d94d9"
+      },
+      "registradoPor": {
+        "$oid": "7650ca1c4d53eb798e0478b9"
+      },
+      "tipo": "praga",
+      "dataObservacao": {
+        "$date": "2026-11-02T10:00:00.000Z"
+      },
+      "sintomas": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada; ocorrencia sintetica identificada a partir da mesma ficha do catalogo.",
+      "intensidade": "baixa",
+      "status": "aberta",
+      "criadoEm": {
+        "$date": "2026-11-02T10:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-02T10:00:00.000Z"
+      },
+      "problemaAgricolaId": {
+        "$oid": "a0ce8ef75d217b2d6848e2c6"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "00e0617f63d5d055d4737363"
+      },
+      "plantacaoId": {
+        "$oid": "81ff91ba24d1aa6c12cf8a82"
+      },
+      "registradoPor": {
+        "$oid": "1d98ef2259aa3870943821c9"
+      },
+      "tipo": "praga",
+      "dataObservacao": {
+        "$date": "2026-11-02T10:00:00.000Z"
+      },
+      "sintomas": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada; ocorrencia sintetica identificada a partir da mesma ficha do catalogo.",
+      "intensidade": "baixa",
+      "status": "aberta",
+      "criadoEm": {
+        "$date": "2026-11-02T10:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-02T10:00:00.000Z"
+      },
+      "problemaAgricolaId": {
+        "$oid": "a0ce8ef75d217b2d6848e2c6"
+      }
+    }
+  ],
+  "monitoramentos": [],
+  "tratamentos": [
+    {
+      "tipoMedida": "manual",
+      "descricao": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada; medida manual sintetica, sem prescricao ou comprovacao de eficacia.",
+      "ocorrenciaId": {
+        "$oid": "6aba1a3f0cbe4144e7a1ee38"
+      },
+      "registradoPor": {
+        "$oid": "7650ca1c4d53eb798e0478b9"
+      },
+      "dataAplicacao": {
+        "$date": "2026-11-02T13:00:00.000Z"
+      },
+      "criadoEm": {
+        "$date": "2026-11-02T13:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-02T13:00:00.000Z"
+      },
+      "observacoes": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada",
+      "_id": {
+        "$oid": "babe31b1955ac15e7ce4044c"
+      }
+    },
+    {
+      "tipoMedida": "manual",
+      "descricao": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada; medida manual sintetica, sem prescricao ou comprovacao de eficacia.",
+      "ocorrenciaId": {
+        "$oid": "00e0617f63d5d055d4737363"
+      },
+      "registradoPor": {
+        "$oid": "1d98ef2259aa3870943821c9"
+      },
+      "dataAplicacao": {
+        "$date": "2026-11-03T16:00:00.000Z"
+      },
+      "criadoEm": {
+        "$date": "2026-11-03T16:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-03T16:00:00.000Z"
+      },
+      "observacoes": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada",
+      "_id": {
+        "$oid": "321d9d37187d12647967d9f6"
+      }
+    }
+  ],
+  "avaliacoes_tratamento": [
+    {
+      "tratamentoId": {
+        "$oid": "babe31b1955ac15e7ce4044c"
+      },
+      "registradoPor": {
+        "$oid": "7650ca1c4d53eb798e0478b9"
+      },
+      "dataAvaliacao": {
+        "$date": "2026-11-03T10:00:00.000Z"
+      },
+      "resultado": "inconclusivo",
+      "observacoes": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada",
+      "criadoEm": {
+        "$date": "2026-11-03T10:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-03T10:00:00.000Z"
+      },
+      "_id": {
+        "$oid": "5d70a012c81d174fe9ca4360"
+      }
+    }
+  ],
+  "alertas": [],
+  "experiencias_comunidade": [
+    {
+      "autorId": {
+        "$oid": "7650ca1c4d53eb798e0478b9"
+      },
+      "ocorrenciaOrigemId": {
+        "$oid": "6aba1a3f0cbe4144e7a1ee38"
+      },
+      "tratamentoOrigemId": {
+        "$oid": "babe31b1955ac15e7ce4044c"
+      },
+      "avaliacaoOrigemId": {
+        "$oid": "5d70a012c81d174fe9ca4360"
+      },
+      "nomePublico": "Produtor Teste Isolado A",
+      "culturaId": {
+        "$oid": "1b7983da51a7aa49dc2c3e68"
+      },
+      "culturaNome": "Milho",
+      "problemaAgricolaId": {
+        "$oid": "a0ce8ef75d217b2d6848e2c6"
+      },
+      "problemaNome": "Lagarta-do-cartucho",
+      "tipoProblema": "praga",
+      "statusOcorrencia": "aberta",
+      "titulo": "SIMULACAO PARA TESTES - experiencia elegivel isolada",
+      "relato": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada",
+      "versao": 1,
+      "moderacao": {
+        "status": "aprovada",
+        "revisadoPor": {
+          "$oid": "1d98ef2259aa3870943821c9"
+        },
+        "revisadoEm": {
+          "$date": "2026-11-03T12:00:00.000Z"
+        },
+        "motivo": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada; moderacao simulada, sem aceite da equipe."
+      },
+      "metodo": {
+        "tipoMedida": "manual",
+        "descricao": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada; medida manual sintetica, sem prescricao ou comprovacao de eficacia."
+      },
+      "resultadoRelatado": {
+        "resultado": "inconclusivo",
+        "dataAvaliacao": {
+          "$date": "2026-11-03T10:00:00.000Z"
+        },
+        "observacoes": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada"
+      },
+      "publicadoEm": {
+        "$date": "2026-11-03T12:00:00.000Z"
+      },
+      "criadoEm": {
+        "$date": "2026-11-03T11:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-03T12:00:00.000Z"
+      },
+      "_id": {
+        "$oid": "82b987f5217accc0626c50c1"
+      }
+    }
+  ],
+  "adocoes_tratamento": [
+    {
+      "usuarioId": {
+        "$oid": "1d98ef2259aa3870943821c9"
+      },
+      "experienciaId": {
+        "$oid": "82b987f5217accc0626c50c1"
+      },
+      "experienciaVersao": 1,
+      "ocorrenciaId": {
+        "$oid": "00e0617f63d5d055d4737363"
+      },
+      "metodoCopiado": {
+        "tipoMedida": "manual",
+        "descricao": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada; medida manual sintetica, sem prescricao ou comprovacao de eficacia."
+      },
+      "planejamento": {
+        "descricao": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada; planejamento sintetico confirmado antes da medida."
+      },
+      "status": "planejada",
+      "criadoEm": {
+        "$date": "2026-11-03T17:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-03T17:00:00.000Z"
+      },
+      "_id": {
+        "$oid": "e84a87d6deeba47b1b0df766"
+      }
+    },
+    {
+      "usuarioId": {
+        "$oid": "1d98ef2259aa3870943821c9"
+      },
+      "experienciaId": {
+        "$oid": "82b987f5217accc0626c50c1"
+      },
+      "experienciaVersao": 1,
+      "ocorrenciaId": {
+        "$oid": "00e0617f63d5d055d4737363"
+      },
+      "metodoCopiado": {
+        "tipoMedida": "manual",
+        "descricao": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada; medida manual sintetica, sem prescricao ou comprovacao de eficacia."
+      },
+      "planejamento": {
+        "descricao": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada; planejamento sintetico confirmado antes da medida."
+      },
+      "status": "realizada",
+      "criadoEm": {
+        "$date": "2026-11-03T14:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-03T16:00:00.000Z"
+      },
+      "tratamentoId": {
+        "$oid": "321d9d37187d12647967d9f6"
+      },
+      "_id": {
+        "$oid": "0cbaa16b40204c01bb86eeef"
+      }
+    },
+    {
+      "usuarioId": {
+        "$oid": "1d98ef2259aa3870943821c9"
+      },
+      "experienciaId": {
+        "$oid": "82b987f5217accc0626c50c1"
+      },
+      "experienciaVersao": 1,
+      "ocorrenciaId": {
+        "$oid": "00e0617f63d5d055d4737363"
+      },
+      "metodoCopiado": {
+        "tipoMedida": "manual",
+        "descricao": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada; medida manual sintetica, sem prescricao ou comprovacao de eficacia."
+      },
+      "planejamento": {
+        "descricao": "SIMULACAO PARA TESTES - SOMENTE sentinela_testes_bd6 - sem revisao tecnica comprovada; planejamento sintetico confirmado antes da medida."
+      },
+      "status": "cancelada",
+      "criadoEm": {
+        "$date": "2026-11-03T13:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-03T13:30:00.000Z"
+      },
+      "_id": {
+        "$oid": "0b765584e6f94513393abca5"
+      }
+    }
+  ],
+  "denuncias_comunidade": []
+}

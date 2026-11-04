@@ -1,0 +1,266 @@
+{
+  "usuarios": [],
+  "propriedades": [],
+  "talhoes": [],
+  "culturas": [],
+  "plantacoes": [],
+  "problemas_agricolas": [],
+  "fontes_conhecimento": [],
+  "ocorrencias": [
+    {
+      "plantacaoId": {
+        "$oid": "f98879d75c77dc508f29af45"
+      },
+      "registradoPor": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "tipo": "praga",
+      "problemaAgricolaId": {
+        "$oid": "88b8a8ae41cde9df3d9c5df2"
+      },
+      "dataObservacao": {
+        "$date": "2026-11-04T04:41:00.000Z"
+      },
+      "sintomas": "SIMULACAO ACADEMICA BD6 - SEM eficacia agricola comprovada; SEM validacao de autorizacao pela API; identificacao ficticia de Lagarta-do-cartucho no milho.",
+      "intensidade": "baixa",
+      "status": "aberta",
+      "criadoEm": {
+        "$date": "2026-11-04T04:41:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-04T04:41:00.000Z"
+      },
+      "_id": {
+        "$oid": "204033b03f987beeda5b3ced"
+      }
+    },
+    {
+      "plantacaoId": {
+        "$oid": "0b2e8fb74c25322369485c7c"
+      },
+      "registradoPor": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "tipo": "praga",
+      "problemaAgricolaId": {
+        "$oid": "88b8a8ae41cde9df3d9c5df2"
+      },
+      "dataObservacao": {
+        "$date": "2026-11-04T04:41:00.000Z"
+      },
+      "sintomas": "SIMULACAO ACADEMICA BD6 - SEM eficacia agricola comprovada; SEM validacao de autorizacao pela API; identificacao ficticia de Lagarta-do-cartucho no milho.",
+      "intensidade": "baixa",
+      "status": "aberta",
+      "criadoEm": {
+        "$date": "2026-11-04T04:41:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-04T04:41:00.000Z"
+      },
+      "_id": {
+        "$oid": "3d9d57554dc5c02d89055b80"
+      }
+    }
+  ],
+  "monitoramentos": [],
+  "tratamentos": [
+    {
+      "tipoMedida": "biologica",
+      "descricao": "SIMULACAO ACADEMICA - exemplo educativo de controle biologico microbiano da ficha Lagarta-do-cartucho; sem produto, dose, prescricao ou aplicacao agricola real.",
+      "observacoes": "SIMULACAO ACADEMICA BD6 - SEM eficacia agricola comprovada; SEM validacao de autorizacao pela API; os exemplos da ficha nao certificam registro atual ou pertinencia de aplicacao.",
+      "ocorrenciaId": {
+        "$oid": "204033b03f987beeda5b3ced"
+      },
+      "registradoPor": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "dataAplicacao": {
+        "$date": "2026-11-04T04:42:00.000Z"
+      },
+      "criadoEm": {
+        "$date": "2026-11-04T04:42:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-04T04:42:00.000Z"
+      },
+      "_id": {
+        "$oid": "d88dfc25a251f3793a19e742"
+      }
+    },
+    {
+      "tipoMedida": "biologica",
+      "descricao": "SIMULACAO ACADEMICA - exemplo educativo de controle biologico microbiano da ficha Lagarta-do-cartucho; sem produto, dose, prescricao ou aplicacao agricola real.",
+      "observacoes": "SIMULACAO ACADEMICA BD6 - SEM eficacia agricola comprovada; SEM validacao de autorizacao pela API; os exemplos da ficha nao certificam registro atual ou pertinencia de aplicacao.",
+      "ocorrenciaId": {
+        "$oid": "3d9d57554dc5c02d89055b80"
+      },
+      "registradoPor": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "dataAplicacao": {
+        "$date": "2026-11-04T04:47:00.000Z"
+      },
+      "criadoEm": {
+        "$date": "2026-11-04T04:47:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-04T04:47:00.000Z"
+      },
+      "_id": {
+        "$oid": "3ca35483a8b4aaee6c77ab75"
+      }
+    }
+  ],
+  "avaliacoes_tratamento": [],
+  "alertas": [],
+  "experiencias_comunidade": [
+    {
+      "autorId": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "ocorrenciaOrigemId": {
+        "$oid": "204033b03f987beeda5b3ced"
+      },
+      "tratamentoOrigemId": {
+        "$oid": "d88dfc25a251f3793a19e742"
+      },
+      "nomePublico": "Produtor Ficticio BD6 A",
+      "culturaId": {
+        "$oid": "f04d5232bcbcda1037cdb0e3"
+      },
+      "culturaNome": "Milho",
+      "problemaAgricolaId": {
+        "$oid": "88b8a8ae41cde9df3d9c5df2"
+      },
+      "problemaNome": "Lagarta-do-cartucho",
+      "tipoProblema": "praga",
+      "statusOcorrencia": "aberta",
+      "titulo": "SIMULACAO ACADEMICA BD6 - metodo para adocoes de demonstracao",
+      "relato": "SIMULACAO ACADEMICA BD6 - SEM eficacia agricola comprovada; SEM validacao de autorizacao pela API; conteudo ficticio sem revisao agronomica real.",
+      "versao": 1,
+      "moderacao": {
+        "status": "aprovada",
+        "revisadoPor": {
+          "$oid": "f143382bb56503d766a8f961"
+        },
+        "revisadoEm": {
+          "$date": "2026-11-04T04:44:00.000Z"
+        },
+        "motivo": "SIMULACAO ACADEMICA BD6 - SEM eficacia agricola comprovada; SEM validacao de autorizacao pela API; moderacao simulada, nao aceite real da equipe."
+      },
+      "metodo": {
+        "tipoMedida": "biologica",
+        "descricao": "SIMULACAO ACADEMICA - exemplo educativo de controle biologico microbiano da ficha Lagarta-do-cartucho; sem produto, dose, prescricao ou aplicacao agricola real.",
+        "observacoes": "SIMULACAO ACADEMICA BD6 - SEM eficacia agricola comprovada; SEM validacao de autorizacao pela API; os exemplos da ficha nao certificam registro atual ou pertinencia de aplicacao."
+      },
+      "publicadoEm": {
+        "$date": "2026-11-04T04:44:00.000Z"
+      },
+      "criadoEm": {
+        "$date": "2026-11-04T04:43:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-04T04:44:00.000Z"
+      },
+      "_id": {
+        "$oid": "75121c4feeaa88a37ac73ff5"
+      }
+    }
+  ],
+  "adocoes_tratamento": [
+    {
+      "usuarioId": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "experienciaId": {
+        "$oid": "75121c4feeaa88a37ac73ff5"
+      },
+      "experienciaVersao": 1,
+      "ocorrenciaId": {
+        "$oid": "3d9d57554dc5c02d89055b80"
+      },
+      "metodoCopiado": {
+        "tipoMedida": "biologica",
+        "descricao": "SIMULACAO ACADEMICA - exemplo educativo de controle biologico microbiano da ficha Lagarta-do-cartucho; sem produto, dose, prescricao ou aplicacao agricola real.",
+        "observacoes": "SIMULACAO ACADEMICA BD6 - SEM eficacia agricola comprovada; SEM validacao de autorizacao pela API; os exemplos da ficha nao certificam registro atual ou pertinencia de aplicacao."
+      },
+      "planejamento": {
+        "descricao": "SIMULACAO ACADEMICA BD6 - SEM eficacia agricola comprovada; SEM validacao de autorizacao pela API; planejamento ficticio."
+      },
+      "status": "cancelada",
+      "criadoEm": {
+        "$date": "2026-11-04T04:45:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-04T04:45:30.000Z"
+      },
+      "_id": {
+        "$oid": "f25567e9231ec8caa48b43ac"
+      }
+    },
+    {
+      "usuarioId": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "experienciaId": {
+        "$oid": "75121c4feeaa88a37ac73ff5"
+      },
+      "experienciaVersao": 1,
+      "ocorrenciaId": {
+        "$oid": "3d9d57554dc5c02d89055b80"
+      },
+      "metodoCopiado": {
+        "tipoMedida": "biologica",
+        "descricao": "SIMULACAO ACADEMICA - exemplo educativo de controle biologico microbiano da ficha Lagarta-do-cartucho; sem produto, dose, prescricao ou aplicacao agricola real.",
+        "observacoes": "SIMULACAO ACADEMICA BD6 - SEM eficacia agricola comprovada; SEM validacao de autorizacao pela API; os exemplos da ficha nao certificam registro atual ou pertinencia de aplicacao."
+      },
+      "planejamento": {
+        "descricao": "SIMULACAO ACADEMICA BD6 - SEM eficacia agricola comprovada; SEM validacao de autorizacao pela API; planejamento ficticio."
+      },
+      "status": "realizada",
+      "criadoEm": {
+        "$date": "2026-11-04T04:46:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-04T04:47:00.000Z"
+      },
+      "tratamentoId": {
+        "$oid": "3ca35483a8b4aaee6c77ab75"
+      },
+      "_id": {
+        "$oid": "d17b902c0f5aaeeb5dacd8a0"
+      }
+    },
+    {
+      "usuarioId": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "experienciaId": {
+        "$oid": "75121c4feeaa88a37ac73ff5"
+      },
+      "experienciaVersao": 1,
+      "ocorrenciaId": {
+        "$oid": "3d9d57554dc5c02d89055b80"
+      },
+      "metodoCopiado": {
+        "tipoMedida": "biologica",
+        "descricao": "SIMULACAO ACADEMICA - exemplo educativo de controle biologico microbiano da ficha Lagarta-do-cartucho; sem produto, dose, prescricao ou aplicacao agricola real.",
+        "observacoes": "SIMULACAO ACADEMICA BD6 - SEM eficacia agricola comprovada; SEM validacao de autorizacao pela API; os exemplos da ficha nao certificam registro atual ou pertinencia de aplicacao."
+      },
+      "planejamento": {
+        "descricao": "SIMULACAO ACADEMICA BD6 - SEM eficacia agricola comprovada; SEM validacao de autorizacao pela API; planejamento ficticio."
+      },
+      "status": "planejada",
+      "criadoEm": {
+        "$date": "2026-11-04T04:48:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-04T04:48:00.000Z"
+      },
+      "_id": {
+        "$oid": "f5407009d4d7fef2d0d53df1"
+      }
+    }
+  ],
+  "denuncias_comunidade": []
+}

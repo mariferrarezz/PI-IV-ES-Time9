@@ -1,11 +1,11 @@
-// Executar pelo Run All. false = confer?ncia somente de leitura.
-// N?o executar aplica??o no banco principal apenas para repetir evid?ncias j? confirmadas.
+// Executar pelo Run All. false = conferência somente de leitura.
+// Não executar aplicação no banco principal apenas para repetir evidências já confirmadas.
 use('sentinela');
-const bancoDestino = 'sentinela'; // Para reprodu??o isolada: 'sentinela_testes_bd5'.
+const bancoDestino = 'sentinela'; // Para reprodução isolada: 'sentinela_testes_bd5'.
 const aplicar = false;
-if (!['sentinela', 'sentinela_testes_bd5'].includes(bancoDestino)) throw new Error('Banco n?o permitido.');
+if (!['sentinela', 'sentinela_testes_bd5'].includes(bancoDestino)) throw new Error('Banco não permitido.');
 const alvo = db.getSiblingDB(bancoDestino);
-// C?pias integrais dos 15 arquivos individuais; manter sincronizadas ao alterar o modelo.
+// Cópias integrais dos 15 arquivos individuais; manter sincronizadas ao alterar o modelo.
 const configuracoes = {
 'usuarios': {
   collMod: 'usuarios',
@@ -702,7 +702,7 @@ const configuracoes = {
 }
 };
 
-// Normaliza objetos, mas preserva a ordem dos arrays e das chaves dos ?ndices.
+// Normaliza objetos, mas preserva a ordem dos arrays e das chaves dos índices.
 function normalizar(valor) {
   if (Array.isArray(valor)) return valor.map(normalizar);
   if (valor && typeof valor === 'object') return Object.fromEntries(
@@ -720,7 +720,7 @@ const conferencias = [];
 for (const [nome, esperado] of Object.entries(configuracoes)) {
   const info = alvo.getCollectionInfos({name: nome})[0];
   if (!info || info.type !== 'collection') {
-    conferencias.push({colecao: nome, situacao: 'bloqueado: cole??o ausente ou tipo incompat?vel'});
+    conferencias.push({colecao: nome, situacao: 'bloqueado: coleção ausente ou tipo incompatível'});
     continue;
   }
   const op = info.options || {};
@@ -728,13 +728,13 @@ for (const [nome, esperado] of Object.entries(configuracoes)) {
   const schemaIgual = iguais(op.validator || {}, esperado.validator);
   const opcoesIguais = (op.validationLevel || 'strict') === esperado.validationLevel &&
     (op.validationAction || 'error') === esperado.validationAction;
-  // Usa TODAS as condi??es do validator; n?o imprime documentos nem dados pessoais.
+  // Usa TODAS as condições do validator; não imprime documentos nem dados pessoais.
   const filtro = {$nor: [esperado.validator]};
   const incompativeis = alvo.getCollection(nome).countDocuments(filtro);
   const idsIncompativeis = incompativeis ? alvo.getCollection(nome).find(filtro, {_id: 1}).limit(5).toArray() : [];
-  const situacao = incompativeis ? 'bloqueado: documentos incompat?veis' :
+  const situacao = incompativeis ? 'bloqueado: documentos incompatíveis' :
     schemaIgual && opcoesIguais ? 'igual; preservar' :
-    !temValidator && opcoesIguais ? 'sem validator; pode configurar' : 'bloqueado: configura??o divergente';
+    !temValidator && opcoesIguais ? 'sem validator; pode configurar' : 'bloqueado: configuração divergente';
   conferencias.push({colecao: nome, situacao, schemaIgual, opcoesIguais, incompativeis,
     idsIncompativeis, idsLimitadosA: 5});
 }
@@ -753,6 +753,6 @@ const verificacao = Object.entries(configuracoes).map(([nome, esperado]) => {
     (op.validationLevel || 'strict') === esperado.validationLevel &&
     (op.validationAction || 'error') === esperado.validationAction};
 });
-({banco: bancoDestino, modo: aplicar ? 'aplica??o' : 'somente leitura', bloqueado,
+({banco: bancoDestino, modo: aplicar ? 'aplicação' : 'somente leitura', bloqueado,
   conferencias, aplicados, verificacao,
-  observacao: 'Leituras n?o s?o snapshot. N?o substitui validator divergente. Em erro, parte pode ter sido aplicada; conferir antes de continuar.'});
+  observacao: 'Leituras não são snapshot. Não substitui validator divergente. Em erro, parte pode ter sido aplicada; conferir antes de continuar.'});
