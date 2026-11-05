@@ -10,90 +10,133 @@ const {createRequire} = require('node:module');
 const lib = require('./lib-bd6.cjs');
 const raiz = __dirname;
 const backend = createRequire(path.join(raiz, '../../backend/package.json'));
-const ler = n => JSON.parse(fs.readFileSync(path.join(raiz, n), 'utf8'));
-function falhar(codigo, detalhes = []) { const e = new Error(codigo); e.codigoSeguro = codigo; e.detalhesSeguros = detalhes; throw e; }
-function conferirLocal(base, dados, manifesto) {
-const todos = new Map(base.porId);
-const oid = v => v.$oid;
-const tempo = v => Date.parse(v.$date);
-for (const [arquivo, hash] of Object.entries(manifesto.arquivosPrincipaisPreservadosSha256)) {
-  assert(confereHashTexto(fs.readFileSync(lib.arquivoSeed(arquivo)), hash), arquivo);
-}
-assert.equal(base.impressao, manifesto.estadoLotePrincipal.impressaoPacotePreConferido);
-assert.equal(base.porId.size, 185);
-assert.deepEqual(Object.fromEntries(Object.entries(dados).map(([c, ds]) => [c, ds.length])), {
-  experiencias_comunidade: 4, adocoes_tratamento: 0, denuncias_comunidade: 3,
-});
-for (const [col, docs] of Object.entries(dados)) for (const doc of docs) {
-  assert(!todos.has(oid(doc._id)), 'ID repetido');
-  assert.deepEqual(lib.errosSchema(doc, base.configs[col].validator.$jsonSchema), [], col);
-  todos.set(oid(doc._id), {col, doc});
-}
-assert.deepEqual(new Set(manifesto.documentos.map(d => oid(d.idReservado))),
-  new Set(Object.values(dados).flat().map(d => oid(d._id))));
-function referencias(v) {
-  if (!v || typeof v !== 'object') return;
-  for (const [k, valor] of Object.entries(v)) {
-    if (lib.referencias[k]) for (const ref of Array.isArray(valor) ? valor : [valor]) {
-      assert.equal(todos.get(oid(ref))?.col, lib.referencias[k], k);
-    }
-    referencias(valor);
-  }
-}
-const obter = ref => todos.get(oid(ref)).doc;
-for (const doc of Object.values(dados).flat()) referencias(doc);
-for (const e of dados.experiencias_comunidade) {
-  const oc = obter(e.ocorrenciaOrigemId), pl = obter(oc.plantacaoId);
-  const prop = obter(obter(pl.talhaoId).propriedadeId), tr = obter(e.tratamentoOrigemId);
-  assert.equal(oid(prop.usuarioId), oid(e.autorId));
-  assert.equal(oid(pl.culturaId), oid(e.culturaId));
-  assert.equal(obter(e.culturaId).nome, e.culturaNome);
-  assert.equal(obter(e.autorId).nomePublico, e.nomePublico);
-  assert.equal(oc.tipo, e.tipoProblema);
-  assert.equal(oc.status, e.statusOcorrencia);
-  assert.equal(oid(tr.ocorrenciaId), oid(oc._id));
-  assert.deepEqual(e.metodo, {tipoMedida: tr.tipoMedida, descricao: tr.descricao});
-  assert(tempo(tr.dataAplicacao) <= tempo(e.criadoEm));
-  assert(tempo(e.criadoEm) <= tempo(e.atualizadoEm));
-  if (e.moderacao.revisadoEm) assert(tempo(e.criadoEm) <= tempo(e.moderacao.revisadoEm) && tempo(e.moderacao.revisadoEm) <= tempo(e.atualizadoEm));
-  if (e.publicadoEm) assert(tempo(e.criadoEm) <= tempo(e.publicadoEm) && tempo(e.publicadoEm) <= tempo(e.atualizadoEm));
-  assert.equal(e.tipoProblema, 'nao_identificado');
-  assert(!('problemaAgricolaId' in e));
-}
-for (const d of dados.denuncias_comunidade) {
-  const e = obter(d.experienciaId);
-  assert.notEqual(oid(e.autorId), oid(d.denuncianteId));
-  assert(tempo(e.publicadoEm) <= tempo(d.criadoEm));
-  assert(tempo(d.criadoEm) <= tempo(d.atualizadoEm));
-  if (d.status === 'analisada') {
-    assert(tempo(d.criadoEm) <= tempo(d.analisadoEm));
-    assert.equal(tempo(d.analisadoEm), tempo(d.atualizadoEm));
-    if (d.decisao === 'ocultar_publicacao') {
-      assert.equal(e.moderacao.status, 'oculta');
-      assert(tempo(d.criadoEm) < tempo(e.moderacao.revisadoEm));
-      assert.deepEqual(e.moderacao.revisadoPor, d.analisadoPor);
-      assert.deepEqual(e.moderacao.revisadoEm, d.analisadoEm);
-    } else assert.equal(e.moderacao.status, 'aprovada');
-  }
-}
-// Mesmo filtro parcial e mesmas chaves dos índices atuais; snapshots locais apenas.
-const campo = (d, k) => k.split('.').reduce((v, s) => v?.[s], d);
-for (const i of base.indices.filter(i => i.opcoes.unique)) {
-  const vistos = new Set();
-  for (const d of [...(base.dados[i.colecao] || []), ...(dados[i.colecao] || [])]) {
-    if (!lib.dentro(d, i.opcoes.partialFilterExpression)) continue;
-    const chave = JSON.stringify(Object.keys(i.key).map(k => campo(d, k)));
-    assert(!vistos.has(chave), i.nome); vistos.add(chave);
-  }
-}
-assert.equal(manifesto.adocoesBloqueadas.length, 3);
-assert(base.dados.problemas_agricolas.every(d => !d.ativo && d.revisaoEditorial.status === 'pendente'));
+const ler = nome => JSON.parse(fs.readFileSync(path.join(raiz, nome), 'utf8'));
+const oid = referencia => referencia.$oid;
+const tempo = data => Date.parse(data.$date);
 
+function falhar(codigo, detalhes = []) {
+  const erro = new Error(codigo);
+  erro.codigoSeguro = codigo;
+  erro.detalhesSeguros = detalhes;
+  throw erro;
+}
+
+function conferirPrincipalPreservado(base, manifesto) {
+  for (const [arquivo, hashEsperado] of Object.entries(manifesto.arquivosPrincipaisPreservadosSha256)) {
+    assert(confereHashTexto(fs.readFileSync(lib.arquivoSeed(arquivo)), hashEsperado), arquivo);
+  }
+  assert.equal(base.impressao, manifesto.estadoLotePrincipal.impressaoPacotePreConferido);
+  assert.equal(base.porId.size, 185);
+}
+
+function adicionarDocumentosLocais(base, dados, documentosPorId) {
+  for (const [col, documentos] of Object.entries(dados)) {
+    for (const doc of documentos) {
+      assert(!documentosPorId.has(oid(doc._id)), 'ID repetido');
+      assert.deepEqual(lib.errosSchema(doc, base.configs[col].validator.$jsonSchema), [], col);
+      documentosPorId.set(oid(doc._id), {col, doc});
+    }
+  }
+}
+
+function conferirReferencias(documento, documentosPorId) {
+  if (!documento || typeof documento !== 'object') return;
+  for (const [campo, valor] of Object.entries(documento)) {
+    if (lib.referencias[campo]) {
+      for (const referencia of Array.isArray(valor) ? valor : [valor]) {
+        assert.equal(documentosPorId.get(oid(referencia))?.col, lib.referencias[campo], campo);
+      }
+    }
+    conferirReferencias(valor, documentosPorId);
+  }
+}
+
+function conferirExperiencia(experiencia, obter) {
+  const ocorrencia = obter(experiencia.ocorrenciaOrigemId);
+  const plantacao = obter(ocorrencia.plantacaoId);
+  const propriedade = obter(obter(plantacao.talhaoId).propriedadeId);
+  const tratamento = obter(experiencia.tratamentoOrigemId);
+  assert.equal(oid(propriedade.usuarioId), oid(experiencia.autorId));
+  assert.equal(oid(plantacao.culturaId), oid(experiencia.culturaId));
+  assert.equal(obter(experiencia.culturaId).nome, experiencia.culturaNome);
+  assert.equal(obter(experiencia.autorId).nomePublico, experiencia.nomePublico);
+  assert.equal(ocorrencia.tipo, experiencia.tipoProblema);
+  assert.equal(ocorrencia.status, experiencia.statusOcorrencia);
+  assert.equal(oid(tratamento.ocorrenciaId), oid(ocorrencia._id));
+  assert.deepEqual(experiencia.metodo, {tipoMedida: tratamento.tipoMedida, descricao: tratamento.descricao});
+  assert(tempo(tratamento.dataAplicacao) <= tempo(experiencia.criadoEm));
+  assert(tempo(experiencia.criadoEm) <= tempo(experiencia.atualizadoEm));
+  if (experiencia.moderacao.revisadoEm) {
+    assert(tempo(experiencia.criadoEm) <= tempo(experiencia.moderacao.revisadoEm) && tempo(experiencia.moderacao.revisadoEm) <= tempo(experiencia.atualizadoEm));
+  }
+  if (experiencia.publicadoEm) {
+    assert(tempo(experiencia.criadoEm) <= tempo(experiencia.publicadoEm) && tempo(experiencia.publicadoEm) <= tempo(experiencia.atualizadoEm));
+  }
+  assert.equal(experiencia.tipoProblema, 'nao_identificado');
+  assert(!('problemaAgricolaId' in experiencia));
+}
+
+function conferirDenuncia(denuncia, obter) {
+  const experiencia = obter(denuncia.experienciaId);
+  assert.notEqual(oid(experiencia.autorId), oid(denuncia.denuncianteId));
+  assert(tempo(experiencia.publicadoEm) <= tempo(denuncia.criadoEm));
+  assert(tempo(denuncia.criadoEm) <= tempo(denuncia.atualizadoEm));
+  if (denuncia.status === 'analisada') {
+    assert(tempo(denuncia.criadoEm) <= tempo(denuncia.analisadoEm));
+    assert.equal(tempo(denuncia.analisadoEm), tempo(denuncia.atualizadoEm));
+    if (denuncia.decisao === 'ocultar_publicacao') {
+      assert.equal(experiencia.moderacao.status, 'oculta');
+      assert(tempo(denuncia.criadoEm) < tempo(experiencia.moderacao.revisadoEm));
+      assert.deepEqual(experiencia.moderacao.revisadoPor, denuncia.analisadoPor);
+      assert.deepEqual(experiencia.moderacao.revisadoEm, denuncia.analisadoEm);
+    } else {
+      assert.equal(experiencia.moderacao.status, 'aprovada');
+    }
+  }
+}
+
+function conferirUnicidadeLocal(base, dados) {
+  // Usa os filtros parciais reais, mas não substitui a restrição no servidor.
+  const campo = (documento, caminho) => caminho.split('.').reduce((valor, parte) => valor?.[parte], documento);
+  for (const indice of base.indices.filter(indice => indice.opcoes.unique)) {
+    const vistos = new Set();
+    for (const documento of [...(base.dados[indice.colecao] || []), ...(dados[indice.colecao] || [])]) {
+      if (!lib.dentro(documento, indice.opcoes.partialFilterExpression)) continue;
+      const chave = JSON.stringify(Object.keys(indice.key).map(nome => campo(documento, nome)));
+      assert(!vistos.has(chave), indice.nome);
+      vistos.add(chave);
+    }
+  }
+}
+
+function conferirLocal(base, dados, manifesto) {
+  const documentosPorId = new Map(base.porId);
+  conferirPrincipalPreservado(base, manifesto);
+  assert.deepEqual(Object.fromEntries(Object.entries(dados).map(([col, documentos]) => [col, documentos.length])), {
+    experiencias_comunidade: 4, adocoes_tratamento: 0, denuncias_comunidade: 3,
+  });
+  adicionarDocumentosLocais(base, dados, documentosPorId);
+  assert.deepEqual(new Set(manifesto.documentos.map(documento => oid(documento.idReservado))),
+    new Set(Object.values(dados).flat().map(documento => oid(documento._id))));
+
+  const obter = referencia => documentosPorId.get(oid(referencia)).doc;
+  for (const documento of Object.values(dados).flat()) conferirReferencias(documento, documentosPorId);
+  for (const experiencia of dados.experiencias_comunidade) conferirExperiencia(experiencia, obter);
+  for (const denuncia of dados.denuncias_comunidade) conferirDenuncia(denuncia, obter);
+  conferirUnicidadeLocal(base, dados);
+  // O bloqueio pertence ao manifesto histórico, anterior ao lote acadêmico de adoções.
+  assert.equal(manifesto.adocoesBloqueadas.length, 3);
+  assert(base.dados.problemas_agricolas.every(documento => !documento.ativo && documento.revisaoEditorial.status === 'pendente'));
 }
 function carregar() {
-  const base = lib.carregar(), dados = ler('comunidade-complementar-bd6.json');
+  const base = lib.carregar();
+  const dados = ler('comunidade-complementar-bd6.json');
   const manifesto = ler('manifesto-comunidade-complementar-bd6.json');
-  try { conferirLocal(base, dados, manifesto); } catch { falhar('complemento_local_incompativel'); }
+  try {
+    conferirLocal(base, dados, manifesto);
+  } catch {
+    falhar('complemento_local_incompativel');
+  }
   const combinado = {...base, dados: Object.fromEntries(Object.entries(base.dados).map(([c, ds]) => [c, [...ds, ...(dados[c] || [])]]))};
   const impressao = crypto.createHash('sha256').update(base.impressao + JSON.stringify(dados) + JSON.stringify(manifesto)).digest('hex');
   return {base, dados, manifesto, combinado, impressao};
@@ -108,6 +151,7 @@ async function preConferir(db, p, indices, session) {
     return [c, {preparados: ds.length, existentesIguais: iguais, novos: ds.length - iguais}];
   }));
   const presentes = Object.values(contagens).reduce((n, c) => n + c.existentesIguais, 0);
+  // Aceita apenas lote inteiro ausente ou inteiro idêntico; não completa estados parciais.
   if (presentes !== 0 && presentes !== 7) falhar('complemento_parcial_preservado_requer_analise', [presentes]);
   return {aprovado: true, estadoEditorialDemonstracao: principal.estadoEditorialDemonstracao, principalConferido: 185, contagens, novos: 7 - presentes, presentes, escritaExecutada: false};
 }
@@ -127,6 +171,7 @@ async function validar(db, p, indices, session) {
 async function inserir(db, p, indices, session) {
   let resultado;
   await session.withTransaction(async () => {
+    // Toda inserção depende da conferência dos pais e índices na mesma transação.
     const pre = await preConferir(db, p, indices, session);
     let inseridos = 0;
     if (pre.novos) {

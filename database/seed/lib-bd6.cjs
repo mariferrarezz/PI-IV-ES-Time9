@@ -19,7 +19,10 @@ const arquivoSeed = nome => path.join(__dirname, ...(['pesquisa-catalogo-bd6.jso
 const copiar = v => JSON.parse(JSON.stringify(v));
 const hash = s => crypto.createHash('sha256').update(s).digest('hex');
 function falhar(codigo, detalhes = []) {
-  const e = new Error(codigo); e.codigoSeguro = codigo; e.detalhesSeguros = detalhes; throw e;
+  const erro = new Error(codigo);
+  erro.codigoSeguro = codigo;
+  erro.detalhesSeguros = detalhes;
+  throw erro;
 }
 function normal(v) {
   if (Array.isArray(v)) return v.map(normal);
@@ -97,41 +100,76 @@ function conferirKeywords(s) {
   for (const k of ['oneOf', 'allOf', 'anyOf']) for (const sub of s[k] || []) conferirKeywords(sub);
   if (s.not) conferirKeywords(s.not);
 }
-function carregar() {
-  const textos = arquivos.map(n => fs.readFileSync(arquivoSeed(n), 'utf8'));
-  const [manifesto, sinteticos, catalogo, pesquisa] = textos.map(t => JSON.parse(t));
+function conferirOriginalEditorial(manifesto) {
   const original = fs.readFileSync(path.join(__dirname, 'catalogo-completo-sentinela.json'));
   if (!confereHashTexto(original, manifesto.originalEditorial.sha256)) falhar('original_editorial_alterado');
-  const codigosEditoriais = new Set(JSON.parse(original.toString('utf8')).map(d => d.codigoEditorial));
-  const configs = {};
-  for (const nome of Object.keys(sinteticos)) {
+  return new Set(JSON.parse(original.toString('utf8')).map(documento => documento.codigoEditorial));
+}
+
+function carregarValidadores(nomesColecoes) {
+  const configuracoes = {};
+  for (const nome of nomesColecoes) {
     const texto = fs.readFileSync(path.join(__dirname, '../validators/validar-' + nome + '.mongodb.js'), 'utf8');
     // Apenas o literal de configuração, nunca use() ou db.runCommand().
-    const inicio = texto.indexOf('db.runCommand('), fim = texto.lastIndexOf(');');
+    const inicio = texto.indexOf('db.runCommand(');
+    const fim = texto.lastIndexOf(');');
     if (inicio < 0 || fim <= inicio) falhar('formato_validador_divergente', [nome]);
-    configs[nome] = vm.runInNewContext('(' + texto.slice(inicio + 14, fim) + ')', {}, {timeout: 1000});
-    conferirKeywords(configs[nome].validator.$jsonSchema);
+    configuracoes[nome] = vm.runInNewContext('(' + texto.slice(inicio + 14, fim) + ')', {}, {timeout: 1000});
+    conferirKeywords(configuracoes[nome].validator.$jsonSchema);
   }
-  const indiceTexto = fs.readFileSync(path.join(__dirname, '../indexes/configurar-indices.mongodb.js'), 'utf8');
-  const ini = indiceTexto.indexOf('const indices = '), fim = indiceTexto.indexOf('\n];', ini);
-  if (ini < 0 || fim < 0) falhar('formato_indices_divergente');
-  const indices = vm.runInNewContext('(' + indiceTexto.slice(ini + 16, fim + 2) + ')', {}, {timeout: 1000});
-  if (Object.keys(configs).length !== 15 || indices.length !== 22) falhar('quantidade_configuracoes_divergente');
-  const dados = Object.fromEntries(Object.keys(configs).map(c => [c, []])), porId = new Map();
-  for (const conjunto of [sinteticos, catalogo]) for (const [col, docs] of Object.entries(conjunto)) {
-    if (!(col in dados)) falhar('colecao_nao_prevista', [col]);
-    for (const doc of docs) {
-      const anterior = porId.get(id(doc));
-      if (anterior) { if (anterior.col !== col || !igual(bson(anterior.doc), bson(doc))) falhar('id_repetido_divergente', [col, id(doc)]); }
-      else { porId.set(id(doc), {col, doc}); dados[col].push(doc); }
+  return configuracoes;
+}
+
+function carregarIndices() {
+  const texto = fs.readFileSync(path.join(__dirname, '../indexes/configurar-indices.mongodb.js'), 'utf8');
+  const inicio = texto.indexOf('const indices = ');
+  const fim = texto.indexOf('\n];', inicio);
+  if (inicio < 0 || fim < 0) falhar('formato_indices_divergente');
+  return vm.runInNewContext('(' + texto.slice(inicio + 16, fim + 2) + ')', {}, {timeout: 1000});
+}
+
+function reunirDocumentos(nomesColecoes, conjuntos) {
+  const dados = Object.fromEntries(nomesColecoes.map(nome => [nome, []]));
+  const porId = new Map();
+  for (const conjunto of conjuntos) {
+    for (const [col, documentos] of Object.entries(conjunto)) {
+      if (!(col in dados)) falhar('colecao_nao_prevista', [col]);
+      for (const doc of documentos) {
+        const anterior = porId.get(id(doc));
+        // Culturas compartilhadas podem aparecer nos dois arquivos, mas devem ser idênticas.
+        if (anterior) {
+          if (anterior.col !== col || !igual(bson(anterior.doc), bson(doc))) {
+            falhar('id_repetido_divergente', [col, id(doc)]);
+          }
+        } else {
+          porId.set(id(doc), {col, doc});
+          dados[col].push(doc);
+        }
+      }
     }
   }
+  return {dados, porId};
+}
+
+function reunirAliasesFontes(manifesto, pesquisa) {
   const aliasesFontes = {};
   for (const reg of manifesto.documentos.filter(d => d.colecao === 'fontes_conhecimento')) {
     const primarias = pesquisa.fontes.filter(f => f.alias === reg.alias || reg.alias === 'fonte_55' && f.alias === 'fonte_66');
     const novas = pesquisa.resolucaoDaSegundaPesquisa.novasFontes.filter(f => f.alias === reg.alias);
     aliasesFontes[reg.idReservado.$oid] = [...new Set([...primarias.flatMap(f => [f.urlOriginal, ...f.urlsDeVerificacao]), ...novas.flatMap(f => [f.url, f.texto])].filter(Boolean))];
   }
+  return aliasesFontes;
+}
+
+function carregar() {
+  const textos = arquivos.map(nome => fs.readFileSync(arquivoSeed(nome), 'utf8'));
+  const [manifesto, sinteticos, catalogo, pesquisa] = textos.map(texto => JSON.parse(texto));
+  const codigosEditoriais = conferirOriginalEditorial(manifesto);
+  const configs = carregarValidadores(Object.keys(sinteticos));
+  const indices = carregarIndices();
+  if (Object.keys(configs).length !== 15 || indices.length !== 22) falhar('quantidade_configuracoes_divergente');
+  const {dados, porId} = reunirDocumentos(Object.keys(configs), [sinteticos, catalogo]);
+  const aliasesFontes = reunirAliasesFontes(manifesto, pesquisa);
   const pacote = {manifesto, dados, porId, configs, indices, aliasesFontes, codigosEditoriais};
   // A impressão histórica foi registrada com os arquivos em CRLF e separador LF.
   // Canonizar cada arquivo mantém esse contrato sem depender do checkout do Git.
@@ -166,7 +204,13 @@ function conferirLocal(p) {
     for (const doc of docs) { erros.push(...errosSchema(doc, p.configs[col].validator.$jsonSchema, col + ':' + id(doc))); percorrer(doc); }
   }
   if (erros.length) falhar('schema_local_incompativel', erros.slice(0, 30));
-  const obter = ref => p.porId.get(ref.$oid).doc;
+  conferirChavesNaturais(p);
+  conferirAreasLocais(p);
+  conferirAcompanhamentoLocal(p);
+  conferirEstadoInicial(p);
+}
+
+function conferirChavesNaturais(p) {
   const chaveNatural = (col, d) => {
     const campos = {usuarios: ['firebaseUid', 'cpf'], culturas: ['nome'], problemas_agricolas: ['codigoEditorial'], fontes_conhecimento: ['url']};
     const chaves = (campos[col] || []).map(k => k + ':' + String(d[k]).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim());
@@ -180,12 +224,29 @@ function conferirLocal(p) {
       chaves.add(chave);
     }
   }
-  const dono = plantacao => obter(obter(obter(plantacao.talhaoId).propriedadeId).usuarioId);
-  for (const prop of p.dados.propriedades) {
-    const area = p.dados.talhoes.filter(t => t.propriedadeId.$oid === id(prop)).reduce((n, t) => n + numero(t.areaHa), 0);
-    if (area > numero(prop.areaTotalHa)) falhar('soma_areas_divergente', [id(prop)]);
+}
+
+function conferirAreasLocais(pacote) {
+  const obter = referencia => pacote.porId.get(referencia.$oid).doc;
+  for (const propriedade of pacote.dados.propriedades) {
+    const areaDosTalhoes = pacote.dados.talhoes
+      .filter(talhao => talhao.propriedadeId.$oid === id(propriedade))
+      .reduce((total, talhao) => total + numero(talhao.areaHa), 0);
+    if (areaDosTalhoes > numero(propriedade.areaTotalHa)) {
+      falhar('soma_areas_divergente', [id(propriedade)]);
+    }
   }
-  for (const pl of p.dados.plantacoes) if (pl.areaPlantadaHa && numero(pl.areaPlantadaHa) > numero(obter(pl.talhaoId).areaHa)) falhar('area_plantada_divergente', [id(pl)]);
+  for (const plantacao of pacote.dados.plantacoes) {
+    if (plantacao.areaPlantadaHa && numero(plantacao.areaPlantadaHa) > numero(obter(plantacao.talhaoId).areaHa)) {
+      falhar('area_plantada_divergente', [id(plantacao)]);
+    }
+  }
+}
+
+function conferirAcompanhamentoLocal(p) {
+  const obter = referencia => p.porId.get(referencia.$oid).doc;
+  // A autoria deve seguir a cadeia plantação → talhão → propriedade → usuário.
+  const dono = plantacao => obter(obter(obter(plantacao.talhaoId).propriedadeId).usuarioId);
   for (const oc of p.dados.ocorrencias) {
     const pl = obter(oc.plantacaoId);
     if (id(dono(pl)) !== oc.registradoPor.$oid) falhar('proprietario_ocorrencia_divergente', [id(oc)]);
@@ -212,6 +273,10 @@ function conferirLocal(p) {
     const oc = obter(al.contexto.id);
     if (oc.intensidade !== 'alta' || id(dono(obter(oc.plantacaoId))) !== al.usuarioId.$oid) falhar('alerta_divergente', [id(al)]);
   }
+}
+
+function conferirEstadoInicial(p) {
+  // Este lote é o snapshot original; a exceção posterior é reconhecida ao consultar o banco.
   if (p.dados.problemas_agricolas.length !== 40 || p.dados.problemas_agricolas.some(d => d.ativo !== false || d.revisaoEditorial.status !== 'pendente' || d.revisadoEm)) falhar('estado_catalogo_divergente');
   if (p.dados.problemas_agricolas.some(d => !p.codigosEditoriais.has(d.codigoEditorial)) || p.dados.problemas_agricolas.filter(d => d.tipo === 'praga').length !== 20 || p.dados.problemas_agricolas.filter(d => d.tipo === 'doenca').length !== 20) falhar('escopo_das_40_fichas_divergente');
   if (p.dados.adocoes_tratamento.length || p.dados.denuncias_comunidade.length || p.dados.experiencias_comunidade.some(d => d.moderacao.status !== 'pendente')) falhar('cenario_comunidade_ainda_nao_liberado');
@@ -359,6 +424,7 @@ async function validar(db, p, session) {
 async function inserir(db, p, indices, session) {
   let resultado;
   await session.withTransaction(async () => {
+    // Repete a pré-conferência dentro da transação antes de qualquer escrita.
     const pre = await preConferir(db, p, indices, session), criados = new Set();
     let inseridos = 0, encerramentos = 0;
     const acoes = plano(p, pre.presentes);
@@ -366,6 +432,7 @@ async function inserir(db, p, indices, session) {
       const ac = acoes[i];
       if (ac.operacao === 'inserir') {
         const lote = [];
+        // Agrupa ações consecutivas da mesma coleção sem mudar sua ordem.
         while (i < acoes.length && acoes[i].operacao === 'inserir' && acoes[i].col === ac.col) {
           if (!pre.presentes.has(id(acoes[i].doc))) lote.push(acoes[i].doc);
           i++;
@@ -376,6 +443,7 @@ async function inserir(db, p, indices, session) {
         if (!res.acknowledged || res.insertedCount !== lote.length) falhar('insercao_nao_confirmada');
         lote.forEach(d => criados.add(id(d))); inseridos += lote.length;
       } else {
+        // Encerrar históricos só pode alterar documentos criados nesta transação.
         if (!criados.has(id(ac.doc))) falhar('tentativa_de_alterar_documento_preexistente');
         const res = await db.collection(ac.col).replaceOne(bson(ac.anterior), bson(ac.doc), {session});
         if (res.matchedCount !== 1 || res.modifiedCount !== 1) falhar('encerramento_nao_confirmado');
