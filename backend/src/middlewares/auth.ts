@@ -18,14 +18,18 @@ export async function authenticate(
 ): Promise<void> {
   const header = req.headers.authorization;
   if (!header?.startsWith("Bearer ")) {
-    throw new UnauthorizedError("Token não enviado");
+    return next(new UnauthorizedError("Token não enviado"));
   }
 
+  const token = header.slice(7).trim();
+
   try {
-    const decoded = await firebaseAuth.verifyIdToken(header.slice(7));
+    const decoded = await firebaseAuth.verifyIdToken(token);
     req.user = { uid: decoded.uid, email: decoded.email };
     next();
-  } catch {
-    throw new UnauthorizedError("Token inválido ou expirado");
+  } catch (error) {
+    const { code, message } = error as { code?: string; message?: string };
+    console.error("Falha ao validar token no Firebase:", code, message);
+    next(new UnauthorizedError("Token inválido ou expirado"));
   }
 }
