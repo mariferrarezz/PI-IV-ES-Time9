@@ -19,6 +19,31 @@ const { connectDatabase, disconnectDatabase } = require("../src/config/database"
 type Repo = import("../src/modules/propriedades/propriedades.repository").PropriedadesRepository;
 type Registro = import("../src/modules/propriedades/propriedades.model").RegistroPropriedade;
 
+test("BD8 local: Bearer aparado, vazio recusado e códigos Firebase seguros", async () => {
+  const { criarAutenticacao } = require("../src/middlewares/auth");
+  let chamadas = 0, recebida = "", avancos = 0;
+  const autenticar = criarAutenticacao(async (token: string) => {
+    chamadas++; recebida = token; return {uid: "ator-ficticio"};
+  });
+  const requisicao: any = {headers: {authorization: "Bearer   token-ficticio   "}};
+  await autenticar(requisicao, {}, () => { avancos++; });
+  assert.equal(recebida, "token-ficticio");
+  assert.equal(avancos, 1);
+  assert.equal(requisicao.user.uid, "ator-ficticio");
+  for (const authorization of [undefined, "Bearer ", "Bearer    "]) {
+    await assert.rejects(autenticar({headers: {authorization}}, {}, () => {}),
+      (erro: any) => erro.statusCode === 401 && erro.code === "NAO_AUTENTICADO");
+  }
+  assert.equal(chamadas, 1); // Token vazio não chega ao verificador.
+  for (const codigo of ["app/network-error", "auth/internal-error", "auth/invalid-id-token"]) {
+    const falhar = criarAutenticacao(async () => { throw {code: codigo, message: "SEGREDO_SIMULADO"}; });
+    await assert.rejects(falhar({headers: {authorization: "Bearer ficticio"}}, {}, () => {}),
+      (erro: any) => erro.statusCode === (codigo === "auth/invalid-id-token" ? 401 : 503) &&
+        erro.code === (codigo === "auth/invalid-id-token" ? "NAO_AUTENTICADO" : "AUTENTICACAO_INDISPONIVEL") &&
+        !erro.message.includes("SEGREDO"));
+  }
+});
+
 test("BD8 local: falha no fixture registra os seis cenários interrompidos", () => {
   // Isola somente a função pura do relatório, sem carregar .env ou executar o harness.
   const fonte = fs.readFileSync(path.resolve(__dirname, "integracao-real-bd8.cjs"), "utf8");

@@ -21,9 +21,11 @@ export function criarAutenticacao(verificar: VerificarToken = token => firebaseA
   ): Promise<void> {
     const header = req.headers.authorization;
     if (!header?.startsWith("Bearer ")) throw new UnauthorizedError("Token não enviado");
+    const token = header.slice(7).trim();
+    if (!token) throw new UnauthorizedError("Token não enviado");
 
     try {
-      const decoded = await verificar(header.slice(7));
+      const decoded = await verificar(token);
       req.user = { uid: decoded.uid, email: decoded.email };
       next();
     } catch (erro) {
