@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { firebaseAuth } from "../config/firebase";
-import { UnauthorizedError } from "../shared/errors";
+import { AppError, UnauthorizedError } from "../shared/errors";
+
+export type VerificarToken = (token: string) => Promise<{ uid: string; email?: string }>;
 
 // Disponibiliza o uid do usuário logado em req.user
 declare global {
@@ -11,21 +13,26 @@ declare global {
   }
 }
 
-export async function authenticate(
-  req: Request,
-  _res: Response,
-  next: NextFunction,
-): Promise<void> {
-  const header = req.headers.authorization;
-  if (!header?.startsWith("Bearer ")) {
-    throw new UnauthorizedError("Token não enviado");
-  }
+export function criarAutenticacao(verificar: VerificarToken = token => firebaseAuth.verifyIdToken(token)) {
+  return async function authenticate(
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    const header = req.headers.authorization;
+    if (!header?.startsWith("Bearer ")) throw new UnauthorizedError("Token não enviado");
 
-  try {
-    const decoded = await firebaseAuth.verifyIdToken(header.slice(7));
-    req.user = { uid: decoded.uid, email: decoded.email };
-    next();
-  } catch {
-    throw new UnauthorizedError("Token inválido ou expirado");
-  }
+    try {
+      const decoded = await verificar(header.slice(7));
+      req.user = { uid: decoded.uid, email: decoded.email };
+      next();
+    } catch (erro) {
+      const codigo = (erro as { code?: string })?.code;
+      if (codigo === "app/network-error" || codigo === "auth/internal-error") {
+        throw new AppError(503, "Autenticação temporariamente indisponível", "AUTENTICACAO_INDISPONIVEL");
+      }
+      throw new UnauthorizedError("Token inválido ou expirado");
+    }
+  };
 }
+export const authenticate = criarAutenticacao();

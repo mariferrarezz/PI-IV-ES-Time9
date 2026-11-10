@@ -2,7 +2,7 @@
 
 ## Estado e origem das evidências
 
-Enunciado completo fornecido pelo usuário: revisão de estrutura, integridade, consultas, índices, massa BD6, integração inicial e registro dos problemas. A dependência formal é a conclusão das Issues 1–6. **A validação técnica descrita abaixo foi executada e documentada; BD7 não está totalmente concluído nem aprovado pela equipe.** Acesso dos demais integrantes, pendências de rede e aceite formal permanecem sem confirmação.
+Enunciado completo fornecido pelo usuário: revisão de estrutura, integridade, consultas, índices, massa BD6, integração inicial e registro dos problemas. A dependência formal é a conclusão das Issues 1–6. **BD7 concluído no escopo documentado, com base nos resultados existentes e na declaração de aceite do usuário em 10/11/2026.** Acesso, rede/IPs e revisão/aceite foram aprovados por declaração do usuário; não constituem nova verificação técnica.
 
 Fontes desta consolidação, lidas localmente sem repetir os testes:
 
@@ -30,8 +30,8 @@ Nesta atualização somente este documento foi alterado. Não houve acesso ao At
 | Integração inicial, quando aplicável | Driver MongoDB em Node: conexão, leitura, inserção, atualização, rejeições, exclusão e limpeza comprovadas | Atendido como integração inicial direta; não comprova API/Flutter |
 | Problemas corrigidos ou documentados | LF/CRLF já corrigido; planos, backend anterior, conteúdo simulado, codificação e limites registrados | Atendido para problemas conhecidos; não foram feitas mudanças silenciosas de modelagem |
 | Documentação atualizada | Este relatório consolida as duas execuções sem substituir as evidências BD5/BD6 | Atendido no escopo técnico |
-| Equipe revisou e aprovou | Sem confirmação | Pendente obrigatório |
-| Banco pronto para próximas etapas | Estrutura, massa e integração inicial têm resultados aprovados | Parcial para fechamento: dependências formais, acesso e aceite da equipe pendentes |
+| Equipe revisou e aprovou | Usuário declarou aprovadas as pendências de revisão/aceite em 10/11/2026 | Atendido por declaração do usuário, sem verificação independente |
+| Banco pronto para próximas etapas | Resultados técnicos existentes e declaração de aceite em 10/11/2026 | Atendido no escopo BD7 e nos limites documentados |
 
 ## Estrutura, configuração e documentos existentes
 
@@ -175,8 +175,8 @@ O avaliador local não interpreta automaticamente toda a prosa, todas as condiç
 | Fontes parcialmente confirmadas, controles e imagens | Pendências de conteúdo para disponibilização agrícola real; não bloqueiam as adoções acadêmicas autorizadas |
 | Codificação dos relatórios | Textos acentuados corrompidos, sem impedir leitura dos resultados estruturados; preservar originais e corrigir captura futura se necessário, sem repetir os testes já comprovados |
 | LF/CRLF | Problema local já corrigido e testado; dados e hashes históricos preservados |
-| Acesso e rede | Confirmar disponibilidade para demais integrantes, permissões/restrições antes informadas manualmente e identificação/necessidade dos dois IPs /32 adicionais |
-| Aceite | Revisão e aprovação reais da equipe e fechamento formal das dependências ainda pendentes |
+| Acesso e rede | Pendências aprovadas por declaração do usuário em 10/11/2026; acesso previsto somente para o usuário e sua amiga. Não houve nova inspeção de IPs/permissões |
+| Aceite | Pendências de revisão/aceite aprovadas por declaração do usuário em 10/11/2026, inclusive para o fechamento documental das dependências; não houve auditoria independente ou alteração de status externo |
 
 Não foi identificado nos relatórios erro estrutural, referência ausente persistente ou falha de CRUD que exija alterar o banco. As sete varreduras foram documentadas como limitação, sem evidência de necessidade obrigatória de novo índice. Nenhum teste foi repetido nesta consolidação.
 
@@ -204,10 +204,18 @@ Os modos remotos usam `MONGODB_URI` do processo ou leitura de `backend/.env`, se
 - [x] Integração inicial Node e 12 casos temporários aprovados; limpeza zero confirmada e reconferência dos 200 pelo fluxo.
 - [x] Problemas conhecidos documentados, sem correção estrutural adicional indicada pelos resultados disponíveis.
 - [x] Documentação consolidada com separação entre histórico, testes locais, resultados remotos e simulação acadêmica.
-- [ ] Confirmar acesso/disponibilidade da massa aos demais integrantes, permissões/restrições externas e os dois IPs /32 pendentes.
-- [ ] Confirmar fechamento formal/aceite das dependências BD1–BD6, sem presumir aprovação da modelagem.
-- [ ] Obter revisão e aprovação reais da equipe sobre o BD7 e a prontidão para desenvolvimento.
+- [x] Acesso e rede/IPs aprovados por declaração do usuário em 10/11/2026; somente ele e sua amiga acessarão o banco.
+- [x] Pendências de revisão/aceite das dependências consideradas aprovadas pelo usuário em 10/11/2026, para este fechamento documental; sem nova revisão técnica ou mudança das issues externas.
+- [x] Revisão/aceite do BD7 registrados por declaração do usuário em 10/11/2026.
 
-**Não falta repetir testes remotos ou criar índices para suprir estes resultados.** Para encerrar formalmente o BD7, faltam as confirmações de acesso/rede e aceite acima. Integração completa API/Flutter, autorização/transições e desempenho com volume representativo pertencem aos respectivos escopos futuros; não são apresentados como já comprovados nem como novas exigências desta integração inicial.
+**Não falta repetir testes remotos ou criar índices para suprir estes resultados.** As pendências de acesso/rede e aceite acima foram atendidas por declaração do usuário, sem repetir verificações técnicas. Integração completa API/Flutter, autorização/transições e desempenho com volume representativo pertencem aos respectivos escopos futuros; não são apresentados como já comprovados nem como novas exigências desta integração inicial.
 
-**Estado final desta consolidação: testes técnicos aprovados no escopo documentado; fechamento formal pendente. BD7 não marcado como totalmente concluído.**
+**Estado final: BD7 concluído no escopo documentado, com evidências técnicas existentes e aceite declarado pelo usuário em 10/11/2026.**
+
+## Declaração de aceite e fechamento documental — 10/11/2026
+
+O usuário declarou que somente ele e sua amiga acessarão o banco e considerou aprovadas as pendências de acesso dos integrantes, rede/IPs autorizados e revisão/aceite da equipe. Este registro reproduz **a declaração do usuário**: não comprova nova inspeção do Atlas, teste de acesso pela amiga, identificação técnica individual dos IPs ou reunião/revisão independente. Não se inventam nomes, datas de testes ou atas.
+
+Foram conferidos os critérios restantes nos registros existentes. Os resultados técnicos e seus limites permanecem preservados; as pendências de confirmação/aceite foram atendidas pela declaração acima. O BD7 tem estrutura, regras, referências, índices, massa, consultas e integração inicial documentados.
+
+**BD7 considerado concluído no escopo da issue neste documento**, com base nas evidências anteriores e no aceite declarado. Não houve alteração do status de issues em serviço externo. Não foram repetidos testes nem acessado o Atlas ou alteradas configurações nesta atualização. As limitações registradas continuam válidas: integração Flutter e outros endpoints não são comprovados; simulação acadêmica não equivale a revisão agronômica real.

@@ -37,13 +37,13 @@ A configuração segue os documentos técnicos:
 - [BD3 — Modelagem das coleções do MongoDB](../docs/modelagem-mongodb.md): coleções, campos, tipos, obrigatoriedade e relacionamentos.
 - [BD4 — Definição de regras, validações e índices](../docs/regras-validacoes-indices.md): regras de integridade, validações e conjunto inicial de índices na seção 8.
 
-A configuração do banco segue a BD3 e a BD4. O backend existente é uma estrutura inicial e não determina os campos ou os índices do modelo.
+A configuração do banco segue a BD3 e a BD4. O backend não determina os campos ou os índices do modelo; sua adaptação BD8 deve respeitá-los.
 
 ### Compatibilidade do backend de propriedades
 
-A conexão do backend com o Atlas não comprova que seu CRUD atende ao schema atual. O módulo em `backend/src/modules/propriedades/` ainda utiliza uma estrutura anterior:
+A conexão do backend com o Atlas não comprova CRUD. O módulo em `backend/src/modules/propriedades/` foi adaptado localmente no BD8, com testes simulados; a execução real autenticada ainda está pendente. A tabela preserva o diagnóstico **anterior ao BD8**, não a descrição do código atual. Ver [implementação e limites atuais](evidencias-bd8.md) e [guia do backend](../backend/README.md).
 
-| Aspecto | Backend atual | BD3/BD4 e validator aplicado |
+| Aspecto | Backend antes do BD8 | BD3/BD4 e validator aplicado |
 |---|---|---|
 | Responsável | Model/repository usam `ownerUid` String do Firebase | `usuarioId` ObjectId que referencia `usuarios`; resolver a identidade autenticada antes da operação |
 | Datas | `timestamps: true` cria `createdAt`/`updatedAt`; listagem ordena por `createdAt` | `criadoEm`/`atualizadoEm` obrigatórios; não há ordenação definida para essa listagem |
@@ -54,7 +54,7 @@ A conexão do backend com o Atlas não comprova que seu CRUD atende ao schema at
 | Campos gerados pelo ODM | Mongoose pode acrescentar `__v` pela configuração padrão | Objetos fechados não permitem `__v` ou outros campos adicionais |
 | Exclusão | Repository usa `findOneAndDelete`; service não confere dependentes | Conferir autorização e dependentes conforme BD3 §8.1 e BD4 §7.2 antes de permitir exclusão |
 
-Assim, o caminho atual de inserção não produz um documento compatível, e buscas por `ownerUid` não representam o vínculo por `usuarioId` dos documentos atuais. Será necessário adaptar DTO, model, repository e service em tarefa de integração, incluindo limites e regras da aplicação. Nenhuma adaptação foi feita nesta revisão. Não flexibilizar o validator para acomodar o módulo antigo nem considerar os testes diretos do BD5 testes da API. Preservar `ownerUid_1` até analisar seu uso e os dados legados; não remover esse índice automaticamente.
+Antes do BD8, a inserção não produzia um documento compatível e buscas por `ownerUid` não representavam `usuarioId`. A implementação local agora adapta DTO, model, repository e service, resolve o perfil por UID, valida área/dependentes e mantém os schemas/índices do banco intactos. Não considerar essa preparação, testes simulados ou os testes diretos BD5–BD7 como prova de CRUD real da API. O índice `ownerUid_1` permanece preservado; sua remoção não faz parte do BD8.
 
 O validador individual de `problemas_agricolas` inclui a ficha em seções separadas, até 4 chips e revisão editorial conforme BD3 §5.6 e BD4 §4.7. Permite ficha completa pendente com `ativo: false` e sem `revisadoEm`; revisão aprovada e legado sem estado editorial exigem a data. Ausência de estado no legado não aprova conteúdo pela API. Imagens são opcionais e o primeiro item é o principal. A preparação local do arquivo não comprova aplicação no Atlas: comparar configuração e documentos existentes antes de executar o Playground. Testar em banco isolado os caminhos legado/pendente/aprovada, limites e preservação de referências. O JSON em `seed/` permanece material editorial original, sem importação direta, IDs ou revisão técnica inventados; os 22 índices continuam os definidos na BD4.
 
