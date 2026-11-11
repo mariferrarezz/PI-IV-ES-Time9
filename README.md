@@ -31,7 +31,7 @@ Cada módulo em `backend/src/modules/<nome>/` segue esse padrão.
    - `MONGODB_URI`: string de conexão do MongoDB Atlas (pedir para quem administra o banco).
    - No Atlas, liberar o seu IP em **Network Access**, senão a conexão é recusada.
 2. Firebase Emulator (Auth): na raiz do repositório, rodar
-   `npx firebase emulators:start --only auth --project projeto-integrador-4-8c129`
+   `npx firebase-tools emulators:start --only auth --project projeto-integrador-4-8c129`
    e deixar o terminal aberto. A interface fica em http://127.0.0.1:4000.
 3. API: dentro de `backend/`, rodar `npm install` (só na primeira vez) e `npm run dev`.
    Teste: http://localhost:3000/health deve responder `{"status":"ok"}`.
