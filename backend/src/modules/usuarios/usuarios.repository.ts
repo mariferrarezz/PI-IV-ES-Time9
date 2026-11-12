@@ -1,3 +1,4 @@
+//Busca o perfil MongoDB pelo UID Firebase
 import mongoose, { Types } from "mongoose";
 
 export interface UsuariosRepository {

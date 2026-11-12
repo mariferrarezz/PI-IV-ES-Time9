@@ -43,9 +43,21 @@ A conexão Mongoose é única/reutilizada, inclusive por chamadas concorrentes d
 
 `PUT /propriedades/:id` atualiza parcialmente os mesmos campos e exige ao menos um. `_id`, `usuarioId`, `ownerUid`, datas, operadores e campos adicionais são recusados pelo DTO estrito; o service também valida chamadas internas. O Mongoose usa `runValidators: true`, timestamps próprios e responsável imutável. O cliente nunca escolhe o proprietário. `GET /propriedades` não impõe ordenação adicional, conforme BD3.
 
-Atualizações e exclusões fazem suas verificações na mesma transação snapshot/majority. Não reduzir área total abaixo da soma dos talhões **ativos**; a comparação numérica fica no servidor para suportar Decimal128 existentes. Exclusão física somente sem talhões, incluindo inativos. Havendo dependentes, retorna 409; arquivar por `PUT {"ativa": false}` preserva o histórico. O módulo não cria/edita talhões nem implementa outras funcionalidades agrícolas.
+Atualizações e exclusões fazem suas verificações na mesma transação snapshot/majority. Não reduzir área total abaixo da soma dos talhões **ativos**; a comparação numérica fica no servidor para suportar Decimal128 existentes. Exclusão física somente sem talhões, incluindo inativos. Havendo dependentes, retorna 409; arquivar por `PUT {"ativa": false}` preserva o histórico. O cadastro de talhões está no módulo descrito abaixo.
 
-**Concorrência:** a transação mantém consistência das operações deste módulo, mas não cria foreign keys nem bloqueia automaticamente uma inserção de talhão feita por outro escritor. O futuro módulo de talhões deve coordenar alterações no mesmo documento-pai para proteger a soma de áreas e a exclusão contra corridas; não alegar garantia sobre escritas diretas/externas. Não foi adicionado campo de trava ou alterado schema para contornar isso.
+**Concorrência:** o cadastro de talhões escreve `atualizadoEm` no mesmo documento-pai dentro da transação, coordenando cadastros concorrentes com as atualizações e exclusões de propriedades deste backend. A data avança ao menos um milissegundo para garantir uma escrita efetiva. Conflitos são tratados pelo mecanismo de repetição de transações do Mongoose. Escritores diretos/externos que não adotem essa coordenação continuam fora dessa garantia; não há foreign keys ou novos campos de trava.
+
+## Cadastro de talhões com validação Java
+
+`POST /propriedades/:propriedadeId/talhoes` exige Bearer e perfil cadastrado. O identificador do pai vem da URL; o responsável vem do perfil autenticado. Propriedade inexistente ou alheia retorna o mesmo 404. Propriedade arquivada retorna 409 `PROPRIEDADE_INATIVA`.
+
+Corpo de exemplo: `{"nome":"Talhão Norte","areaHa":2.5}`. Campos documentados: `nome` (texto, até 150 caracteres), `areaHa` (número, sem conversão de strings), `observacoes` opcional (texto aparado de 1–5000 caracteres), `ativo` opcional (booleano, padrão true). Campos adicionais, datas, IDs no corpo e tipos incompatíveis são recusados. Nome ou área omitidos seguem para o Java como campos vazios para que ele devolva os erros de obrigatoriedade; null não é aceito pelo contrato HTTP. Os campos nome/área não podem conter TAB, CR ou LF, conforme o protocolo TCP.
+
+Fluxo: estrutura/tipos → perfil e propriedade autorizada/ativa → Java → transação com nova conferência do pai → soma de áreas ativas → Mongoose/MongoDB. A soma pode ser menor ou igual à área total; ausência de área total dispensa o teto. Talhões inativos não entram na soma. Não há unicidade de nome. As validações do modelo e os validators já configurados no MongoDB permanecem ativos.
+
+Java inválido retorna 400 `ENTRADA_INVALIDA`, com `detalhes: [{"mensagem":"..."}]` para cada erro recebido. Falha de comunicação retorna 503 `JAVA_INDISPONIVEL`, sem detalhes internos. Ambas impedem qualquer escrita. Sucesso retorna 201 com o documento, incluindo vínculo, situação e datas. Falhas inesperadas continuam no error handler existente.
+
+Inicie o Java separadamente e configure `JAVA_HOST`/`JAVA_PORT` (padrões localhost/7000). O backend não inicia o Java. `npm run test:talhoes` usa HTTP real local com autenticação, Java e repositórios simulados, sem Atlas. `npm test` cobre regressões de propriedades; `npm run test:java` cobre o cliente TCP. Esses testes não comprovam transações ou concorrência em um MongoDB real, nem integração Flutter.
 
 ## Contrato HTTP e exemplos
 
@@ -102,6 +114,33 @@ Os testes locais usam HTTP loopback com verificador Firebase e repository em mem
 <a id="preparação-do-teste-real--não-executado-nesta-implementação"></a>
 
 ## Preparação e resultado do teste real
+
+### Cadastro de talhões: HTTP → Firebase → Node → Java → MongoDB
+
+O novo harness é separado dos testes BD8 de propriedades:
+
+```powershell
+# Na raiz: apenas preparação, sem conexões ou escritas.
+npm --prefix backend run test:talhoes:real
+# Com Emulator acessível e tokens sintéticos válidos na sessão:
+npm --prefix backend run test:talhoes:real -- --executar
+```
+
+São exigidos `MONGODB_URI`, `FIREBASE_PROJECT_ID`, Emulator local configurado e `BD8_TOKEN_A`/`BD8_TOKEN_B` das contas sintéticas A/B descritas abaixo. O script verifica os tokens com revogação e os perfis existentes da massa BD6. Não cria contas, perfis, coleções ou índices; não adapta permissões nem altera `.env`. Tokens podem ser carregados com `Read-Host -AsSecureString`, conforme o exemplo desta seção, sem imprimi-los ou enviá-los ao chat. São necessários Java/Javac disponíveis no PATH.
+
+Depois dos pré-requisitos, compila recursivamente os fontes Java em um subdiretório temporário exclusivo de `servidor-java/out/` e executa `sentinela.servidor.Servidor` com esse classpath. Inicia uma instância própria em porta efêmera, além de HTTP local em outra porta efêmera. Desliga somente seu processo Java para o cenário 503. HTTP usa timeout de 15 segundos; a chamada TCP mantém o prazo total de 3 segundos. Nenhum servidor preexistente é interrompido. Para compilação e execução manual, consulte [as instruções do servidor Java](../servidor-java/README.md).
+
+Reserva e registra três IDs de propriedades exclusivamente temporárias antes da inserção dos fixtures: própria (10 ha), do ator B (10 ha) e própria para concorrência (1 ha). Todo cadastro de talhão passa pela rota real, autenticação e service/repository reais. Leituras diretas confirmam persistência/ausência de gravação. Os sete cenários verificam 201, 400 com ambos os erros Java, 503, 401, 404, área insuficiente e duas criações de 0,6 ha concorrentes.
+
+Na concorrência, a instrumentação do harness faz duas leituras reais com sessões/transações separadas sobre o pai exclusivo antes de liberar as reservas reais. Isso estabelece snapshots sobrepostos: exige um conflito real com repetição da transação, respostas 201/409, um único talhão ativo e soma de 0,6 ha. Não substitui o repositório por mocks nem altera o código de produção.
+
+O `finally` aguarda as operações reais do service, recupera IDs de respostas incertas somente sob os pais novos desta rodada e registra os IDs antes de removê-los. Exclui cada talhão por ID e vínculo, depois cada propriedade por ID e marcador exclusivo, e confere ausência. Não usa exclusão por prefixo sobre registros anteriores. Falha de limpeza impede aprovação e informa IDs para conferência. Encerramento abrupto do processo ou perda de conexão pode impedir limpeza remota; o relatório não esconde essa incerteza.
+
+O relatório não imprime URI, tokens, credenciais nem erros brutos. Pré-requisitos ausentes deixam todos os cenários como **não executados**, retornam código de saída 1 com `--executar` e impedem qualquer conexão ao banco ou escrita. A tentativa de 12/11/2026 ficou bloqueada por tokens A/B ausentes; o Emulator também não estava acessível nesta sessão. Ver [registro da tentativa](../database/evidencias-talhoes-java.md). Não há comprovação real de transação/concorrência dessa tentativa.
+
+A execução posterior de 12/11/2026 superou esse bloqueio: **sete cenários reais aprovados**, incluindo concorrência com duas leituras sobrepostas e quatro tentativas de reserva. A limpeza das três propriedades e dos dois talhões exclusivos foi confirmada. Contas sintéticas A/B foram preparadas somente no Emulator, com tokens obtidos e repassados em memória. Os IDs, respostas e limites estão nas [evidências da execução real](../database/evidencias-talhoes-java.md#execução-real-aprovada--12112026). Não comprova integração Flutter.
+
+### Resultado histórico BD8 de propriedades
 
 A integração real de propriedades (API + Auth Emulator + MongoDB) teve **29 testes aprovados e limpeza confirmada**, conforme confirmação do usuário registrada nas [evidências BD8](../database/evidencias-bd8.md). As instruções abaixo descrevem a preparação para reprodução, não uma pendência de execução. O fixture direto não comprova endpoints de talhões; a rodada não comprova integração Flutter ou Firebase de produção. Não é necessário repetir os testes para documentar esse resultado.
 

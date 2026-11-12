@@ -1,3 +1,4 @@
+//Inicia o servidor
 import { app } from "./app";
 import { connectDatabase, disconnectDatabase } from "./config/database";
 import { env } from "./config/env";

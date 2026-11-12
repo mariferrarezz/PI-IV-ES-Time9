@@ -10,6 +10,10 @@
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/local.test.ts",
+    "test:talhoes": "tsx --test tests/talhoes.test.ts",
+    "test:talhoes:real": "tsx tests/integracao-real-talhoes.ts",
+    "test:java": "tsx --test tests/validacao-java.test.ts",
+    "test:java:real": "tsx --test tests/validacao-java-real.test.ts",
     "test:real": "node tests/integracao-real-bd8.cjs"
   },
   "dependencies": {

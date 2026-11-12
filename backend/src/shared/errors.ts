@@ -14,6 +14,12 @@ export class NotFoundError extends AppError {
   }
 }
 
+export class ValidacaoTalhaoError extends AppError {
+  constructor(public readonly erros: string[]) {
+    super(400, "Dados inválidos", "ENTRADA_INVALIDA");
+  }
+}
+
 export class UnauthorizedError extends AppError {
   constructor(message = "Não autenticado") {
     super(401, message, "NAO_AUTENTICADO");

@@ -11,7 +11,7 @@ Aplicativo de gestão e monitoramento de pragas e doenças em plantações, volt
 |---|---|
 | `mobile/` | App Flutter/Dart (frontend) |
 | `backend/` | API em Node + TypeScript |
-| `servidor-java/` | Servidor Java (sem Spring Boot) |
+| `servidor-java/` | [Servidor Java: pacotes, compilação e execução](servidor-java/README.md) (sem Spring Boot) |
 | `firebase.json` | Config do Firebase Auth + Emulator Suite |
 | `docs/` | Modelagem do banco, diagramas e decisões |
 | `database/` | Scripts, configuração e evidências do MongoDB Atlas |
