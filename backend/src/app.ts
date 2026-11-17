@@ -2,6 +2,8 @@ import cors from "cors";
 import express from "express";
 import { criarAutenticacao, VerificarToken } from "./middlewares/auth";
 import { errorHandler } from "./middlewares/error-handler";
+import { criarAuthRoutes } from "./modules/auth/auth.routes";
+import { AuthService, authService } from "./modules/auth/auth.service";
 import { criarPropriedadesRoutes } from "./modules/propriedades/propriedades.routes";
 import { PropriedadesService, propriedadesService } from "./modules/propriedades/propriedades.service";
 import { databaseReady } from "./config/database";
@@ -10,7 +12,7 @@ import { env } from "./config/env";
 
 // Dependências explícitas permitem testes isolados; não existe chave de ambiente para pular autenticação.
 export function criarApp(dependencias: {
-  service?: PropriedadesService; verificarToken?: VerificarToken; bancoDisponivel?: () => boolean;
+  service?: PropriedadesService; auth?: AuthService; verificarToken?: VerificarToken; bancoDisponivel?: () => boolean;
 } = {}) {
   const app = express();
   const bancoDisponivel = dependencias.bancoDisponivel || databaseReady;
@@ -26,6 +28,7 @@ export function criarApp(dependencias: {
   });
   app.use(criarAutenticacao(dependencias.verificarToken));
   app.use((_req, _res, next) => bancoDisponivel() ? next() : next(new DatabaseUnavailableError()));
+  app.use("/auth", criarAuthRoutes(dependencias.auth || authService));
   app.use("/propriedades", criarPropriedadesRoutes(dependencias.service || propriedadesService));
   app.use((_req, _res, next) => next(new NotFoundError()));
   app.use(errorHandler);

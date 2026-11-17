@@ -1,12 +1,12 @@
 import { Types } from "mongoose";
 import { AppError, NotFoundError } from "../../shared/errors";
 import { PropriedadesRepository, propriedadesRepository } from "./propriedades.repository";
-import { UsuariosRepository, usuariosRepository } from "../usuarios/usuarios.repository";
+import { AuthRepository, authRepository } from "../auth/auth.repository";
 import { atualizarPropriedadeSchema, criarPropriedadeSchema, propriedadeIdSchema } from "./propriedades.schema";
 
 export function criarPropriedadesService(
   propriedades: PropriedadesRepository = propriedadesRepository,
-  usuarios: UsuariosRepository = usuariosRepository,
+  usuarios: Pick<AuthRepository, "buscarPorFirebaseUid"> = authRepository,
 ) {
   async function usuarioDoToken(uid: string) {
     const perfil = await usuarios.buscarPorFirebaseUid(uid);
