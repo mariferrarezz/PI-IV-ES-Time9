@@ -48,3 +48,27 @@ export const cadastroSchema = z.object({
 }).strict();
 
 export type CadastroDto = z.infer<typeof cadastroSchema>;
+
+// ---------- Questionário inicial ----------
+// Valores conforme o validator de "usuarios" e a seção 4.2 das regras do banco.
+const semRepetidos = (lista: string[]) => new Set(lista).size === lista.length;
+
+export const questionarioSchema = z.object({
+  portePropriedade: z.enum(["pequena", "media", "grande"]),
+  quantidadeCulturas: z.enum(["1", "2", "3", "4_ou_mais"]),
+  // Ids vindos de GET /culturas. Pode ficar vazio se a pessoa só informar outraCultura.
+  culturasIds: z.array(z.string().regex(/^[a-f\d]{24}$/i)).max(50).refine(semRepetidos).default([]),
+  // Texto da opção "Outro". Vazio ou só espaços conta como não informado.
+  outraCultura: z.string().trim().refine(valor => [...valor].length <= 150)
+    .transform(valor => (valor === "" ? undefined : valor)).optional(),
+  // "nao_identificado" só sozinho; "pragas" e "doencas" podem vir juntos.
+  problemasFrequentes: z.array(z.enum(["pragas", "doencas", "nao_identificado"])).min(1).max(2)
+    .refine(semRepetidos)
+    .refine(lista => !lista.includes("nao_identificado") || lista.length === 1),
+  frequenciaProblemas: z.enum(["raramente", "as_vezes", "frequentemente", "sempre"]),
+  identificaProblemasSozinho: z.enum(["sim", "nao", "as_vezes"]),
+}).strict()
+  // Pelo menos uma cultura do catálogo ou a outra cultura digitada.
+  .refine(dados => dados.culturasIds.length > 0 || dados.outraCultura !== undefined, { path: ["culturasIds"] });
+
+export type QuestionarioDto = z.infer<typeof questionarioSchema>;

@@ -27,6 +27,12 @@ function repoEmMemoria() {
       perfis.push(perfil);
       return perfil;
     },
+    async salvarQuestionario(uid, questionario) {
+      const perfil = perfis.find(p => p.firebaseUid === uid && !p.questionario);
+      if (!perfil) return null;
+      perfil.questionario = questionario;
+      return perfil;
+    },
   };
   return { repo, perfis };
 }

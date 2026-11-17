@@ -10,4 +10,8 @@ export const criarAuthController = (service: AuthService = authService) => ({
   async meuPerfil(req: Request, res: Response) {
     res.json(await service.meuPerfil(req.user!.uid));
   },
+
+  async responderQuestionario(req: Request, res: Response) {
+    res.status(201).json(await service.responderQuestionario(req.user!.uid, req.body));
+  },
 });
