@@ -2,7 +2,19 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createServer, Socket } from "node:net";
 import { once } from "node:events";
-import { validarTalhaoNoJava, JavaIndisponivelError } from "../src/services/validacao-java.service";
+import { validarTalhaoNoJava, validarPropriedadeNoJava, JavaIndisponivelError } from "../src/services/validacao-java.service";
+import { codificarCampoProtocolo, decodificarCampoProtocolo } from "../src/shared/codec-validacao";
+
+test("Codec TypeScript: escapes reversíveis e erros sem conteúdo recebido", () => {
+  for (const texto of ["", "\\", "\t", "\r", "\n", "\\t", "\\r", "\\n", "\\\\", "🌱\tÁ\r\n\\n"]) {
+    const codificado = codificarCampoProtocolo(texto);
+    assert(!/[\t\r\n]/.test(codificado));
+    assert.equal(decodificarCampoProtocolo(codificado), texto);
+  }
+  for (const texto of ["\\", "\\x", "a\\q", "\t", "\r", "\n"]) {
+    assert.throws(() => decodificarCampoProtocolo(texto));
+  }
+});
 
 test("Cliente Java isolado", async t => {
   const hostAnterior = process.env.JAVA_HOST;
@@ -29,6 +41,56 @@ test("Cliente Java isolado", async t => {
   }
 
   try {
+    await t.test("aviso fragmentado é validação; resposta excessiva continua indisponível", async () => {
+      const aviso = "Existem erros adicionais não exibidos nesta resposta.";
+      await comServidor(socket => socket.once("data", () => {
+        const bytes = Buffer.from("ERRO\tÁ🌱\t" + aviso + "\r\n");
+        socket.write(bytes.subarray(0, 6));
+        setTimeout(() => socket.end(bytes.subarray(6)), 15);
+      }), async () => {
+        assert.deepEqual(await validarTalhaoNoJava("", 0), { valido: false, erros: ["Á🌱", aviso] });
+      });
+      await comServidor(socket => socket.once("data", () => socket.end("ERRO\t" + "x".repeat(65530) + "\r\n")), async () => {
+        await assert.rejects(validarTalhaoNoJava("", 0), JavaIndisponivelError);
+      });
+    });
+    await t.test("propriedade: sete partes, escapes, marcador e resposta fragmentada", async () => {
+      const capturados: string[][] = [];
+      await comServidor(socket => {
+        let recebido = "";
+        socket.setEncoding("utf8");
+        socket.on("data", trecho => {
+          recebido += trecho;
+          if (!recebido.endsWith("\n")) return;
+          const partes = recebido.slice(0, -1).split("\t");
+          assert.equal(partes.length, 7);
+          capturados.push(partes.map(decodificarCampoProtocolo));
+          socket.write("O"); setTimeout(() => socket.end("K\n"), 10);
+        });
+      }, async () => {
+        for (const obs of [undefined, "", "Obs\\n\t\r\nFim"]) {
+          assert.deepEqual(await validarPropriedadeNoJava("Nome\\t\tA", "Cidade\r\nB", "SP", undefined, obs),
+            { valido: true, erros: [] });
+        }
+      });
+      assert.deepEqual(capturados, [
+        ["VALIDAR_PROPRIEDADE", "Nome\\t\tA", "Cidade\r\nB", "SP", "", "0", ""],
+        ["VALIDAR_PROPRIEDADE", "Nome\\t\tA", "Cidade\r\nB", "SP", "", "1", ""],
+        ["VALIDAR_PROPRIEDADE", "Nome\\t\tA", "Cidade\r\nB", "SP", "", "1", "Obs\\n\t\r\nFim"],
+      ]);
+    });
+    await t.test("propriedade rejeita fechamento, protocolo inválido e excesso de resposta", async () => {
+      for (const resposta of ["", "OK", "ECO\n", "x".repeat(65537)]) {
+        await comServidor(socket => socket.once("data", () => socket.end(resposta)), async () => {
+          await assert.rejects(validarPropriedadeNoJava("Nome", "Cidade", "SP"), JavaIndisponivelError);
+        });
+      }
+    });
+    await t.test("propriedade: timeout total", async () => {
+      await comServidor(() => {}, async () => {
+        await assert.rejects(validarPropriedadeNoJava("Nome", "Cidade", "SP"), JavaIndisponivelError);
+      });
+    });
     await t.test("campos vazios e resultados tipados", async () => {
       const pedidos: string[] = [];
       const respostas = ["OK\n", "ERRO\tNome obrigatório\tÁrea inválida\n", "ERRO\tÁrea obrigatória\n"];

@@ -14,13 +14,15 @@ type ObjectId = mongo.ObjectId;
 
 // Não importa a aplicação nem conecta serviços antes dos pré-requisitos.
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
+const comPut = process.argv.includes("--com-put");
 const nomes = ["Válido e persistido", "Nome vazio e área zero", "Java indisponível",
-  "Sem token", "Propriedade de outro usuário", "Área insuficiente", "Concorrência sem excesso"];
+  "Sem token", "Propriedade de outro usuário", "Área insuficiente", "Concorrência sem excesso",
+  ...(comPut ? ["PUT preserva campos", "PUT alterado durante Java", "PUT redução concorrente com talhão", "PUT idempotente concorrente com talhão"] : [])];
 const casos = nomes.map(nome => ({ nome, estado: "não executado", status: [] as number[] }));
 const rodada = randomUUID();
 const executar = process.argv.includes("--executar");
 const preRequisitos: string[] = [];
-if (process.argv.slice(2).some(arg => arg !== "--executar")) preRequisitos.push("ARGUMENTO_INVALIDO");
+if (process.argv.slice(2).some(arg => !["--executar", "--com-put"].includes(arg))) preRequisitos.push("ARGUMENTO_INVALIDO");
 for (const chave of ["MONGODB_URI", "FIREBASE_PROJECT_ID", "BD8_TOKEN_A", "BD8_TOKEN_B"]) {
   if (!process.env[chave]) preRequisitos.push(`${chave}_AUSENTE`);
 }
@@ -30,6 +32,7 @@ if (!/^(localhost|127\.0\.0\.1):\d+$/.test(process.env.FIREBASE_AUTH_EMULATOR_HO
 
 const propriedades: ObjectId[] = [];
 const talhoes = new Map<string, ObjectId>();
+const nomesFixtures = new Map<string, Set<string>>();
 let banco: Db | undefined;
 let api: Server | undefined;
 let java: ChildProcess | undefined;
@@ -44,6 +47,18 @@ let alvoConcorrente: string | undefined;
 let liberarConcorrentes: (() => void) | undefined;
 let timerConcorrencia: NodeJS.Timeout | undefined;
 let barreira: Promise<void> | undefined;
+let alvoPut: string | undefined;
+let barreiraPut: Promise<void> | undefined;
+let liberarPut: (() => void) | undefined;
+let timerPut: NodeJS.Timeout | undefined;
+let depoisJava: (() => Promise<void>) | undefined;
+const concorrenciaPut = { leiturasSobrepostas: 0, tentativasPut: 0, tentativasTalhao: 0 };
+
+async function sincronizarPut() {
+  concorrenciaPut.leiturasSobrepostas++;
+  if (concorrenciaPut.leiturasSobrepostas === 2) { clearTimeout(timerPut); liberarPut!(); }
+  await barreiraPut;
+}
 const motivos = [...preRequisitos];
 const interromper = new AbortController();
 const aoSinal = () => interromper.abort();
@@ -151,9 +166,36 @@ async function principal() {
     const { criarTalhoesService } = await import("../src/modules/talhoes/talhoes.service");
     const { talhoesRepository } = await import("../src/modules/talhoes/talhoes.repository");
     const { PropriedadeModel } = await import("../src/modules/propriedades/propriedades.model");
+    const { criarPropriedadesService } = await import("../src/modules/propriedades/propriedades.service");
+    const { propriedadesRepository } = await import("../src/modules/propriedades/propriedades.repository");
+    const { usuariosRepository } = await import("../src/modules/usuarios/usuarios.repository");
+    const { validarPropriedadeNoJava } = await import("../src/services/validacao-java.service");
+    const servicePropriedades = criarPropriedadesService({
+      ...propriedadesRepository,
+      async buscarParaAtualizacao(id, usuarioId, session) {
+        const doc = await propriedadesRepository.buscarParaAtualizacao(id, usuarioId, session);
+        if (session && String(id) === alvoPut) {
+          concorrenciaPut.tentativasPut++;
+          if (concorrenciaPut.leiturasSobrepostas < 2) { assert(doc); await sincronizarPut(); }
+        }
+        return doc;
+      },
+    }, usuariosRepository, async (...campos) => {
+      const resultado = await validarPropriedadeNoJava(...campos);
+      const alterar = depoisJava; depoisJava = undefined;
+      if (alterar) await alterar();
+      return resultado;
+    });
     const talhoesService = criarTalhoesService({
       ...talhoesRepository,
       async reservarPropriedade(id, usuarioId, session) {
+        if (String(id) === alvoPut) {
+          concorrenciaPut.tentativasTalhao++;
+          if (concorrenciaPut.leiturasSobrepostas < 2) {
+            assert(await PropriedadeModel.findOne({ _id: id, usuarioId }, null, { session }).lean().exec());
+            await sincronizarPut();
+          }
+        }
         if (String(id) === alvoConcorrente) {
           concorrencia.tentativasDeReserva++;
           if (concorrencia.leiturasSobrepostas < 2) {
@@ -171,7 +213,14 @@ async function principal() {
       },
     });
     // Todas as dependências são reais; a API escuta somente em porta efêmera local.
-    api = criarApp({ talhoesService: {
+    api = criarApp({ service: { ...servicePropriedades,
+      atualizar(...args: Parameters<typeof servicePropriedades.atualizar>) {
+        const operacao = servicePropriedades.atualizar(...args);
+        operacoes.add(operacao);
+        void operacao.then(() => operacoes.delete(operacao), () => operacoes.delete(operacao));
+        return operacao;
+      },
+    }, talhoesService: {
       criar(...args: Parameters<typeof talhoesService.criar>) {
         const operacao = talhoesService.criar(...args);
         operacoes.add(operacao);
@@ -192,6 +241,7 @@ async function principal() {
     console.log(JSON.stringify({ evento: "ids_propriedades_reservados", rodada, ids: propriedades.map(String) }));
     escritasIniciadas = true;
     for (const [i, id] of propriedades.entries()) {
+      nomesFixtures.set(String(id), new Set([`TEMP TALHOES ${rodada} ${i}`]));
       await propCol.insertOne({ _id: id, usuarioId: perfis[i === 1 ? 1 : 0],
         nome: `TEMP TALHOES ${rodada} ${i}`, municipio: "Município fictício", estado: "SP",
         areaTotalHa: i === 2 ? 1 : 10, ativa: true, criadoEm: new Date(), atualizadoEm: new Date() });
@@ -293,6 +343,73 @@ async function principal() {
       assert(salvos.reduce((total, salvo) => total + salvo.areaHa, 0) <= 1);
       return respostas.map(r => r.status);
     });
+    async function put(id: ObjectId, corpo: Record<string, unknown>) {
+      interromper.signal.throwIfAborted();
+      if (typeof corpo.nome === "string") nomesFixtures.get(String(id))!.add(corpo.nome);
+      const r = await fetch(`${url}/propriedades/${id}`, { method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${tokens[0]}` },
+        body: JSON.stringify(corpo), signal: AbortSignal.any([interromper.signal, AbortSignal.timeout(15000)]),
+      });
+      return { status: r.status, dados: await r.json() as Record<string, any> };
+    }
+    function prepararSobreposicaoPut() {
+      alvoPut = String(propriedades[0]);
+      concorrenciaPut.leiturasSobrepostas = 0; concorrenciaPut.tentativasPut = 0; concorrenciaPut.tentativasTalhao = 0;
+      barreiraPut = new Promise<void>((resolve, reject) => {
+        liberarPut = resolve; timerPut = setTimeout(() => reject(new Error("SEM_SOBREPOSICAO_PUT")), 5000);
+      });
+      void barreiraPut.catch(() => {});
+    }
+    if (comPut) {
+      await caso(7, async () => {
+        const antes = await propCol.findOne({ _id: propriedades[0] }); assert(antes);
+        const r = await put(propriedades[0], { nome: `TEMP TALHOES ${rodada} PUT` });
+        assert.equal(r.status, 200);
+        const depois = await propCol.findOne({ _id: propriedades[0] }); assert(depois);
+        for (const campo of ["usuarioId", "municipio", "estado", "areaTotalHa", "ativa", "criadoEm"]) {
+          assert.deepEqual(depois[campo], antes[campo]);
+        }
+        assert.equal(Object.hasOwn(depois, "observacoes"), Object.hasOwn(antes, "observacoes"));
+        return [r.status];
+      });
+      await caso(8, async () => {
+        const antes = await propCol.findOne({ _id: propriedades[0] }); assert(antes);
+        depoisJava = async () => {
+          // Alteração concorrente explícita, sem mudar a data: testa a guarda de conteúdo.
+          await propCol.updateOne({ _id: propriedades[0], usuarioId: perfis[0] }, { $set: { observacoes: `Concorrente ${rodada}` } });
+        };
+        const r = await put(propriedades[0], { nome: `TEMP TALHOES ${rodada} NAO_GRAVAR` });
+        assert.equal(r.status, 409); assert.equal(r.dados.codigo, "PROPRIEDADE_ALTERADA");
+        const depois = await propCol.findOne({ _id: propriedades[0] }); assert(depois);
+        assert.equal(depois.nome, antes.nome); assert.deepEqual(depois.atualizadoEm, antes.atualizadoEm);
+        assert.equal(depois.observacoes, `Concorrente ${rodada}`);
+        return [r.status];
+      });
+      for (const [indice, idempotente] of [[9, false], [10, true]] as const) {
+        await caso(indice, async () => {
+          prepararSobreposicaoPut();
+          const atual = await propCol.findOne({ _id: propriedades[0] }); assert(atual);
+          const pendentes = await Promise.allSettled([
+            put(propriedades[0], idempotente ? { ativa: atual.ativa } : { areaTotalHa: 3 }),
+            post(propriedades[0], { nome: `Concorrente PUT ${indice}`, areaHa: idempotente ? 0.1 : 0.6 }),
+          ]);
+          const respostas = pendentes.map(r => { assert.equal(r.status, "fulfilled"); return (r as PromiseFulfilledResult<{ status: number; dados: Record<string, any> }>).value; });
+          assert.equal(concorrenciaPut.leiturasSobrepostas, 2);
+          assert(concorrenciaPut.tentativasPut + concorrenciaPut.tentativasTalhao >= 3);
+          if (idempotente) assert.deepEqual(respostas.map(r => r.status), [200, 201]);
+          else {
+            assert([[200, 409], [409, 201]].some(status => status.every((s, i) => respostas[i].status === s)));
+            assert.equal(respostas.find(r => r.status === 409)!.dados.codigo, "AREA_INSUFICIENTE");
+          }
+          const pai = await propCol.findOne({ _id: propriedades[0] }); assert(pai);
+          const filhos = await talhaoCol.find({ propriedadeId: propriedades[0], ativo: true }).toArray();
+          assert(filhos.reduce((total, doc) => total + doc.areaHa, 0) <= pai.areaTotalHa);
+          console.log(JSON.stringify({ evento: "concorrencia_put", rodada, idempotente, ...concorrenciaPut }));
+          alvoPut = undefined;
+          return respostas.map(r => r.status);
+        });
+      }
+    }
     aprovado = true;
   } catch {
     // Nunca imprima erro, URI, tokens, credenciais ou stack do SDK/driver.
@@ -300,6 +417,7 @@ async function principal() {
   } finally {
     liberarConcorrentes?.();
     clearTimeout(timerConcorrencia);
+    liberarPut?.(); clearTimeout(timerPut);
     try {
       if (api) {
         await new Promise<void>((resolve, reject) => api!.close(erro => erro ? reject(erro) : resolve()));
@@ -318,7 +436,8 @@ async function principal() {
         }
         assert.equal(await banco.collection("talhoes").countDocuments({ propriedadeId: { $in: propriedades } }), 0);
         for (const [i, id] of propriedades.entries()) {
-          await banco.collection("propriedades").deleteOne({ _id: id, nome: `TEMP TALHOES ${rodada} ${i}` });
+          await banco.collection("propriedades").deleteOne({ _id: id,
+            nome: { $in: [...(nomesFixtures.get(String(id)) ?? new Set([`TEMP TALHOES ${rodada} ${i}`]))] } });
         }
         assert.equal(await banco.collection("propriedades").countDocuments({ _id: { $in: propriedades } }), 0);
       }
@@ -342,6 +461,7 @@ void principal().finally(() => {
       confirmada: limpezaConfirmada || !escritasIniciadas, incerteza },
     idsPropriedades: propriedades.map(String), idsTalhoes: [...talhoes.keys()],
     concorrencia,
+    concorrenciaPut: comPut ? concorrenciaPut : undefined,
     limite: "Não comprova Flutter; pré-requisitos ausentes não executam cenários nem transações.",
   }, null, 2));
   if (executar && (!aprovado || !limpezaConfirmada || motivos.length)) process.exitCode = 1;

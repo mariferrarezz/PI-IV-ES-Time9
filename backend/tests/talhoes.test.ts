@@ -179,3 +179,23 @@ test("Modelo de talhão mantém restrições documentadas", () => {
   assert.equal(TalhaoModel.schema.options.autoIndex, false);
   assert.equal(TalhaoModel.schema.options.strict, "throw");
 });
+
+test("Schema e modelo contam pontos de código do nome original sem normalização", () => {
+  const { criarTalhaoSchema } = require("../src/modules/talhoes/talhoes.schema") as typeof import("../src/modules/talhoes/talhoes.schema");
+  const { TalhaoModel } = require("../src/modules/talhoes/talhoes.model") as typeof import("../src/modules/talhoes/talhoes.model");
+  for (const nome of ["A", "a".repeat(150), "  Talhão 2 – Norte!  ", " " + "a".repeat(148) + " ",
+    "🌱".repeat(150), "e\u0301".repeat(75)]) {
+    const dados = criarTalhaoSchema.parse({ nome, areaHa: 1 });
+    assert.equal(dados.nome, nome);
+    const documento = new TalhaoModel({ ...dados, propriedadeId: new Types.ObjectId() });
+    assert.equal(documento.nome, nome);
+    assert.equal(documento.validateSync(), undefined);
+  }
+  for (const nome of ["a".repeat(151), " " + "a".repeat(149) + " ", "🌱".repeat(151), "e\u0301".repeat(75) + "a"]) {
+    assert.equal(criarTalhaoSchema.safeParse({ nome, areaHa: 1 }).success, false);
+    assert(new TalhaoModel({ nome, areaHa: 1, propriedadeId: new Types.ObjectId() }).validateSync());
+  }
+  for (const nome of [null, "", "   ", "\u00a0\u2003\uFEFF"]) {
+    assert(new TalhaoModel({ nome, areaHa: 1, propriedadeId: new Types.ObjectId() }).validateSync());
+  }
+});
