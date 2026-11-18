@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
-import { AppError } from "../../shared/errors";
+import { AppError, ValidacaoJavaError } from "../../shared/errors";
+import { validarQuestionarioNoJava } from "../../services/validacao-java.service";
 import { TERMOS_VERSAO_VIGENTE } from "../../config/termos";
 import { QUESTIONARIO_VERSAO_VIGENTE } from "../../config/questionario";
 import { CulturasRepository, culturasRepository } from "../catalogo/culturas.repository";
@@ -33,6 +34,7 @@ function paraResposta(perfil: PerfilUsuario) {
 export function criarAuthService(
   usuarios: AuthRepository = authRepository,
   culturas: Pick<CulturasRepository, "contarAtivas"> = culturasRepository,
+  java: { validarQuestionario: typeof validarQuestionarioNoJava } = { validarQuestionario: validarQuestionarioNoJava },
 ) {
   return {
     async cadastrar(uid: string, entrada: unknown) {
@@ -67,6 +69,19 @@ export function criarAuthService(
       if (!perfil) throw perfilNaoEncontrado();
       if (perfil.questionario) throw questionarioJaRespondido();
 
+      // O Java valida as respostas antes de gravar. Se estiver desligado: 503 JAVA_INDISPONIVEL.
+      const concluidoEm = new Date();
+      const validacao = await java.validarQuestionario({
+        portePropriedade: dados.portePropriedade,
+        quantidadeCulturas: dados.quantidadeCulturas,
+        culturasIds: dados.culturasIds,
+        ...(dados.outraCultura !== undefined ? { outraCultura: dados.outraCultura } : {}),
+        problemasFrequentes: dados.problemasFrequentes,
+        frequenciaProblemas: dados.frequenciaProblemas,
+        identificaProblemasSozinho: dados.identificaProblemasSozinho,
+      }, { versao: QUESTIONARIO_VERSAO_VIGENTE, concluidoEm });
+      if (!validacao.valido) throw new ValidacaoJavaError(validacao.erros);
+
       const culturasIds = dados.culturasIds.map(id => new Types.ObjectId(id));
       if (await culturas.contarAtivas(culturasIds) !== culturasIds.length) {
         throw new AppError(400, "Cultura inexistente ou indisponível", "CULTURA_INDISPONIVEL");
@@ -81,7 +96,7 @@ export function criarAuthService(
         problemasFrequentes: dados.problemasFrequentes,
         frequenciaProblemas: dados.frequenciaProblemas,
         identificaProblemasSozinho: dados.identificaProblemasSozinho,
-        concluidoEm: new Date(),
+        concluidoEm,
       });
       // Outro envio gravou primeiro (corrida entre a busca e a gravação).
       if (!atualizado) throw questionarioJaRespondido();

@@ -13,6 +13,7 @@ const { criarApp } = require("../src/app") as typeof import("../src/app");
 const { criarAuthService } = require("../src/modules/auth/auth.service") as typeof import("../src/modules/auth/auth.service");
 const { criarCulturasService } = require("../src/modules/catalogo/culturas.service") as typeof import("../src/modules/catalogo/culturas.service");
 const { questionarioSchema } = require("../src/modules/auth/auth.schema") as typeof import("../src/modules/auth/auth.schema");
+const { JavaIndisponivelError } = require("../src/services/validacao-java.service") as typeof import("../src/services/validacao-java.service");
 type Repo = import("../src/modules/auth/auth.repository").AuthRepository;
 type Perfil = import("../src/modules/auth/auth.repository").PerfilUsuario;
 type CulturasRepo = import("../src/modules/catalogo/culturas.repository").CulturasRepository;
@@ -55,10 +56,22 @@ function repoEmMemoria() {
   return { repo, perfis };
 }
 
-async function iniciarApi(repo: Repo) {
+type ValidarQuestionario = typeof import("../src/services/validacao-java.service").validarQuestionarioNoJava;
+// Java simulado: aprova tudo e guarda o que recebeu. Os testes com o Java real ficam em questionario-java-real.test.ts.
+function javaSimulado(resultado: Awaited<ReturnType<ValidarQuestionario>> | Error = { valido: true, erros: [] }) {
+  const chamadas: Parameters<ValidarQuestionario>[] = [];
+  const validarQuestionario: ValidarQuestionario = async (...args) => {
+    chamadas.push(args);
+    if (resultado instanceof Error) throw resultado;
+    return resultado;
+  };
+  return { java: { validarQuestionario }, chamadas };
+}
+
+async function iniciarApi(repo: Repo, java = javaSimulado().java) {
   const culturas = culturasEmMemoria();
   const app = criarApp({
-    auth: criarAuthService(repo, culturas),
+    auth: criarAuthService(repo, culturas, java),
     culturas: criarCulturasService(culturas),
     // Token fictício: "token-<uid>" autentica o usuário <uid>.
     verificarToken: async token => {
@@ -197,9 +210,54 @@ test("POST /auth/questionario devolve 409 se outro envio gravou primeiro (corrid
     async buscarPorFirebaseUid() { return perfil; },
     async criar() { throw new Error("não usado"); },
     async salvarQuestionario() { return null; },
-  }, culturasEmMemoria());
+  }, culturasEmMemoria(), javaSimulado().java);
   await assert.rejects(corrida.responderQuestionario("uid-maria", respostas),
     (erro: any) => erro.statusCode === 409 && erro.code === "QUESTIONARIO_JA_RESPONDIDO");
+});
+
+test("POST /auth/questionario passa pelo Java antes de gravar", async () => {
+  // Java recebe as respostas, a versão vigente e a mesma data que vai para o banco.
+  {
+    const { repo, perfis } = repoEmMemoria();
+    const simulado = javaSimulado();
+    const api = await iniciarApi(repo, simulado.java);
+    try {
+      await api.chamar("POST", "/auth/cadastro", "token-uid-maria", cadastro);
+      assert.equal((await api.chamar("POST", "/auth/questionario", "token-uid-maria", respostas)).status, 201);
+      assert.equal(simulado.chamadas.length, 1);
+      const [enviado, metadados] = simulado.chamadas[0];
+      assert.deepEqual(enviado.culturasIds, respostas.culturasIds);
+      assert.equal(enviado.outraCultura, undefined);
+      assert.equal(metadados.versao, "1.0");
+      assert.equal(metadados.concluidoEm.getTime(), perfis[0].questionario!.concluidoEm.getTime());
+    } finally { await api.fechar(); }
+  }
+  // Java recusa: 400 com as mensagens dele e nada é gravado.
+  {
+    const { repo, perfis } = repoEmMemoria();
+    const api = await iniciarApi(repo, javaSimulado({ valido: false, erros: ["Mensagem do Java."] }).java);
+    try {
+      await api.chamar("POST", "/auth/cadastro", "token-uid-maria", cadastro);
+      const resposta = await api.chamar("POST", "/auth/questionario", "token-uid-maria", respostas);
+      assert.equal(resposta.status, 400);
+      const corpo = await resposta.json();
+      assert.equal(corpo.codigo, "ENTRADA_INVALIDA");
+      assert.deepEqual(corpo.detalhes, [{ mensagem: "Mensagem do Java." }]);
+      assert.equal(perfis[0].questionario, undefined);
+    } finally { await api.fechar(); }
+  }
+  // Java desligado: 503 e nada é gravado.
+  {
+    const { repo, perfis } = repoEmMemoria();
+    const api = await iniciarApi(repo, javaSimulado(new JavaIndisponivelError()).java);
+    try {
+      await api.chamar("POST", "/auth/cadastro", "token-uid-maria", cadastro);
+      const resposta = await api.chamar("POST", "/auth/questionario", "token-uid-maria", respostas);
+      assert.equal(resposta.status, 503);
+      assert.equal((await resposta.json()).codigo, "JAVA_INDISPONIVEL");
+      assert.equal(perfis[0].questionario, undefined);
+    } finally { await api.fechar(); }
+  }
 });
 
 test("Modelo com questionário respeita o validator da coleção usuarios", async () => {
