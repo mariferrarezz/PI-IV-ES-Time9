@@ -27,6 +27,11 @@ export interface Questionario {
 
 export type NovoPerfil = Pick<PerfilUsuario, "firebaseUid" | "nomeCompleto" | "cpf" | "telefone" | "termos">;
 
+// O que propriedades e talhões precisam: achar o _id do usuário logado.
+export interface BuscaPerfilPorUid {
+  buscarPorFirebaseUid(uid: string): Promise<{ _id: Types.ObjectId } | null>;
+}
+
 export interface AuthRepository {
   buscarPorFirebaseUid(uid: string): Promise<PerfilUsuario | null>;
   criar(dados: NovoPerfil): Promise<PerfilUsuario>;

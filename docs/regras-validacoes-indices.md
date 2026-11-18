@@ -65,7 +65,11 @@ Campos opcionais continuam opcionais; os limites se aplicam quando forem preench
 | Versão dos termos ou questionário | 1 a 30 caracteres |
 | Safra | 1 a 30 caracteres |
 
-O backend remove espaços nas extremidades dos textos de entrada e rejeita conteúdo vazio. Exceção: `publicId` deve preservar integralmente o valor retornado pelo Cloudinary, sem trim ou outra transformação, conforme a seção 3.6. Nomes de pessoas não devem ser limitados somente a letras sem acentos.
+O backend remove espaços nas extremidades dos textos de entrada e rejeita conteúdo vazio. Exceções: `publicId` deve preservar integralmente o valor retornado pelo Cloudinary, sem trim ou outra transformação, conforme a seção 3.6; o nome do talhão também preserva o valor original recebido, conforme a regra abaixo. Nomes de pessoas não devem ser limitados somente a letras sem acentos.
+
+Para `talhoes.nome`, o limite permanece **1 a 150 pontos de código Unicode sobre o valor original**, incluindo espaços externos e internos. Não aparar nem normalizar o texto. Nome ausente, vazio ou composto somente por espaços é inválido; nesse caso o Java retorna apenas a mensagem de obrigatoriedade para o nome, mesmo que haja mais de 150 espaços. Java e JavaScript reconhecem espaços ASCII e Unicode, incluindo separadores e BOM, sem modificar o campo. Acentos, números e pontuação são permitidos, sem filtro semântico. O protocolo por linha continua proibindo TAB, CR e LF dentro dos campos.
+
+A contagem usa `String.codePointCount` no Java, `[...valor].length` no backend e os limites de comprimento Unicode do `$jsonSchema` no MongoDB. Não contar bytes UTF-8, unidades UTF-16 ou grafemas: `🌱` conta 1; `á` pré-composto conta 1; `a` seguido de acento combinante conta 2. Os textos não são normalizados para igualar essas representações. O schema HTTP mantém tipos e limite máximo; o Java aplica obrigatoriedade e limite do nome; Mongoose e MongoDB mantêm as validações de integridade existentes.
 
 #### 3.3.1 Limites específicos dos campos
 

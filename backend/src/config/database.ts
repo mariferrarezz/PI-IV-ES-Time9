@@ -1,3 +1,4 @@
+//	Gerencia a conexão com o MongoDB.
 import mongoose from "mongoose";
 import { env } from "./env";
 import { DatabaseUnavailableError } from "../shared/errors";

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import { ZodError } from "zod";
-import { AppError } from "../shared/errors";
+import { AppError, ValidacaoTalhaoError, ValidacaoPropriedadeError } from "../shared/errors";
 
 export function errorHandler(
   err: unknown,
@@ -9,6 +9,11 @@ export function errorHandler(
   res: Response,
   _next: NextFunction,
 ): void {
+  if (err instanceof ValidacaoTalhaoError || err instanceof ValidacaoPropriedadeError) {
+    res.status(err.statusCode).json({ erro: err.message, codigo: err.code,
+      detalhes: err.erros.map(mensagem => ({ mensagem })) });
+    return;
+  }
   if (err instanceof AppError) {
     res.status(err.statusCode).json({ erro: err.message, codigo: err.code });
     return;

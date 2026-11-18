@@ -1,12 +1,27 @@
 import mongoose, { ClientSession, Types } from "mongoose";
 import { PropriedadeModel, RegistroPropriedade } from "./propriedades.model";
 import { AtualizarPropriedadeDto, CriarPropriedadeDto } from "./propriedades.schema";
+import { ControleAtualizacao, condicaoImagem } from "./propriedades.atualizacao";
+
+export type RegistroAtualizacao = {
+  _id: Types.ObjectId;
+  usuarioId: Types.ObjectId;
+  nome: string;
+  municipio: string;
+  estado: string;
+  observacoes?: string;
+  ativa: boolean;
+  criadoEm: Date;
+  atualizadoEm: Date;
+  areaTotalHa?: number | mongoose.mongo.Long | mongoose.mongo.Decimal128;
+};
 
 export interface PropriedadesRepository {
   criar(usuarioId: Types.ObjectId, dados: CriarPropriedadeDto): Promise<RegistroPropriedade>;
   listarPorUsuario(usuarioId: Types.ObjectId): Promise<RegistroPropriedade[]>;
   buscarPorId(id: Types.ObjectId, usuarioId: Types.ObjectId, session?: ClientSession): Promise<RegistroPropriedade | null>;
-  atualizar(id: Types.ObjectId, usuarioId: Types.ObjectId, dados: AtualizarPropriedadeDto, session: ClientSession): Promise<RegistroPropriedade | null>;
+  buscarParaAtualizacao(id: Types.ObjectId, usuarioId: Types.ObjectId, session?: ClientSession): Promise<RegistroAtualizacao | null>;
+  atualizar(id: Types.ObjectId, usuarioId: Types.ObjectId, dados: AtualizarPropriedadeDto, session: ClientSession, controle: ControleAtualizacao): Promise<RegistroPropriedade | null>;
   excluir(id: Types.ObjectId, usuarioId: Types.ObjectId, session: ClientSession): Promise<boolean>;
   temTalhoes(id: Types.ObjectId, session: ClientSession): Promise<boolean>;
   areaAtivaExcede(id: Types.ObjectId, area: number, session: ClientSession): Promise<boolean>;
@@ -24,9 +39,14 @@ export const propriedadesRepository: PropriedadesRepository = {
   buscarPorId(id, usuarioId, session) {
     return PropriedadeModel.findOne({ _id: id, usuarioId }, null, { session }).lean<RegistroPropriedade>().exec();
   },
-  atualizar(id, usuarioId, dados, session) {
-    return PropriedadeModel.findOneAndUpdate({ _id: id, usuarioId }, { $set: dados }, {
-      new: true, runValidators: true, strict: "throw", session,
+  buscarParaAtualizacao(id, usuarioId, session) {
+    return PropriedadeModel.findOne({ _id: id, usuarioId }, null, { session, promoteLongs: false })
+      .lean<RegistroAtualizacao>().exec();
+  },
+  atualizar(id, usuarioId, dados, session, controle) {
+    return PropriedadeModel.findOneAndUpdate({ _id: id, usuarioId, $expr: condicaoImagem(controle.imagem) },
+      { $set: { ...dados, atualizadoEm: controle.atualizadoEm } }, {
+      new: true, runValidators: true, strict: "throw", session, timestamps: false,
     }).lean<RegistroPropriedade>().exec();
   },
   async excluir(id, usuarioId, session) {
