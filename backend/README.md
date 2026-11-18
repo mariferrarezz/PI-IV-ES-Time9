@@ -247,11 +247,14 @@ Copiar `.env.example` para `.env` **somente se o arquivo local ainda não existi
 
 O carregamento de `.env` é relativo à pasta backend, tanto em `src` quanto em `dist`; variáveis do processo têm precedência. O nome do banco é explicitamente **sentinela**, mesmo que a URI tenha outro nome no caminho. Usar somente a conexão de desenvolvimento correta. Não enviar a URI ao Flutter ou aos clientes HTTP. Banco Atlas e Auth Emulator são serviços distintos.
 
+Cada integrante precisa liberar o próprio IP no Atlas (**Network Access** → **Add IP Address** → **Add Current IP Address**). Ao trocar de rede (outro Wi-Fi), liberar o novo IP e reiniciar a API: sem isso, a inicialização falha com `BANCO_ERRO_CONEXAO` ou as rotas respondem `BANCO_INDISPONIVEL`.
+
 Em terminais separados, a partir da raiz:
 
 ```powershell
-# Substituir pelo MESMO ID público do projeto usado no backend e no cliente:
-firebase emulators:start --only auth --project "ID_DO_PROJETO"
+# Substituir pelo MESMO ID público do projeto usado no backend e no cliente.
+# Usar o pacote firebase-tools via npx (o pacote "firebase" não tem a CLI; não instalar com npm install -g):
+npx firebase-tools emulators:start --only auth --project "ID_DO_PROJETO"
 npm --prefix backend run dev
 ```
 
