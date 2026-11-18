@@ -65,7 +65,8 @@ function javaSimulado(resultado: Awaited<ReturnType<ValidarQuestionario>> | Erro
     if (resultado instanceof Error) throw resultado;
     return resultado;
   };
-  return { java: { validarQuestionario }, chamadas };
+  const validarCadastroPerfil = async () => ({ valido: true, erros: [] as string[] });
+  return { java: { validarQuestionario, validarCadastroPerfil }, chamadas };
 }
 
 async function iniciarApi(repo: Repo, java = javaSimulado().java) {
@@ -92,7 +93,7 @@ async function iniciarApi(repo: Repo, java = javaSimulado().java) {
   return { chamar, fechar: () => new Promise<void>(r => servidor.close(() => r())) };
 }
 
-const cadastro = { nomeCompleto: "Maria da Silva", cpf: "529.982.247-25", telefone: "(19) 99876-5432", aceitouTermos: true };
+const cadastro = { nomeCompleto: "Maria da Silva", cpf: "529.982.247-25", telefone: "(19) 99876-5432", canalCodigoPreferido: "email", aceitouTermos: true };
 const respostas = {
   portePropriedade: "pequena",
   quantidadeCulturas: "2",
@@ -271,7 +272,7 @@ test("Modelo com questionário respeita o validator da coleção usuarios", asyn
   const { errosSchema } = require("../../database/seed/lib-bd6.cjs");
   const base = {
     firebaseUid: "uid-maria", nomeCompleto: "Maria da Silva", cpf: "52998224725", telefone: "+5519998765432",
-    termos: { versao: "1.0", aceitoEm: new Date() }, criadoEm: new Date(), atualizadoEm: new Date(),
+    termos: { versao: "1.0", aceitoEm: new Date() }, canalCodigoPreferido: "sms", criadoEm: new Date(), atualizadoEm: new Date(),
   };
   const questionario = {
     versao: "1.0", portePropriedade: "media", quantidadeCulturas: "4_ou_mais", culturasIds: [SOJA],

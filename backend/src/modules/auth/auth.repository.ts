@@ -8,6 +8,8 @@ export interface PerfilUsuario {
   cpf: string;
   telefone: string;
   termos: { versao: string; aceitoEm: Date };
+  // Opcional na leitura: perfis de teste antigos foram criados antes deste campo.
+  canalCodigoPreferido?: "email" | "sms";
   questionario?: Questionario;
   criadoEm: Date;
   atualizadoEm: Date;
@@ -25,7 +27,8 @@ export interface Questionario {
   concluidoEm: Date;
 }
 
-export type NovoPerfil = Pick<PerfilUsuario, "firebaseUid" | "nomeCompleto" | "cpf" | "telefone" | "termos">;
+export type NovoPerfil = Pick<PerfilUsuario, "firebaseUid" | "nomeCompleto" | "cpf" | "telefone" | "termos"> &
+  { canalCodigoPreferido: "email" | "sms" };
 
 // O que propriedades e talhões precisam: achar o _id do usuário logado.
 export interface BuscaPerfilPorUid {
@@ -39,7 +42,7 @@ export interface AuthRepository {
   salvarQuestionario(uid: string, questionario: Questionario): Promise<PerfilUsuario | null>;
 }
 
-const CAMPOS_PERFIL = "_id firebaseUid nomeCompleto cpf telefone termos questionario criadoEm atualizadoEm";
+const CAMPOS_PERFIL = "_id firebaseUid nomeCompleto cpf telefone termos canalCodigoPreferido questionario criadoEm atualizadoEm";
 
 // Único arquivo do módulo que conversa com o MongoDB.
 export const authRepository: AuthRepository = {

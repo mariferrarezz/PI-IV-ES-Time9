@@ -44,6 +44,8 @@ export const cadastroSchema = z.object({
   cpf: z.string().transform(somenteDigitos).refine(cpfValido),
   telefone: z.string().transform(normalizarTelefone)
     .refine((valor): valor is string => valor !== null),
+  // Canal escolhido no passo "Como deseja receber códigos" do cadastro.
+  canalCodigoPreferido: z.enum(["email", "sms"]),
   aceitouTermos: z.literal(true),
 }).strict();
 

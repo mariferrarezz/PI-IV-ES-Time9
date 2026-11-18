@@ -16,6 +16,23 @@ type Repo = import("../src/modules/auth/auth.repository").AuthRepository;
 type Perfil = import("../src/modules/auth/auth.repository").PerfilUsuario;
 
 const CPF_VALIDO = "529.982.247-25"; // CPF fictício com dígitos verificadores corretos.
+const { JavaIndisponivelError } = require("../src/services/validacao-java.service") as typeof import("../src/services/validacao-java.service");
+type ValidacoesJava = import("../src/modules/auth/auth.service").ValidacoesJava;
+type Resultado = { valido: boolean; erros: string[] };
+
+// Java simulado: guarda o que recebeu. Os testes com o Java real são os test:*:java da Julia.
+function javaSimulado(cadastro: Resultado | Error = { valido: true, erros: [] }) {
+  const chamadas: Parameters<ValidacoesJava["validarCadastroPerfil"]>[0][] = [];
+  const java: ValidacoesJava = {
+    async validarCadastroPerfil(campos) {
+      chamadas.push(campos);
+      if (cadastro instanceof Error) throw cadastro;
+      return cadastro;
+    },
+    async validarQuestionario() { return { valido: true, erros: [] }; },
+  };
+  return { java, chamadas };
+}
 
 function repoEmMemoria() {
   const perfis: Perfil[] = [];
@@ -37,9 +54,9 @@ function repoEmMemoria() {
   return { repo, perfis };
 }
 
-async function iniciarApi(repo: Repo) {
+async function iniciarApi(repo: Repo, java = javaSimulado().java) {
   const app = criarApp({
-    auth: criarAuthService(repo),
+    auth: criarAuthService(repo, undefined, java),
     // Token fictício: "token-<uid>" autentica o usuário <uid>.
     verificarToken: async token => {
       if (!token.startsWith("token-")) throw { code: "auth/invalid-id-token" };
@@ -59,7 +76,9 @@ async function iniciarApi(repo: Repo) {
   return { chamar, fechar: () => new Promise<void>(r => servidor.close(() => r())) };
 }
 
-const cadastroValido = { nomeCompleto: "  Maria da Silva  ", cpf: CPF_VALIDO, telefone: "(19) 99876-5432", aceitouTermos: true };
+const cadastroValido = {
+  nomeCompleto: "  Maria da Silva  ", cpf: CPF_VALIDO, telefone: "(19) 99876-5432", canalCodigoPreferido: "email", aceitouTermos: true,
+};
 
 test("CPF: aceita dígitos verificadores corretos e recusa inválidos e repetidos", () => {
   assert.equal(cpfValido("52998224725"), true);
@@ -88,6 +107,7 @@ test("POST /auth/cadastro cria o perfil com uid do token, dados normalizados e t
     assert.equal(corpo.cpf, "52998224725");
     assert.equal(corpo.telefone, "+5519998765432");
     assert.equal(corpo.termos.versao, "1.0");
+    assert.equal(corpo.canalCodigoPreferido, "email");
     assert.ok(!Number.isNaN(Date.parse(corpo.termos.aceitoEm)));
     assert.equal(corpo.firebaseUid, undefined); // uid não volta na resposta
     assert.equal(perfis.length, 1);
@@ -105,6 +125,8 @@ test("POST /auth/cadastro recusa firebaseUid no corpo, termos não aceitos e dad
       { ...cadastroValido, cpf: "111.111.111-11" },
       { ...cadastroValido, telefone: "(19) 3876-5432" },
       { ...cadastroValido, nomeCompleto: " " },
+      { ...cadastroValido, canalCodigoPreferido: "whatsapp" },
+      { ...cadastroValido, canalCodigoPreferido: undefined },
       { nomeCompleto: "Maria da Silva" },
     ];
     for (const corpo of invalidos) {
@@ -131,7 +153,8 @@ test("POST /auth/cadastro devolve 409 quando o perfil já existe (inclusive em c
   const corrida = criarAuthService({
     async buscarPorFirebaseUid() { return null; },
     async criar() { throw { code: 11000 }; },
-  });
+    async salvarQuestionario() { return null; },
+  }, undefined, javaSimulado().java);
   await assert.rejects(corrida.cadastrar("uid-maria", cadastroValido),
     (erro: any) => erro.statusCode === 409 && erro.code === "PERFIL_JA_EXISTE");
 });
@@ -162,6 +185,43 @@ test("Rotas /auth exigem token válido", async () => {
   } finally { await api.fechar(); }
 });
 
+test("POST /auth/cadastro passa pelo Java antes de gravar", async () => {
+  // Java recebe os dados já normalizados (CPF só dígitos, telefone +55) e o canal.
+  {
+    const { repo } = repoEmMemoria();
+    const simulado = javaSimulado();
+    const api = await iniciarApi(repo, simulado.java);
+    try {
+      assert.equal((await api.chamar("POST", "/auth/cadastro", "token-uid-maria", { ...cadastroValido, canalCodigoPreferido: "sms" })).status, 201);
+      assert.deepEqual(simulado.chamadas, [{
+        nomeCompleto: "Maria da Silva", cpf: "52998224725", telefoneCanonico: "+5519998765432", canalCodigoPreferido: "sms",
+      }]);
+    } finally { await api.fechar(); }
+  }
+  // Java recusa: 400 com as mensagens dele e nada é gravado.
+  {
+    const { repo, perfis } = repoEmMemoria();
+    const api = await iniciarApi(repo, javaSimulado({ valido: false, erros: ["Mensagem do Java."] }).java);
+    try {
+      const resposta = await api.chamar("POST", "/auth/cadastro", "token-uid-maria", cadastroValido);
+      assert.equal(resposta.status, 400);
+      assert.deepEqual((await resposta.json()).detalhes, [{ mensagem: "Mensagem do Java." }]);
+      assert.equal(perfis.length, 0);
+    } finally { await api.fechar(); }
+  }
+  // Java desligado: 503 e nada é gravado.
+  {
+    const { repo, perfis } = repoEmMemoria();
+    const api = await iniciarApi(repo, javaSimulado(new JavaIndisponivelError()).java);
+    try {
+      const resposta = await api.chamar("POST", "/auth/cadastro", "token-uid-maria", cadastroValido);
+      assert.equal(resposta.status, 503);
+      assert.equal((await resposta.json()).codigo, "JAVA_INDISPONIVEL");
+      assert.equal(perfis.length, 0);
+    } finally { await api.fechar(); }
+  }
+});
+
 test("Modelo de usuário respeita o validator da coleção usuarios", async () => {
   const fs = require("node:fs") as typeof import("node:fs");
   const path = require("node:path") as typeof import("node:path");
@@ -170,7 +230,7 @@ test("Modelo de usuário respeita o validator da coleção usuarios", async () =
   const { UsuarioModel } = require("../src/modules/auth/auth.model") as typeof import("../src/modules/auth/auth.model");
   const doc = new UsuarioModel({
     firebaseUid: "uid-maria", nomeCompleto: "Maria da Silva", cpf: "52998224725", telefone: "+5519998765432",
-    termos: { versao: "1.0", aceitoEm: new Date() }, criadoEm: new Date(), atualizadoEm: new Date(),
+    termos: { versao: "1.0", aceitoEm: new Date() }, canalCodigoPreferido: "email", criadoEm: new Date(), atualizadoEm: new Date(),
   });
   await doc.validate();
   const objeto = doc.toObject();

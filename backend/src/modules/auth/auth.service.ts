@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { AppError, ValidacaoJavaError } from "../../shared/errors";
-import { validarQuestionarioNoJava } from "../../services/validacao-java.service";
+import { validarCadastroPerfilNoJava, validarQuestionarioNoJava } from "../../services/validacao-java.service";
 import { TERMOS_VERSAO_VIGENTE } from "../../config/termos";
 import { QUESTIONARIO_VERSAO_VIGENTE } from "../../config/questionario";
 import { CulturasRepository, culturasRepository } from "../catalogo/culturas.repository";
@@ -20,6 +20,7 @@ function paraResposta(perfil: PerfilUsuario) {
     cpf: perfil.cpf,
     telefone: perfil.telefone,
     termos: perfil.termos,
+    canalCodigoPreferido: perfil.canalCodigoPreferido ?? null,
     // null enquanto não respondido: o app usa isso para decidir se mostra o questionário.
     questionario: perfil.questionario
       ? { ...perfil.questionario, culturasIds: perfil.questionario.culturasIds.map(String) }
@@ -29,23 +30,42 @@ function paraResposta(perfil: PerfilUsuario) {
   };
 }
 
+// Validações feitas no servidor Java antes de gravar. Injetáveis para os testes.
+export interface ValidacoesJava {
+  validarCadastroPerfil: typeof validarCadastroPerfilNoJava;
+  validarQuestionario: typeof validarQuestionarioNoJava;
+}
+const validacoesJava: ValidacoesJava = {
+  validarCadastroPerfil: validarCadastroPerfilNoJava,
+  validarQuestionario: validarQuestionarioNoJava,
+};
+
 // Regras do cadastro. O uid sempre vem do token validado, nunca do corpo da requisição.
 // CPF e telefone nunca são registrados em logs.
 export function criarAuthService(
   usuarios: AuthRepository = authRepository,
   culturas: Pick<CulturasRepository, "contarAtivas"> = culturasRepository,
-  java: { validarQuestionario: typeof validarQuestionarioNoJava } = { validarQuestionario: validarQuestionarioNoJava },
+  java: ValidacoesJava = validacoesJava,
 ) {
   return {
     async cadastrar(uid: string, entrada: unknown) {
       const dados = cadastroSchema.parse(entrada);
       if (await usuarios.buscarPorFirebaseUid(uid)) throw perfilJaExiste();
+      // O Java valida antes de gravar. Se estiver desligado: 503 JAVA_INDISPONIVEL.
+      const validacao = await java.validarCadastroPerfil({
+        nomeCompleto: dados.nomeCompleto,
+        cpf: dados.cpf,
+        telefoneCanonico: dados.telefone,
+        canalCodigoPreferido: dados.canalCodigoPreferido,
+      });
+      if (!validacao.valido) throw new ValidacaoJavaError(validacao.erros);
       try {
         const perfil = await usuarios.criar({
           firebaseUid: uid,
           nomeCompleto: dados.nomeCompleto,
           cpf: dados.cpf,
           telefone: dados.telefone,
+          canalCodigoPreferido: dados.canalCodigoPreferido,
           termos: { versao: TERMOS_VERSAO_VIGENTE, aceitoEm: new Date() },
         });
         return paraResposta(perfil);

@@ -33,6 +33,7 @@ const usuarioSchema = new Schema(
     cpf: { type: String, required: true },
     telefone: { type: String, required: true },
     termos: { type: termosSchema, required: true },
+    canalCodigoPreferido: { type: String, required: true, enum: ["email", "sms"] },
     // Sem default: o campo não pode existir no banco antes de o questionário ser concluído.
     questionario: { type: questionarioSchema, default: undefined },
   },
