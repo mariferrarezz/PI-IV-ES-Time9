@@ -11,6 +11,7 @@ process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
 const { Types } = require("mongoose") as typeof import("mongoose");
 const { criarApp } = require("../src/app") as typeof import("../src/app");
 const { criarAuthService } = require("../src/modules/auth/auth.service") as typeof import("../src/modules/auth/auth.service");
+const { calcularIniciais } = require("../src/modules/auth/auth.service") as typeof import("../src/modules/auth/auth.service");
 const { cpfValido, normalizarTelefone } = require("../src/modules/auth/auth.schema") as typeof import("../src/modules/auth/auth.schema");
 type Repo = import("../src/modules/auth/auth.repository").AuthRepository;
 type Perfil = import("../src/modules/auth/auth.repository").PerfilUsuario;
@@ -21,9 +22,18 @@ type ValidacoesJava = import("../src/modules/auth/auth.service").ValidacoesJava;
 type Resultado = { valido: boolean; erros: string[] };
 
 // Java simulado: guarda o que recebeu. Os testes com o Java real são os test:*:java da Julia.
-function javaSimulado(cadastro: Resultado | Error = { valido: true, erros: [] }) {
+function javaSimulado(
+  cadastro: Resultado | Error = { valido: true, erros: [] },
+  opcionais: Resultado | Error = { valido: true, erros: [] },
+) {
   const chamadas: Parameters<ValidacoesJava["validarCadastroPerfil"]>[0][] = [];
+  const chamadasOpcionais: Parameters<ValidacoesJava["validarOpcionaisPerfil"]>[0][] = [];
   const java: ValidacoesJava = {
+    async validarOpcionaisPerfil(campos) {
+      chamadasOpcionais.push(campos);
+      if (opcionais instanceof Error) throw opcionais;
+      return opcionais;
+    },
     async validarCadastroPerfil(campos) {
       chamadas.push(campos);
       if (cadastro instanceof Error) throw cadastro;
@@ -31,7 +41,7 @@ function javaSimulado(cadastro: Resultado | Error = { valido: true, erros: [] })
     },
     async validarQuestionario() { return { valido: true, erros: [] }; },
   };
-  return { java, chamadas };
+  return { java, chamadas, chamadasOpcionais };
 }
 
 function repoEmMemoria() {
@@ -48,6 +58,12 @@ function repoEmMemoria() {
       const perfil = perfis.find(p => p.firebaseUid === uid && !p.questionario);
       if (!perfil) return null;
       perfil.questionario = questionario;
+      return perfil;
+    },
+    async atualizarNomePublico(uid, nomePublico) {
+      const perfil = perfis.find(p => p.firebaseUid === uid);
+      if (!perfil) return null;
+      if (nomePublico === null) delete perfil.nomePublico; else perfil.nomePublico = nomePublico;
       return perfil;
     },
   };
@@ -154,6 +170,7 @@ test("POST /auth/cadastro devolve 409 quando o perfil já existe (inclusive em c
     async buscarPorFirebaseUid() { return null; },
     async criar() { throw { code: 11000 }; },
     async salvarQuestionario() { return null; },
+    async atualizarNomePublico() { return null; },
   }, undefined, javaSimulado().java);
   await assert.rejects(corrida.cadastrar("uid-maria", cadastroValido),
     (erro: any) => erro.statusCode === 409 && erro.code === "PERFIL_JA_EXISTE");
@@ -241,4 +258,138 @@ test("Modelo de usuário respeita o validator da coleção usuarios", async () =
   const cfg = vm.runInNewContext("(" + literal.slice(literal.indexOf("db.runCommand(") + 14, literal.lastIndexOf(");")) + ")");
   const { errosSchema } = require("../../database/seed/lib-bd6.cjs");
   assert.deepEqual(errosSchema(mongoose.mongo.BSON.EJSON.serialize(objeto), cfg.validator.$jsonSchema), []);
+});
+
+// ---------- Nome público e iniciais (PATCH /auth/perfil) ----------
+
+test("Iniciais: primeiro e último nome, maiúsculas, ignorando símbolos", () => {
+  assert.equal(calcularIniciais("Maria da Silva"), "MS");
+  assert.equal(calcularIniciais("seu zé da roça"), "SR");
+  assert.equal(calcularIniciais("Maria"), "M");
+  assert.equal(calcularIniciais("  Élida   Ômega  "), "ÉÔ");
+  assert.equal(calcularIniciais("João - Sítio 🌱"), "JS");
+  assert.equal(calcularIniciais("🌱"), null);
+});
+
+test("Perfil devolve nomePublico null e iniciais do nome completo logo após o cadastro", async () => {
+  const { repo } = repoEmMemoria();
+  const api = await iniciarApi(repo);
+  try {
+    const cadastro = await (await api.chamar("POST", "/auth/cadastro", "token-uid-maria", cadastroValido)).json();
+    assert.equal(cadastro.nomePublico, null);
+    assert.equal(cadastro.iniciais, "MS");
+    const me = await (await api.chamar("GET", "/auth/me", "token-uid-maria")).json();
+    assert.equal(me.nomePublico, null);
+    assert.equal(me.iniciais, "MS");
+  } finally { await api.fechar(); }
+});
+
+test("PATCH /auth/perfil grava, edita e apaga o nome público, e as iniciais acompanham", async () => {
+  const { repo, perfis } = repoEmMemoria();
+  const simulado = javaSimulado();
+  const api = await iniciarApi(repo, simulado.java);
+  try {
+    await api.chamar("POST", "/auth/cadastro", "token-uid-maria", cadastroValido);
+
+    const primeira = await api.chamar("PATCH", "/auth/perfil", "token-uid-maria", { nomePublico: "  Seu Zé da Roça  " });
+    assert.equal(primeira.status, 200);
+    const corpo1 = await primeira.json();
+    assert.equal(corpo1.nomePublico, "Seu Zé da Roça");
+    assert.equal(corpo1.iniciais, "SR");
+    assert.equal(corpo1.nomeCompleto, "Maria da Silva"); // nome completo não muda
+
+    const segunda = await (await api.chamar("PATCH", "/auth/perfil", "token-uid-maria", { nomePublico: "Tia Lurdes" })).json();
+    assert.equal(segunda.nomePublico, "Tia Lurdes");
+    assert.equal(segunda.iniciais, "TL");
+    assert.equal((await (await api.chamar("GET", "/auth/me", "token-uid-maria")).json()).iniciais, "TL");
+
+    const apagado = await (await api.chamar("PATCH", "/auth/perfil", "token-uid-maria", { nomePublico: null })).json();
+    assert.equal(apagado.nomePublico, null);
+    assert.equal(apagado.iniciais, "MS"); // volta para o nome completo
+    assert.equal("nomePublico" in perfis[0], false); // o campo some do banco (não grava null)
+
+    // O Java recebe o nome já sem espaços nas pontas; para apagar, nenhum nome é enviado.
+    assert.deepEqual(simulado.chamadasOpcionais, [{ nomePublico: "Seu Zé da Roça" }, { nomePublico: "Tia Lurdes" }, {}]);
+  } finally { await api.fechar(); }
+});
+
+test("PATCH /auth/perfil recusa nome inválido, campo a mais e foto", async () => {
+  const { repo, perfis } = repoEmMemoria();
+  const simulado = javaSimulado();
+  const api = await iniciarApi(repo, simulado.java);
+  try {
+    await api.chamar("POST", "/auth/cadastro", "token-uid-maria", cadastroValido);
+    const invalidos = [
+      {}, { nomePublico: "" }, { nomePublico: "   " }, { nomePublico: "Z" },
+      { nomePublico: "a".repeat(81) }, { nomePublico: 123 },
+      { nomePublico: "Seu Zé", nomeCompleto: "Outro Nome" },
+      { nomePublico: "Seu Zé", fotoPerfil: { url: "https://example.com/a.jpg", publicId: "a" } },
+      { fotoPerfil: { url: "https://example.com/a.jpg", publicId: "a" } },
+    ];
+    for (const corpo of invalidos) {
+      const resposta = await api.chamar("PATCH", "/auth/perfil", "token-uid-maria", corpo);
+      assert.equal(resposta.status, 400, JSON.stringify(corpo));
+    }
+    // 80 caracteres (emoji conta como um) é aceito.
+    assert.equal((await api.chamar("PATCH", "/auth/perfil", "token-uid-maria", { nomePublico: "🌱".repeat(80) })).status, 200);
+    assert.equal(simulado.chamadasOpcionais.length, 1); // só o válido chegou ao Java
+    assert.equal(perfis[0].nomeCompleto, "Maria da Silva");
+    assert.equal("fotoPerfil" in perfis[0], false);
+  } finally { await api.fechar(); }
+});
+
+test("PATCH /auth/perfil: 404 sem perfil e 401 sem token", async () => {
+  const { repo } = repoEmMemoria();
+  const simulado = javaSimulado();
+  const api = await iniciarApi(repo, simulado.java);
+  try {
+    const semPerfil = await api.chamar("PATCH", "/auth/perfil", "token-uid-joao", { nomePublico: "João" });
+    assert.equal(semPerfil.status, 404);
+    assert.equal((await semPerfil.json()).codigo, "PERFIL_NAO_ENCONTRADO");
+    assert.equal((await api.chamar("PATCH", "/auth/perfil", undefined, { nomePublico: "João" })).status, 401);
+    assert.equal(simulado.chamadasOpcionais.length, 0);
+  } finally { await api.fechar(); }
+});
+
+test("PATCH /auth/perfil: Java recusa (400) ou desligado (503) e nada é gravado", async () => {
+  {
+    const { repo, perfis } = repoEmMemoria();
+    const api = await iniciarApi(repo, javaSimulado(undefined, { valido: false, erros: ["Mensagem do Java."] }).java);
+    try {
+      await api.chamar("POST", "/auth/cadastro", "token-uid-maria", cadastroValido);
+      const resposta = await api.chamar("PATCH", "/auth/perfil", "token-uid-maria", { nomePublico: "Seu Zé" });
+      assert.equal(resposta.status, 400);
+      assert.deepEqual((await resposta.json()).detalhes, [{ mensagem: "Mensagem do Java." }]);
+      assert.equal("nomePublico" in perfis[0], false);
+    } finally { await api.fechar(); }
+  }
+  {
+    const { repo, perfis } = repoEmMemoria();
+    const api = await iniciarApi(repo, javaSimulado(undefined, new JavaIndisponivelError()).java);
+    try {
+      await api.chamar("POST", "/auth/cadastro", "token-uid-maria", cadastroValido);
+      const resposta = await api.chamar("PATCH", "/auth/perfil", "token-uid-maria", { nomePublico: "Seu Zé" });
+      assert.equal(resposta.status, 503);
+      assert.equal((await resposta.json()).codigo, "JAVA_INDISPONIVEL");
+      assert.equal("nomePublico" in perfis[0], false);
+    } finally { await api.fechar(); }
+  }
+});
+
+test("Modelo de usuário com nome público respeita o validator da coleção usuarios", async () => {
+  const fs = require("node:fs") as typeof import("node:fs");
+  const path = require("node:path") as typeof import("node:path");
+  const vm = require("node:vm") as typeof import("node:vm");
+  const mongoose = require("mongoose") as typeof import("mongoose");
+  const { UsuarioModel } = require("../src/modules/auth/auth.model") as typeof import("../src/modules/auth/auth.model");
+  const doc = new UsuarioModel({
+    firebaseUid: "uid-maria", nomeCompleto: "Maria da Silva", nomePublico: "Seu Zé da Roça", cpf: "52998224725",
+    telefone: "+5519998765432", termos: { versao: "1.0", aceitoEm: new Date() }, canalCodigoPreferido: "email",
+    criadoEm: new Date(), atualizadoEm: new Date(),
+  });
+  await doc.validate();
+  const literal = fs.readFileSync(path.resolve(__dirname, "../../database/validators/validar-usuarios.mongodb.js"), "utf8");
+  const cfg = vm.runInNewContext("(" + literal.slice(literal.indexOf("db.runCommand(") + 14, literal.lastIndexOf(");")) + ")");
+  const { errosSchema } = require("../../database/seed/lib-bd6.cjs");
+  assert.deepEqual(errosSchema(mongoose.mongo.BSON.EJSON.serialize(doc.toObject()), cfg.validator.$jsonSchema), []);
 });

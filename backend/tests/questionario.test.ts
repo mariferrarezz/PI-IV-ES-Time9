@@ -52,6 +52,12 @@ function repoEmMemoria() {
       perfil.questionario = questionario;
       return perfil;
     },
+    async atualizarNomePublico(uid, nomePublico) {
+      const perfil = perfis.find(p => p.firebaseUid === uid);
+      if (!perfil) return null;
+      if (nomePublico === null) delete perfil.nomePublico; else perfil.nomePublico = nomePublico;
+      return perfil;
+    },
   };
   return { repo, perfis };
 }
@@ -66,7 +72,8 @@ function javaSimulado(resultado: Awaited<ReturnType<ValidarQuestionario>> | Erro
     return resultado;
   };
   const validarCadastroPerfil = async () => ({ valido: true, erros: [] as string[] });
-  return { java: { validarQuestionario, validarCadastroPerfil }, chamadas };
+  const validarOpcionaisPerfil = async () => ({ valido: true, erros: [] as string[] });
+  return { java: { validarQuestionario, validarCadastroPerfil, validarOpcionaisPerfil }, chamadas };
 }
 
 async function iniciarApi(repo: Repo, java = javaSimulado().java) {
@@ -211,6 +218,7 @@ test("POST /auth/questionario devolve 409 se outro envio gravou primeiro (corrid
     async buscarPorFirebaseUid() { return perfil; },
     async criar() { throw new Error("não usado"); },
     async salvarQuestionario() { return null; },
+    async atualizarNomePublico() { return null; },
   }, culturasEmMemoria(), javaSimulado().java);
   await assert.rejects(corrida.responderQuestionario("uid-maria", respostas),
     (erro: any) => erro.statusCode === 409 && erro.code === "QUESTIONARIO_JA_RESPONDIDO");

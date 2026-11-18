@@ -30,6 +30,8 @@ const usuarioSchema = new Schema(
   {
     firebaseUid: { type: String, required: true, immutable: true },
     nomeCompleto: { type: String, required: true },
+    // Opcional: ausente até a pessoa escolher um.
+    nomePublico: { type: String },
     cpf: { type: String, required: true },
     telefone: { type: String, required: true },
     termos: { type: termosSchema, required: true },

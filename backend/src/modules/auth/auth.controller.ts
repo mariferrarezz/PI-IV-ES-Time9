@@ -14,4 +14,8 @@ export const criarAuthController = (service: AuthService = authService) => ({
   async responderQuestionario(req: Request, res: Response) {
     res.status(201).json(await service.responderQuestionario(req.user!.uid, req.body));
   },
+
+  async atualizarPerfil(req: Request, res: Response) {
+    res.json(await service.atualizarPerfil(req.user!.uid, req.body));
+  },
 });

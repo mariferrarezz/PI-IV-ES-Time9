@@ -74,3 +74,14 @@ export const questionarioSchema = z.object({
   .refine(dados => dados.culturasIds.length > 0 || dados.outraCultura !== undefined, { path: ["culturasIds"] });
 
 export type QuestionarioDto = z.infer<typeof questionarioSchema>;
+
+// ---------- Edição do perfil ----------
+// Nome público: o que aparece para outras pessoas (comunidade). null apaga o nome.
+// Sem foto: o projeto não terá upload (decisão de 18/11); o app mostra as iniciais.
+export const atualizarPerfilSchema = z.object({
+  nomePublico: z.string().trim()
+    .refine(valor => /\S/u.test(valor) && [...valor].length >= 2 && [...valor].length <= 80)
+    .nullable(),
+}).strict();
+
+export type AtualizarPerfilDto = z.infer<typeof atualizarPerfilSchema>;

@@ -5,6 +5,7 @@ export interface PerfilUsuario {
   _id: Types.ObjectId;
   firebaseUid: string;
   nomeCompleto: string;
+  nomePublico?: string;
   cpf: string;
   telefone: string;
   termos: { versao: string; aceitoEm: Date };
@@ -40,9 +41,11 @@ export interface AuthRepository {
   criar(dados: NovoPerfil): Promise<PerfilUsuario>;
   // Grava só se o questionário ainda não existir. Devolve null se o perfil não existe ou já respondeu.
   salvarQuestionario(uid: string, questionario: Questionario): Promise<PerfilUsuario | null>;
+  // null apaga o nome público. Devolve null se o perfil não existe.
+  atualizarNomePublico(uid: string, nomePublico: string | null): Promise<PerfilUsuario | null>;
 }
 
-const CAMPOS_PERFIL = "_id firebaseUid nomeCompleto cpf telefone termos canalCodigoPreferido questionario criadoEm atualizadoEm";
+const CAMPOS_PERFIL = "_id firebaseUid nomeCompleto nomePublico cpf telefone termos canalCodigoPreferido questionario criadoEm atualizadoEm";
 
 // Único arquivo do módulo que conversa com o MongoDB.
 export const authRepository: AuthRepository = {
@@ -60,6 +63,14 @@ export const authRepository: AuthRepository = {
     return UsuarioModel.findOneAndUpdate(
       { firebaseUid: uid, questionario: { $exists: false } },
       { $set: { questionario } },
+      { new: true, runValidators: true, projection: CAMPOS_PERFIL },
+    ).lean<PerfilUsuario>();
+  },
+
+  async atualizarNomePublico(uid, nomePublico) {
+    return UsuarioModel.findOneAndUpdate(
+      { firebaseUid: uid },
+      nomePublico === null ? { $unset: { nomePublico: "" } } : { $set: { nomePublico } },
       { new: true, runValidators: true, projection: CAMPOS_PERFIL },
     ).lean<PerfilUsuario>();
   },
