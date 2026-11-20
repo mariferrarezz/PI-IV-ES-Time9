@@ -36,7 +36,7 @@ final class RegrasComunidade {
     }
     static boolean https(String valor) {
         if (valor == null || valor.codePointCount(0, valor.length()) > 2048 || valor.matches("(?s).*[\\s\\p{Z}].*")) return false;
-        try { URI uri = new URI(valor); return "https".equalsIgnoreCase(uri.getScheme()) && uri.getHost() != null; }
+        try { URI uri = new URI(valor); return "https".equals(uri.getScheme()) && uri.getHost() != null; }
         catch (Exception e) { return false; }
     }
 }

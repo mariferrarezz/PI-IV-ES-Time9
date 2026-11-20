@@ -367,6 +367,42 @@ Os testes locais usam HTTP loopback com verificador Firebase e repository em mem
 
 ### Cadastro de talhões: HTTP → Firebase → Node → Java → MongoDB
 
+**PUT concorrente em ambiente isolado:** `--com-put` exige agora
+`BD8_TEST_MONGODB_URI`, sem fallback para MONGODB_URI. Aceita exclusivamente
+`mongodb://127.0.0.1:27017/?replicaSet=rs0` (ou localhost/IPv6 loopback e outra porta).
+Não aceita credenciais, nome de banco, SRV, hosts remotos ou opções além de replicaSet.
+O banco gerado é `sentinela_testes_put_<UUID>`; nunca `sentinela`. O harness confere
+replica set e ausência de coleções antes de preparar fixtures, cria somente coleções
+de teste e perfis sintéticos mínimos, usa repositórios e transações reais e remove
+somente esse banco exclusivo no finally. O URI do processo é substituído pelo local;
+o `.env` real não é alterado. Autenticação continua no Auth Emulator com os tokens A/B
+e projeto já exigidos pelo harness; não há bypass. Readiness é injetada apenas nessa
+instância HTTP para conferir a conexão do banco isolado, sem mudar a API de produção.
+Não instala validators/índices compartilhados nem comprova seus efeitos nessa rodada.
+
+```powershell
+$env:BD8_TEST_MONGODB_URI = 'mongodb://127.0.0.1:27017/?replicaSet=rs0'
+# Exige replica set local e tokens sintéticos A/B atuais do Auth Emulator em memória.
+npm --prefix backend run test:talhoes:real -- --executar --com-put
+```
+
+`npm --prefix backend run test:propriedades:isolamento` verifica as recusas antes de
+qualquer conexão. Sem os pré-requisitos, os cenários permanecem não executados e o
+processo retorna código 1. Testes HTTP com repositórios simulados, mesmo com Java real,
+não comprovam concorrência MongoDB. O modo histórico sem `--com-put` não deve ser
+executado nesta tarefa, pois conserva o destino compartilhado anterior.
+
+Na retomada, passaram 122 testes locais/HTTP/TCP: POST e PUT com Java real e banco
+simulado, erros 400/503 sem escrita, omissões, autorização, BSON, guarda de imagem,
+repetições transacionais simuladas e proteção do destino isolado. TypeScript e
+compilação Java passaram. O comando `--executar --com-put` foi tentado, mas bloqueou
+antes de qualquer conexão/escrita por `BD8_TEST_MONGODB_URI_AUSENTE`,
+`BD8_TOKEN_A_AUSENTE` e `BD8_TOKEN_B_AUSENTE`. Os 11 cenários ficaram não executados.
+Não foi encontrado mongod/Docker nem listener MongoDB local nas portas usuais.
+Portanto, a prova real de redução/idempotência concorrente com cadastro de talhão
+permanece pendente de replica set local e credenciais sintéticas atuais do Emulator;
+nenhum resultado com mocks é usado como evidência dessa concorrência.
+
 O novo harness é separado dos testes BD8 de propriedades:
 
 ```powershell

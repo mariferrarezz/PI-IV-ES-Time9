@@ -33,7 +33,7 @@ public class ValidadorFonteConhecimento {
         try {
             URI uri = new URI(valor);
             // Fontes permitem HTTP, independentemente da regra HTTPS das imagens.
-            return ("http".equalsIgnoreCase(uri.getScheme()) || "https".equalsIgnoreCase(uri.getScheme())) && uri.getHost() != null;
+            return ("http".equals(uri.getScheme()) || "https".equals(uri.getScheme())) && uri.getHost() != null;
         } catch (Exception e) { return false; }
     }
 }

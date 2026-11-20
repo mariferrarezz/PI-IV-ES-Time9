@@ -17,7 +17,11 @@ const { PropriedadeModel } = require("../src/modules/propriedades/propriedades.m
 const { criarPropriedadeSchema } = require("../src/modules/propriedades/propriedades.schema") as typeof import("../src/modules/propriedades/propriedades.schema");
 const { connectDatabase, disconnectDatabase } = require("../src/config/database") as typeof import("../src/config/database");
 type Repo = import("../src/modules/propriedades/propriedades.repository").PropriedadesRepository;
-type Registro = import("../src/modules/propriedades/propriedades.model").RegistroPropriedade;
+// Fixtures HTTP contêm os campos preparados pelo DTO, sem null nos opcionais.
+type Registro = import("../src/modules/propriedades/propriedades.schema").CriarPropriedadeDto & {
+  _id: import("mongoose").Types.ObjectId; usuarioId: import("mongoose").Types.ObjectId;
+  ativa: boolean; criadoEm: Date; atualizadoEm: Date;
+};
 
 test("BD8 local: Bearer aparado, vazio recusado e códigos Firebase seguros", async () => {
   const { criarAutenticacao } = require("../src/middlewares/auth");
@@ -167,7 +171,7 @@ test("BD8 local: rotas reais com repositório e verificador Firebase simulados (
   const repo: Repo = {
     async criar(usuarioId, dados) {
       if (erroOperacao) throw erroOperacao;
-      const doc = { ...dados, ativa: dados.ativa ?? true, usuarioId, _id: new Types.ObjectId(), criadoEm: new Date(), atualizadoEm: new Date() } as Registro;
+      const doc: Registro = { ...dados, ativa: dados.ativa ?? true, usuarioId, _id: new Types.ObjectId(), criadoEm: new Date(), atualizadoEm: new Date() };
       documentos.set(String(doc._id), doc); return doc;
     },
     async listarPorUsuario(usuarioId) { return [...documentos.values()].filter(d => d.usuarioId.equals(usuarioId)); },

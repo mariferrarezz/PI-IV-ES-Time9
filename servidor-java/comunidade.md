@@ -132,7 +132,8 @@ que planejamento seja futuro. Datas copiadas de avaliação não são futuras; n
 data da aplicação neste contrato para comparar. Não se inventa comparação adicional.
 Preservação histórica da publicação, transições, projeção pública, seleção de fotos,
 referências e versões consultadas, unicidade e concorrência ficam no Node/MongoDB.
-Não há rotas/modelos implementados. As telas atuais não estabelecem contrato HTTP
+As integrações HTTP da Comunidade foram removidas; a aprovação Java continua
+apenas estrutural. As telas atuais não estabelecem contrato HTTP
 de Comunidade nem algoritmo de normalização telefônica. Ausência interna usa null;
 isso não autoriza null num futuro body HTTP. Não escolhemos versões vigentes.
 Respostas usam o montador existente de 64 KiB, com aviso explícito de erros omitidos;

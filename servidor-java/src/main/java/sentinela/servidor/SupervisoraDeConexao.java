@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.nio.charset.CodingErrorAction;
 import java.util.Objects;
 
 public class SupervisoraDeConexao extends Thread {
@@ -24,7 +25,9 @@ public class SupervisoraDeConexao extends Thread {
         // Feche todos os recursos ao terminar o atendimento.
         try (Socket conexao = cliente;
              BufferedReader leitor = new BufferedReader(new InputStreamReader(
-                     conexao.getInputStream(), StandardCharsets.UTF_8));
+                     conexao.getInputStream(), StandardCharsets.UTF_8.newDecoder()
+                             .onMalformedInput(CodingErrorAction.REPORT)
+                             .onUnmappableCharacter(CodingErrorAction.REPORT)));
              BufferedWriter escritor = new BufferedWriter(new OutputStreamWriter(
                      conexao.getOutputStream(), StandardCharsets.UTF_8))) {
             String mensagem;

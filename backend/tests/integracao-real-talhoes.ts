@@ -7,6 +7,7 @@ import { createServer } from "node:net";
 import path from "node:path";
 import { promisify } from "node:util";
 import dotenv from "dotenv";
+import { bancoPutIsolado } from "./banco-put-isolado";
 import type { Server } from "node:http";
 import type { mongo } from "mongoose";
 type Db = mongo.Db;
@@ -22,6 +23,12 @@ const casos = nomes.map(nome => ({ nome, estado: "não executado", status: [] as
 const rodada = randomUUID();
 const executar = process.argv.includes("--executar");
 const preRequisitos: string[] = [];
+let isolado: ReturnType<typeof bancoPutIsolado> | undefined;
+if (comPut) {
+  try { isolado = bancoPutIsolado(process.env.BD8_TEST_MONGODB_URI, rodada); }
+  catch (erro) { preRequisitos.push((erro as Error).message); }
+  if (isolado) process.env.MONGODB_URI = isolado.uri;
+}
 if (process.argv.slice(2).some(arg => !["--executar", "--com-put"].includes(arg))) preRequisitos.push("ARGUMENTO_INVALIDO");
 for (const chave of ["MONGODB_URI", "FIREBASE_PROJECT_ID", "BD8_TOKEN_A", "BD8_TOKEN_B"]) {
   if (!process.env[chave]) preRequisitos.push(`${chave}_AUSENTE`);
@@ -34,6 +41,7 @@ const propriedades: ObjectId[] = [];
 const talhoes = new Map<string, ObjectId>();
 const nomesFixtures = new Map<string, Set<string>>();
 let banco: Db | undefined;
+let bancoIsoladoCriado = false;
 let api: Server | undefined;
 let java: ChildProcess | undefined;
 let pastaJava: string | undefined;
@@ -125,11 +133,24 @@ async function principal() {
 
     etapa = "banco_e_perfis_de_teste";
     const db = await import("../src/config/database");
-    desconectar = db.disconnectDatabase;
-    await db.connectDatabase();
     const mongoose = (await import("mongoose")).default;
+    desconectar = db.disconnectDatabase;
+    if (comPut) {
+      assert(isolado);
+      await mongoose.connect(isolado.uri, { dbName: isolado.nome, autoIndex: false, autoCreate: false,
+        serverSelectionTimeoutMS: 5000, connectTimeoutMS: 5000, socketTimeoutMS: 10000 });
+      assert.equal(mongoose.connection.name, isolado.nome);
+      assert.notEqual(mongoose.connection.name, "sentinela");
+      const hello = await mongoose.connection.db!.command({ hello: 1 });
+      assert(hello.setName, "REPLICA_SET_NECESSARIO");
+      assert.equal((await mongoose.connection.db!.listCollections({}, { nameOnly: true }).toArray()).length, 0,
+        "BANCO_ISOLADO_JA_CONTEM_COLECOES");
+      bancoIsoladoCriado = true;
+      escritasIniciadas = true;
+      for (const nome of ["usuarios", "propriedades", "talhoes"]) await mongoose.connection.db!.createCollection(nome);
+    } else await db.connectDatabase();
     banco = mongoose.connection.db!;
-    assert.equal(banco.databaseName, "sentinela");
+    assert.equal(banco.databaseName, comPut ? isolado!.nome : "sentinela");
     const { ObjectId } = mongoose.mongo;
     const semente = JSON.parse(await fs.readFile(path.resolve(__dirname,
       "../../database/seed/documentos-sinteticos-bd6.json"), "utf8"));
@@ -137,6 +158,7 @@ async function principal() {
     for (const uid of uids) {
       const esperado = semente.usuarios.find((u: { firebaseUid: string }) => u.firebaseUid === uid);
       assert(esperado);
+      if (comPut) await banco.collection("usuarios").insertOne({ _id: new ObjectId(esperado._id.$oid), firebaseUid: uid });
       const perfil = await banco.collection("usuarios").findOne({
         _id: new ObjectId(esperado._id.$oid), firebaseUid: uid,
       }, { maxTimeMS: 5000 });
@@ -213,7 +235,7 @@ async function principal() {
       },
     });
     // Todas as dependências são reais; a API escuta somente em porta efêmera local.
-    api = criarApp({ service: { ...servicePropriedades,
+    api = criarApp({ ...(comPut ? { bancoDisponivel: () => mongoose.connection.readyState === 1 && mongoose.connection.name === isolado!.nome } : {}), service: { ...servicePropriedades,
       atualizar(...args: Parameters<typeof servicePropriedades.atualizar>) {
         const operacao = servicePropriedades.atualizar(...args);
         operacoes.add(operacao);
@@ -444,6 +466,12 @@ async function principal() {
       limpezaConfirmada = true;
     } catch { incerteza = true; motivos.push("LIMPEZA_NAO_CONFIRMADA"); }
     try { await pararJava(); } catch { motivos.push("FALHA_ENCERRAMENTO_JAVA"); }
+    if (bancoIsoladoCriado) try {
+      const mongoose = (await import("mongoose")).default;
+      assert(isolado && mongoose.connection.name === isolado.nome && isolado.nome !== "sentinela");
+      assert(await mongoose.connection.db!.dropDatabase());
+      assert.equal((await mongoose.connection.db!.listCollections({}, { nameOnly: true }).toArray()).length, 0);
+    } catch { limpezaConfirmada = false; incerteza = true; motivos.push("FALHA_LIMPEZA_BANCO_ISOLADO"); }
     try { await desconectar?.(); } catch { motivos.push("FALHA_ENCERRAMENTO_BANCO"); }
     if (pastaJava) try { await fs.rm(pastaJava, { recursive: true, force: true }); }
     catch { motivos.push("FALHA_LIMPEZA_COMPILACAO_TEMPORARIA"); }
@@ -454,8 +482,8 @@ void principal().finally(() => {
   process.off("SIGINT", aoSinal);
   process.off("SIGTERM", aoSinal);
   console.log(JSON.stringify({ rodada, modo: executar ? "execução real" : "preparação",
-    ambiente: { autenticacao: "emulator local", banco: "sentinela",
-      atlasConfigurado: /\.mongodb\.net/.test(process.env.MONGODB_URI ?? "") },
+    ambiente: { autenticacao: "emulator local", banco: comPut ? isolado?.nome ?? "isolado_nao_configurado" : "sentinela",
+      atlasConfigurado: comPut ? false : /\.mongodb\.net/.test(process.env.MONGODB_URI ?? "") },
     aprovado: aprovado && limpezaConfirmada && !motivos.length, motivos, casos,
     escritasIniciadas, limpeza: { necessaria: escritasIniciadas,
       confirmada: limpezaConfirmada || !escritasIniciadas, incerteza },
