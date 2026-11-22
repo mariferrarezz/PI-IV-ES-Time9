@@ -1,3 +1,4 @@
+//Inicializa o Firebase Admin.
 import { initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { env } from "./env";

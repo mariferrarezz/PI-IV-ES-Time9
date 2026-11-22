@@ -4,6 +4,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const {confereHashTexto} = require('../integridade-texto-bd6.cjs');
 const assert = require('node:assert/strict');
 const {createRequire} = require('node:module');
 const comum = require('../lib-bd6.cjs');
@@ -25,7 +26,7 @@ function carregar() {
 function conferirLocal(p) {
   const {base, c, dados, manifesto: m, alteracao: alt} = p;
   assert.equal(m.banco, BANCO); assert.equal(alt.banco, BANCO);
-  for (const [nome, esperado] of Object.entries(m.preservarArquivosSha256)) assert.equal(hash(fs.readFileSync(comum.arquivoSeed(nome))), esperado);
+  for (const [nome, esperado] of Object.entries(m.preservarArquivosSha256)) assert(confereHashTexto(fs.readFileSync(comum.arquivoSeed(nome)), esperado), nome);
   const anterior = base.dados.problemas_agricolas.find(d => id(d) === id(alt.antes));
   assert.deepEqual(alt.antes, anterior);
   assert.equal(id(alt.antes), '88b8a8ae41cde9df3d9c5df2');

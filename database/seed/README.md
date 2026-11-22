@@ -5,6 +5,8 @@ Este é o ponto de entrada para apresentar e reproduzir a massa. **200 documento
 
 ## Onde está cada parte
 
+Os hashes históricos dos arquivos UTF-8 aceitam somente equivalência de finais de linha LF/CRLF (inclusive mistos). A conferência calcula as duas representações, sem modificar os arquivos ou os hashes dos manifestos. Espaços, BOM, linha final, IDs e conteúdo continuam protegidos. A impressão do pacote principal usa CRLF por arquivo e separador LF para preservar a impressão histórica já registrada. Não normalizar hashes de IDs ou assinaturas BSON. Verificação local sem rede: `node database/tests/verificar-integridade-texto-bd6.cjs`.
+
 | Arquivo/pasta | Conteúdo |
 |---|---|
 | `catalogo-completo-sentinela.json` | Original editorial das 40 fichas, preservado; não importar diretamente |
@@ -25,6 +27,7 @@ Este é o ponto de entrada para apresentar e reproduzir a massa. **200 documento
 | `lib-complemento-bd6.cjs` | Leitura, conferência, inserção e validação do complemento da Comunidade |
 | `lib-estado-editorial-bd6.cjs` | Reconhecimento da alteração editorial simulada exata nas verificações dos lotes |
 | `diagnostico-bd6.cjs` | Códigos e classes seguros de erro, sem URI, hosts, mensagens brutas ou documentos |
+| `integridade-texto-bd6.cjs` | Equivalência LF/CRLF para os hashes históricos de texto, sem relaxar a proteção do conteúdo |
 | `.gitkeep` | Marcador usado pelo Git para preservar a pasta; não contém dados ou comandos |
 | `README.md` | Guia dos arquivos, cenários e comandos de execução |
 | `../tests/*bd6.cjs` | Verificações locais em memória, sem conexão |
