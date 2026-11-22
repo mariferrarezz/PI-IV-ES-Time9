@@ -16,6 +16,19 @@ build/
 local.properties
 ios/Pods/
 
+# Artefatos locais gerados pelo Flutter (caminhos específicos)
+/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+/ios/Flutter/Generated.xcconfig
+/ios/Flutter/ephemeral/flutter_lldb_helper.py
+/ios/Flutter/ephemeral/flutter_lldbinit
+/ios/Flutter/ephemeral/flutter_native_integration.env
+/ios/Flutter/flutter_export_environment.sh
+/ios/Runner/GeneratedPluginRegistrant.h
+/ios/Runner/GeneratedPluginRegistrant.m
+/macos/Flutter/ephemeral/Flutter-Generated.xcconfig
+/macos/Flutter/ephemeral/flutter_export_environment.sh
+/macos/Flutter/ephemeral/flutter_native_integration.env
+
 # Java
 target/
 out/
