@@ -1,0 +1,107 @@
+{
+  "namespace": "sentinela_bd6_adocoes_demonstracao_v1",
+  "banco": "sentinela",
+  "decisao": "Usuario autorizou preparar aprovacao editorial simulada da ficha existente no desenvolvimento; sem revisao tecnica real. Nao aplicado nesta etapa.",
+  "modo": "extensao explicita dos manifestos historicos; nao reescreve snapshots dos lotes 185 e 7",
+  "principal": 185,
+  "complemento": 7,
+  "adicionais": 8,
+  "totalEsperadoAposAplicacao": 200,
+  "aplicadoNoAtlas": false,
+  "alteracaoAutorizada": "alteracao-ficha.json",
+  "fichaExistente": {
+    "$oid": "88b8a8ae41cde9df3d9c5df2"
+  },
+  "aliases": {
+    "ocorrencia_a": {
+      "colecao": "ocorrencias",
+      "id": {
+        "$oid": "204033b03f987beeda5b3ced"
+      }
+    },
+    "ocorrencia_b": {
+      "colecao": "ocorrencias",
+      "id": {
+        "$oid": "3d9d57554dc5c02d89055b80"
+      }
+    },
+    "tratamento_a": {
+      "colecao": "tratamentos",
+      "id": {
+        "$oid": "d88dfc25a251f3793a19e742"
+      }
+    },
+    "tratamento_b": {
+      "colecao": "tratamentos",
+      "id": {
+        "$oid": "3ca35483a8b4aaee6c77ab75"
+      }
+    },
+    "experiencia": {
+      "colecao": "experiencias_comunidade",
+      "id": {
+        "$oid": "75121c4feeaa88a37ac73ff5"
+      }
+    },
+    "adocao_cancelada": {
+      "colecao": "adocoes_tratamento",
+      "id": {
+        "$oid": "f25567e9231ec8caa48b43ac"
+      }
+    },
+    "adocao_realizada": {
+      "colecao": "adocoes_tratamento",
+      "id": {
+        "$oid": "d17b902c0f5aaeeb5dacd8a0"
+      }
+    },
+    "adocao_planejada": {
+      "colecao": "adocoes_tratamento",
+      "id": {
+        "$oid": "f5407009d4d7fef2d0d53df1"
+      }
+    }
+  },
+  "contagens": {
+    "usuarios": 0,
+    "propriedades": 0,
+    "talhoes": 0,
+    "culturas": 0,
+    "plantacoes": 0,
+    "problemas_agricolas": 0,
+    "fontes_conhecimento": 0,
+    "ocorrencias": 2,
+    "monitoramentos": 0,
+    "tratamentos": 2,
+    "avaliacoes_tratamento": 0,
+    "alertas": 0,
+    "experiencias_comunidade": 1,
+    "adocoes_tratamento": 3,
+    "denuncias_comunidade": 0
+  },
+  "catalogoAntes": {
+    "pendentesInativas": 40,
+    "aprovadasSimuladasAtivas": 0
+  },
+  "catalogoDepois": {
+    "pendentesInativas": 39,
+    "aprovadasSimuladasAtivas": 1,
+    "revisoesTecnicasReaisComprovadas": 0
+  },
+  "preservarArquivosSha256": {
+    "manifesto-bd6.json": "53a39d9b452090af4a82e7e3b63ef402ea0ef17863919acf8da6aeec2b35270e",
+    "catalogo-pendente-bd6.json": "76ac157a32f67b2face0ba34e3d0930caaa21c8de6b396b4bbf883122beb42b8",
+    "documentos-sinteticos-bd6.json": "d8b1a3441aadf9f08e9e807a8e5d02886aeda122d15fcdb10e6ee83253022b2b",
+    "pesquisa-catalogo-bd6.json": "5a47b214d22db689c463c3c7e55a0ef80b26a3ca086027819230f21bb8737856",
+    "catalogo-completo-sentinela.json": "34c8b175ea332a72ebd50ffe8b3375448725ca6e5388c72f4759f8174aeb821b",
+    "manifesto-comunidade-complementar-bd6.json": "c5e03eb63f4e377518d559716b4da6d4434a41dc667bb9ca856c522865c0c652",
+    "comunidade-complementar-bd6.json": "9b265979e070ff73dfc0b15e9428741a791c3e43e8741a2a0e114ce45b3a740e"
+  },
+  "limitacoes": [
+    "A mesma ficha pode aparecer nos filtros usuais aprovado/ativo; observacao nao implementa isolamento ou bloqueio na API.",
+    "Uso exclusivo da demonstracao academica no desenvolvimento, nunca catalogo de producao.",
+    "Data em revisadoEm e instante simulado, nao revisao tecnica humana.",
+    "Autoria/moderacao/termos sao estados ficticios; nao comprovam consentimento ou autorizacao.",
+    "Repeticao so aceita transacao completa e snapshots identicos; qualquer divergencia interrompe."
+  ]
+}

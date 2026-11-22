@@ -1,11 +1,1 @@
-{
-  "emulators": {
-    "auth": {
-      "port": 9099
-    },
-    "ui": {
-      "enabled": true,
-      "port": 4000
-    }
-  }
-}
+{"emulators":{"auth":{"port":9099},"ui":{"enabled":true,"port":4000}},"flutter":{"platforms":{"android":{"default":{"projectId":"projeto-integrador-4-8c129","appId":"1:876820020562:android:bf3f91efeda9f8b4d8ce8b","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"projeto-integrador-4-8c129","configurations":{"android":"1:876820020562:android:bf3f91efeda9f8b4d8ce8b","ios":"1:876820020562:ios:1dcaf88de243202cd8ce8b","web":"1:876820020562:web:252c740eb26385f3d8ce8b"}}}}}}

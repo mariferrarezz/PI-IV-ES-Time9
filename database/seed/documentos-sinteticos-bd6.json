@@ -1,0 +1,1291 @@
+{
+  "usuarios": [
+    {
+      "_id": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "firebaseUid": "sentinela_bd6_v1_20261103_a",
+      "nomeCompleto": "Pessoa Ficticia BD6 A",
+      "nomePublico": "Produtor Ficticio BD6 A",
+      "cpf": "12345678909",
+      "telefone": "+5511990000001",
+      "canalCodigoPreferido": "sms",
+      "termos": {
+        "versao": "bd6-simulacao-v1",
+        "aceitoEm": {
+          "$date": "2026-10-01T12:00:00.000Z"
+        }
+      },
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T13:00:00.000Z"
+      },
+      "questionario": {
+        "versao": "bd6-simulacao-v1",
+        "portePropriedade": "pequena",
+        "quantidadeCulturas": "2",
+        "culturasIds": [
+          {
+            "$oid": "f04d5232bcbcda1037cdb0e3"
+          },
+          {
+            "$oid": "90ab211166d6d38d65d7eed8"
+          }
+        ],
+        "problemasFrequentes": [
+          "pragas",
+          "doencas"
+        ],
+        "frequenciaProblemas": "as_vezes",
+        "identificaProblemasSozinho": "as_vezes",
+        "concluidoEm": {
+          "$date": "2026-10-01T13:00:00.000Z"
+        }
+      }
+    },
+    {
+      "_id": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "firebaseUid": "sentinela_bd6_v1_20261103_b",
+      "nomeCompleto": "Pessoa Ficticia BD6 B",
+      "nomePublico": "Produtor Ficticio BD6 B",
+      "cpf": "98765432100",
+      "telefone": "+5511990000002",
+      "canalCodigoPreferido": "sms",
+      "termos": {
+        "versao": "bd6-simulacao-v1",
+        "aceitoEm": {
+          "$date": "2026-10-01T12:00:00.000Z"
+        }
+      },
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    }
+  ],
+  "propriedades": [
+    {
+      "_id": {
+        "$oid": "17dca01d6874b360a8b0a434"
+      },
+      "usuarioId": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "nome": "BD6 v1 - exclusivo desenvolvimento/testes - a_sem_ocorrencias",
+      "municipio": "Campinas",
+      "estado": "SP",
+      "areaTotalHa": 10,
+      "ativa": true,
+      "observacoes": "Propriedade ficticia; sem endereco real.",
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "4b9722b67309fa8722909084"
+      },
+      "usuarioId": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "nome": "BD6 v1 - exclusivo desenvolvimento/testes - a_com_ocorrencias",
+      "municipio": "Campinas",
+      "estado": "SP",
+      "areaTotalHa": 10,
+      "ativa": true,
+      "observacoes": "Propriedade ficticia; sem endereco real.",
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "7e11128c68c88b2807f6b439"
+      },
+      "usuarioId": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "nome": "BD6 v1 - exclusivo desenvolvimento/testes - b_com_ocorrencias",
+      "municipio": "Campinas",
+      "estado": "SP",
+      "areaTotalHa": 10,
+      "ativa": true,
+      "observacoes": "Propriedade ficticia; sem endereco real.",
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    }
+  ],
+  "talhoes": [
+    {
+      "_id": {
+        "$oid": "a6a34252509e87311b6ab400"
+      },
+      "propriedadeId": {
+        "$oid": "17dca01d6874b360a8b0a434"
+      },
+      "nome": "BD6 v1 - exclusivo desenvolvimento/testes - talhao 1",
+      "areaHa": 2,
+      "ativo": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "b5869116fcaa6fb0434c6e8d"
+      },
+      "propriedadeId": {
+        "$oid": "17dca01d6874b360a8b0a434"
+      },
+      "nome": "BD6 v1 - exclusivo desenvolvimento/testes - talhao 2",
+      "areaHa": 2,
+      "ativo": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "7052121418906bee74d9c72b"
+      },
+      "propriedadeId": {
+        "$oid": "4b9722b67309fa8722909084"
+      },
+      "nome": "BD6 v1 - exclusivo desenvolvimento/testes - talhao 1",
+      "areaHa": 2,
+      "ativo": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "07c779fb5b21d0b1898ea4db"
+      },
+      "propriedadeId": {
+        "$oid": "4b9722b67309fa8722909084"
+      },
+      "nome": "BD6 v1 - exclusivo desenvolvimento/testes - talhao 2",
+      "areaHa": 2,
+      "ativo": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "c00289731fb972600284b87b"
+      },
+      "propriedadeId": {
+        "$oid": "7e11128c68c88b2807f6b439"
+      },
+      "nome": "BD6 v1 - exclusivo desenvolvimento/testes - talhao 1",
+      "areaHa": 2,
+      "ativo": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "4e0448106f170e8d7bc9fa9b"
+      },
+      "propriedadeId": {
+        "$oid": "7e11128c68c88b2807f6b439"
+      },
+      "nome": "BD6 v1 - exclusivo desenvolvimento/testes - talhao 2",
+      "areaHa": 2,
+      "ativo": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    }
+  ],
+  "culturas": [
+    {
+      "_id": {
+        "$oid": "c9993429c69f67a2ee18e04f"
+      },
+      "nome": "Alface",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "559bf4979ecb3182ccbf1b0d"
+      },
+      "nome": "Algodão",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "9163438741438ab6d37756e3"
+      },
+      "nome": "Banana",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "8b734f3a8294a077b8648721"
+      },
+      "nome": "Batata",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "bfdf9421542b0b69bc41dfdb"
+      },
+      "nome": "Brócolis",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "b743c7ad373244dffa71508b"
+      },
+      "nome": "Café",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "20b6e9737d3719d65f117f21"
+      },
+      "nome": "Cana-de-açúcar",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "a33803547f8999e54975177e"
+      },
+      "nome": "Cebola",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "babb531549d35e9e88f6a641"
+      },
+      "nome": "Cenoura",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "60d7d226bfdf51e103f5543e"
+      },
+      "nome": "Couve",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "3d55a111c7af4e22015c6bb7"
+      },
+      "nome": "Feijão",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "8f685641f95aaeee980c8032"
+      },
+      "nome": "Melão",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "f04d5232bcbcda1037cdb0e3"
+      },
+      "nome": "Milho",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "be5a344855dc024909a066f3"
+      },
+      "nome": "Morango",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "16185968f588446ba9b0c836"
+      },
+      "nome": "Pepino",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "4f6643e529a4df921e59fb77"
+      },
+      "nome": "Pimentão",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "aa25df93def915ff3f79a05d"
+      },
+      "nome": "Repolho",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "90ab211166d6d38d65d7eed8"
+      },
+      "nome": "Soja",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "5e2256bbbb94905cf44a51bc"
+      },
+      "nome": "Tomate",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "27209c9c90b9e794c157608e"
+      },
+      "nome": "Uva",
+      "ativa": true,
+      "criadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-01T12:00:00.000Z"
+      }
+    }
+  ],
+  "plantacoes": [
+    {
+      "_id": {
+        "$oid": "92161e2b231b69ebb01e03ce"
+      },
+      "talhaoId": {
+        "$oid": "a6a34252509e87311b6ab400"
+      },
+      "culturaId": {
+        "$oid": "f04d5232bcbcda1037cdb0e3"
+      },
+      "safra": "2026/2027",
+      "dataPlantio": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      },
+      "areaPlantadaHa": 1.5,
+      "status": "ativa",
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - plantacao atual",
+      "criadoEm": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "e8391ccd314d068c4865593c"
+      },
+      "talhaoId": {
+        "$oid": "b5869116fcaa6fb0434c6e8d"
+      },
+      "culturaId": {
+        "$oid": "90ab211166d6d38d65d7eed8"
+      },
+      "safra": "2026/2027",
+      "dataPlantio": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      },
+      "areaPlantadaHa": 1.5,
+      "status": "ativa",
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - plantacao atual",
+      "criadoEm": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "f98879d75c77dc508f29af45"
+      },
+      "talhaoId": {
+        "$oid": "7052121418906bee74d9c72b"
+      },
+      "culturaId": {
+        "$oid": "f04d5232bcbcda1037cdb0e3"
+      },
+      "safra": "2026/2027",
+      "dataPlantio": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      },
+      "areaPlantadaHa": 1.5,
+      "status": "ativa",
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - plantacao atual",
+      "criadoEm": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "b100385fef525b6c26d50d7b"
+      },
+      "talhaoId": {
+        "$oid": "07c779fb5b21d0b1898ea4db"
+      },
+      "culturaId": {
+        "$oid": "90ab211166d6d38d65d7eed8"
+      },
+      "safra": "2026/2027",
+      "dataPlantio": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      },
+      "areaPlantadaHa": 1.5,
+      "status": "ativa",
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - plantacao atual",
+      "criadoEm": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "0b2e8fb74c25322369485c7c"
+      },
+      "talhaoId": {
+        "$oid": "c00289731fb972600284b87b"
+      },
+      "culturaId": {
+        "$oid": "f04d5232bcbcda1037cdb0e3"
+      },
+      "safra": "2026/2027",
+      "dataPlantio": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      },
+      "areaPlantadaHa": 1.5,
+      "status": "ativa",
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - plantacao atual",
+      "criadoEm": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "7d13db782410d0d31ddd1a3f"
+      },
+      "talhaoId": {
+        "$oid": "4e0448106f170e8d7bc9fa9b"
+      },
+      "culturaId": {
+        "$oid": "90ab211166d6d38d65d7eed8"
+      },
+      "safra": "2026/2027",
+      "dataPlantio": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      },
+      "areaPlantadaHa": 1.5,
+      "status": "ativa",
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - plantacao atual",
+      "criadoEm": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-19T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "0bfe4c59268ea5b381c5605b"
+      },
+      "talhaoId": {
+        "$oid": "7052121418906bee74d9c72b"
+      },
+      "culturaId": {
+        "$oid": "5e2256bbbb94905cf44a51bc"
+      },
+      "safra": "2025/2026",
+      "dataPlantio": {
+        "$date": "2026-10-02T12:00:00.000Z"
+      },
+      "areaPlantadaHa": 1.5,
+      "status": "encerrada",
+      "dataEncerramento": {
+        "$date": "2026-10-18T12:00:00.000Z"
+      },
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - historico final, seguir ciclo do manifesto",
+      "criadoEm": {
+        "$date": "2026-10-02T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-18T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "f373f856f1fd9802a0ce70d4"
+      },
+      "talhaoId": {
+        "$oid": "c00289731fb972600284b87b"
+      },
+      "culturaId": {
+        "$oid": "5e2256bbbb94905cf44a51bc"
+      },
+      "safra": "2025/2026",
+      "dataPlantio": {
+        "$date": "2026-10-02T12:00:00.000Z"
+      },
+      "areaPlantadaHa": 1.5,
+      "status": "encerrada",
+      "dataEncerramento": {
+        "$date": "2026-10-18T12:00:00.000Z"
+      },
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - historico final, seguir ciclo do manifesto",
+      "criadoEm": {
+        "$date": "2026-10-02T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-18T12:00:00.000Z"
+      }
+    }
+  ],
+  "problemas_agricolas": [],
+  "fontes_conhecimento": [],
+  "ocorrencias": [
+    {
+      "_id": {
+        "$oid": "4cfb91e41773d4cdffcff8db"
+      },
+      "plantacaoId": {
+        "$oid": "0bfe4c59268ea5b381c5605b"
+      },
+      "registradoPor": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "tipo": "nao_identificado",
+      "dataObservacao": {
+        "$date": "2026-10-03T12:00:00.000Z"
+      },
+      "sintomas": "BD6 v1 - exclusivo desenvolvimento/testes - alteracao observada sem diagnostico",
+      "intensidade": "baixa",
+      "status": "encerrada",
+      "criadoEm": {
+        "$date": "2026-10-03T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-17T12:00:00.000Z"
+      },
+      "encerradoEm": {
+        "$date": "2026-10-17T12:00:00.000Z"
+      },
+      "motivoEncerramento": "Fim do acompanhamento ficticio; nao comprova resolucao."
+    },
+    {
+      "_id": {
+        "$oid": "271ce01d23c1ed173b92c992"
+      },
+      "plantacaoId": {
+        "$oid": "f373f856f1fd9802a0ce70d4"
+      },
+      "registradoPor": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "tipo": "nao_identificado",
+      "dataObservacao": {
+        "$date": "2026-10-03T12:00:00.000Z"
+      },
+      "sintomas": "BD6 v1 - exclusivo desenvolvimento/testes - alteracao observada sem diagnostico",
+      "intensidade": "media",
+      "status": "encerrada",
+      "criadoEm": {
+        "$date": "2026-10-03T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-17T12:00:00.000Z"
+      },
+      "encerradoEm": {
+        "$date": "2026-10-17T12:00:00.000Z"
+      },
+      "motivoEncerramento": "Fim do acompanhamento ficticio; nao comprova resolucao."
+    },
+    {
+      "_id": {
+        "$oid": "193330f259e52a07c0f94e52"
+      },
+      "plantacaoId": {
+        "$oid": "f98879d75c77dc508f29af45"
+      },
+      "registradoPor": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "tipo": "nao_identificado",
+      "dataObservacao": {
+        "$date": "2026-10-21T12:00:00.000Z"
+      },
+      "sintomas": "BD6 v1 - exclusivo desenvolvimento/testes - alteracao observada sem diagnostico",
+      "intensidade": "alta",
+      "status": "aberta",
+      "criadoEm": {
+        "$date": "2026-10-21T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-21T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "dadf6eb8860bde51f585edf5"
+      },
+      "plantacaoId": {
+        "$oid": "0b2e8fb74c25322369485c7c"
+      },
+      "registradoPor": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "tipo": "nao_identificado",
+      "dataObservacao": {
+        "$date": "2026-10-21T12:00:00.000Z"
+      },
+      "sintomas": "BD6 v1 - exclusivo desenvolvimento/testes - alteracao observada sem diagnostico",
+      "intensidade": "baixa",
+      "status": "em_acompanhamento",
+      "criadoEm": {
+        "$date": "2026-10-21T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-21T12:00:00.000Z"
+      }
+    }
+  ],
+  "monitoramentos": [
+    {
+      "_id": {
+        "$oid": "b4ed3e6b31dad83fc58c089e"
+      },
+      "plantacaoId": {
+        "$oid": "0bfe4c59268ea5b381c5605b"
+      },
+      "ocorrenciaId": {
+        "$oid": "4cfb91e41773d4cdffcff8db"
+      },
+      "registradoPor": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "dataObservacao": {
+        "$date": "2026-10-05T12:00:00.000Z"
+      },
+      "problemaObservado": true,
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - acompanhamento ficticio",
+      "intensidade": "baixa",
+      "evolucao": "estavel",
+      "criadoEm": {
+        "$date": "2026-10-05T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-05T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "0bdc9dfef310d9b025256dab"
+      },
+      "plantacaoId": {
+        "$oid": "f373f856f1fd9802a0ce70d4"
+      },
+      "ocorrenciaId": {
+        "$oid": "271ce01d23c1ed173b92c992"
+      },
+      "registradoPor": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "dataObservacao": {
+        "$date": "2026-10-05T12:00:00.000Z"
+      },
+      "problemaObservado": true,
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - acompanhamento ficticio",
+      "intensidade": "media",
+      "evolucao": "estavel",
+      "criadoEm": {
+        "$date": "2026-10-05T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-05T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "35744f5345b53a341357ee9f"
+      },
+      "plantacaoId": {
+        "$oid": "f98879d75c77dc508f29af45"
+      },
+      "ocorrenciaId": {
+        "$oid": "193330f259e52a07c0f94e52"
+      },
+      "registradoPor": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "dataObservacao": {
+        "$date": "2026-10-23T12:00:00.000Z"
+      },
+      "problemaObservado": true,
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - acompanhamento ficticio",
+      "intensidade": "alta",
+      "evolucao": "estavel",
+      "criadoEm": {
+        "$date": "2026-10-23T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-23T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "12e324e8ad20c6bdfaa16d93"
+      },
+      "plantacaoId": {
+        "$oid": "0b2e8fb74c25322369485c7c"
+      },
+      "ocorrenciaId": {
+        "$oid": "dadf6eb8860bde51f585edf5"
+      },
+      "registradoPor": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "dataObservacao": {
+        "$date": "2026-10-23T12:00:00.000Z"
+      },
+      "problemaObservado": true,
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - acompanhamento ficticio",
+      "intensidade": "baixa",
+      "evolucao": "estavel",
+      "criadoEm": {
+        "$date": "2026-10-23T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-23T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "0a077f137d92d7a6fd7ad5ff"
+      },
+      "plantacaoId": {
+        "$oid": "f98879d75c77dc508f29af45"
+      },
+      "registradoPor": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "dataObservacao": {
+        "$date": "2026-10-26T12:00:00.000Z"
+      },
+      "problemaObservado": false,
+      "evolucao": "nao_avaliada",
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - inspecao sem ocorrencia",
+      "criadoEm": {
+        "$date": "2026-10-26T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-26T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "efe23c4b5267301a48620b0b"
+      },
+      "plantacaoId": {
+        "$oid": "b100385fef525b6c26d50d7b"
+      },
+      "registradoPor": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "dataObservacao": {
+        "$date": "2026-10-26T12:00:00.000Z"
+      },
+      "problemaObservado": true,
+      "evolucao": "nao_avaliada",
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - inspecao sem ocorrencia",
+      "intensidade": "baixa",
+      "criadoEm": {
+        "$date": "2026-10-26T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-26T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "3f074cf534d07928b11f0db1"
+      },
+      "plantacaoId": {
+        "$oid": "0b2e8fb74c25322369485c7c"
+      },
+      "registradoPor": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "dataObservacao": {
+        "$date": "2026-10-26T12:00:00.000Z"
+      },
+      "problemaObservado": false,
+      "evolucao": "nao_avaliada",
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - inspecao sem ocorrencia",
+      "criadoEm": {
+        "$date": "2026-10-26T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-26T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "f446409b607e2218b5e70476"
+      },
+      "plantacaoId": {
+        "$oid": "7d13db782410d0d31ddd1a3f"
+      },
+      "registradoPor": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "dataObservacao": {
+        "$date": "2026-10-26T12:00:00.000Z"
+      },
+      "problemaObservado": true,
+      "evolucao": "nao_avaliada",
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - inspecao sem ocorrencia",
+      "intensidade": "baixa",
+      "criadoEm": {
+        "$date": "2026-10-26T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-26T12:00:00.000Z"
+      }
+    }
+  ],
+  "tratamentos": [
+    {
+      "_id": {
+        "$oid": "8b9bd100ddd997353b4559c5"
+      },
+      "ocorrenciaId": {
+        "$oid": "4cfb91e41773d4cdffcff8db"
+      },
+      "registradoPor": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "tipoMedida": "manual",
+      "descricao": "BD6 v1 - exclusivo desenvolvimento/testes - remocao manual de material danificado para observacao; sem prescricao",
+      "dataAplicacao": {
+        "$date": "2026-10-04T12:00:00.000Z"
+      },
+      "areaTratadaHa": 0.2,
+      "criadoEm": {
+        "$date": "2026-10-04T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-04T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "4efb32fb43d918586d0707ad"
+      },
+      "ocorrenciaId": {
+        "$oid": "271ce01d23c1ed173b92c992"
+      },
+      "registradoPor": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "tipoMedida": "cultural",
+      "descricao": "BD6 v1 - exclusivo desenvolvimento/testes - remocao manual de material danificado para observacao; sem prescricao",
+      "dataAplicacao": {
+        "$date": "2026-10-04T12:00:00.000Z"
+      },
+      "areaTratadaHa": 0.2,
+      "criadoEm": {
+        "$date": "2026-10-04T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-04T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "1d66368b4b4a8784e055e365"
+      },
+      "ocorrenciaId": {
+        "$oid": "193330f259e52a07c0f94e52"
+      },
+      "registradoPor": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "tipoMedida": "manual",
+      "descricao": "BD6 v1 - exclusivo desenvolvimento/testes - remocao manual de material danificado para observacao; sem prescricao",
+      "dataAplicacao": {
+        "$date": "2026-10-22T12:00:00.000Z"
+      },
+      "areaTratadaHa": 0.2,
+      "criadoEm": {
+        "$date": "2026-10-22T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-22T12:00:00.000Z"
+      },
+      "quantidadeUtilizada": 1,
+      "unidadeQuantidade": "unidade de material removido"
+    },
+    {
+      "_id": {
+        "$oid": "45c7637b10a32d39f314ae64"
+      },
+      "ocorrenciaId": {
+        "$oid": "dadf6eb8860bde51f585edf5"
+      },
+      "registradoPor": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "tipoMedida": "cultural",
+      "descricao": "BD6 v1 - exclusivo desenvolvimento/testes - remocao manual de material danificado para observacao; sem prescricao",
+      "dataAplicacao": {
+        "$date": "2026-10-22T12:00:00.000Z"
+      },
+      "areaTratadaHa": 0.2,
+      "criadoEm": {
+        "$date": "2026-10-22T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-22T12:00:00.000Z"
+      }
+    }
+  ],
+  "avaliacoes_tratamento": [
+    {
+      "_id": {
+        "$oid": "6bc1bdc5b3925872759217db"
+      },
+      "tratamentoId": {
+        "$oid": "8b9bd100ddd997353b4559c5"
+      },
+      "registradoPor": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "dataAvaliacao": {
+        "$date": "2026-10-06T12:00:00.000Z"
+      },
+      "resultado": "melhora_observada",
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - resultado simulado, sem comprovacao de eficacia",
+      "monitoramentoId": {
+        "$oid": "b4ed3e6b31dad83fc58c089e"
+      },
+      "criadoEm": {
+        "$date": "2026-10-06T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-06T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "df544af50ba6ef02b185c199"
+      },
+      "tratamentoId": {
+        "$oid": "4efb32fb43d918586d0707ad"
+      },
+      "registradoPor": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "dataAvaliacao": {
+        "$date": "2026-10-06T12:00:00.000Z"
+      },
+      "resultado": "sem_mudanca",
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - resultado simulado, sem comprovacao de eficacia",
+      "criadoEm": {
+        "$date": "2026-10-06T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-06T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "1d927a527f2521b4e9f209e0"
+      },
+      "tratamentoId": {
+        "$oid": "1d66368b4b4a8784e055e365"
+      },
+      "registradoPor": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "dataAvaliacao": {
+        "$date": "2026-10-24T12:00:00.000Z"
+      },
+      "resultado": "piora_observada",
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - resultado simulado, sem comprovacao de eficacia",
+      "monitoramentoId": {
+        "$oid": "35744f5345b53a341357ee9f"
+      },
+      "criadoEm": {
+        "$date": "2026-10-24T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-24T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "ba4398cdcb787815e9051309"
+      },
+      "tratamentoId": {
+        "$oid": "45c7637b10a32d39f314ae64"
+      },
+      "registradoPor": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "dataAvaliacao": {
+        "$date": "2026-10-24T12:00:00.000Z"
+      },
+      "resultado": "inconclusivo",
+      "observacoes": "BD6 v1 - exclusivo desenvolvimento/testes - resultado simulado, sem comprovacao de eficacia",
+      "criadoEm": {
+        "$date": "2026-10-24T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-24T12:00:00.000Z"
+      }
+    }
+  ],
+  "alertas": [
+    {
+      "_id": {
+        "$oid": "288b62dc177e074ac3ca7171"
+      },
+      "usuarioId": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "tipo": "ocorrencia_intensidade_alta",
+      "titulo": "BD6 - Ocorrencia alta ficticia",
+      "mensagem": "Registro ficticio inicial de intensidade alta; sem diagnostico.",
+      "prioridade": "alta",
+      "contexto": {
+        "tipo": "ocorrencia",
+        "id": {
+          "$oid": "193330f259e52a07c0f94e52"
+        }
+      },
+      "criadoEm": {
+        "$date": "2026-10-21T12:00:00.000Z"
+      }
+    }
+  ],
+  "experiencias_comunidade": [
+    {
+      "_id": {
+        "$oid": "0b4533a1664d2f8047fd6a92"
+      },
+      "autorId": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "ocorrenciaOrigemId": {
+        "$oid": "193330f259e52a07c0f94e52"
+      },
+      "nomePublico": "Produtor Ficticio BD6 A",
+      "culturaId": {
+        "$oid": "f04d5232bcbcda1037cdb0e3"
+      },
+      "culturaNome": "Milho",
+      "tipoProblema": "nao_identificado",
+      "statusOcorrencia": "aberta",
+      "titulo": "BD6 - Relato ficticio pendente A",
+      "relato": "Copia ficticia de observacao sem identificacao, sem diagnostico e sem aprovacao.",
+      "versao": 1,
+      "moderacao": {
+        "status": "pendente"
+      },
+      "criadoEm": {
+        "$date": "2026-10-27T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-27T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "2eec0b66dbaf8f79cddc17c2"
+      },
+      "autorId": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "ocorrenciaOrigemId": {
+        "$oid": "dadf6eb8860bde51f585edf5"
+      },
+      "nomePublico": "Produtor Ficticio BD6 B",
+      "culturaId": {
+        "$oid": "f04d5232bcbcda1037cdb0e3"
+      },
+      "culturaNome": "Milho",
+      "tipoProblema": "nao_identificado",
+      "statusOcorrencia": "em_acompanhamento",
+      "titulo": "BD6 - Relato ficticio pendente B",
+      "relato": "Copia ficticia de observacao sem identificacao, sem diagnostico e sem aprovacao.",
+      "versao": 1,
+      "moderacao": {
+        "status": "pendente"
+      },
+      "criadoEm": {
+        "$date": "2026-10-27T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-10-27T12:00:00.000Z"
+      }
+    }
+  ],
+  "adocoes_tratamento": [],
+  "denuncias_comunidade": []
+}

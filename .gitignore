@@ -42,3 +42,7 @@ firebase-export-*/
 # Sistema / editor
 .DS_Store
 .vscode/
+
+# Configurações de assistentes
+.agents/
+.claude/

@@ -1,0 +1,3115 @@
+[
+  {
+    "codigoEditorial": "lagarta-do-cartucho",
+    "tipo": "PRAGA",
+    "nomePopular": "Lagarta-do-cartucho",
+    "nomeCientifico": "Spodoptera frugiperda",
+    "descricao": "Lagarta que raspa e perfura folhas, frequentemente abrigada no cartucho do milho.",
+    "chips": [
+      "Milho",
+      "Temperaturas quentes"
+    ],
+    "nivelBaixo": "Sinais localizados (folhas raspadas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (perfurações nas folhas abertas): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (desfolha) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Folhas raspadas",
+      "Perfurações nas folhas abertas",
+      "Fezes no cartucho"
+    ],
+    "ondeOlhar": "Examine folhas novas e o interior do cartucho.",
+    "dicaDeCampo": "Abra o cartucho com cuidado e procure lagartas vivas.",
+    "danos": [
+      "Desfolha",
+      "Destruição do cartucho",
+      "Comprometimento de espigas"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Milho.",
+    "climaFavoravel": [
+      "Temperaturas quentes",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Da emergência ao desenvolvimento vegetativo; também pode atacar espigas.",
+    "prevencao": [
+      "Monitorar desde a emergência",
+      "Manejar plantas voluntárias",
+      "Preservar inimigos naturais",
+      "Cumprir o refúgio recomendado para milho Bt"
+    ],
+    "tratamentoIntro": "Combine monitoramento e controle biológico, avaliando lagartas pequenas e condições locais.",
+    "classesTratamento": [
+      {
+        "classe": "Biológicos microbianos",
+        "exemplosPrincipiosAtivos": [
+          "Bacillus thuringiensis",
+          "Spodoptera frugiperda multiple nucleopolyhedrovirus"
+        ],
+        "observacao": "Exemplos educativos, sem confirmação de registro atual para cada cultura e alvo; não equivalem a recomendação de aplicação."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/pragas-e-doencas/pragas/pragas-da-fase-vegetativa-e-reprodutiva",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.embrapa.br/documents/1344498/2767891/manejo-da-lagarta-do-cartucho-em-milho.pdf/a2f4a72a-9889-4c38-b88d-31e29556911d",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.alice.cnptia.embrapa.br/handle/doc/1176367",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "mosca-branca",
+    "tipo": "PRAGA",
+    "nomePopular": "Mosca-branca",
+    "nomeCientifico": "Bemisia tabaci (complexo de espécies)",
+    "descricao": "Inseto sugador que pode transmitir viroses e favorecer fumagina.",
+    "chips": [
+      "Tomate",
+      "Soja",
+      "Tempo quente"
+    ],
+    "nivelBaixo": "Sinais localizados (adultos brancos sob as folhas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (ninfas aderidas à face inferior): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (sucção de seiva) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Adultos brancos sob as folhas",
+      "Ninfas aderidas à face inferior",
+      "Melada e fumagina"
+    ],
+    "ondeOlhar": "Observe o verso das folhas e as brotações.",
+    "dicaDeCampo": "Ao virar a folha, procure ninfas; adultos podem voar rapidamente.",
+    "danos": [
+      "Sucção de seiva",
+      "Redução do vigor",
+      "Transmissão de viroses conforme hospedeiro"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Tomate; Soja; Feijão.",
+    "climaFavoravel": [
+      "Tempo quente",
+      "Períodos secos"
+    ],
+    "epocaPropicia": "Da produção de mudas ao fim do ciclo.",
+    "prevencao": [
+      "Usar mudas sadias",
+      "Proteger viveiros",
+      "Eliminar plantas voluntárias hospedeiras",
+      "Evitar sobreposição de cultivos infestados"
+    ],
+    "tratamentoIntro": "Integre prevenção de viroses, amostragem e controle seletivo; eliminar o vetor não cura uma planta infectada.",
+    "classesTratamento": [
+      {
+        "classe": "Controle biológico e inseticidas seletivos",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/tomate/producao/doencas-e-pragas/pragas/mosca-branca",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1021765",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Não confundir mosaico-comum do feijoeiro, transmitido por pulgões, com mosaico-dourado, associado à mosca-branca."
+    }
+  },
+  {
+    "codigoEditorial": "percevejo-marrom",
+    "tipo": "PRAGA",
+    "nomePopular": "Percevejo-marrom",
+    "nomeCientifico": "Euschistus heros",
+    "descricao": "Percevejo sugador que compromete vagens e grãos da soja.",
+    "chips": [
+      "Soja",
+      "Temperaturas quentes"
+    ],
+    "nivelBaixo": "Sinais localizados (adultos marrons em vagens): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (ninfas em agrupamentos): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (grãos chochos) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Adultos marrons em vagens",
+      "Ninfas em agrupamentos",
+      "Grãos deformados ou enrugados"
+    ],
+    "ondeOlhar": "Amostre plantas e vagens com pano de batida.",
+    "dicaDeCampo": "A contagem deve considerar espécie e fase do inseto.",
+    "danos": [
+      "Grãos chochos",
+      "Redução da qualidade de sementes",
+      "Perda de rendimento"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Soja.",
+    "climaFavoravel": [
+      "Temperaturas quentes",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Maior atenção na formação de vagens e enchimento dos grãos.",
+    "prevencao": [
+      "Amostrar com pano de batida",
+      "Monitorar bordaduras",
+      "Preservar parasitoides de ovos",
+      "Evitar pulverizações sem amostragem"
+    ],
+    "tratamentoIntro": "Decida o controle pelos níveis técnicos aplicáveis a grãos ou sementes.",
+    "classesTratamento": [
+      {
+        "classe": "Controle biológico por parasitoides de ovos",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Inseticidas conforme amostragem",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1095039/1/CIRCULARTECNICA137.pdf",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/handle/doc/966239",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "lagarta-da-soja",
+    "tipo": "PRAGA",
+    "nomePopular": "Lagarta-da-soja",
+    "nomeCientifico": "Anticarsia gemmatalis",
+    "descricao": "Lagarta desfolhadora que reduz a área foliar da soja.",
+    "chips": [
+      "Soja",
+      "Temperaturas favoráveis à praga"
+    ],
+    "nivelBaixo": "Sinais localizados (folhas com bordas consumidas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (desfolha entre nervuras): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (perda de área foliar) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Folhas com bordas consumidas",
+      "Desfolha entre nervuras",
+      "Lagartas verdes ou escuras com listras"
+    ],
+    "ondeOlhar": "Examine o dossel e utilize pano de batida.",
+    "dicaDeCampo": "Diferencie de falsas-medideiras antes de selecionar o controle.",
+    "danos": [
+      "Perda de área foliar",
+      "Menor fotossíntese",
+      "Redução do enchimento de grãos"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Soja.",
+    "climaFavoravel": [
+      "Temperaturas favoráveis à praga",
+      "Disponibilidade de soja"
+    ],
+    "epocaPropicia": "Fases vegetativa e reprodutiva, conforme a região.",
+    "prevencao": [
+      "Amostrar lagartas",
+      "Estimar desfolha",
+      "Conservar inimigos naturais",
+      "Evitar inseticidas preventivos indiscriminados"
+    ],
+    "tratamentoIntro": "O manejo integrado pode incluir baculovírus específico da lagarta-da-soja.",
+    "classesTratamento": [
+      {
+        "classe": "Biológicos microbianos",
+        "exemplosPrincipiosAtivos": [
+          "Anticarsia gemmatalis multiple nucleopolyhedrovirus",
+          "Bacillus thuringiensis"
+        ],
+        "observacao": "Exemplos educativos, sem confirmação de registro atual para cada cultura e alvo; não equivalem a recomendação de aplicação."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.cnpt.embrapa.br/publicacoes/sist-prod/soja04/mip.htm",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1152855",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "helicoverpa",
+    "tipo": "PRAGA",
+    "nomePopular": "Helicoverpa",
+    "nomeCientifico": "Helicoverpa armigera; Helicoverpa zea",
+    "descricao": "Grupo de lagartas que ataca estruturas vegetativas e reprodutivas; a identificação da espécie exige cuidado.",
+    "chips": [
+      "Soja",
+      "Milho",
+      "Temperaturas quentes"
+    ],
+    "nivelBaixo": "Sinais localizados (perfurações em estruturas reprodutivas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (lagartas de coloração variável): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (destruição de botões e flores) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Perfurações em estruturas reprodutivas",
+      "Lagartas de coloração variável",
+      "Fezes próximas aos danos"
+    ],
+    "ondeOlhar": "Observe ponteiros, flores, vagens, espigas e maçãs, conforme a cultura.",
+    "dicaDeCampo": "Fotografia isolada nem sempre distingue as espécies de Helicoverpa.",
+    "danos": [
+      "Destruição de botões e flores",
+      "Danos diretos em grãos ou frutos",
+      "Redução da produção"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Soja; Milho; Algodão.",
+    "climaFavoravel": [
+      "Temperaturas quentes",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Maior atenção às fases reprodutivas e à passagem entre culturas.",
+    "prevencao": [
+      "Amostrar estruturas reprodutivas",
+      "Identificar as lagartas",
+      "Manejar plantas voluntárias",
+      "Coordenar manejo entre áreas vizinhas"
+    ],
+    "tratamentoIntro": "Integre monitoramento e manejo regional, com seleção de controle conforme espécie e cultura.",
+    "classesTratamento": [
+      {
+        "classe": "Controle biológico e inseticidas seletivos",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/pt/alerta-helicoverpa",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1152855/1/Doc-269-4-ed-2023.pdf",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "H. armigera é predominante nos ataques de Helicoverpa em soja no Brasil; H. zea tem importância no milho. Não tratar as duas como identificação confirmada."
+    }
+  },
+  {
+    "codigoEditorial": "broca-do-cafe",
+    "tipo": "PRAGA",
+    "nomePopular": "Broca-do-café",
+    "nomeCientifico": "Hypothenemus hampei",
+    "descricao": "Pequeno besouro que perfura frutos e se desenvolve nas sementes do café.",
+    "chips": [
+      "Café",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "nivelBaixo": "Sinais localizados (orifício na coroa do fruto): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (galerias nas sementes): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (perda de peso de grãos) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Orifício na coroa do fruto",
+      "Galerias nas sementes",
+      "Presença de besouros em frutos brocados"
+    ],
+    "ondeOlhar": "Examine frutos na planta e remanescentes da safra anterior.",
+    "dicaDeCampo": "Abra frutos suspeitos para distinguir perfurações antigas de infestação ativa.",
+    "danos": [
+      "Perda de peso de grãos",
+      "Depreciação da qualidade",
+      "Queda de frutos"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Café.",
+    "climaFavoravel": [
+      "A influência de chuva e umidade varia com a espécie e a região.",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Da formação dos frutos à pós-colheita, conforme a região.",
+    "prevencao": [
+      "Fazer colheita cuidadosa",
+      "Realizar repasse",
+      "Reduzir frutos remanescentes no solo e planta",
+      "Monitorar frutos e armadilhas"
+    ],
+    "tratamentoIntro": "O manejo integra saneamento da colheita e controle no momento de trânsito dos adultos.",
+    "classesTratamento": [
+      {
+        "classe": "Fungos entomopatogênicos",
+        "exemplosPrincipiosAtivos": [
+          "Beauveria bassiana"
+        ],
+        "observacao": "Exemplos educativos, sem confirmação de registro atual para cada cultura e alvo; não equivalem a recomendação de aplicação."
+      },
+      {
+        "classe": "Diamidas",
+        "exemplosPrincipiosAtivos": [
+          "ciantraniliprole"
+        ],
+        "observacao": "Exemplos educativos, sem confirmação de registro atual para cada cultura e alvo; não equivalem a recomendação de aplicação."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1167902/1/Circular-Tecnica-8-Manejo-integrado-de-pragas.pdf",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1135273/1/CT-48-web.pdf",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "bicho-mineiro",
+    "tipo": "PRAGA",
+    "nomePopular": "Bicho-mineiro",
+    "nomeCientifico": "Leucoptera coffeella",
+    "descricao": "Lagarta que vive dentro das folhas e produz minas no cafeeiro.",
+    "chips": [
+      "Café",
+      "Tempo quente"
+    ],
+    "nivelBaixo": "Sinais localizados (manchas ou minas marrons): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (larvas no interior das minas): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (redução da área fotossintética) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Manchas ou minas marrons",
+      "Larvas no interior das minas",
+      "Queda de folhas atacadas"
+    ],
+    "ondeOlhar": "Inspecione folhas dos terços médio e superior.",
+    "dicaDeCampo": "Verifique se as minas estão ativas antes de contabilizar a infestação.",
+    "danos": [
+      "Redução da área fotossintética",
+      "Desfolha",
+      "Enfraquecimento do cafeeiro"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Café.",
+    "climaFavoravel": [
+      "Tempo quente",
+      "Baixa precipitação"
+    ],
+    "epocaPropicia": "Maior atenção nos períodos secos.",
+    "prevencao": [
+      "Monitorar minas ativas",
+      "Preservar vespas e parasitoides",
+      "Usar mudas sadias",
+      "Planejar manejo da vegetação do entorno"
+    ],
+    "tratamentoIntro": "Priorize amostragem e conservação de inimigos naturais.",
+    "classesTratamento": [
+      {
+        "classe": "Controle biológico conservativo",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Inseticidas seletivos para minas ativas",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1167902/1/Circular-Tecnica-8-Manejo-integrado-de-pragas.pdf",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1135273/1/CT-48-web.pdf",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "broca-da-cana",
+    "tipo": "PRAGA",
+    "nomePopular": "Broca-da-cana",
+    "nomeCientifico": "Diatraea saccharalis",
+    "descricao": "Lagarta que abre galerias no colmo da cana-de-açúcar.",
+    "chips": [
+      "Cana-de-açúcar",
+      "Temperaturas quentes"
+    ],
+    "nivelBaixo": "Sinais localizados (orifícios nos colmos): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (galerias internas): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (quebra de colmos) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Orifícios nos colmos",
+      "Galerias internas",
+      "Secamento do broto em plantas jovens"
+    ],
+    "ondeOlhar": "Examine colmos e pontos com quebra ou brotos secos.",
+    "dicaDeCampo": "A abertura do colmo permite observar a galeria e a lagarta.",
+    "danos": [
+      "Quebra de colmos",
+      "Redução de peso",
+      "Favorecimento de podridões"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Cana-de-açúcar.",
+    "climaFavoravel": [
+      "Temperaturas quentes",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Durante o desenvolvimento da cana, com variação regional.",
+    "prevencao": [
+      "Monitorar colmos",
+      "Mapear áreas infestadas",
+      "Preservar inimigos naturais",
+      "Planejar controle biológico no ciclo"
+    ],
+    "tratamentoIntro": "O controle biológico com parasitoides é uma ferramenta importante do manejo.",
+    "classesTratamento": [
+      {
+        "classe": "Parasitoides",
+        "exemplosPrincipiosAtivos": [
+          "Cotesia flavipes",
+          "Trichogramma galloi"
+        ],
+        "observacao": "Exemplos de agentes biológicos, e não princípios ativos químicos; uso depende de orientação técnica e enquadramento do agente."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.alice.cnptia.embrapa.br/handle/doc/1143897",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1160761/1/Siconbiol-anais2023.pdf",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Exemplos biológicos são organismos de controle, não moléculas químicas; a liberação depende de orientação técnica."
+    }
+  },
+  {
+    "codigoEditorial": "pulgao",
+    "tipo": "PRAGA",
+    "nomePopular": "Pulgão",
+    "nomeCientifico": "Aphis spp.; Myzus persicae e outras espécies de Aphididae",
+    "descricao": "Grupo de insetos sugadores que forma colônias e pode transmitir vírus.",
+    "chips": [
+      "Hortaliças",
+      "Feijão",
+      "Tempo favorável à espécie"
+    ],
+    "nivelBaixo": "Sinais localizados (colônias em brotações): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (folhas encarquilhadas): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (enfraquecimento) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Colônias em brotações",
+      "Folhas encarquilhadas",
+      "Melada com possível fumagina"
+    ],
+    "ondeOlhar": "Examine brotações e a face inferior das folhas.",
+    "dicaDeCampo": "Observe também joaninhas e pulgões parasitados antes de intervir.",
+    "danos": [
+      "Enfraquecimento",
+      "Deformação de brotos",
+      "Transmissão de viroses"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Hortaliças; Feijão; Outras culturas conforme espécie.",
+    "climaFavoravel": [
+      "Tempo favorável à espécie",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Da fase de mudas às brotações do cultivo.",
+    "prevencao": [
+      "Usar mudas sadias",
+      "Evitar adubação nitrogenada excessiva",
+      "Manejar hospedeiros alternativos",
+      "Preservar inimigos naturais"
+    ],
+    "tratamentoIntro": "O manejo depende da espécie, cultura e risco de viroses.",
+    "classesTratamento": [
+      {
+        "classe": "Controle biológico conservativo",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Inseticidas seletivos conforme cultura",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/676195",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Morango/MorangoSemiHidroponico/pragas.htm",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Entrada de grupo: não atribuir as mesmas espécies, viroses ou produtos a todas as culturas."
+    }
+  },
+  {
+    "codigoEditorial": "acaro-rajado",
+    "tipo": "PRAGA",
+    "nomePopular": "Ácaro-rajado",
+    "nomeCientifico": "Tetranychus urticae",
+    "descricao": "Ácaro que suga o conteúdo celular das folhas e pode produzir teias.",
+    "chips": [
+      "Tomate",
+      "Morango",
+      "Tempo quente"
+    ],
+    "nivelBaixo": "Sinais localizados (pontuações claras nas folhas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (bronzeamento): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (redução da fotossíntese) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Pontuações claras nas folhas",
+      "Bronzeamento",
+      "Teias e pequenos ácaros no verso"
+    ],
+    "ondeOlhar": "Observe a face inferior das folhas com lupa.",
+    "dicaDeCampo": "Ácaros predadores também podem estar presentes e devem ser diferenciados.",
+    "danos": [
+      "Redução da fotossíntese",
+      "Secamento foliar",
+      "Redução da produção"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Tomate; Morango; Feijão.",
+    "climaFavoravel": [
+      "Tempo quente",
+      "Baixa umidade"
+    ],
+    "epocaPropicia": "Períodos quentes e secos, inclusive sob cultivo protegido.",
+    "prevencao": [
+      "Usar mudas livres de ácaros",
+      "Evitar excesso de nitrogênio",
+      "Reduzir poeira sobre plantas",
+      "Preservar ácaros predadores"
+    ],
+    "tratamentoIntro": "O manejo pode combinar ácaros predadores e acaricidas seletivos.",
+    "classesTratamento": [
+      {
+        "classe": "Ácaros predadores",
+        "exemplosPrincipiosAtivos": [
+          "Neoseiulus californicus",
+          "Phytoseiulus macropilis"
+        ],
+        "observacao": "Exemplos de agentes biológicos, e não princípios ativos químicos; uso depende de orientação técnica e enquadramento do agente."
+      },
+      {
+        "classe": "Botânicos",
+        "exemplosPrincipiosAtivos": [
+          "azadiractina"
+        ],
+        "observacao": "Exemplos educativos, sem confirmação de registro atual para cada cultura e alvo; não equivalem a recomendação de aplicação."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/handle/doc/879820",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.cnpuv.embrapa.br/uzum/morango/acaro_rajado.html",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.gov.br/agricultura/pt-br/assuntos/noticias/2022/controle-biologico-pode-alcancar-ate-80-de-eficiencia-contra-acaro-rajado-na-producao-de-morango",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.alice.cnptia.embrapa.br/handle/doc/870522",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "tripes",
+    "tipo": "PRAGA",
+    "nomePopular": "Tripes",
+    "nomeCientifico": "Thrips tabaci; Frankliniella spp.; outros Thysanoptera",
+    "descricao": "Pequenos insetos que raspam tecidos, causam prateamento e, em algumas espécies, transmitem vírus.",
+    "chips": [
+      "Tomate",
+      "Cebola",
+      "Tempo quente"
+    ],
+    "nivelBaixo": "Sinais localizados (prateamento de folhas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (pequenos insetos em flores ou folhas novas): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (redução da área funcional) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Prateamento de folhas",
+      "Pequenos insetos em flores ou folhas novas",
+      "Cicatrizes e deformações"
+    ],
+    "ondeOlhar": "Examine flores, brotações e, na cebola, o pescoço entre folhas.",
+    "dicaDeCampo": "Bata flores sobre superfície clara e observe os insetos com lupa.",
+    "danos": [
+      "Redução da área funcional",
+      "Depreciação de frutos ou bulbos",
+      "Transmissão de viroses por espécies vetoras"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Tomate; Cebola; Feijão.",
+    "climaFavoravel": [
+      "Tempo quente",
+      "Períodos secos"
+    ],
+    "epocaPropicia": "Durante crescimento e floração; depende da espécie e cultura.",
+    "prevencao": [
+      "Evitar estresse hídrico",
+      "Monitorar folhas novas",
+      "Planejar rotação com não hospedeiras",
+      "Preservar inimigos naturais"
+    ],
+    "tratamentoIntro": "A identificação do tripes e da cultura orienta o controle integrado.",
+    "classesTratamento": [
+      {
+        "classe": "Controle cultural e biológico",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Inseticidas seletivos conforme espécie e cultura",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cebola/producao/pragas/tripes",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.atermaisdigital.cnptia.embrapa.br/web/tomate-de-mesa/pragas",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "T. tabaci é referência para cebola; Frankliniella spp. inclui vetores de orthotospovírus no tomate, sem generalizar a todos os tripes."
+    }
+  },
+  {
+    "codigoEditorial": "traca-do-tomateiro",
+    "tipo": "PRAGA",
+    "nomePopular": "Traça-do-tomateiro",
+    "nomeCientifico": "Tuta absoluta",
+    "descricao": "Lagarta que forma minas nas folhas e pode perfurar brotos e frutos.",
+    "chips": [
+      "Tomate",
+      "Tempo quente"
+    ],
+    "nivelBaixo": "Sinais localizados (minas largas nas folhas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (ponteiros danificados): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (destruição foliar) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Minas largas nas folhas",
+      "Ponteiros danificados",
+      "Pequenos furos em frutos"
+    ],
+    "ondeOlhar": "Inspecione folhas, brotos e a região do cálice dos frutos.",
+    "dicaDeCampo": "Procure larva viva dentro da mina, diferenciando-a de moscas-minadoras.",
+    "danos": [
+      "Destruição foliar",
+      "Perda de ponteiros",
+      "Frutos impróprios para venda"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Tomate.",
+    "climaFavoravel": [
+      "Tempo quente",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Ao longo do ciclo, com atenção em períodos secos e cultivos protegidos.",
+    "prevencao": [
+      "Usar mudas sadias",
+      "Eliminar restos do cultivo encerrado",
+      "Evitar sobreposição de lavouras infestadas",
+      "Monitorar com inspeção e armadilhas"
+    ],
+    "tratamentoIntro": "Combine saneamento, monitoramento e agentes de controle compatíveis.",
+    "classesTratamento": [
+      {
+        "classe": "Controle biológico por parasitoides",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Inseticidas seletivos com rotação de mecanismos de ação",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/tomate/producao/doencas-e-pragas/pragas/traca-do-tomateiro",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Tomate/TomateIndustrial_2ed/pragas_traca.htm",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "vaquinha",
+    "tipo": "PRAGA",
+    "nomePopular": "Vaquinha",
+    "nomeCientifico": "Diabrotica speciosa; outros Chrysomelidae conforme a região",
+    "descricao": "Besouros que perfuram folhas; na espécie D. speciosa, as larvas vivem no solo e atacam raízes.",
+    "chips": [
+      "Feijão",
+      "Hortaliças",
+      "Temperaturas favoráveis"
+    ],
+    "nivelBaixo": "Sinais localizados (furos nas folhas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (besouros verdes com manchas amarelas em d. speciosa): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (desfolha) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Furos nas folhas",
+      "Besouros verdes com manchas amarelas em D. speciosa",
+      "Danos em plântulas"
+    ],
+    "ondeOlhar": "Examine folhas novas e plantas recém-emergidas ou transplantadas.",
+    "dicaDeCampo": "O nome vaquinha pode designar espécies diferentes.",
+    "danos": [
+      "Desfolha",
+      "Atraso do crescimento",
+      "Perda de plantas jovens"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Feijão; Hortaliças.",
+    "climaFavoravel": [
+      "Temperaturas favoráveis",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Principal atenção no estabelecimento do cultivo.",
+    "prevencao": [
+      "Inspecionar mudas",
+      "Monitorar bordaduras",
+      "Planejar rotação conforme hospedeiros",
+      "Preservar inimigos naturais"
+    ],
+    "tratamentoIntro": "Avalie o dano em plantas jovens antes de selecionar controle localizado.",
+    "classesTratamento": [
+      {
+        "classe": "Controle cultural",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Inseticidas conforme identificação e cultura",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/web/hortalicas/pimenta/pragas",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1152855",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "lagarta-rosca",
+    "tipo": "PRAGA",
+    "nomePopular": "Lagarta-rosca",
+    "nomeCientifico": "Agrotis ipsilon e outras espécies com hábito semelhante",
+    "descricao": "Lagarta de hábito noturno que corta plantas novas próximo ao solo.",
+    "chips": [
+      "Milho",
+      "Hortaliças",
+      "Condições favoráveis à sobrevivência no solo"
+    ],
+    "nivelBaixo": "Sinais localizados (plântulas cortadas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (falhas em reboleiras): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (redução do estande) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Plântulas cortadas",
+      "Falhas em reboleiras",
+      "Lagartas enroladas no solo"
+    ],
+    "ondeOlhar": "Procure junto ao colo das plantas e sob torrões próximos.",
+    "dicaDeCampo": "Inspecione ao entardecer; durante o dia a lagarta pode estar enterrada.",
+    "danos": [
+      "Redução do estande",
+      "Necessidade de replantio",
+      "Desuniformidade do cultivo"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Milho; Hortaliças.",
+    "climaFavoravel": [
+      "Condições favoráveis à sobrevivência no solo",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Emergência e primeiras semanas após transplante.",
+    "prevencao": [
+      "Inspecionar área antes do plantio",
+      "Manejar hospedeiros antecipadamente",
+      "Monitorar plântulas",
+      "Investigar focos de plantas cortadas"
+    ],
+    "tratamentoIntro": "Priorize prevenção cultural e manejo dos focos identificados.",
+    "classesTratamento": [
+      {
+        "classe": "Controle cultural",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Controle localizado conforme cultura e registro",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cenoura/producao/doencas-e-pragas/pragas/lagarta-rosca",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "formigas-cortadeiras",
+    "tipo": "PRAGA",
+    "nomePopular": "Formigas-cortadeiras",
+    "nomeCientifico": "Atta spp.; Acromyrmex spp.",
+    "descricao": "Formigas que cortam material vegetal e o transportam para o fungo cultivado nos ninhos.",
+    "chips": [
+      "Frutíferas",
+      "Hortaliças",
+      "Atividade varia com espécie"
+    ],
+    "nivelBaixo": "Sinais localizados (folhas com cortes nas bordas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (carreiros transportando folhas): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (desfolha rápida) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Folhas com cortes nas bordas",
+      "Carreiros transportando folhas",
+      "Desfolha próxima a ninhos"
+    ],
+    "ondeOlhar": "Observe plantas, trilhas e olheiros ativos do entorno.",
+    "dicaDeCampo": "Siga o carreiro para localizar o ninho responsável.",
+    "danos": [
+      "Desfolha rápida",
+      "Morte de mudas",
+      "Falhas no estabelecimento"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Frutíferas; Hortaliças; Outras culturas.",
+    "climaFavoravel": [
+      "Atividade varia com espécie",
+      "Tempo seco favorece uso de certas iscas"
+    ],
+    "epocaPropicia": "Ao longo do ano, com prioridade na implantação das culturas.",
+    "prevencao": [
+      "Mapear ninhos",
+      "Inspecionar entorno",
+      "Proteger e acompanhar mudas",
+      "Verificar atividade após controle"
+    ],
+    "tratamentoIntro": "O controle deve atingir a colônia, com método escolhido segundo espécie e ninho.",
+    "classesTratamento": [
+      {
+        "classe": "Formicidas em iscas ou outras formulações autorizadas",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/en/web/florestas/pragas-florestais/perguntas-e-respostas",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1109531/1/COMUNICADO-TECNICO-367.pdf",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "mosca-das-frutas",
+    "tipo": "PRAGA",
+    "nomePopular": "Mosca-das-frutas",
+    "nomeCientifico": "Anastrepha spp.; Ceratitis capitata; outras espécies conforme hospedeiro",
+    "descricao": "Moscas cujas larvas se desenvolvem dentro dos frutos, prejudicando sua qualidade.",
+    "chips": [
+      "Frutíferas",
+      "Temperaturas favoráveis"
+    ],
+    "nivelBaixo": "Sinais localizados (pontos de oviposição): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (larvas na polpa): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (destruição da polpa) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Pontos de oviposição",
+      "Larvas na polpa",
+      "Amolecimento e queda de frutos"
+    ],
+    "ondeOlhar": "Examine frutos em maturação, caídos e armadilhas de monitoramento.",
+    "dicaDeCampo": "A identificação da mosca e do fruto hospedeiro é necessária.",
+    "danos": [
+      "Destruição da polpa",
+      "Descarte comercial",
+      "Restrições fitossanitárias"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Frutíferas.",
+    "climaFavoravel": [
+      "Temperaturas favoráveis",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Frutificação e amadurecimento dos hospedeiros.",
+    "prevencao": [
+      "Recolher frutos infestados",
+      "Planejar colheita",
+      "Monitorar com armadilhas",
+      "Manejar hospedeiros do entorno com orientação"
+    ],
+    "tratamentoIntro": "O manejo integra saneamento, monitoramento e controle específico da espécie.",
+    "classesTratamento": [
+      {
+        "classe": "Iscas e controle de adultos conforme hospedeiro",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Controle biológico quando aplicável",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/111770/1/Cultivo-da-Mangueira-Sistema-de-producao.pdf",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Citros/CitrosNordeste/pragas.htm",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "A lista original também cita tomate; não foi confirmado vínculo específico com as espécies desta ficha. Não relacionar automaticamente tomate a Anastrepha/Ceratitis sem verificação técnica."
+    }
+  },
+  {
+    "codigoEditorial": "cochonilha",
+    "tipo": "PRAGA",
+    "nomePopular": "Cochonilha",
+    "nomeCientifico": "Coccoidea: Planococcus spp.; Saissetia spp.; outras espécies",
+    "descricao": "Grupo de insetos sugadores encontrados em ramos, folhas, frutos ou raízes, conforme a espécie.",
+    "chips": [
+      "Café",
+      "Citros",
+      "Ambiente varia por espécie"
+    ],
+    "nivelBaixo": "Sinais localizados (colônias com cera ou escamas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (melada e fumagina em espécies produtoras): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (redução do vigor) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Colônias com cera ou escamas",
+      "Melada e fumagina em espécies produtoras",
+      "Enfraquecimento de partes infestadas"
+    ],
+    "ondeOlhar": "Examine ramos, axilas, frutos e raízes quando houver suspeita.",
+    "dicaDeCampo": "Nem toda cochonilha produz melada ou tem o mesmo aspecto.",
+    "danos": [
+      "Redução do vigor",
+      "Depreciação dos frutos",
+      "Secamento de ramos"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Café; Citros; Frutíferas.",
+    "climaFavoravel": [
+      "Ambiente varia por espécie",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Brotação e frutificação, com variação entre espécies.",
+    "prevencao": [
+      "Usar mudas inspecionadas",
+      "Identificar focos",
+      "Preservar predadores e parasitoides",
+      "Manejar formigas associadas quando pertinente"
+    ],
+    "tratamentoIntro": "O controle depende da espécie e do local de alimentação, geralmente priorizando focos e ninfas.",
+    "classesTratamento": [
+      {
+        "classe": "Controle biológico conservativo",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Produtos seletivos conforme espécie e hospedeiro",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.cnpuv.embrapa.br/uzum/uva/cocho_farinhenta.html",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Citros/CitrosNordeste/pragas.htm",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Entrada de grupo; confirmar a espécie antes de associar uma ficha a café, citros ou outra frutífera."
+    }
+  },
+  {
+    "codigoEditorial": "traca-das-cruciferas",
+    "tipo": "PRAGA",
+    "nomePopular": "Traça-das-crucíferas",
+    "nomeCientifico": "Plutella xylostella",
+    "descricao": "Lagarta pequena que raspa e perfura folhas de brássicas.",
+    "chips": [
+      "Couve",
+      "Repolho",
+      "Tempo quente"
+    ],
+    "nivelBaixo": "Sinais localizados (janelas translúcidas na folha): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (pequenas perfurações): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (perda de área foliar) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Janelas translúcidas na folha",
+      "Pequenas perfurações",
+      "Lagartas verdes na face inferior"
+    ],
+    "ondeOlhar": "Examine o verso das folhas e a formação de cabeças ou inflorescências.",
+    "dicaDeCampo": "Lagartas podem se contorcer e descer por fios quando perturbadas.",
+    "danos": [
+      "Perda de área foliar",
+      "Dano em cabeças",
+      "Depreciação comercial"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Couve; Repolho; Brócolis.",
+    "climaFavoravel": [
+      "Tempo quente",
+      "Períodos menos chuvosos"
+    ],
+    "epocaPropicia": "Durante o ciclo, especialmente em plantios sucessivos.",
+    "prevencao": [
+      "Usar mudas inspecionadas",
+      "Eliminar restos do cultivo encerrado",
+      "Evitar plantios sucessivos infestados",
+      "Preservar parasitoides"
+    ],
+    "tratamentoIntro": "Integre medidas culturais e controle seletivo para reduzir seleção de resistência.",
+    "classesTratamento": [
+      {
+        "classe": "Botânicos",
+        "exemplosPrincipiosAtivos": [
+          "azadiractina"
+        ],
+        "observacao": "Exemplos educativos, sem confirmação de registro atual para cada cultura e alvo; não equivalem a recomendação de aplicação."
+      },
+      {
+        "classe": "Espinosinas",
+        "exemplosPrincipiosAtivos": [
+          "espinosade"
+        ],
+        "observacao": "Exemplos educativos, sem confirmação de registro atual para cada cultura e alvo; não equivalem a recomendação de aplicação."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.atermaisdigital.cnptia.embrapa.br/web/controle-de-pragas/w/azamax",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.atermaisdigital.cnptia.embrapa.br/web/controle-de-pragas/w/tracer",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Os exemplos exigem conferência da bula e do registro atual para a cultura exata, inclusive brócolis, couve ou repolho."
+    }
+  },
+  {
+    "codigoEditorial": "mosca-minadora",
+    "tipo": "PRAGA",
+    "nomePopular": "Mosca-minadora",
+    "nomeCientifico": "Liriomyza spp.",
+    "descricao": "Moscas cujas larvas fazem galerias no interior das folhas.",
+    "chips": [
+      "Tomate",
+      "Melão",
+      "Temperaturas favoráveis"
+    ],
+    "nivelBaixo": "Sinais localizados (minas serpenteadas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (pontuações de alimentação): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (redução da fotossíntese) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Minas serpenteadas",
+      "Pontuações de alimentação",
+      "Secamento das folhas muito minadas"
+    ],
+    "ondeOlhar": "Observe folhas com galerias e procure larvas em atividade.",
+    "dicaDeCampo": "Diferencie minas finas de Liriomyza de lesões da traça-do-tomateiro.",
+    "danos": [
+      "Redução da fotossíntese",
+      "Desfolha",
+      "Menor produtividade"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Tomate; Melão; Pepino.",
+    "climaFavoravel": [
+      "Temperaturas favoráveis",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Durante o desenvolvimento vegetativo e produtivo.",
+    "prevencao": [
+      "Inspecionar mudas",
+      "Monitorar minas ativas",
+      "Manejar restos culturais",
+      "Preservar parasitoides"
+    ],
+    "tratamentoIntro": "Acompanhe a presença de larvas e parasitoides antes de escolher o controle.",
+    "classesTratamento": [
+      {
+        "classe": "Controle biológico por parasitoides",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Inseticidas seletivos para larvas",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/782429",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/991795",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Liriomyza inclui espécies com diferenças de hospedeiros e manejo; confirmar identificação local."
+    }
+  },
+  {
+    "codigoEditorial": "nematoide-das-galhas",
+    "tipo": "PRAGA",
+    "nomePopular": "Nematoide-das-galhas",
+    "nomeCientifico": "Meloidogyne spp.",
+    "descricao": "Nematoides de solo que induzem galhas nas raízes e prejudicam o desenvolvimento.",
+    "chips": [
+      "Cenoura",
+      "Alface",
+      "Solo com umidade favorável"
+    ],
+    "nivelBaixo": "Sinais localizados (galhas nas raízes): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (crescimento irregular em reboleiras): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (menor absorção de água e nutrientes) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Galhas nas raízes",
+      "Crescimento irregular em reboleiras",
+      "Murcha ou amarelecimento"
+    ],
+    "ondeOlhar": "Retire com cuidado plantas suspeitas e examine o sistema radicular.",
+    "dicaDeCampo": "Diferencie galhas de nódulos e confirme a espécie em laboratório.",
+    "danos": [
+      "Menor absorção de água e nutrientes",
+      "Raízes comerciais deformadas",
+      "Redução do crescimento"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Cenoura; Alface; Tomate.",
+    "climaFavoravel": [
+      "Solo com umidade favorável",
+      "Temperatura adequada à espécie"
+    ],
+    "epocaPropicia": "Durante o ciclo, com risco acumulado em áreas infestadas.",
+    "prevencao": [
+      "Usar mudas e substratos sadios",
+      "Evitar transporte de solo infestado",
+      "Planejar rotação por espécie de nematoide",
+      "Usar cultivares ou porta-enxertos resistentes quando disponíveis"
+    ],
+    "tratamentoIntro": "O manejo é preventivo e integrado; a escolha de rotação depende da espécie e do hospedeiro.",
+    "classesTratamento": [
+      {
+        "classe": "Controle cultural e genético",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Nematicidas biológicos ou químicos conforme diagnóstico",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta praga",
+    "fontes": [
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/886560?locale=pt_BR",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1067867",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Preservada a classificação PRAGA adotada na lista, embora o agente não seja inseto; não confundir com doença fúngica."
+    }
+  },
+  {
+    "codigoEditorial": "ferrugem-asiatica-da-soja",
+    "tipo": "DOENÇA",
+    "nomePopular": "Ferrugem-asiática da soja",
+    "nomeCientifico": "Phakopsora pachyrhizi",
+    "descricao": "Doença fúngica foliar que pode causar desfolha precoce.",
+    "chips": [
+      "Soja",
+      "Molhamento foliar"
+    ],
+    "nivelBaixo": "Sinais localizados (pequenos pontos escuros nas folhas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (pústulas na face inferior): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (desfolha) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Pequenos pontos escuros nas folhas",
+      "Pústulas na face inferior",
+      "Amarelecimento e queda precoce"
+    ],
+    "ondeOlhar": "Vire folhas de diferentes partes do dossel, incluindo o baixeiro.",
+    "dicaDeCampo": "Use lupa para observar pústulas e procure confirmação técnica.",
+    "danos": [
+      "Desfolha",
+      "Menor enchimento de grãos",
+      "Redução da produtividade"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Soja.",
+    "climaFavoravel": [
+      "Molhamento foliar",
+      "Temperaturas amenas a quentes"
+    ],
+    "epocaPropicia": "Ao longo do ciclo sob condições favoráveis, especialmente na fase reprodutiva.",
+    "prevencao": [
+      "Respeitar o vazio sanitário vigente",
+      "Cumprir calendário regional de semeadura",
+      "Eliminar soja voluntária",
+      "Monitorar lavoura e alertas regionais"
+    ],
+    "tratamentoIntro": "O manejo combina medidas preventivas e fungicidas com eficácia regional comprovada.",
+    "classesTratamento": [
+      {
+        "classe": "Triazóis",
+        "exemplosPrincipiosAtivos": [
+          "protioconazol",
+          "tebuconazol"
+        ],
+        "observacao": "Exemplos educativos, sem confirmação de registro atual para cada cultura e alvo; não equivalem a recomendação de aplicação."
+      },
+      {
+        "classe": "Estrobilurinas",
+        "exemplosPrincipiosAtivos": [
+          "azoxistrobina",
+          "picoxistrobina"
+        ],
+        "observacao": "Exemplos educativos, sem confirmação de registro atual para cada cultura e alvo; não equivalem a recomendação de aplicação."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/en/web/soja/ferrugem",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1001340?locale=pt_BR",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.gov.br/agricultura/pt-br/assuntos/sanidade-animal-e-vegetal/sanidade-vegetal/Ferrugem_Asiatica_da_Soja?trk=article-ssr-frontend-pulse_little-text-block",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Exemplos citados em pesquisas não demonstram eficácia atual isolada nem registro de qualquer mistura; não recomendar uso isolado ou intervalo fixo. O vínculo automático com feijão do exemplo original não foi mantido."
+    }
+  },
+  {
+    "codigoEditorial": "oidio",
+    "tipo": "DOENÇA",
+    "nomePopular": "Oídio",
+    "nomeCientifico": "Erysiphe diffusa na soja; outros Erysiphales em outros hospedeiros",
+    "descricao": "Grupo de doenças com crescimento pulverulento esbranquiçado sobre órgãos da planta.",
+    "chips": [
+      "Soja",
+      "Hortaliças",
+      "Temperaturas amenas"
+    ],
+    "nivelBaixo": "Sinais localizados (pó branco em folhas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (amarelecimento de tecidos afetados): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (redução da área fotossintética) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Pó branco em folhas",
+      "Amarelecimento de tecidos afetados",
+      "Secamento em ataques intensos"
+    ],
+    "ondeOlhar": "Observe ambas as faces das folhas e brotos.",
+    "dicaDeCampo": "Diferencie pó superficial de resíduos de aplicação.",
+    "danos": [
+      "Redução da área fotossintética",
+      "Envelhecimento foliar",
+      "Perda de vigor"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Soja; Hortaliças; Frutíferas.",
+    "climaFavoravel": [
+      "Temperaturas amenas",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Períodos favoráveis ao patógeno e presença de cultivares suscetíveis.",
+    "prevencao": [
+      "Preferir cultivares resistentes",
+      "Monitorar folhas",
+      "Manter espaçamento recomendado",
+      "Evitar adubação desequilibrada"
+    ],
+    "tratamentoIntro": "A escolha do manejo depende do agente e hospedeiro; nem todo fungicida serve para todas as culturas.",
+    "classesTratamento": [
+      {
+        "classe": "Fungicidas específicos para oídio conforme cultura",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/soja/producao/doencas-da-soja/doencas-causadas-por-fungos/oidio",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1158639",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Oídio não é uma espécie única; a descrição de E. diffusa não deve ser aplicada a todas as hortaliças ou frutíferas."
+    }
+  },
+  {
+    "codigoEditorial": "mancha-alvo",
+    "tipo": "DOENÇA",
+    "nomePopular": "Mancha-alvo",
+    "nomeCientifico": "Corynespora cassiicola",
+    "descricao": "Doença que provoca lesões foliares frequentemente marcadas por anéis concêntricos.",
+    "chips": [
+      "Soja",
+      "Tomate",
+      "Alta umidade"
+    ],
+    "nivelBaixo": "Sinais localizados (pontuações pardas com halo): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (manchas circulares com anéis): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (perda de área foliar) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Pontuações pardas com halo",
+      "Manchas circulares com anéis",
+      "Secamento e queda de folhas"
+    ],
+    "ondeOlhar": "Examine folhas do interior e da parte inferior do dossel.",
+    "dicaDeCampo": "Anéis concêntricos também aparecem em outras doenças; confirme o diagnóstico.",
+    "danos": [
+      "Perda de área foliar",
+      "Desfolha",
+      "Redução da produção"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Soja; Tomate.",
+    "climaFavoravel": [
+      "Alta umidade",
+      "Molhamento foliar prolongado"
+    ],
+    "epocaPropicia": "Com dossel fechado e períodos úmidos, conforme a cultura.",
+    "prevencao": [
+      "Usar cultivares menos suscetíveis",
+      "Rotacionar com não hospedeiras",
+      "Usar material de plantio sadio",
+      "Monitorar áreas com histórico"
+    ],
+    "tratamentoIntro": "O controle integra resistência e manejo cultural, com fungicidas quando tecnicamente indicados.",
+    "classesTratamento": [
+      {
+        "classe": "Fungicidas conforme cultura e sensibilidade do patógeno",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1176454?locale=pt_BR",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.atermaisdigital.cnptia.embrapa.br/web/controle-de-pragas/w/mancha-alvo-corynespora-cassiicola-9",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.atermaisdigital.cnptia.embrapa.br/web/tomate-de-mesa/fungos-e-oomicetos",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "antracnose",
+    "tipo": "DOENÇA",
+    "nomePopular": "Antracnose",
+    "nomeCientifico": "Colletotrichum spp.; C. lindemuthianum no feijão; C. truncatum na soja",
+    "descricao": "Grupo de doenças fúngicas que causa lesões em folhas, hastes, vagens ou frutos, conforme o hospedeiro.",
+    "chips": [
+      "Feijão",
+      "Soja",
+      "Alta umidade"
+    ],
+    "nivelBaixo": "Sinais localizados (lesões escuras e deprimidas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (necrose em nervuras ou hastes): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (depreciação de sementes ou frutos) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Lesões escuras e deprimidas",
+      "Necrose em nervuras ou hastes",
+      "Massas de esporos em condições úmidas"
+    ],
+    "ondeOlhar": "Observe nervuras, hastes e órgãos reprodutivos.",
+    "dicaDeCampo": "No feijão, procure lesões deprimidas nas vagens.",
+    "danos": [
+      "Depreciação de sementes ou frutos",
+      "Perda de órgãos reprodutivos",
+      "Redução do estande em infecções precoces"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Feijão; Soja; Frutíferas.",
+    "climaFavoravel": [
+      "Alta umidade",
+      "Temperaturas favoráveis à espécie"
+    ],
+    "epocaPropicia": "Períodos chuvosos e fases suscetíveis de cada cultura.",
+    "prevencao": [
+      "Usar sementes e mudas sadias",
+      "Preferir cultivares resistentes",
+      "Rotacionar com não hospedeiras",
+      "Evitar operações em plantas molhadas"
+    ],
+    "tratamentoIntro": "O manejo depende do Colletotrichum e da cultura; a doença em feijão não é idêntica à de frutíferas.",
+    "classesTratamento": [
+      {
+        "classe": "Tratamento de sementes quando pertinente",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Fungicidas específicos para cultura e alvo",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1102266/1/CNPAF2018ManIdentDoenFeijao.pdf",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/handle/doc/991687",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Entrada de grupo; para frutíferas, confirmar a espécie e a cultura antes da publicação de recomendações específicas."
+    }
+  },
+  {
+    "codigoEditorial": "mofo-branco",
+    "tipo": "DOENÇA",
+    "nomePopular": "Mofo-branco",
+    "nomeCientifico": "Sclerotinia sclerotiorum",
+    "descricao": "Doença que provoca podridão, micélio branco e estruturas de resistência chamadas escleródios.",
+    "chips": [
+      "Soja",
+      "Feijão",
+      "Temperaturas amenas"
+    ],
+    "nivelBaixo": "Sinais localizados (lesões aquosas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (mofo branco cotonoso): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (morte de plantas) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Lesões aquosas",
+      "Mofo branco cotonoso",
+      "Escleródios escuros em tecidos"
+    ],
+    "ondeOlhar": "Inspecione hastes, axilas e partes próximas ao solo.",
+    "dicaDeCampo": "Escleródios ajudam a distinguir de outras podridões, com confirmação técnica.",
+    "danos": [
+      "Morte de plantas",
+      "Perda de vagens",
+      "Contaminação do solo por escleródios"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Soja; Feijão; Hortaliças.",
+    "climaFavoravel": [
+      "Temperaturas amenas",
+      "Umidade elevada"
+    ],
+    "epocaPropicia": "Floração e fechamento do dossel são períodos importantes em soja e feijão.",
+    "prevencao": [
+      "Usar sementes livres de escleródios",
+      "Evitar excesso de irrigação",
+      "Planejar rotação com não hospedeiras",
+      "Adequar população e arejamento"
+    ],
+    "tratamentoIntro": "O manejo deve reduzir o inóculo e proteger fases suscetíveis, sem prometer recuperação de tecidos mortos.",
+    "classesTratamento": [
+      {
+        "classe": "Controle cultural",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Controle biológico e fungicidas quando indicados",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/web/solos/busca-de-publicacoes/-/publicacao/963194/manejo-do-mofo-branco",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://labfito.vacaria.ifrs.edu.br/fitopatologico/detalhes/feijao/mofo-branco/",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://biologico.agricultura.sp.gov.br/uploads/files/pdf/livros/brassicas/livro-brassicas.pdf",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "requeima",
+    "tipo": "DOENÇA",
+    "nomePopular": "Requeima",
+    "nomeCientifico": "Phytophthora infestans",
+    "descricao": "Doença causada por oomiceto que pode destruir rapidamente a parte aérea e atingir frutos ou tubérculos.",
+    "chips": [
+      "Tomate",
+      "Batata",
+      "Tempo fresco"
+    ],
+    "nivelBaixo": "Sinais localizados (manchas úmidas e escuras): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (crescimento esbranquiçado em alta umidade): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (queima da folhagem) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Manchas úmidas e escuras",
+      "Crescimento esbranquiçado em alta umidade",
+      "Lesões escuras em caules"
+    ],
+    "ondeOlhar": "Examine folhas, hastes e frutos ou tubérculos suspeitos.",
+    "dicaDeCampo": "Diferencie de pinta-preta: a requeima costuma formar lesões maiores e úmidas.",
+    "danos": [
+      "Queima da folhagem",
+      "Podridão de frutos ou tubérculos",
+      "Morte rápida de plantas"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Tomate; Batata.",
+    "climaFavoravel": [
+      "Tempo fresco",
+      "Molhamento foliar prolongado"
+    ],
+    "epocaPropicia": "Períodos frios e úmidos em qualquer fase suscetível.",
+    "prevencao": [
+      "Usar mudas e batata-semente sadias",
+      "Eliminar plantas voluntárias",
+      "Garantir arejamento",
+      "Evitar molhamento foliar prolongado"
+    ],
+    "tratamentoIntro": "A proteção depende do monitoramento climático e de produtos específicos para oomicetos quando indicados.",
+    "classesTratamento": [
+      {
+        "classe": "Fungicidas com ação sobre oomicetos",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/tomate/producao/doencas-e-pragas/doencas/fungo/requeima",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Tomate/TomateIndustrial_2ed/doencas_fungo.htm",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Oomicetos não são fungos verdadeiros; produtos para outras manchas foliares podem não controlar requeima."
+    }
+  },
+  {
+    "codigoEditorial": "pinta-preta",
+    "tipo": "DOENÇA",
+    "nomePopular": "Pinta-preta",
+    "nomeCientifico": "Alternaria spp.; A. solani e A. grandis associadas a solanáceas",
+    "descricao": "Doença foliar com lesões escuras de anéis concêntricos, geralmente iniciadas nas folhas mais velhas.",
+    "chips": [
+      "Tomate",
+      "Batata",
+      "Temperaturas quentes"
+    ],
+    "nivelBaixo": "Sinais localizados (manchas pardas concêntricas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (halo amarelado): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (desfolha) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Manchas pardas concêntricas",
+      "Halo amarelado",
+      "Secamento das folhas inferiores"
+    ],
+    "ondeOlhar": "Observe folhas inferiores, caules e frutos ou tubérculos.",
+    "dicaDeCampo": "O padrão de alvo não é exclusivo; diferencie de mancha-alvo por avaliação técnica.",
+    "danos": [
+      "Desfolha",
+      "Exposição de frutos ao sol",
+      "Danos de qualidade e rendimento"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Tomate; Batata.",
+    "climaFavoravel": [
+      "Temperaturas quentes",
+      "Molhamento foliar"
+    ],
+    "epocaPropicia": "Frequentemente com avanço do ciclo e senescência foliar.",
+    "prevencao": [
+      "Usar material de plantio sadio",
+      "Rotacionar com não solanáceas",
+      "Manter nutrição equilibrada",
+      "Reduzir molhamento foliar"
+    ],
+    "tratamentoIntro": "Integre medidas culturais e proteção fungicida conforme risco e cultura.",
+    "classesTratamento": [
+      {
+        "classe": "Fungicidas específicos para Alternaria",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.atermaisdigital.cnptia.embrapa.br/web/tomate-de-mesa/fungos-e-oomicetos",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1135499",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1067800",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "O conjunto de espécies varia por cultura e região; não tratar A. solani como única espécie em todos os casos."
+    }
+  },
+  {
+    "codigoEditorial": "ferrugem-do-cafeeiro",
+    "tipo": "DOENÇA",
+    "nomePopular": "Ferrugem-do-cafeeiro",
+    "nomeCientifico": "Hemileia vastatrix",
+    "descricao": "Doença fúngica que causa pústulas alaranjadas e desfolha do cafeeiro.",
+    "chips": [
+      "Café",
+      "Umidade elevada"
+    ],
+    "nivelBaixo": "Sinais localizados (manchas amareladas na folha): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (pó alaranjado na face inferior): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (desfolha) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Manchas amareladas na folha",
+      "Pó alaranjado na face inferior",
+      "Queda de folhas"
+    ],
+    "ondeOlhar": "Examine principalmente o verso das folhas.",
+    "dicaDeCampo": "Diferencie pústulas alaranjadas de lesões com centro claro da cercosporiose.",
+    "danos": [
+      "Desfolha",
+      "Enfraquecimento de ramos",
+      "Redução da produção"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Café.",
+    "climaFavoravel": [
+      "Umidade elevada",
+      "Temperaturas favoráveis ao fungo"
+    ],
+    "epocaPropicia": "Durante períodos favoráveis e conforme carga produtiva.",
+    "prevencao": [
+      "Preferir cultivares resistentes",
+      "Monitorar folhas",
+      "Manter nutrição equilibrada",
+      "Adequar manejo e arejamento"
+    ],
+    "tratamentoIntro": "O programa de controle deve considerar cultivar, carga, clima e monitoramento.",
+    "classesTratamento": [
+      {
+        "classe": "Fungicidas protetores ou sistêmicos conforme programa técnico",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.ciiagro.sp.gov.br/monitoramentocafe/Pragas%20e%20Doen%C3%A7as/Doencas.htm",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/47486/1/folder-doencascafeeiro.pdf",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/410154",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "cercosporiose-do-cafe",
+    "tipo": "DOENÇA",
+    "nomePopular": "Cercosporiose do café",
+    "nomeCientifico": "Cercospora coffeicola",
+    "descricao": "Doença também chamada olho-pardo, que atinge folhas e frutos do cafeeiro.",
+    "chips": [
+      "Café",
+      "Umidade favorável à infecção"
+    ],
+    "nivelBaixo": "Sinais localizados (manchas circulares pardas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (centro acinzentado com halo): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (desfolha) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Manchas circulares pardas",
+      "Centro acinzentado com halo",
+      "Lesões em frutos"
+    ],
+    "ondeOlhar": "Observe folhas e frutos, inclusive em mudas e plantas sob estresse.",
+    "dicaDeCampo": "O centro claro com borda escura é um indício, não diagnóstico isolado.",
+    "danos": [
+      "Desfolha",
+      "Defeitos nos frutos",
+      "Redução do vigor"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Café.",
+    "climaFavoravel": [
+      "Umidade favorável à infecção",
+      "Estresse nutricional ou hídrico"
+    ],
+    "epocaPropicia": "Pode ocorrer em viveiros e durante o desenvolvimento de frutos.",
+    "prevencao": [
+      "Usar mudas sadias",
+      "Equilibrar adubação",
+      "Evitar estresse hídrico",
+      "Monitorar folhas e frutos"
+    ],
+    "tratamentoIntro": "Combine correção de estresses e manejo fungicida quando necessário.",
+    "classesTratamento": [
+      {
+        "classe": "Manejo nutricional e hídrico",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Fungicidas conforme avaliação técnica",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1135273/1/CT-48-web.pdf",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.ciiagro.sp.gov.br/monitoramentocafe/Pragas%20e%20Doen%C3%A7as/Doencas.htm",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "mancha-branca-do-milho",
+    "tipo": "DOENÇA",
+    "nomePopular": "Mancha-branca do milho",
+    "nomeCientifico": "Pantoea ananatis, com fungos associados ao complexo",
+    "descricao": "Doença foliar associada principalmente à bactéria Pantoea ananatis, com participação de fungos no complexo.",
+    "chips": [
+      "Milho",
+      "Umidade elevada"
+    ],
+    "nivelBaixo": "Sinais localizados (lesões inicialmente aquosas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (manchas claras ou palha): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (redução da fotossíntese) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Lesões inicialmente aquosas",
+      "Manchas claras ou palha",
+      "Coalescência e seca foliar"
+    ],
+    "ondeOlhar": "Examine folhas de diferentes alturas e o histórico da área.",
+    "dicaDeCampo": "Não confundir com deriva de produtos ou outras manchas; solicite diagnóstico.",
+    "danos": [
+      "Redução da fotossíntese",
+      "Seca precoce de folhas",
+      "Perda de rendimento"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Milho.",
+    "climaFavoravel": [
+      "Umidade elevada",
+      "Temperaturas amenas"
+    ],
+    "epocaPropicia": "Maior atenção em cultivos suscetíveis sob períodos úmidos.",
+    "prevencao": [
+      "Preferir híbridos menos suscetíveis",
+      "Planejar época de semeadura",
+      "Rotacionar culturas",
+      "Monitorar áreas com histórico"
+    ],
+    "tratamentoIntro": "O manejo prioriza resistência e práticas culturais; respostas ao controle químico dependem do programa e das condições.",
+    "classesTratamento": [
+      {
+        "classe": "Controle genético e cultural",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Controle químico sob avaliação técnica do complexo",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://publicacoes.epagri.sc.gov.br/index.php/RAC/article/view/191",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://labfito.vacaria.ifrs.edu.br/fitopatologico/detalhes/milho/mancha-branca/",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Não classificar automaticamente esta doença como exclusivamente fúngica nem generalizar eficácia de fungicidas contra bactérias."
+    }
+  },
+  {
+    "codigoEditorial": "mildio",
+    "tipo": "DOENÇA",
+    "nomePopular": "Míldio",
+    "nomeCientifico": "Plasmopara viticola na uva; Peronospora destructor na cebola; Pseudoperonospora cubensis em cucurbitáceas",
+    "descricao": "Grupo de doenças causadas por oomicetos diferentes conforme o hospedeiro.",
+    "chips": [
+      "Uva",
+      "Cebola",
+      "Umidade elevada"
+    ],
+    "nivelBaixo": "Sinais localizados (manchas amareladas ou oleosas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (esporulação sob alta umidade): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (perda de área foliar) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Manchas amareladas ou oleosas",
+      "Esporulação sob alta umidade",
+      "Necrose e secamento foliar"
+    ],
+    "ondeOlhar": "Na uva e cucurbitáceas observe o verso; na cebola examine folhas e hastes florais.",
+    "dicaDeCampo": "Não use o nome míldio como diagnóstico de uma espécie única.",
+    "danos": [
+      "Perda de área foliar",
+      "Danos em cachos na videira",
+      "Redução do rendimento"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Uva; Cebola; Cucurbitáceas.",
+    "climaFavoravel": [
+      "Umidade elevada",
+      "Molhamento prolongado"
+    ],
+    "epocaPropicia": "Períodos úmidos e fases suscetíveis de cada hospedeiro.",
+    "prevencao": [
+      "Garantir ventilação",
+      "Evitar molhamento prolongado",
+      "Usar material de plantio sadio",
+      "Monitorar previsões e sintomas"
+    ],
+    "tratamentoIntro": "A proteção deve ser específica para o oomiceto e a cultura, integrada ao manejo do ambiente.",
+    "classesTratamento": [
+      {
+        "classe": "Fungicidas específicos para oomicetos conforme cultura",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.cnpuv.embrapa.br/uzum/uva/mildio.html",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/bitstream/doc/1007653/1/CT133.pdf",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Melancia/SistemaProducaoMelancia/doencas.htm",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Diferencie este grupo de oídio e de requeima; não transferir produtos ou sintomas específicos entre uva, cebola e cucurbitáceas."
+    }
+  },
+  {
+    "codigoEditorial": "murcha-bacteriana",
+    "tipo": "DOENÇA",
+    "nomePopular": "Murcha-bacteriana",
+    "nomeCientifico": "Complexo de espécies Ralstonia solanacearum",
+    "descricao": "Doença vascular bacteriana que provoca murcha e pode persistir em solo, água e hospedeiros.",
+    "chips": [
+      "Tomate",
+      "Batata",
+      "Calor"
+    ],
+    "nivelBaixo": "Sinais localizados (murcha nas horas quentes): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (escurecimento vascular): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (morte de plantas) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Murcha nas horas quentes",
+      "Escurecimento vascular",
+      "Morte de plantas em reboleiras"
+    ],
+    "ondeOlhar": "Examine plantas murchas, colo e vasos da base do caule.",
+    "dicaDeCampo": "O teste de exsudação auxilia a suspeita, mas não substitui diagnóstico laboratorial.",
+    "danos": [
+      "Morte de plantas",
+      "Perda de produção",
+      "Contaminação de áreas e material propagativo"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Tomate; Batata.",
+    "climaFavoravel": [
+      "Calor",
+      "Umidade elevada no solo"
+    ],
+    "epocaPropicia": "Durante o ciclo em áreas infestadas, especialmente sob calor e excesso de água.",
+    "prevencao": [
+      "Usar material propagativo sadio",
+      "Garantir drenagem",
+      "Evitar água contaminada",
+      "Higienizar equipamentos entre áreas"
+    ],
+    "tratamentoIntro": "Não há tratamento simples que cure plantas infectadas; priorize contenção e prevenção.",
+    "classesTratamento": [
+      {
+        "classe": "Manejo preventivo e sanitário; sem indicação curativa",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "O manejo descrito não corresponde a um tratamento curativo da planta infectada."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.atermaisdigital.cnptia.embrapa.br/web/tomate-de-mesa/bacterias",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1135499",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "mosaico-comum-do-feijoeiro",
+    "tipo": "DOENÇA",
+    "nomePopular": "Mosaico-comum do feijoeiro",
+    "nomeCientifico": "Bean common mosaic virus (BCMV); Bean common mosaic necrosis virus (BCMNV)",
+    "descricao": "Virose do feijoeiro transmitida por sementes e pulgões, com sintomas dependentes da cultivar e do vírus.",
+    "chips": [
+      "Feijão",
+      "Condições favoráveis aos pulgões"
+    ],
+    "nivelBaixo": "Sinais localizados (mosaico verde-claro e escuro): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (deformação foliar): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (redução do crescimento) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Mosaico verde-claro e escuro",
+      "Deformação foliar",
+      "Crescimento reduzido ou necrose em certas combinações"
+    ],
+    "ondeOlhar": "Observe folhas novas e plantas desde a emergência.",
+    "dicaDeCampo": "Diferencie mosaico-comum de mosaico-dourado e outras viroses.",
+    "danos": [
+      "Redução do crescimento",
+      "Menor produção",
+      "Necrose ou morte em combinações suscetíveis"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Feijão.",
+    "climaFavoravel": [
+      "Condições favoráveis aos pulgões",
+      "Presença de inóculo em sementes"
+    ],
+    "epocaPropicia": "Infecções precoces tendem a comprometer mais o desenvolvimento.",
+    "prevencao": [
+      "Usar sementes sadias",
+      "Preferir cultivares resistentes adequadas",
+      "Manejar plantas voluntárias",
+      "Monitorar pulgões e hospedeiros"
+    ],
+    "tratamentoIntro": "Não existe produto que cure a virose; resistência e sementes sadias são essenciais.",
+    "classesTratamento": [
+      {
+        "classe": "Prevenção genética e sanitária; sem antiviral curativo",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "O manejo descrito não corresponde a um tratamento curativo da planta infectada."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/feijao/producao/doencas/doencas-viroticas",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.atermaisdigital.cnptia.embrapa.br/web/feijao/doencas?p_l_back_url=%2Fweb%2Ffeijao%2Fbusca%3Fdelta%3D150",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "A transmissão por pulgões pode ser rápida; inseticidas contra o vetor não garantem prevenção da transmissão e não curam plantas."
+    }
+  },
+  {
+    "codigoEditorial": "mancha-angular-do-feijoeiro",
+    "tipo": "DOENÇA",
+    "nomePopular": "Mancha-angular do feijoeiro",
+    "nomeCientifico": "Pseudocercospora griseola",
+    "descricao": "Doença fúngica que forma lesões delimitadas pelas nervuras nas folhas do feijoeiro.",
+    "chips": [
+      "Feijão",
+      "Umidade elevada"
+    ],
+    "nivelBaixo": "Sinais localizados (manchas angulares pardas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (lesões limitadas pelas nervuras): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (desfolha) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Manchas angulares pardas",
+      "Lesões limitadas pelas nervuras",
+      "Queda de folhas"
+    ],
+    "ondeOlhar": "Observe ambas as faces das folhas e vagens.",
+    "dicaDeCampo": "O formato angular é um indício que precisa ser diferenciado de outras manchas.",
+    "danos": [
+      "Desfolha",
+      "Redução do enchimento dos grãos",
+      "Danos em vagens"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Feijão.",
+    "climaFavoravel": [
+      "Umidade elevada",
+      "Temperaturas favoráveis ao patógeno"
+    ],
+    "epocaPropicia": "Durante o ciclo, com maior risco sob ambiente favorável e material suscetível.",
+    "prevencao": [
+      "Usar sementes sadias",
+      "Preferir cultivares resistentes",
+      "Rotacionar culturas",
+      "Manejar restos culturais"
+    ],
+    "tratamentoIntro": "Integre resistência, manejo cultural e fungicidas quando houver indicação técnica.",
+    "classesTratamento": [
+      {
+        "classe": "Fungicidas específicos para mancha-angular",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/feijao/producao/doencas/doencas-fungicas/doencas-fungicas-da-parte-aerea",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/199895",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "murcha-de-fusario",
+    "tipo": "DOENÇA",
+    "nomePopular": "Murcha-de-fusário",
+    "nomeCientifico": "Complexo Fusarium oxysporum; formas especializadas conforme hospedeiro",
+    "descricao": "Grupo de doenças vasculares de solo causadas por formas especializadas de Fusarium.",
+    "chips": [
+      "Tomate",
+      "Feijão",
+      "Condições variáveis conforme forma especializada"
+    ],
+    "nivelBaixo": "Sinais localizados (amarelecimento progressivo): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (murcha unilateral ou generalizada): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (perda do vigor) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Amarelecimento progressivo",
+      "Murcha unilateral ou generalizada",
+      "Escurecimento vascular"
+    ],
+    "ondeOlhar": "Examine folhas, colo e tecidos vasculares; na banana, rizoma e pseudocaule.",
+    "dicaDeCampo": "A confirmação do hospedeiro e do agente é indispensável.",
+    "danos": [
+      "Perda do vigor",
+      "Morte de plantas",
+      "Persistência do inóculo no solo"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Tomate; Feijão; Banana.",
+    "climaFavoravel": [
+      "Condições variáveis conforme forma especializada",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Durante o ciclo, com manifestação favorecida em plantas suscetíveis.",
+    "prevencao": [
+      "Usar material propagativo sadio",
+      "Preferir resistência compatível com a raça",
+      "Evitar transportar solo infestado",
+      "Planejar rotação e higiene de equipamentos"
+    ],
+    "tratamentoIntro": "O manejo é preventivo; não se deve prometer cura de plantas com vasos colonizados.",
+    "classesTratamento": [
+      {
+        "classe": "Controle genético e sanitário; sem indicação curativa generalizável",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "O manejo descrito não corresponde a um tratamento curativo da planta infectada."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Tomate/TomateIndustrial_2ed/doencas_fungo.htm",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.atermaisdigital.cnptia.embrapa.br/web/feijao/doencas?p_l_back_url=%2Fweb%2Ffeijao%2Fbusca%3Fdelta%3D150",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.atermaisdigital.cnptia.embrapa.br/web/banana/doen%C3%A7as",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Referências tradicionais: f. sp. lycopersici no tomate; f. sp. phaseoli no feijão; f. sp. cubense na banana. Não presumir que isolados de uma cultura infectem todas as outras."
+    }
+  },
+  {
+    "codigoEditorial": "sigatoka-negra",
+    "tipo": "DOENÇA",
+    "nomePopular": "Sigatoka-negra",
+    "nomeCientifico": "Pseudocercospora fijiensis (sinônimo Mycosphaerella fijiensis)",
+    "descricao": "Doença fúngica que causa necrose foliar e reduz a área funcional das bananeiras.",
+    "chips": [
+      "Banana",
+      "Alta umidade"
+    ],
+    "nivelBaixo": "Sinais localizados (estrias marrons no verso das folhas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (lesões que escurecem): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (perda de área foliar) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Estrias marrons no verso das folhas",
+      "Lesões que escurecem",
+      "Necrose e seca precoce"
+    ],
+    "ondeOlhar": "Observe folhas em diferentes idades e a face inferior das mais novas.",
+    "dicaDeCampo": "Diferencie de sigatoka-amarela com apoio técnico.",
+    "danos": [
+      "Perda de área foliar",
+      "Redução de peso dos cachos",
+      "Maturação inadequada dos frutos"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Banana.",
+    "climaFavoravel": [
+      "Alta umidade",
+      "Temperaturas favoráveis e molhamento"
+    ],
+    "epocaPropicia": "Ao longo do ciclo, com maior pressão em períodos úmidos.",
+    "prevencao": [
+      "Preferir variedades resistentes",
+      "Usar mudas sadias",
+      "Adequar drenagem e arejamento",
+      "Não transportar folhas doentes como proteção de frutos"
+    ],
+    "tratamentoIntro": "Combine resistência, manejo da folhagem e controle orientado pelo monitoramento.",
+    "classesTratamento": [
+      {
+        "classe": "Controle genético e cultural",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Fungicidas conforme programa antirresistência",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.atermaisdigital.cnptia.embrapa.br/web/banana/doen%C3%A7as",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1085479/1/cartilhaManualIdentifDoencasNematoidesPragasZiltonAINFO3.pdf",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "greening-hlb",
+    "tipo": "DOENÇA",
+    "nomePopular": "Greening / HLB",
+    "nomeCientifico": "Candidatus Liberibacter asiaticus; Candidatus Liberibacter americanus",
+    "descricao": "Doença bacteriana transmitida pelo psilídeo Diaphorina citri e por material propagativo infectado.",
+    "chips": [
+      "Citros",
+      "Condições favoráveis ao psilídeo"
+    ],
+    "nivelBaixo": "Suspeita localizada de mosqueado assimétrico: registre a planta e solicite avaliação técnica prioritária, sem aguardar agravamento.",
+    "nivelMedio": "Mais plantas com sintomas suspeitos: intensifique inspeções e encaminhe o caso à assistência técnica e ao órgão fitossanitário competente.",
+    "nivelAlto": "Declínio e queda intensa de frutos: solicite avaliação imediata para medidas fitossanitárias orientadas pelo órgão competente.",
+    "sintomas": [
+      "Mosqueado assimétrico nas folhas",
+      "Frutos pequenos e deformados",
+      "Queda precoce de frutos"
+    ],
+    "ondeOlhar": "Observe ramos amarelados, folhas maduras, frutos e brotações com psilídeos.",
+    "dicaDeCampo": "O mosqueado assimétrico exige diagnóstico diferencial com deficiências nutricionais.",
+    "danos": [
+      "Redução da produção",
+      "Piora da qualidade dos frutos",
+      "Declínio e morte das plantas"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Citros.",
+    "climaFavoravel": [
+      "Condições favoráveis ao psilídeo",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "epocaPropicia": "Risco durante brotações e movimentação de mudas; sintomas podem surgir meses após infecção.",
+    "prevencao": [
+      "Usar mudas certificadas e sadias",
+      "Inspecionar pomar",
+      "Monitorar o psilídeo",
+      "Coordenar manejo regional"
+    ],
+    "tratamentoIntro": "Não há cura; a suspeita exige avaliação técnica e encaminhamento ao serviço fitossanitário competente.",
+    "classesTratamento": [
+      {
+        "classe": "Manejo fitossanitário e do vetor; sem tratamento curativo da bactéria",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "O manejo descrito não corresponde a um tratamento curativo da planta infectada."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.gov.br/agricultura/pt-br/assuntos/sanidade-animal-e-vegetal/sanidade-vegetal/pragas-quarentenarias-presentes/HLB",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Mesmo suspeitas localizadas exigem avaliação prioritária. Medidas oficiais e procedimentos de eliminação devem seguir orientação do órgão competente; não executar ações automaticamente pelo app."
+    }
+  },
+  {
+    "codigoEditorial": "podridao-negra-das-cruciferas",
+    "tipo": "DOENÇA",
+    "nomePopular": "Podridão-negra das crucíferas",
+    "nomeCientifico": "Xanthomonas campestris pv. campestris",
+    "descricao": "Bacteriose que provoca lesões foliares e escurecimento das nervuras em brássicas.",
+    "chips": [
+      "Couve",
+      "Repolho",
+      "Tempo quente"
+    ],
+    "nivelBaixo": "Sinais localizados (lesões amarelas em v nas bordas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (nervuras escurecidas): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (perda de folhas comerciais) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Lesões amarelas em V nas bordas",
+      "Nervuras escurecidas",
+      "Necrose e queda de folhas"
+    ],
+    "ondeOlhar": "Inspecione bordas foliares, nervuras e mudas.",
+    "dicaDeCampo": "Lesões em V sugerem a doença, mas devem ser confirmadas tecnicamente.",
+    "danos": [
+      "Perda de folhas comerciais",
+      "Comprometimento de cabeças",
+      "Morte de plantas jovens"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Couve; Repolho; Brócolis.",
+    "climaFavoravel": [
+      "Tempo quente",
+      "Alta umidade e respingos"
+    ],
+    "epocaPropicia": "Do viveiro ao campo, especialmente em períodos chuvosos.",
+    "prevencao": [
+      "Usar sementes e mudas sadias",
+      "Evitar trabalhar com plantas molhadas",
+      "Rotacionar com não brássicas",
+      "Higienizar ferramentas"
+    ],
+    "tratamentoIntro": "O controle é principalmente preventivo e sanitário; não há recuperação de tecidos necrosados.",
+    "classesTratamento": [
+      {
+        "classe": "Manejo sanitário",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Produtos protetores quando tecnicamente indicados",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1044078/1/PLANTARBrocolised012015.pdf",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.embrapa.br/busca-de-publicacoes/-/publicacao/687504/podridao-negra-das-cruciferas---ocorrencia-em-roraima",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    }
+  },
+  {
+    "codigoEditorial": "mancha-bacteriana",
+    "tipo": "DOENÇA",
+    "nomePopular": "Mancha-bacteriana",
+    "nomeCientifico": "Complexo de Xanthomonas spp. associado a tomate e pimentão",
+    "descricao": "Bacteriose que causa manchas nas folhas e lesões em frutos.",
+    "chips": [
+      "Tomate",
+      "Pimentão",
+      "Calor"
+    ],
+    "nivelBaixo": "Sinais localizados (pequenas lesões escuras nas folhas): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (necrose e seca foliar): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (desfolha) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Pequenas lesões escuras nas folhas",
+      "Necrose e seca foliar",
+      "Lesões ásperas ou corticosas em frutos"
+    ],
+    "ondeOlhar": "Observe folhas, pecíolos e frutos em formação.",
+    "dicaDeCampo": "Diferencie de pinta-bacteriana e de manchas fúngicas antes de tratar.",
+    "danos": [
+      "Desfolha",
+      "Frutos depreciados",
+      "Menor produtividade"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Tomate; Pimentão.",
+    "climaFavoravel": [
+      "Calor",
+      "Chuva com vento e respingos"
+    ],
+    "epocaPropicia": "Todo o ciclo, com maior risco sob calor e chuva.",
+    "prevencao": [
+      "Usar sementes e mudas sadias",
+      "Evitar irrigação por aspersão quando possível",
+      "Higienizar ferramentas",
+      "Não manejar plantas molhadas"
+    ],
+    "tratamentoIntro": "Combine sanidade e redução da disseminação; produtos protetores têm limitações.",
+    "classesTratamento": [
+      {
+        "classe": "Protetores bactericidas conforme cultura e sensibilidade",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/tomate/producao/doencas-e-pragas/doencas/bacteria/mancha-bacteriana",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.embrapa.br/documents/1355126/49127128/embrapa.br-Doen%C3%A7as%2Bcausadas%2Bpor%2Bbact%C3%A9rias.pdf/89418647-b4c1-e77c-59cb-6b8755116114",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "Complexo com espécies e denominações taxonômicas revisadas; a escolha de produto não pode presumir sensibilidade ao cobre ou a outros bactericidas."
+    }
+  },
+  {
+    "codigoEditorial": "alternariose-queima-das-folhas",
+    "tipo": "DOENÇA",
+    "nomePopular": "Alternariose / queima-das-folhas",
+    "nomeCientifico": "Alternaria dauci; outros agentes no complexo de queima-das-folhas",
+    "descricao": "Alternaria dauci causa queima foliar, mas sintomas semelhantes também podem envolver Cercospora e Xanthomonas.",
+    "chips": [
+      "Cenoura",
+      "Umidade elevada"
+    ],
+    "nivelBaixo": "Sinais localizados (manchas e necrose nas bordas dos folíolos): registre o foco e acompanhe a evolução com identificação técnica.",
+    "nivelMedio": "Sinais em expansão (secamento progressivo das folhas): intensifique a amostragem e solicite avaliação do manejo.",
+    "nivelAlto": "Danos extensos (redução da área foliar) ou progressão rápida: procure assistência agronômica com prioridade.",
+    "sintomas": [
+      "Manchas e necrose nas bordas dos folíolos",
+      "Secamento progressivo das folhas",
+      "Aspecto de queima da parte aérea"
+    ],
+    "ondeOlhar": "Examine folhas mais velhas e a distribuição do problema no canteiro.",
+    "dicaDeCampo": "Sintomas isolados não distinguem todos os agentes do complexo.",
+    "danos": [
+      "Redução da área foliar",
+      "Raízes menores",
+      "Perda de qualidade e produção"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "culturasAfetadas": "Cenoura.",
+    "climaFavoravel": [
+      "Umidade elevada",
+      "Molhamento prolongado"
+    ],
+    "epocaPropicia": "Durante o ciclo em condições favoráveis e cultivares suscetíveis.",
+    "prevencao": [
+      "Usar sementes sadias",
+      "Preferir cultivares adaptadas e resistentes",
+      "Rotacionar culturas",
+      "Manejar irrigação e arejamento"
+    ],
+    "tratamentoIntro": "Confirme o agente predominante para escolher o controle integrado adequado.",
+    "classesTratamento": [
+      {
+        "classe": "Controle genético e cultural",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      },
+      {
+        "classe": "Fungicidas para A. dauci quando indicados",
+        "exemplosPrincipiosAtivos": [],
+        "observacao": "Sem exemplos de princípios ativos indicados nesta ficha; seleção ou pertinência do produto depende de avaliação técnica e consulta ao Agrofit."
+      }
+    ],
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "fotoPrincipal": null,
+    "avisoAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "textoBotao": "Registrar ocorrência desta doença",
+    "fontes": [
+      {
+        "url": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cenoura/producao/doencas-e-pragas/doencas/fungicas-e-bacterianas/queima-das-folhas",
+        "acessadoEm": "2026-11-03"
+      },
+      {
+        "url": "https://www.infoteca.cnptia.embrapa.br/bitstream/doc/111897/1/MANUALSEGURANCAQUALIDADEParaaculturadacenoura.pdf",
+        "acessadoEm": "2026-11-03"
+      }
+    ],
+    "revisaoEditorial": {
+      "status": "rascunho_para_revisao_tecnica",
+      "registroAgrofitConferido": false,
+      "compatibilidadeComValidadorMongoDBConferida": false,
+      "fotoPendente": true,
+      "niveisAtencao": "Textos editoriais qualitativos; não são escala agronômica validada nem mapeamento da intensidade 1–5.",
+      "observacoes": "A. dauci é o foco desta entrada; queima-das-folhas também pode envolver Cercospora carotae e Xanthomonas hortorum pv. carotae, isoladas ou juntas."
+    }
+  }
+]

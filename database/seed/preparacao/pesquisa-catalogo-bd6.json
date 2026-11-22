@@ -1,0 +1,1766 @@
+{
+  "dataPesquisa": "2026-11-03",
+  "escopo": "77 URLs originais consultadas; apenas identificacao bibliografica, sem revisao tecnica, Agrofit atual ou validacao de todas as afirmacoes agronomicas.",
+  "fontes": [
+    {
+      "alias": "fonte_01",
+      "urlOriginal": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/111770/1/Cultivo-da-Mangueira-Sistema-de-producao.pdf",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Cultivo da Mangueira",
+        "instituicaoOuAutor": "Embrapa Semi-Árido"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/111770/1/Cultivo-da-Mangueira-Sistema-de-producao.pdf"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_02",
+      "urlOriginal": "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/47486/1/folder-doencascafeeiro.pdf",
+      "acessoDireto": "pdf_original_recuperado_na_segunda_consulta",
+      "metadados": {
+        "titulo": "Doenças do cafeeiro",
+        "instituicaoOuAutor": "Embrapa Rondônia"
+      },
+      "identificacao": "confirmada_na_segunda_pesquisa",
+      "urlsDeVerificacao": [
+        "https://ainfo.cnptia.embrapa.br/digital/bitstream/item/47486/1/folder-doencascafeeiro.pdf"
+      ],
+      "evidencia": "PDF original recuperado, creditos tecnicos e instituicao ao final; data impressa maio/2010.",
+      "consultadaEm": "2026-11-03",
+      "verificacaoAnterior": {
+        "identificacao": "pendente_sem_inferencia_da_url",
+        "acessoDireto": "falha_de_acesso",
+        "evidencia": "Metadados nao comprovados; nao deduzidos do caminho ou nome do arquivo."
+      },
+      "coberturaConfirmada": [
+        "Sintomas de ferrugem e cercosporiose no cafe",
+        "Medidas gerais de manejo nutricional e fungico"
+      ],
+      "limites": [
+        "Material de 2010; nao comprova registros atuais, calendario por regiao ou toda a ficha."
+      ]
+    },
+    {
+      "alias": "fonte_03",
+      "urlOriginal": "https://biologico.agricultura.sp.gov.br/uploads/files/pdf/livros/brassicas/livro-brassicas.pdf",
+      "acessoDireto": "nao_encontrada_404",
+      "metadados": null,
+      "identificacao": "pendente_sem_inferencia_da_url",
+      "urlsDeVerificacao": [
+        "https://biologico.agricultura.sp.gov.br/uploads/files/pdf/livros/brassicas/livro-brassicas.pdf"
+      ],
+      "evidencia": "Metadados nao comprovados; nao deduzidos do caminho ou nome do arquivo.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_04",
+      "urlOriginal": "https://labfito.vacaria.ifrs.edu.br/fitopatologico/detalhes/feijao/mofo-branco/",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Mofo branco",
+        "instituicaoOuAutor": "LabFito — IFRS Campus Vacaria"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://labfito.vacaria.ifrs.edu.br/fitopatologico/detalhes/feijao/mofo-branco/"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_05",
+      "urlOriginal": "https://labfito.vacaria.ifrs.edu.br/fitopatologico/detalhes/milho/mancha-branca/",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Mancha-branca",
+        "instituicaoOuAutor": "LabFito — IFRS Campus Vacaria"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://labfito.vacaria.ifrs.edu.br/fitopatologico/detalhes/milho/mancha-branca/"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_06",
+      "urlOriginal": "https://publicacoes.epagri.sc.gov.br/index.php/RAC/article/view/191",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Mancha branca no milho: etiologia e controle",
+        "instituicaoOuAutor": "Felipe Tecchio Borsoi; Leonardo Schmitz; João Américo Wordell Filho; Cristiano Nunes Nesi"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://publicacoes.epagri.sc.gov.br/index.php/RAC/article/view/191"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_07",
+      "urlOriginal": "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Citros/CitrosNordeste/pragas.htm",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Pragas — Sistema de Produção de Citros para o Nordeste",
+        "instituicaoOuAutor": "Embrapa Mandioca e Fruticultura"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Citros/CitrosNordeste/pragas.htm"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_08",
+      "urlOriginal": "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Melancia/SistemaProducaoMelancia/doencas.htm",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Doenças — Sistema de Produção de Melancia",
+        "instituicaoOuAutor": "Embrapa Semiárido"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Melancia/SistemaProducaoMelancia/doencas.htm"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_09",
+      "urlOriginal": "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Morango/MorangoSemiHidroponico/pragas.htm",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Controle de pragas — Produção de Morangos no Sistema Semi-Hidropônico",
+        "instituicaoOuAutor": "Embrapa Uva e Vinho"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Morango/MorangoSemiHidroponico/pragas.htm"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_10",
+      "urlOriginal": "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Tomate/TomateIndustrial_2ed/doencas_fungo.htm",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Doenças - Fungos — Cultivo de Tomate para Industrialização",
+        "instituicaoOuAutor": "Embrapa Hortaliças"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Tomate/TomateIndustrial_2ed/doencas_fungo.htm"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_11",
+      "urlOriginal": "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Tomate/TomateIndustrial_2ed/pragas_traca.htm",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Pragas - Traça-do-tomateiro (Tuta absoluta) — Cultivo de Tomate para Industrialização",
+        "instituicaoOuAutor": "Embrapa Hortaliças"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Tomate/TomateIndustrial_2ed/pragas_traca.htm"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_12",
+      "urlOriginal": "https://www.alice.cnptia.embrapa.br/handle/doc/1143897",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Cotesia no controle da Broca-da-cana.",
+        "instituicaoOuAutor": "OLIVEIRA, H. N. de"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.alice.cnptia.embrapa.br/handle/doc/1143897"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_13",
+      "urlOriginal": "https://www.alice.cnptia.embrapa.br/handle/doc/1176367",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Manejo integrado de Spodoptera frugiperda na cultura do milho: efeito de diferentes combinações de Bacillus thuringiensis, baculovirus e inseticida químico.",
+        "instituicaoOuAutor": "AGUIAR, F. M. et al."
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.alice.cnptia.embrapa.br/handle/doc/1176367"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_14",
+      "urlOriginal": "https://www.alice.cnptia.embrapa.br/handle/doc/870522",
+      "acessoDireto": "falha_de_acesso",
+      "metadados": {
+        "titulo": "Seletividade da azadiractina aos ácaros predadores Phytoseiulus macropilis (Banks) e Neoseiulus californicus (McGregor) (Acari: Phytoseiidae) em laboratórios.",
+        "instituicaoOuAutor": "BERNARDI, D.; BOTTON, M.; CUNHA, U. S. da; MALAUSA, T."
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.alice.cnptia.embrapa.br/alice/handle/doc/870522"
+      ],
+      "evidencia": "Registro bibliografico primario do mesmo identificador documental; acesso original e verificacao de metadados sao fatos distintos.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_15",
+      "urlOriginal": "https://www.atermaisdigital.cnptia.embrapa.br/web/banana/doen%C3%A7as",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Doenças — Banana",
+        "instituicaoOuAutor": "Embrapa — Ater+ Digital"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.atermaisdigital.cnptia.embrapa.br/web/banana/doen%C3%A7as"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_16",
+      "urlOriginal": "https://www.atermaisdigital.cnptia.embrapa.br/web/controle-de-pragas/w/azamax",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Azamax",
+        "instituicaoOuAutor": "Embrapa — Ater+ Digital"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.atermaisdigital.cnptia.embrapa.br/web/controle-de-pragas/w/azamax"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_17",
+      "urlOriginal": "https://www.atermaisdigital.cnptia.embrapa.br/web/controle-de-pragas/w/mancha-alvo-corynespora-cassiicola-9",
+      "acessoDireto": "falha_de_acesso",
+      "metadados": {
+        "titulo": "Mancha-alvo (Corynespora cassiicola)",
+        "instituicaoOuAutor": "Embrapa — Ater+ Digital"
+      },
+      "identificacao": "confirmada_na_segunda_pesquisa",
+      "urlsDeVerificacao": [
+        "https://www.atermaisdigital.cnptia.embrapa.br/web/controle-de-pragas/w/mancha-alvo-corynespora-cassiicola-9"
+      ],
+      "evidencia": "Conteudo indexado na URL original com nome cientifico e classes de produtos.",
+      "consultadaEm": "2026-11-03",
+      "verificacaoAnterior": {
+        "identificacao": "pendente_sem_inferencia_da_url",
+        "acessoDireto": "falha_de_acesso",
+        "evidencia": "Metadados nao comprovados; nao deduzidos do caminho ou nome do arquivo."
+      },
+      "coberturaConfirmada": [
+        "Identidade Corynespora cassiicola",
+        "Categoria fungicida"
+      ],
+      "limites": [
+        "Todas as culturas no portal nao prova associacao especifica ou registro cultura/alvo. Usar fonte_21 e fonte_71 para tomate e soja, respectivamente."
+      ]
+    },
+    {
+      "alias": "fonte_18",
+      "urlOriginal": "https://www.atermaisdigital.cnptia.embrapa.br/web/controle-de-pragas/w/tracer",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Tracer",
+        "instituicaoOuAutor": "Embrapa — Ater+ Digital"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.atermaisdigital.cnptia.embrapa.br/web/controle-de-pragas/w/tracer"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_19",
+      "urlOriginal": "https://www.atermaisdigital.cnptia.embrapa.br/web/feijao/doencas?p_l_back_url=%2Fweb%2Ffeijao%2Fbusca%3Fdelta%3D150",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Doenças — Feijão",
+        "instituicaoOuAutor": "Embrapa — Ater+ Digital"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.atermaisdigital.cnptia.embrapa.br/web/feijao/doencas?p_l_back_url=%2Fweb%2Ffeijao%2Fbusca%3Fdelta%3D150"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_20",
+      "urlOriginal": "https://www.atermaisdigital.cnptia.embrapa.br/web/tomate-de-mesa/bacterias",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Bactérias — Tomate de Mesa",
+        "instituicaoOuAutor": "Embrapa — Ater+ Digital"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.atermaisdigital.cnptia.embrapa.br/web/tomate-de-mesa/bacterias"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_21",
+      "urlOriginal": "https://www.atermaisdigital.cnptia.embrapa.br/web/tomate-de-mesa/fungos-e-oomicetos",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Fungos e oomicetos — Tomate de Mesa",
+        "instituicaoOuAutor": "Embrapa — Ater+ Digital"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.atermaisdigital.cnptia.embrapa.br/web/tomate-de-mesa/fungos-e-oomicetos"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_22",
+      "urlOriginal": "https://www.atermaisdigital.cnptia.embrapa.br/web/tomate-de-mesa/pragas",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Pragas — Tomate de Mesa",
+        "instituicaoOuAutor": "Embrapa — Ater+ Digital"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.atermaisdigital.cnptia.embrapa.br/web/tomate-de-mesa/pragas"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_23",
+      "urlOriginal": "https://www.ciiagro.sp.gov.br/monitoramentocafe/Pragas%20e%20Doen%C3%A7as/Doencas.htm",
+      "acessoDireto": "erro_502",
+      "metadados": null,
+      "identificacao": "pendente_sem_inferencia_da_url",
+      "urlsDeVerificacao": [
+        "https://www.ciiagro.sp.gov.br/monitoramentocafe/Pragas%20e%20Doen%C3%A7as/Doencas.htm"
+      ],
+      "evidencia": "Metadados nao comprovados; nao deduzidos do caminho ou nome do arquivo.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_24",
+      "urlOriginal": "https://www.cnpt.embrapa.br/publicacoes/sist-prod/soja04/mip.htm",
+      "acessoDireto": "erro_502",
+      "metadados": {
+        "titulo": "Manejo integrado de pragas — \"MIP\"",
+        "instituicaoOuAutor": "Embrapa Trigo"
+      },
+      "identificacao": "confirmada_na_segunda_pesquisa",
+      "urlsDeVerificacao": [
+        "https://www.cnpt.embrapa.br/publicacoes/sist-prod/soja04/mip.htm"
+      ],
+      "evidencia": "Texto indexado na pagina original do sistema de producao de soja; abertura direta ainda retorna 502.",
+      "consultadaEm": "2026-11-03",
+      "verificacaoAnterior": {
+        "identificacao": "pendente_sem_inferencia_da_url",
+        "acessoDireto": "erro_502",
+        "evidencia": "Metadados nao comprovados; nao deduzidos do caminho ou nome do arquivo."
+      },
+      "coberturaConfirmada": [
+        "MIP na soja",
+        "Monitoramento e manejo de pragas"
+      ],
+      "limites": [
+        "Sistema antigo; nao atualizar doses, ingredientes ou limiares por inferencia. Complemento de identificacao: fonte_55."
+      ]
+    },
+    {
+      "alias": "fonte_25",
+      "urlOriginal": "https://www.cnpuv.embrapa.br/uzum/morango/acaro_rajado.html",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Ácaro-rajado (Tetranychus urticae)",
+        "instituicaoOuAutor": "Embrapa Uva e Vinho"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.cnpuv.embrapa.br/uzum/morango/acaro_rajado.html"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_26",
+      "urlOriginal": "https://www.cnpuv.embrapa.br/uzum/uva/cocho_farinhenta.html",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Cochonilha-farinhenta (Planococcus citri, Planococcus ficus, Pseudococcus longispinus, Pseudococcus viburni)",
+        "instituicaoOuAutor": "Embrapa Uva e Vinho"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.cnpuv.embrapa.br/uzum/uva/cocho_farinhenta.html"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_27",
+      "urlOriginal": "https://www.cnpuv.embrapa.br/uzum/uva/mildio.html",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Míldio (Plasmopara viticola)",
+        "instituicaoOuAutor": "Embrapa Uva e Vinho"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.cnpuv.embrapa.br/uzum/uva/mildio.html"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_28",
+      "urlOriginal": "https://www.embrapa.br/busca-de-publicacoes/-/publicacao/687504/podridao-negra-das-cruciferas---ocorrencia-em-roraima",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Podridão negra das crucíferas - ocorrência em Roraima.",
+        "instituicaoOuAutor": "LIMA, M. B."
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/handle/doc/687504?locale=pt_BR"
+      ],
+      "evidencia": "Registro bibliografico primario do mesmo identificador documental; acesso original e verificacao de metadados sao fatos distintos.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_29",
+      "urlOriginal": "https://www.embrapa.br/documents/1344498/2767891/manejo-da-lagarta-do-cartucho-em-milho.pdf/a2f4a72a-9889-4c38-b88d-31e29556911d",
+      "acessoDireto": "pdf_original_recuperado_na_segunda_consulta",
+      "metadados": {
+        "titulo": "Manejo da lagarta-do-cartucho, Spodoptera frugiperda, em milho",
+        "instituicaoOuAutor": "Embrapa Milho e Sorgo"
+      },
+      "identificacao": "confirmada_na_segunda_pesquisa",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/documents/1344498/2767891/manejo-da-lagarta-do-cartucho-em-milho.pdf/a2f4a72a-9889-4c38-b88d-31e29556911d"
+      ],
+      "evidencia": "PDF original recuperado; capa e bloco institucional.",
+      "consultadaEm": "2026-11-03",
+      "verificacaoAnterior": {
+        "identificacao": "pendente_sem_inferencia_da_url",
+        "acessoDireto": "bloqueio_403",
+        "evidencia": "Metadados nao comprovados; nao deduzidos do caminho ou nome do arquivo."
+      },
+      "coberturaConfirmada": [
+        "Lagarta-do-cartucho no milho",
+        "Controle biologico com Bacillus thuringiensis e baculovirus"
+      ],
+      "limites": [
+        "Nao comprova registro atual ou recomendacao especifica de aplicacao."
+      ]
+    },
+    {
+      "alias": "fonte_30",
+      "urlOriginal": "https://www.embrapa.br/documents/1355126/49127128/embrapa.br-Doen%C3%A7as%2Bcausadas%2Bpor%2Bbact%C3%A9rias.pdf/89418647-b4c1-e77c-59cb-6b8755116114",
+      "acessoDireto": "bloqueio_403",
+      "metadados": null,
+      "identificacao": "pendente_sem_inferencia_da_url",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/documents/1355126/49127128/embrapa.br-Doen%C3%A7as%2Bcausadas%2Bpor%2Bbact%C3%A9rias.pdf/89418647-b4c1-e77c-59cb-6b8755116114"
+      ],
+      "evidencia": "Metadados nao comprovados; nao deduzidos do caminho ou nome do arquivo.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_31",
+      "urlOriginal": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cebola/producao/pragas/tripes",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Tripes",
+        "instituicaoOuAutor": "Embrapa — Ageitec"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cebola/producao/pragas/tripes"
+      ],
+      "evidencia": "Titulo e instituicao na indexacao da propria pagina oficial; abertura direta bloqueada. Nao foi comprovada disponibilidade de leitura integral.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_32",
+      "urlOriginal": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cenoura/producao/doencas-e-pragas/doencas/fungicas-e-bacterianas/queima-das-folhas",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Queima-das-folhas",
+        "instituicaoOuAutor": "Embrapa Hortaliças — Ageitec"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cenoura/producao/doencas-e-pragas/doencas/fungicas-e-bacterianas/queima-das-folhas"
+      ],
+      "evidencia": "Titulo e instituicao na indexacao da propria pagina oficial; abertura direta bloqueada. Nao foi comprovada disponibilidade de leitura integral.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_33",
+      "urlOriginal": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cenoura/producao/doencas-e-pragas/pragas/lagarta-rosca",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Lagarta rosca",
+        "instituicaoOuAutor": "Embrapa Hortaliças — Ageitec"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/cenoura/producao/doencas-e-pragas/pragas/lagarta-rosca"
+      ],
+      "evidencia": "Titulo e instituicao na indexacao da propria pagina oficial; abertura direta bloqueada. Nao foi comprovada disponibilidade de leitura integral.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_34",
+      "urlOriginal": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/feijao/producao/doencas/doencas-fungicas/doencas-fungicas-da-parte-aerea",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Doenças fúngicas da parte aérea",
+        "instituicaoOuAutor": "Embrapa — Ageitec"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/feijao/producao/doencas/doencas-fungicas/doencas-fungicas-da-parte-aerea"
+      ],
+      "evidencia": "Titulo e instituicao na indexacao da propria pagina oficial; abertura direta bloqueada. Nao foi comprovada disponibilidade de leitura integral.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_35",
+      "urlOriginal": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/pragas-e-doencas/pragas/pragas-da-fase-vegetativa-e-reprodutiva",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Pragas da Fase Vegetativa e Reprodutiva",
+        "instituicaoOuAutor": "Embrapa Milho e Sorgo — Ageitec"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/pragas-e-doencas/pragas/pragas-da-fase-vegetativa-e-reprodutiva"
+      ],
+      "evidencia": "Titulo e instituicao na indexacao da propria pagina oficial; abertura direta bloqueada. Nao foi comprovada disponibilidade de leitura integral.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_36",
+      "urlOriginal": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/soja/producao/doencas-da-soja/doencas-causadas-por-fungos/oidio",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Oídio",
+        "instituicaoOuAutor": "Embrapa Soja — Ageitec"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/soja/producao/doencas-da-soja/doencas-causadas-por-fungos/oidio"
+      ],
+      "evidencia": "Titulo e instituicao na indexacao da propria pagina oficial; abertura direta bloqueada. Nao foi comprovada disponibilidade de leitura integral.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_37",
+      "urlOriginal": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/tomate/producao/doencas-e-pragas/doencas/bacteria/mancha-bacteriana",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Mancha-bacteriana",
+        "instituicaoOuAutor": "Embrapa Hortaliças — Ageitec"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/tomate/producao/doencas-e-pragas/doencas/bacteria/mancha-bacteriana"
+      ],
+      "evidencia": "Titulo e instituicao na indexacao da propria pagina oficial; abertura direta bloqueada. Nao foi comprovada disponibilidade de leitura integral.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_38",
+      "urlOriginal": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/tomate/producao/doencas-e-pragas/doencas/fungo/requeima",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Requeima",
+        "instituicaoOuAutor": "Carlos Alberto Lopes; Maria Alice Quezado-Soares"
+      },
+      "identificacao": "confirmada_na_segunda_pesquisa",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/tomate/producao/doencas-e-pragas/doencas/fungo/requeima"
+      ],
+      "evidencia": "Conteudo indexado na URL original Ageitec, cabecalho/autores e texto.",
+      "consultadaEm": "2026-11-03",
+      "verificacaoAnterior": {
+        "identificacao": "pendente_sem_inferencia_da_url",
+        "acessoDireto": "bloqueio_403",
+        "evidencia": "Metadados nao comprovados; nao deduzidos do caminho ou nome do arquivo."
+      },
+      "coberturaConfirmada": [
+        "Requeima em tomate",
+        "Sintomas, umidade/temperatura e prevencao"
+      ],
+      "limites": [
+        "Nao comprova sozinho todo o manejo de batata ou qualquer registro atual."
+      ]
+    },
+    {
+      "alias": "fonte_39",
+      "urlOriginal": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/tomate/producao/doencas-e-pragas/pragas/mosca-branca",
+      "acessoDireto": "bloqueio_403",
+      "metadados": null,
+      "identificacao": "pendente_sem_inferencia_da_url",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/tomate/producao/doencas-e-pragas/pragas/mosca-branca"
+      ],
+      "evidencia": "Metadados nao comprovados; nao deduzidos do caminho ou nome do arquivo.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_40",
+      "urlOriginal": "https://www.embrapa.br/en/web/florestas/pragas-florestais/perguntas-e-respostas",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Perguntas e respostas",
+        "instituicaoOuAutor": "Embrapa Florestas"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/en/web/florestas/pragas-florestais/perguntas-e-respostas"
+      ],
+      "evidencia": "Titulo e instituicao na indexacao da propria pagina oficial; abertura direta bloqueada. Nao foi comprovada disponibilidade de leitura integral.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_41",
+      "urlOriginal": "https://www.embrapa.br/en/web/soja/ferrugem",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Ferrugem asiática da soja: manejo e prevenção",
+        "instituicaoOuAutor": "Embrapa Soja"
+      },
+      "identificacao": "confirmada_na_segunda_pesquisa",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/en/web/soja/ferrugem"
+      ],
+      "evidencia": "Conteudo indexado na URL original; abertura direta 403.",
+      "consultadaEm": "2026-11-03",
+      "verificacaoAnterior": {
+        "identificacao": "pendente_sem_inferencia_da_url",
+        "acessoDireto": "bloqueio_403",
+        "evidencia": "Metadados nao comprovados; nao deduzidos do caminho ou nome do arquivo."
+      },
+      "coberturaConfirmada": [
+        "Soja e Phakopsora pachyrhizi",
+        "Vazio sanitario, plantas voluntarias e manejo de resistencia"
+      ],
+      "limites": [
+        "Nao copiar datas de calendario por UF/safra nem assumir eficacia atual de ingrediente isolado."
+      ]
+    },
+    {
+      "alias": "fonte_42",
+      "urlOriginal": "https://www.embrapa.br/pt/alerta-helicoverpa",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Alerta Helicoverpa",
+        "instituicaoOuAutor": "Embrapa"
+      },
+      "identificacao": "confirmada_na_segunda_pesquisa",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/pt/alerta-helicoverpa"
+      ],
+      "evidencia": "Conteudo indexado da URL original, cabecalho e perguntas/respostas.",
+      "consultadaEm": "2026-11-03",
+      "verificacaoAnterior": {
+        "identificacao": "pendente_sem_inferencia_da_url",
+        "acessoDireto": "bloqueio_403",
+        "evidencia": "Metadados nao comprovados; nao deduzidos do caminho ou nome do arquivo."
+      },
+      "coberturaConfirmada": [
+        "Helicoverpa armigera em soja, milho e algodao",
+        "Monitoramento regional e controle biologico"
+      ],
+      "limites": [
+        "Portal historico de 2013; nao comprova todos os hospedeiros de H. zea nem recomendacoes atuais de produtos."
+      ]
+    },
+    {
+      "alias": "fonte_43",
+      "urlOriginal": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/feijao/producao/doencas/doencas-viroticas",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Doenças viróticas",
+        "instituicaoOuAutor": "Embrapa Arroz e Feijão — Ageitec"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/feijao/producao/doencas/doencas-viroticas"
+      ],
+      "evidencia": "Titulo e instituicao na indexacao da propria pagina oficial; abertura direta bloqueada. Nao foi comprovada disponibilidade de leitura integral.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_44",
+      "urlOriginal": "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/tomate/producao/doencas-e-pragas/pragas/traca-do-tomateiro",
+      "acessoDireto": "bloqueio_403",
+      "metadados": null,
+      "identificacao": "pendente_sem_inferencia_da_url",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/web/agencia-de-informacao-tecnologica/cultivos/tomate/producao/doencas-e-pragas/pragas/traca-do-tomateiro"
+      ],
+      "evidencia": "Resultado em variante /en/web encontrado, mas equivalencia com a URL editorial /web ainda nao comprovada.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_45",
+      "urlOriginal": "https://www.embrapa.br/web/hortalicas/pimenta/pragas",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Pragas — Pimenta",
+        "instituicaoOuAutor": "Embrapa Hortaliças"
+      },
+      "identificacao": "confirmada_na_segunda_pesquisa",
+      "urlsDeVerificacao": [
+        "https://www.embrapa.br/web/hortalicas/pimenta/pragas"
+      ],
+      "evidencia": "Conteudo indexado na URL original; secao Vaquinha Diabrotica speciosa e Controle.",
+      "consultadaEm": "2026-11-03",
+      "verificacaoAnterior": {
+        "identificacao": "pendente_sem_inferencia_da_url",
+        "acessoDireto": "bloqueio_403",
+        "evidencia": "Metadados nao comprovados; nao deduzidos do caminho ou nome do arquivo."
+      },
+      "coberturaConfirmada": [
+        "D. speciosa em pimenteira",
+        "Danos foliares e medidas culturais/quimicas"
+      ],
+      "limites": [
+        "Pimenta nao e automaticamente todas as hortalicas; a associacao especifica com feijao depende de fonte complementar, nao desta pagina."
+      ]
+    },
+    {
+      "alias": "fonte_46",
+      "urlOriginal": "https://www.embrapa.br/web/solos/busca-de-publicacoes/-/publicacao/963194/manejo-do-mofo-branco",
+      "acessoDireto": "bloqueio_403",
+      "metadados": {
+        "titulo": "Manejo do mofo branco.",
+        "instituicaoOuAutor": "LOBO JUNIOR, M.; SANTOS, P. F."
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.alice.cnptia.embrapa.br/alice/handle/doc/963194?locale=pt_BR"
+      ],
+      "evidencia": "Registro bibliografico primario do mesmo identificador documental; acesso original e verificacao de metadados sao fatos distintos.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_47",
+      "urlOriginal": "https://www.gov.br/agricultura/pt-br/assuntos/noticias/2022/controle-biologico-pode-alcancar-ate-80-de-eficiencia-contra-acaro-rajado-na-producao-de-morango",
+      "acessoDireto": "redirecionamento_para_login",
+      "metadados": null,
+      "identificacao": "pendente_sem_inferencia_da_url",
+      "urlsDeVerificacao": [
+        "https://www.gov.br/agricultura/pt-br/assuntos/noticias/2022/controle-biologico-pode-alcancar-ate-80-de-eficiencia-contra-acaro-rajado-na-producao-de-morango"
+      ],
+      "evidencia": "Conteudo de autenticacao, sem confirmacao da noticia.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_48",
+      "urlOriginal": "https://www.gov.br/agricultura/pt-br/assuntos/sanidade-animal-e-vegetal/sanidade-vegetal/Ferrugem_Asiatica_da_Soja?trk=article-ssr-frontend-pulse_little-text-block",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Ferrugem Asiática da Soja",
+        "instituicaoOuAutor": "Ministério da Agricultura e Pecuária"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.gov.br/agricultura/pt-br/assuntos/sanidade-animal-e-vegetal/sanidade-vegetal/Ferrugem_Asiatica_da_Soja?trk=article-ssr-frontend-pulse_little-text-block"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_49",
+      "urlOriginal": "https://www.gov.br/agricultura/pt-br/assuntos/sanidade-animal-e-vegetal/sanidade-vegetal/pragas-quarentenarias-presentes/HLB",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Prevenção e Erradicação do HLB ou Greening",
+        "instituicaoOuAutor": "Ministério da Agricultura e Pecuária"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.gov.br/agricultura/pt-br/assuntos/sanidade-animal-e-vegetal/sanidade-vegetal/pragas-quarentenarias-presentes/HLB"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_50",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/bitstream/doc/1007653/1/CT133.pdf",
+      "acessoDireto": "timeout",
+      "metadados": {
+        "titulo": "Diagnose e manejo de doenças fúngicas na cultura da cebola.",
+        "instituicaoOuAutor": "Embrapa Hortaliças"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1007653"
+      ],
+      "evidencia": "Registro bibliografico primario do mesmo identificador documental; acesso original e verificacao de metadados sao fatos distintos.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_51",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/bitstream/doc/111897/1/MANUALSEGURANCAQUALIDADEParaaculturadacenoura.pdf",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Manual de Segurança e Qualidade para a Cultura da Cenoura",
+        "instituicaoOuAutor": "Embrapa Informação Tecnológica"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/bitstream/doc/111897/1/MANUALSEGURANCAQUALIDADEParaaculturadacenoura.pdf"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_52",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1067800",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Pinta atroz.",
+        "instituicaoOuAutor": "LOURENÇO JUNIOR, V."
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/handle/doc/1067800"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_53",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1067867",
+      "acessoDireto": "falha_de_acesso",
+      "metadados": {
+        "titulo": "Galhas agressivas.",
+        "instituicaoOuAutor": "PINHEIRO, J. B.; MACÊDO, A. G.; CARVALHO, A. D. F. de"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1067867"
+      ],
+      "evidencia": "Registro bibliografico primario do mesmo identificador documental; acesso original e verificacao de metadados sao fatos distintos.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_54",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1135499",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Doenças do tomateiro.",
+        "instituicaoOuAutor": "Embrapa"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/handle/doc/1135499"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_55",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1152855",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Manual de identificação de insetos e outros invertebrados da cultura da soja. 4. ed.",
+        "instituicaoOuAutor": "Embrapa Soja"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/handle/doc/1152855"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_56",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/handle/doc/1158639",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Manual de identificação de doenças de soja. 6. ed. (2023)",
+        "instituicaoOuAutor": "Embrapa Soja"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/handle/doc/1158639"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_57",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/handle/doc/879820",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Bioecologia, monitoramento e controle do ácaro-rajado com o emprego da azadiractina e ácaros predadores na cultura do morangueiro.",
+        "instituicaoOuAutor": "Embrapa Uva e Vinho"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/handle/doc/879820"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_58",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/handle/doc/966239",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Manejo da resistência do percevejo-marrom a inseticidas.",
+        "instituicaoOuAutor": "Embrapa Soja"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/handle/doc/966239"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_59",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/handle/doc/991687",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Manual de identificação de doenças de soja. 5. ed. (2014)",
+        "instituicaoOuAutor": "Embrapa Soja"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/handle/doc/991687"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_60",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1044078/1/PLANTARBrocolised012015.pdf",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "A cultura dos brócolis",
+        "instituicaoOuAutor": "Embrapa Hortaliças"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1044078/1/PLANTARBrocolised012015.pdf"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_61",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1085479/1/cartilhaManualIdentifDoencasNematoidesPragasZiltonAINFO3.pdf",
+      "acessoDireto": "timeout",
+      "metadados": {
+        "titulo": "Manual de identificação de doenças, nematóides e pragas na cultura da bananeira.",
+        "instituicaoOuAutor": "Embrapa"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1085479"
+      ],
+      "evidencia": "Registro bibliografico primario do mesmo identificador documental; acesso original e verificacao de metadados sao fatos distintos.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_62",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1095039/1/CIRCULARTECNICA137.pdf",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Eficiência de inseticidas no controle do percevejo-marrom (Euschistus heros) em soja, na safra 2013/14: resultados sumarizados de ensaios cooperativos",
+        "instituicaoOuAutor": "Embrapa Soja"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1095039/1/CIRCULARTECNICA137.pdf"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_63",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1102266/1/CNPAF2018ManIdentDoenFeijao.pdf",
+      "acessoDireto": "limite_de_leitura",
+      "metadados": {
+        "titulo": "Manual de identificação das principais doenças do feijoeiro-comum.",
+        "instituicaoOuAutor": "Embrapa"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1102266"
+      ],
+      "evidencia": "Registro bibliografico primario do mesmo identificador documental; acesso original e verificacao de metadados sao fatos distintos.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_64",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1109531/1/COMUNICADO-TECNICO-367.pdf",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Aspectos e Critérios Básicos para Implantação de Pomar de Nogueira-pecã",
+        "instituicaoOuAutor": "Embrapa Clima Temperado"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1109531/1/COMUNICADO-TECNICO-367.pdf"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_65",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1135273/1/CT-48-web.pdf",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Recomendações técnicas para o cultivo irrigado do café canéfora no Cerrado",
+        "instituicaoOuAutor": "Embrapa Cerrados"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1135273/1/CT-48-web.pdf"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_66",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1152855/1/Doc-269-4-ed-2023.pdf",
+      "acessoDireto": "limite_de_leitura",
+      "metadados": {
+        "titulo": "Manual de identificação de insetos e outros invertebrados da cultura da soja. 4. ed.",
+        "instituicaoOuAutor": "Embrapa Soja"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/handle/doc/1152855"
+      ],
+      "evidencia": "Registro bibliografico primario do mesmo identificador documental; acesso original e verificacao de metadados sao fatos distintos.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_67",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1160761/1/Siconbiol-anais2023.pdf",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "17º Simpósio de Controle Biológico — Anais (2023)",
+        "instituicaoOuAutor": "Tiago Cardoso da Costa-Lima et al. (edição técnica)"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1160761/1/Siconbiol-anais2023.pdf"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_68",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1167902/1/Circular-Tecnica-8-Manejo-integrado-de-pragas.pdf",
+      "acessoDireto": "limite_de_leitura",
+      "metadados": {
+        "titulo": "Manejo integrado de pragas e doenças do café arábica.",
+        "instituicaoOuAutor": "Embrapa Café"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1167902"
+      ],
+      "evidencia": "Registro bibliografico primario do mesmo identificador documental; acesso original e verificacao de metadados sao fatos distintos.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_69",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1001340?locale=pt_BR",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Ferrugem asiática da soja.",
+        "instituicaoOuAutor": "GODOY, C. V."
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1001340?locale=pt_BR"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_70",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1021765",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Guia para o reconhecimento e manejo da mosca-branca, da geminivirose e da crinivirose na cultura do tomateiro.",
+        "instituicaoOuAutor": "Embrapa"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1021765"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_71",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1176454?locale=pt_BR",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Eficácia de fungicidas para o controle da mancha-alvo, Corynespora cassiicola, na cultura da soja, na safra 2024/2025: resultados sumarizados dos ensaios cooperativos.",
+        "instituicaoOuAutor": "Embrapa Soja"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1176454?locale=pt_BR"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_72",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/199895",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Mancha angular.",
+        "instituicaoOuAutor": "SARTORATO, A.; RAVA, C. A."
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/199895"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_73",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/410154",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Doenças do cafeeiro robusta.",
+        "instituicaoOuAutor": "POLTRONIERI, L. S.; ZOMBOLIM, L.; VERZIGNASSI, J. R.; NASCIMENTO, M. M. do"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/410154"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_74",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/676195",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Algumas alternativas de controle de pragas de hortaliças: pulgões e lagartas.",
+        "instituicaoOuAutor": "Embrapa Amazônia Ocidental"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/676195"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_75",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/782429",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Biologia e manejo de mosca minadora no meloeiro.",
+        "instituicaoOuAutor": "Embrapa Hortaliças"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/782429"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_76",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/886560?locale=pt_BR",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Ocorrência e controle de nematoides em hortaliças folhosas.",
+        "instituicaoOuAutor": "Embrapa Hortaliças"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/886560?locale=pt_BR"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    },
+    {
+      "alias": "fonte_77",
+      "urlOriginal": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/991795",
+      "acessoDireto": "conteudo_recuperado",
+      "metadados": {
+        "titulo": "Manejo integrado de pragas do tomateiro para processamento industrial.",
+        "instituicaoOuAutor": "Embrapa"
+      },
+      "identificacao": "confirmada_em_fonte_primaria",
+      "urlsDeVerificacao": [
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/991795"
+      ],
+      "evidencia": "Titulo/cabecalho e responsabilidade institucional ou autoria recuperados na publicacao primaria. Titulo de secao contextualizado pelo nome da cultura/obra.",
+      "consultadaEm": "2026-11-03"
+    }
+  ],
+  "duplicidadesConfirmadas": [
+    {
+      "aliases": [
+        "fonte_55",
+        "fonte_66"
+      ],
+      "aliasCanonico": "fonte_55",
+      "evidencia": "Registro Infoteca 1152855 lista explicitamente o arquivo Doc-269-4-ed-2023.pdf. Mesmo documento, nao apenas URL semelhante.",
+      "urls": [
+        "https://www.infoteca.cnptia.embrapa.br/handle/doc/1152855",
+        "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1152855/1/Doc-269-4-ed-2023.pdf"
+      ]
+    }
+  ],
+  "naoConsolidar": [
+    {
+      "aliases": [
+        "fonte_56",
+        "fonte_59"
+      ],
+      "motivo": "Mesmo titulo de manual de doencas, mas 6a edicao/2023 e 5a edicao/2014: obras editoriais distintas."
+    }
+  ],
+  "hospedeirosPropostos": [
+    {
+      "ficha": "formigas-cortadeiras",
+      "cultura": "Nogueira-pecã",
+      "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1109531/1/COMUNICADO-TECNICO-367.pdf",
+      "evidencia": "Comunicado Tecnico 367, secao 2.2 e figura 2, descreve ataque de Atta/Acromyrmex em nogueira-peca.",
+      "decisao": "incorporado_como_recorte_inicial_por_autorizacao_do_usuario",
+      "alcance": "Exemplo nao exaustivo. Abrangencia editorial preservada; filtro por cultura retorna apenas os IDs explicitamente relacionados.",
+      "trecho": "Nogueira-pecã atacada por formigas cortadeiras",
+      "localizador": "Pagina impressa 10, secao 2.2, legenda da Figura 4 (corrige Figura 2 citada antes)."
+    },
+    {
+      "ficha": "mosca-das-frutas",
+      "cultura": "Manga",
+      "url": "https://sistemasdeproducao.cnptia.embrapa.br/FontesHTML/Citros/CitrosNordeste/pragas.htm",
+      "evidencia": "Secao Moscas-das-frutas inclui mangueira/manga entre hospedeiros; Cultivo da Mangueira tambem contem secao especifica.",
+      "decisao": "incorporado_como_recorte_inicial_por_autorizacao_do_usuario",
+      "alcance": "Exemplo nao exaustivo. Abrangencia editorial preservada; filtro por cultura retorna apenas os IDs explicitamente relacionados.",
+      "trecho": "goiaba, manga, pitanga, cajá, acerola e carambola são hospedeiros preferidos",
+      "localizador": "Secao Moscas-das-frutas, Consideracoes importantes."
+    },
+    {
+      "ficha": "greening-hlb",
+      "cultura": "Laranja",
+      "url": "https://www.agricultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2023-12/folder_greening_1-2.pdf",
+      "titulo": "Todos contra o greening",
+      "instituicaoOuAutor": "ADAPAR / Secretaria da Agricultura e do Abastecimento",
+      "evidencia": "Pagina 2 inclui explicitamente laranja, tangerinas e limoes como plantas de citros afetadas. Proposta restrita a Laranja; nao presume especie ou cultivar.",
+      "decisao": "incorporado_como_recorte_inicial_por_autorizacao_do_usuario",
+      "alcance": "Exemplo nao exaustivo. Abrangencia editorial preservada; filtro por cultura retorna apenas os IDs explicitamente relacionados.",
+      "trecho": "de citros (laranja, tangerinas e limões)",
+      "localizador": "Pagina 2, texto sobre plantas doentes em pomares domesticos."
+    }
+  ],
+  "resolucaoDaSegundaPesquisa": {
+    "confirmacoesOriginais": [
+      {
+        "alias": "fonte_02",
+        "titulo": "Doenças do cafeeiro",
+        "instituicaoOuAutor": "Embrapa Rondônia",
+        "metodo": "PDF original recuperado, creditos tecnicos e instituicao ao final; data impressa maio/2010.",
+        "cobertura": [
+          "Sintomas de ferrugem e cercosporiose no cafe",
+          "Medidas gerais de manejo nutricional e fungico"
+        ],
+        "limites": [
+          "Material de 2010; nao comprova registros atuais, calendario por regiao ou toda a ficha."
+        ]
+      },
+      {
+        "alias": "fonte_17",
+        "titulo": "Mancha-alvo (Corynespora cassiicola)",
+        "instituicaoOuAutor": "Embrapa — Ater+ Digital",
+        "metodo": "Conteudo indexado na URL original com nome cientifico e classes de produtos.",
+        "cobertura": [
+          "Identidade Corynespora cassiicola",
+          "Categoria fungicida"
+        ],
+        "limites": [
+          "Todas as culturas no portal nao prova associacao especifica ou registro cultura/alvo. Usar fonte_21 e fonte_71 para tomate e soja, respectivamente."
+        ]
+      },
+      {
+        "alias": "fonte_24",
+        "titulo": "Manejo integrado de pragas — \"MIP\"",
+        "instituicaoOuAutor": "Embrapa Trigo",
+        "metodo": "Texto indexado na pagina original do sistema de producao de soja; abertura direta ainda retorna 502.",
+        "cobertura": [
+          "MIP na soja",
+          "Monitoramento e manejo de pragas"
+        ],
+        "limites": [
+          "Sistema antigo; nao atualizar doses, ingredientes ou limiares por inferencia. Complemento de identificacao: fonte_55."
+        ]
+      },
+      {
+        "alias": "fonte_29",
+        "titulo": "Manejo da lagarta-do-cartucho, Spodoptera frugiperda, em milho",
+        "instituicaoOuAutor": "Embrapa Milho e Sorgo",
+        "metodo": "PDF original recuperado; capa e bloco institucional.",
+        "cobertura": [
+          "Lagarta-do-cartucho no milho",
+          "Controle biologico com Bacillus thuringiensis e baculovirus"
+        ],
+        "limites": [
+          "Nao comprova registro atual ou recomendacao especifica de aplicacao."
+        ]
+      },
+      {
+        "alias": "fonte_38",
+        "titulo": "Requeima",
+        "instituicaoOuAutor": "Carlos Alberto Lopes; Maria Alice Quezado-Soares",
+        "metodo": "Conteudo indexado na URL original Ageitec, cabecalho/autores e texto.",
+        "cobertura": [
+          "Requeima em tomate",
+          "Sintomas, umidade/temperatura e prevencao"
+        ],
+        "limites": [
+          "Nao comprova sozinho todo o manejo de batata ou qualquer registro atual."
+        ]
+      },
+      {
+        "alias": "fonte_41",
+        "titulo": "Ferrugem asiática da soja: manejo e prevenção",
+        "instituicaoOuAutor": "Embrapa Soja",
+        "metodo": "Conteudo indexado na URL original; abertura direta 403.",
+        "cobertura": [
+          "Soja e Phakopsora pachyrhizi",
+          "Vazio sanitario, plantas voluntarias e manejo de resistencia"
+        ],
+        "limites": [
+          "Nao copiar datas de calendario por UF/safra nem assumir eficacia atual de ingrediente isolado."
+        ]
+      },
+      {
+        "alias": "fonte_42",
+        "titulo": "Alerta Helicoverpa",
+        "instituicaoOuAutor": "Embrapa",
+        "metodo": "Conteudo indexado da URL original, cabecalho e perguntas/respostas.",
+        "cobertura": [
+          "Helicoverpa armigera em soja, milho e algodao",
+          "Monitoramento regional e controle biologico"
+        ],
+        "limites": [
+          "Portal historico de 2013; nao comprova todos os hospedeiros de H. zea nem recomendacoes atuais de produtos."
+        ]
+      },
+      {
+        "alias": "fonte_45",
+        "titulo": "Pragas — Pimenta",
+        "instituicaoOuAutor": "Embrapa Hortaliças",
+        "metodo": "Conteudo indexado na URL original; secao Vaquinha Diabrotica speciosa e Controle.",
+        "cobertura": [
+          "D. speciosa em pimenteira",
+          "Danos foliares e medidas culturais/quimicas"
+        ],
+        "limites": [
+          "Pimenta nao e automaticamente todas as hortalicas; a associacao especifica com feijao depende de fonte complementar, nao desta pagina."
+        ]
+      }
+    ],
+    "novasFontes": [
+      {
+        "alias": "fonte_alt_brassicas",
+        "titulo": "Principais doenças das brássicas causadas por fungos, oomicetos e protozoário: identificação e manejo.",
+        "instituicaoOuAutor": "Embrapa Hortaliças",
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1138623",
+        "texto": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1138623/1/CT-176-30dez2021.pdf",
+        "localizador": "Secao Mofo branco, a partir da pagina 15",
+        "cobertura": [
+          "Sclerotinia sclerotiorum em brassicas",
+          "Condicoes amenas/umidas, sintomas, sobrevivencia e manejo"
+        ],
+        "limites": [
+          "Nao e o livro original de brassicas, nao substitui toda sua bibliografia.",
+          "Nao sustenta sozinha todos os detalhes para soja e feijao."
+        ]
+      },
+      {
+        "alias": "fonte_alt_cafe",
+        "titulo": "Ocorrência das principais doenças causadas por fungos em cafeeiros de Rondônia e seu controle.",
+        "instituicaoOuAutor": "Embrapa Rondônia",
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/901892",
+        "texto": "https://www.infoteca.cnptia.embrapa.br/bitstream/doc/901892/1/ct51doencasdocafeeiro.pdf",
+        "localizador": "CT51 (2000), secoes Ferrugem e Mancha-de-olho-pardo/cercosporiose",
+        "cobertura": [
+          "Hemileia vastatrix e Cercospora coffeicola no cafe",
+          "Sintomas e medidas gerais de manejo"
+        ],
+        "limites": [
+          "Recorte regional de Rondonia e edicao de 2000; nao representa boletim atual de qualquer UF."
+        ]
+      },
+      {
+        "alias": "fonte_alt_tomate_2005",
+        "titulo": "Doenças do tomateiro. (2005)",
+        "instituicaoOuAutor": "Embrapa Hortaliças",
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/778171",
+        "texto": "https://www.infoteca.cnptia.embrapa.br/bitstream/doc/778171/1/CNPHDOEN.DOTOMAT.05.pdf",
+        "localizador": "Secao Mancha-bacteriana, pagina 62; Mancha-alvo, pagina 37",
+        "cobertura": [
+          "Complexo Xanthomonas associado a tomate e pimentao",
+          "Sintomas, disseminacao e condicoes favoraveis"
+        ],
+        "limites": [
+          "Nao equivale ao PDF inacessivel fonte_30.",
+          "Taxonomia/controle de 2005 precisam de revisao atual; nao consolidar com edicao de 2021."
+        ]
+      },
+      {
+        "alias": "fonte_alt_bemisia",
+        "titulo": "Surto de mosca-branca em culturas do Paraná e São Paulo",
+        "instituicaoOuAutor": "A. S. Costa; G. L. Costa; H. F. G. Sauer",
+        "url": "https://anais.seb.org.br/index.php/aseb/article/view/8",
+        "localizador": "Resumo do artigo original (1973), DOI 10.37486/0301-8059.v2i1.8",
+        "cobertura": [
+          "Ocorrencia de Bemisia tabaci em soja e feijoeiro",
+          "Relacao com viroses e condicoes de surto observadas"
+        ],
+        "limites": [
+          "Relato historico; nao identifica automaticamente especies cripticas atuais ou eficacia de controle."
+        ]
+      },
+      {
+        "alias": "fonte_alt_rosca_milho",
+        "titulo": "Pragas da Fase Inicial — Milho",
+        "instituicaoOuAutor": "Embrapa — Ageitec",
+        "url": "https://www.embrapa.br/en/web/agencia-de-informacao-tecnologica/cultivos/milho/producao/pragas-e-doencas/pragas/pragas-da-fase-inicial",
+        "localizador": "Secao Lagarta-rosca (Agrotis ipsilon), Metodos de controle, texto indexado; abertura 403",
+        "cobertura": [
+          "Agrotis ipsilon no milho",
+          "Distincao entre manejo cultural e intervenções com inseticidas/iscas"
+        ],
+        "limites": [
+          "Nao comprova registro atual; nao extrapolar para cenoura ou outras hortalicas."
+        ]
+      },
+      {
+        "alias": "fonte_alt_antracnose_sementes",
+        "titulo": "Aplicação de fungicidas via tratamento de sementes para o controle da antracnose (Colletotrichum lindemuthianum) do feijoeiro (Phaseolus vulgaris L.).",
+        "instituicaoOuAutor": "COSTA, J. L. da S.",
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/866669?mode=full",
+        "localizador": "Registro bibliografico e resumo do trabalho de 2002",
+        "cobertura": [
+          "Tratamento quimico de sementes de feijao contra C. lindemuthianum"
+        ],
+        "limites": [
+          "Nao generalizar para soja, frutiferas ou todo Colletotrichum; nao comprova registro atual."
+        ]
+      },
+      {
+        "alias": "fonte_alt_hlb_adapar",
+        "titulo": "Todos contra o greening",
+        "instituicaoOuAutor": "ADAPAR / Secretaria da Agricultura e do Abastecimento",
+        "url": "https://www.agricultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2023-12/folder_greening_1-2.pdf",
+        "localizador": "Pagina 2: hospedeiros e Como se faz o controle",
+        "cobertura": [
+          "Laranja como exemplo de citro afetado",
+          "Mudas sadias, saneamento e controle do psilideo por metodos quimicos/biologicos"
+        ],
+        "limites": [
+          "Contexto fitossanitario do Parana; nao transportar obrigacoes locais para todo o Brasil.",
+          "Nao indica cura da planta infectada nem autoriza produto."
+        ]
+      },
+      {
+        "alias": "fonte_alt_mip_feijoeiro",
+        "titulo": "Manejo Integrado de Pragas do Feijoeiro",
+        "instituicaoOuAutor": "Eliane D. Quintela — Embrapa Arroz e Feijão",
+        "url": "https://www.embrapa.br/documents/1344498/2767895/manejo-integrado-de-pragas-do-feijoeiro.pdf/c8bb5013-3bf8-4579-a9ea-64570cb70e90",
+        "localizador": "Circular Tecnica 46 (2001), Tabela 5 e secoes de pragas das folhas",
+        "cobertura": [
+          "Diabrotica speciosa no feijoeiro",
+          "Tetranychus urticae no feijoeiro"
+        ],
+        "limites": [
+          "Confirmacao de hospedeiro/identidade; nao atualiza produtos ou doses.",
+          "Tabela geral de pragas nao comprova todas as afirmacoes da ficha."
+        ]
+      },
+      {
+        "alias": "fonte_alt_acaro_tomate",
+        "titulo": "Controle químico ao ácaro Tetranychus urticae (Koch, 1836) Bordeaux & Dosse 1963, em tomateiros",
+        "instituicaoOuAutor": "Antônio Lopes da Silva — EAV-UFG",
+        "url": "https://revistas.ufg.br/pat/article/view/1655",
+        "localizador": "Resumo do experimento original no site da revista Pesquisa Agropecuaria Tropical",
+        "cobertura": [
+          "Associacao Tetranychus urticae e tomateiro"
+        ],
+        "limites": [
+          "Ensaio historico; nao incorporar produtos/doses, eficacia atual ou supor suporte ao controle biologico em tomate."
+        ]
+      },
+      {
+        "alias": "fonte_alt_cochonilha_cafe",
+        "titulo": "Cochonilha-parda (Saissetia coffeae)",
+        "instituicaoOuAutor": "Embrapa — Ater+ Digital",
+        "url": "https://www.atermaisdigital.cnptia.embrapa.br/web/controle-de-pragas/w/cochonilha-parda-saissetia-coffeae-3",
+        "localizador": "Cabecalho com especie e lista de culturas, Cafe",
+        "cobertura": [
+          "Associacao Saissetia coffeae e cafe"
+        ],
+        "limites": [
+          "Lista de produtos do portal nao comprova pertinencia de cada produto a toda cultura; nao valida registro Agrofit.",
+          "Nao generalizar todos os Saissetia/Planococcus a todos os hospedeiros."
+        ]
+      }
+    ],
+    "substituicoes": [
+      {
+        "aliasOriginal": "fonte_03",
+        "aliasesDePreparacao": [
+          "fonte_alt_brassicas"
+        ],
+        "fichas": [
+          "mofo-branco"
+        ],
+        "natureza": "alternativa_parcial_nao_equivalente",
+        "cobertura": "Mofo-branco em brassicas/hortalicas, clima, agente e manejo; soja/feijao conservam fontes_04 e _46.",
+        "naoComprovado": "Nao houve leitura do livro original; niveis qualitativos e toda a ficha nao foram tecnicamente validados."
+      },
+      {
+        "aliasOriginal": "fonte_23",
+        "aliasesDePreparacao": [
+          "fonte_alt_cafe"
+        ],
+        "fichas": [
+          "ferrugem-do-cafeeiro",
+          "cercosporiose-do-cafe"
+        ],
+        "natureza": "alternativa_parcial_nao_equivalente",
+        "cobertura": "Sintomas e manejo geral de ambas as doencas no cafe, recorte de Rondonia.",
+        "naoComprovado": "Nem periodicidade local de ocorrencia nem eventual conteudo exclusivo do CIIAGRO foram recuperados."
+      },
+      {
+        "aliasOriginal": "fonte_30",
+        "aliasesDePreparacao": [
+          "fonte_alt_tomate_2005"
+        ],
+        "fichas": [
+          "mancha-bacteriana"
+        ],
+        "natureza": "alternativa_parcial_nao_equivalente",
+        "cobertura": "Secao Xanthomonas em tomate e pimentao, sintomas, agua/vento e manejo preventivo.",
+        "naoComprovado": "Identidade do PDF original desconhecida. Registro atual e adequacao por cultura nao verificados."
+      },
+      {
+        "aliasOriginal": "fonte_39",
+        "aliasesDePreparacao": [
+          "fonte_70",
+          "fonte_alt_bemisia"
+        ],
+        "fichas": [
+          "mosca-branca"
+        ],
+        "natureza": "alternativas_parciais_nao_equivalentes",
+        "cobertura": "Guia primario para tomate; artigo original confirma Bemisia em soja/feijao.",
+        "naoComprovado": "URL /en/web original continua bloqueada; variante /web localizada como candidata, nao declarada equivalente. Controle por hospedeiro requer revisao."
+      },
+      {
+        "aliasOriginal": "fonte_44",
+        "aliasesDePreparacao": [
+          "fonte_11",
+          "fonte_77"
+        ],
+        "fichas": [
+          "traca-do-tomateiro"
+        ],
+        "natureza": "alternativas_parciais_nao_equivalentes",
+        "cobertura": "Tuta em tomate, minas e danos, parasitoides e MIP.",
+        "naoComprovado": "Nao presumir equivalencia entre as variantes /web e /en/web; disponibilidade atual de produtos nao comprovada."
+      },
+      {
+        "aliasOriginal": "fonte_47",
+        "aliasesDePreparacao": [
+          "fonte_57"
+        ],
+        "fichas": [
+          "acaro-rajado"
+        ],
+        "natureza": "alternativa_parcial_nao_equivalente",
+        "cobertura": "Bioecologia e controle do acaro-rajado em morango com azadiractina e predadores ja incluidos no editorial.",
+        "naoComprovado": "Nao confirma a identidade da noticia MAPA nem a taxa de 80%; nao importar essa porcentagem. Nao cobre sozinho tomate/feijao."
+      }
+    ],
+    "controles": [
+      {
+        "ficha": "lagarta-rosca",
+        "ordem": 2,
+        "original": "Controle localizado conforme cultura e registro",
+        "duvida": "Localizado descreve a distribuicao da intervencao, nao o metodo; poderia ser manual, biologico ou quimico.",
+        "proposta": "quimica, com recorte explicito para a possibilidade descrita no milho; manter controle cultural como item separado.",
+        "fontes": [
+          "fonte_alt_rosca_milho"
+        ],
+        "evidencia": "Secao Agrotis ipsilon distingue manejo cultural de tratamento com inseticida e iscas. Nao foi conferido registro atual.",
+        "documentos": [
+          {
+            "tipo": "quimica",
+            "descricao": "Possibilidade de controle químico localizado no milho, condicionada à indicação técnica e ao registro para cultura e alvo. Não extrapolar para outras hortaliças nem definir produto ou dose nesta ficha."
+          }
+        ],
+        "situacao": "preparada_com_recorte_explicito"
+      },
+      {
+        "ficha": "cochonilha",
+        "ordem": 2,
+        "original": "Produtos seletivos conforme espécie e hospedeiro",
+        "duvida": "Seletividade nao define categoria biologica/quimica; fontes tratam cochonilhas e hospedeiros distintos.",
+        "proposta": "quimica para a modalidade de inseticidas descrita nas fontes; preservar controle biologico conservativo separado.",
+        "fontes": [
+          "fonte_07",
+          "fonte_26"
+        ],
+        "evidencia": "Citros e videira possuem secoes de controle com inseticidas; isso nao comprova indicacao para Cafe ou todo Coccoidea.",
+        "documentos": [
+          {
+            "tipo": "quimica",
+            "descricao": "Possibilidade de uso seletivo de inseticidas, conforme a espécie e o hospedeiro identificados. As fontes exemplificam citros e videira; não generalizar para café ou outras frutíferas sem confirmação técnica e de registro."
+          }
+        ],
+        "situacao": "preparada_com_recorte_explicito"
+      },
+      {
+        "ficha": "antracnose",
+        "ordem": 1,
+        "original": "Tratamento de sementes quando pertinente",
+        "duvida": "Tratamento de sementes e uma etapa de aplicacao, nao define se e quimico, biologico ou fisico.",
+        "proposta": "quimica para o tratamento com fungicidas documentado em feijao/C. lindemuthianum; nao generalizar a outras modalidades ou hospedeiros.",
+        "fontes": [
+          "fonte_alt_antracnose_sementes"
+        ],
+        "evidencia": "O trabalho primario avalia fungicidas via tratamento de sementes de feijoeiro. Estudo de 2002 nao comprova registro atual.",
+        "documentos": [
+          {
+            "tipo": "quimica",
+            "descricao": "Tratamento químico de sementes de feijão com fungicidas, quando pertinente a Colletotrichum lindemuthianum e à indicação técnica. Não estender automaticamente esse método à soja, a frutíferas ou a todo Colletotrichum."
+          }
+        ],
+        "situacao": "preparada_com_recorte_explicito"
+      },
+      {
+        "ficha": "podridao-negra-das-cruciferas",
+        "ordem": 2,
+        "original": "Produtos protetores quando tecnicamente indicados",
+        "duvida": "Nao identifica produto nem categoria. A fonte de brocolis informa ausencia de registro na edicao de 2015; isso nao prova a situacao atual.",
+        "proposta": "quimica apenas se o sentido pretendido for bactericida protetor e houver suporte especifico por cultura/alvo. Nao aplicar essa classificacao ainda. Manejo sanitario permanece cultural.",
+        "fontes": [
+          "fonte_60"
+        ],
+        "evidencia": "A cultura dos brocolis, paginas 85 e 87: ausencia de agrotoxico registrado a epoca e medidas preventivas. Tabela de cobre para Alternaria nao prova indicacao para Xanthomonas.",
+        "documentos": [],
+        "situacao": "pendente_de_definicao_e_suporte_sem_descarte"
+      },
+      {
+        "ficha": "mosca-das-frutas",
+        "ordem": 1,
+        "original": "Iscas e controle de adultos conforme hospedeiro",
+        "duvida": "Isca pode ser apenas atrativo de monitoramento ou isca toxica; nao classificar armadilha automaticamente como quimica.",
+        "proposta": "quimica para a modalidade de isca toxica descrita na fonte; monitoramento com armadilhas permanece prevencao e controle biologico continua separado.",
+        "fontes": [
+          "fonte_07"
+        ],
+        "evidencia": "Secao Moscas-das-frutas distingue armadilhas de monitoramento, isca toxica e parasitoides; fonte historica de 2003.",
+        "documentos": [
+          {
+            "tipo": "quimica",
+            "descricao": "Possibilidade de controle de adultos com isca tóxica, conforme a espécie e o hospedeiro e somente mediante orientação e registro aplicáveis. Não confundir com o atrativo de monitoramento; nenhum ingrediente ou dose é definido nesta ficha."
+          }
+        ],
+        "situacao": "preparada_com_recorte_explicito"
+      },
+      {
+        "ficha": "greening-hlb",
+        "ordem": 1,
+        "original": "Manejo fitossanitário e do vetor; sem tratamento curativo da bactéria",
+        "duvida": "Combina saneamento e controle do inseto vetor, que podem pertencer a metodos diferentes. Nenhum deles representa cura do HLB.",
+        "proposta": "Separar cultural (sanidade/mudas), quimica e biologica (possibilidades de controle do psilideo documentadas); sem produtos e sem eliminar plantas automaticamente.",
+        "fontes": [
+          "fonte_49",
+          "fonte_alt_hlb_adapar"
+        ],
+        "evidencia": "Folder ADAPAR, pagina 2, distingue mudas sadias/saneamento e inseticidas quimicos/biologicos para o vetor sob orientacao profissional.",
+        "documentos": [
+          {
+            "tipo": "cultural",
+            "descricao": "Manejo fitossanitário com mudas sadias e medidas sanitárias orientadas pelo serviço competente; não é tratamento curativo da planta infectada."
+          },
+          {
+            "tipo": "quimica",
+            "descricao": "Possibilidade de controle químico do psilídeo vetor, sob orientação profissional e requisitos aplicáveis, sem produto ou dose definidos. Não cura o HLB."
+          },
+          {
+            "tipo": "biologica",
+            "descricao": "Possibilidade de controle biológico do psilídeo vetor, conforme avaliação profissional e condições locais. Não cura o HLB."
+          }
+        ],
+        "situacao": "preparada_com_metodos_separados"
+      }
+    ]
+  },
+  "convencaoDatas": {
+    "dataSemHorario": "YYYY-MM-DD -> {$date: YYYY-MM-DDT00:00:00.000Z}",
+    "precisao": "Representa um dia civil editorial por convencao UTC, nao um horario real de acesso. Exibir como dia UTC, evitando conversao local que mostre o dia anterior.",
+    "acesso": "Preservar a string original no mapeamento. Datas declaradas do editorial nao sao substituidas pela pesquisa.",
+    "publicacao": "Ano ou mes isolados permanecem no relatorio bibliografico; nao preencher publicadoEm com dia inventado.",
+    "preparacao": "criadoEm/atualizadoEm dos novos documentos indicam preparacao local, nao insercao ou revisao tecnica; futura insercao devera documentar sua politica."
+  },
+  "verificacaoLocal": {
+    "documentosUnicos": 185,
+    "gruposDeTestesEmMemoriaAprovados": 10,
+    "falhas": 0,
+    "hashEditorialPreservado": true,
+    "atlasExecutado": false,
+    "limite": "Comparacao local dos schemas completos e referencias do pacote; mocks nao comprovam transacao, permissoes, collation ou Schema Validation no servidor."
+  },
+  "ressalvaDeEscopo": "Nao tratar uma referencia de tema relacionado como prova integral. Substituicoes possuem cobertura e naoComprovado; textos originais e URLs inacessiveis permanecem no mapeamento. Mesmo documentos estruturalmente completos aguardam revisao tecnica.",
+  "decisaoPodridaoNegra": {
+    "autorizadaPeloUsuario": true,
+    "controleFundamentadoPreparado": "Manejo sanitario, tipo cultural",
+    "regraDoSchema": "formasControle minItems 1; cada item exige tipo e descricao.",
+    "trechoNaoConfirmado": "Produtos protetores quando tecnicamente indicados",
+    "destinoDoTrecho": "Somente mapeamento, pendencia de conteudo nao bloqueante; nao inserido na ficha final."
+  }
+}

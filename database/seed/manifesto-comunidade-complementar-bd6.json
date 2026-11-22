@@ -1,0 +1,347 @@
+{
+  "namespace": "sentinela_bd6_comunidade_v1_20261103",
+  "finalidade": "SIMULACAO EXCLUSIVA DE DESENVOLVIMENTO/TESTES; nao comprova autorizacao, consentimento ou moderacao real",
+  "bancoProposto": "sentinela",
+  "insercoesExecutadas": false,
+  "estadoLotePrincipal": {
+    "documentos": 185,
+    "insercao": "185 documentos inseridos e transacao confirmada; validacao posterior aprovada na conversa",
+    "preConferencia": "aprovada na conversa; nao equivale a insercao",
+    "impressaoPacotePreConferido": "2c3f00361ab4b5ed8b5709110ac4d4d9885831f31bfea742b8088ced16f2e192",
+    "validacaoPosteriorUtc": "2026-11-04T00:54:54.993Z"
+  },
+  "arquivosPrincipaisPreservadosSha256": {
+    "manifesto-bd6.json": "53a39d9b452090af4a82e7e3b63ef402ea0ef17863919acf8da6aeec2b35270e",
+    "documentos-sinteticos-bd6.json": "d8b1a3441aadf9f08e9e807a8e5d02886aeda122d15fcdb10e6ee83253022b2b",
+    "catalogo-pendente-bd6.json": "76ac157a32f67b2face0ba34e3d0930caaa21c8de6b396b4bbf883122beb42b8",
+    "pesquisa-catalogo-bd6.json": "5a47b214d22db689c463c3c7e55a0ef80b26a3ca086027819230f21bb8737856",
+    "catalogo-completo-sentinela.json": "34c8b175ea332a72ebd50ffe8b3375448725ca6e5388c72f4759f8174aeb821b"
+  },
+  "contagensPreparadas": {
+    "experiencias_comunidade": 4,
+    "adocoes_tratamento": 0,
+    "denuncias_comunidade": 3
+  },
+  "documentos": [
+    {
+      "colecao": "experiencias_comunidade",
+      "idReservado": {
+        "$oid": "769205e6144bf7757b8c45d5"
+      },
+      "existenciaNoAtlas": "nao_afirmada_reserva_local"
+    },
+    {
+      "colecao": "experiencias_comunidade",
+      "idReservado": {
+        "$oid": "c35d480ae02ddf6a11e240bc"
+      },
+      "existenciaNoAtlas": "nao_afirmada_reserva_local"
+    },
+    {
+      "colecao": "experiencias_comunidade",
+      "idReservado": {
+        "$oid": "5febcfc398cc6b032d2f4b2a"
+      },
+      "existenciaNoAtlas": "nao_afirmada_reserva_local"
+    },
+    {
+      "colecao": "experiencias_comunidade",
+      "idReservado": {
+        "$oid": "55936e4dab5263e687b63996"
+      },
+      "existenciaNoAtlas": "nao_afirmada_reserva_local"
+    },
+    {
+      "colecao": "denuncias_comunidade",
+      "idReservado": {
+        "$oid": "17ff554710bc82e942fd7357"
+      },
+      "existenciaNoAtlas": "nao_afirmada_reserva_local"
+    },
+    {
+      "colecao": "denuncias_comunidade",
+      "idReservado": {
+        "$oid": "d48a46814cbf3897e6a78900"
+      },
+      "existenciaNoAtlas": "nao_afirmada_reserva_local"
+    },
+    {
+      "colecao": "denuncias_comunidade",
+      "idReservado": {
+        "$oid": "0ae56dcff3c065f921be79a0"
+      },
+      "existenciaNoAtlas": "nao_afirmada_reserva_local"
+    }
+  ],
+  "dependenciasExternas": [
+    {
+      "colecao": "usuarios",
+      "ids": [
+        {
+          "$oid": "be013a28bfb4773b09f619d3"
+        },
+        {
+          "$oid": "f143382bb56503d766a8f961"
+        }
+      ]
+    },
+    {
+      "colecao": "propriedades",
+      "ids": [
+        {
+          "$oid": "17dca01d6874b360a8b0a434"
+        },
+        {
+          "$oid": "4b9722b67309fa8722909084"
+        },
+        {
+          "$oid": "7e11128c68c88b2807f6b439"
+        }
+      ]
+    },
+    {
+      "colecao": "talhoes",
+      "ids": [
+        {
+          "$oid": "a6a34252509e87311b6ab400"
+        },
+        {
+          "$oid": "b5869116fcaa6fb0434c6e8d"
+        },
+        {
+          "$oid": "7052121418906bee74d9c72b"
+        },
+        {
+          "$oid": "07c779fb5b21d0b1898ea4db"
+        },
+        {
+          "$oid": "c00289731fb972600284b87b"
+        },
+        {
+          "$oid": "4e0448106f170e8d7bc9fa9b"
+        }
+      ]
+    },
+    {
+      "colecao": "culturas",
+      "ids": [
+        {
+          "$oid": "c9993429c69f67a2ee18e04f"
+        },
+        {
+          "$oid": "559bf4979ecb3182ccbf1b0d"
+        },
+        {
+          "$oid": "9163438741438ab6d37756e3"
+        },
+        {
+          "$oid": "8b734f3a8294a077b8648721"
+        },
+        {
+          "$oid": "bfdf9421542b0b69bc41dfdb"
+        },
+        {
+          "$oid": "b743c7ad373244dffa71508b"
+        },
+        {
+          "$oid": "20b6e9737d3719d65f117f21"
+        },
+        {
+          "$oid": "a33803547f8999e54975177e"
+        },
+        {
+          "$oid": "babb531549d35e9e88f6a641"
+        },
+        {
+          "$oid": "60d7d226bfdf51e103f5543e"
+        },
+        {
+          "$oid": "3d55a111c7af4e22015c6bb7"
+        },
+        {
+          "$oid": "8f685641f95aaeee980c8032"
+        },
+        {
+          "$oid": "f04d5232bcbcda1037cdb0e3"
+        },
+        {
+          "$oid": "be5a344855dc024909a066f3"
+        },
+        {
+          "$oid": "16185968f588446ba9b0c836"
+        },
+        {
+          "$oid": "4f6643e529a4df921e59fb77"
+        },
+        {
+          "$oid": "aa25df93def915ff3f79a05d"
+        },
+        {
+          "$oid": "90ab211166d6d38d65d7eed8"
+        },
+        {
+          "$oid": "5e2256bbbb94905cf44a51bc"
+        },
+        {
+          "$oid": "27209c9c90b9e794c157608e"
+        }
+      ]
+    },
+    {
+      "colecao": "plantacoes",
+      "ids": [
+        {
+          "$oid": "92161e2b231b69ebb01e03ce"
+        },
+        {
+          "$oid": "e8391ccd314d068c4865593c"
+        },
+        {
+          "$oid": "f98879d75c77dc508f29af45"
+        },
+        {
+          "$oid": "b100385fef525b6c26d50d7b"
+        },
+        {
+          "$oid": "0b2e8fb74c25322369485c7c"
+        },
+        {
+          "$oid": "7d13db782410d0d31ddd1a3f"
+        },
+        {
+          "$oid": "0bfe4c59268ea5b381c5605b"
+        },
+        {
+          "$oid": "f373f856f1fd9802a0ce70d4"
+        }
+      ]
+    },
+    {
+      "colecao": "ocorrencias",
+      "ids": [
+        {
+          "$oid": "4cfb91e41773d4cdffcff8db"
+        },
+        {
+          "$oid": "271ce01d23c1ed173b92c992"
+        },
+        {
+          "$oid": "193330f259e52a07c0f94e52"
+        },
+        {
+          "$oid": "dadf6eb8860bde51f585edf5"
+        }
+      ]
+    },
+    {
+      "colecao": "tratamentos",
+      "ids": [
+        {
+          "$oid": "8b9bd100ddd997353b4559c5"
+        },
+        {
+          "$oid": "4efb32fb43d918586d0707ad"
+        },
+        {
+          "$oid": "1d66368b4b4a8784e055e365"
+        },
+        {
+          "$oid": "45c7637b10a32d39f314ae64"
+        }
+      ]
+    }
+  ],
+  "simulacaoResponsaveis": "Usuarios A e B reutilizados como atores sinteticos de moderacao/analise; nenhum papel no perfil ou permissao real concedida. Denunciante e analista podem coincidir: nao existe segregacao obrigatoria definida no BD3/BD4. Nao comprova autorizacao da API.",
+  "cicloSimulado": [
+    "Aprovada: pendente em 01/11 antes de 12h; primeira aprovacao/publicacao 01/11 12h.",
+    "Rejeitada: pendente 01/11; rejeicao 02/11 12h; nunca publicada.",
+    "Oculta: pendente/aprovada/publicada 01/11 12h; denuncia 01/11 13h; analise e ocultacao 02/11 12h; primeira publicadoEm preservada.",
+    "Retirada: pendente 01/11; retirada pelo autor 02/11; nunca aprovada, sem revisao ou publicadoEm inventados.",
+    "Denuncias pendente/manter referenciam a aprovada; ocultar referencia a oculta, disponivel no instante da denuncia. Gravacao futura deve manter analise/ocultacao consistentes."
+  ],
+  "adocoesBloqueadas": [
+    {
+      "cenario": "planejada",
+      "documentoImportavelGerado": false,
+      "usuarioCandidato": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "experienciaCandidata": {
+        "$oid": "769205e6144bf7757b8c45d5"
+      },
+      "ocorrenciaDestinoCandidata": {
+        "$oid": "dadf6eb8860bde51f585edf5"
+      },
+      "compatibilidadeCultura": "Milho em origem e destino; conferir os pais apos insercao do lote principal",
+      "bloqueios": [
+        "Origem e destino sao nao_identificado, sem problemaAgricolaId; BD4 14.4 proibe adocao.",
+        "As 40 fichas estao pendentes/inativas; novas selecoes exigem revisao explicita aprovada e ativo true; nao alterar para liberar testes."
+      ],
+      "dependenciasAposDesbloqueio": [
+        "Selecionar mesma ficha elegivel das 40 em origem e destino; preparar novas ocorrencias identificadas proprias em plantacoes ativas, sem alterar as existentes.",
+        "Preparar nova experiencia aprovada simulada com metodo e origem identificada; nao mudar silenciosamente as quatro experiencias deste lote.",
+        "Conferir versao/metodo, propriedade, datas e disponibilidade na confirmacao.",
+        "Uma planejada por par experiencia/ocorrencia; realizadas/canceladas fora do filtro.",
+        "tratamentoId deve permanecer ausente."
+      ]
+    },
+    {
+      "cenario": "realizada",
+      "documentoImportavelGerado": false,
+      "usuarioCandidato": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "experienciaCandidata": {
+        "$oid": "769205e6144bf7757b8c45d5"
+      },
+      "ocorrenciaDestinoCandidata": {
+        "$oid": "dadf6eb8860bde51f585edf5"
+      },
+      "compatibilidadeCultura": "Milho em origem e destino; conferir os pais apos insercao do lote principal",
+      "bloqueios": [
+        "Origem e destino sao nao_identificado, sem problemaAgricolaId; BD4 14.4 proibe adocao.",
+        "As 40 fichas estao pendentes/inativas; novas selecoes exigem revisao explicita aprovada e ativo true; nao alterar para liberar testes."
+      ],
+      "dependenciasAposDesbloqueio": [
+        "Selecionar mesma ficha elegivel das 40 em origem e destino; preparar novas ocorrencias identificadas proprias em plantacoes ativas, sem alterar as existentes.",
+        "Preparar nova experiencia aprovada simulada com metodo e origem identificada; nao mudar silenciosamente as quatro experiencias deste lote.",
+        "Conferir versao/metodo, propriedade, datas e disponibilidade na confirmacao.",
+        "Uma planejada por par experiencia/ocorrencia; realizadas/canceladas fora do filtro.",
+        "Criar tratamento adicional na ocorrencia destino durante a transicao planejada para realizada, com data posterior ao planejamento; nao reaproveitar tratamento anterior como execucao da adocao."
+      ]
+    },
+    {
+      "cenario": "cancelada",
+      "documentoImportavelGerado": false,
+      "usuarioCandidato": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "experienciaCandidata": {
+        "$oid": "769205e6144bf7757b8c45d5"
+      },
+      "ocorrenciaDestinoCandidata": {
+        "$oid": "dadf6eb8860bde51f585edf5"
+      },
+      "compatibilidadeCultura": "Milho em origem e destino; conferir os pais apos insercao do lote principal",
+      "bloqueios": [
+        "Origem e destino sao nao_identificado, sem problemaAgricolaId; BD4 14.4 proibe adocao.",
+        "As 40 fichas estao pendentes/inativas; novas selecoes exigem revisao explicita aprovada e ativo true; nao alterar para liberar testes."
+      ],
+      "dependenciasAposDesbloqueio": [
+        "Selecionar mesma ficha elegivel das 40 em origem e destino; preparar novas ocorrencias identificadas proprias em plantacoes ativas, sem alterar as existentes.",
+        "Preparar nova experiencia aprovada simulada com metodo e origem identificada; nao mudar silenciosamente as quatro experiencias deste lote.",
+        "Conferir versao/metodo, propriedade, datas e disponibilidade na confirmacao.",
+        "Uma planejada por par experiencia/ocorrencia; realizadas/canceladas fora do filtro.",
+        "tratamentoId deve permanecer ausente."
+      ]
+    }
+  ],
+  "condicoesExecucaoFutura": [
+    "Scripts separados do principal; apenas os sete documentos complementares sao gravados.",
+    "Conferir novamente os 185 snapshots principais e todos os pais no servidor; abortar ausencias ou divergencias.",
+    "Conferir schemas completos, 22 indices e indices unicos adicionais; preservar todos.",
+    "Lote complementar deve estar inteiro ausente ou inteiro presente e identico; parcial exige analise, sem completar automaticamente.",
+    "Insercao apenas com --aplicar, em transacao snapshot/majority; nenhum update, replace, delete ou upsert.",
+    "Snapshots finais de moderacao/analise sao simulados e gravados atomicamente; nao comprovam transicoes ou permissoes da API."
+  ]
+}

@@ -1,0 +1,200 @@
+{
+  "banco": "sentinela",
+  "natureza": "SIMULACAO ACADEMICA EXPLICITA; nao e revisao tecnica real",
+  "antes": {
+    "codigoEditorial": "lagarta-do-cartucho",
+    "nomeCientifico": "Spodoptera frugiperda",
+    "descricao": "Lagarta que raspa e perfura folhas, frequentemente abrigada no cartucho do milho.",
+    "chips": [
+      "Milho",
+      "Temperaturas quentes"
+    ],
+    "sintomas": [
+      "Folhas raspadas",
+      "Perfurações nas folhas abertas",
+      "Fezes no cartucho"
+    ],
+    "ondeOlhar": "Examine folhas novas e o interior do cartucho.",
+    "dicaDeCampo": "Abra o cartucho com cuidado e procure lagartas vivas.",
+    "danos": [
+      "Desfolha",
+      "Destruição do cartucho",
+      "Comprometimento de espigas"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "epocaPropicia": "Da emergência ao desenvolvimento vegetativo; também pode atacar espigas.",
+    "tratamentoIntro": "Combine monitoramento e controle biológico, avaliando lagartas pequenas e condições locais.",
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "nomeComum": "Lagarta-do-cartucho",
+    "tipo": "praga",
+    "niveisAtencao": {
+      "baixo": "Sinais localizados (folhas raspadas): registre o foco e acompanhe a evolução com identificação técnica.",
+      "medio": "Sinais em expansão (perfurações nas folhas abertas): intensifique a amostragem e solicite avaliação do manejo.",
+      "alto": "Danos extensos (desfolha) ou progressão rápida: procure assistência agronômica com prioridade."
+    },
+    "abrangenciaCulturas": "Milho.",
+    "condicoesFavoraveis": [
+      "Temperaturas quentes",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "medidasPreventivas": [
+      "Monitorar desde a emergência",
+      "Manejar plantas voluntárias",
+      "Preservar inimigos naturais",
+      "Cumprir o refúgio recomendado para milho Bt"
+    ],
+    "orientacaoBuscaAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "ativo": false,
+    "revisaoEditorial": {
+      "status": "pendente",
+      "registroAgrofitConferido": false,
+      "fotoPendente": true,
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação."
+    },
+    "_id": {
+      "$oid": "88b8a8ae41cde9df3d9c5df2"
+    },
+    "culturasAfetadasIds": [
+      {
+        "$oid": "f04d5232bcbcda1037cdb0e3"
+      }
+    ],
+    "fontesIds": [
+      {
+        "$oid": "b6b12931c16a74b5959a0323"
+      },
+      {
+        "$oid": "93ae2e67955c0abd74986e64"
+      },
+      {
+        "$oid": "5c627fb50ac4690153962d71"
+      }
+    ],
+    "formasControle": [
+      {
+        "classe": "Biológicos microbianos",
+        "exemplosControle": [
+          "Bacillus thuringiensis",
+          "Spodoptera frugiperda multiple nucleopolyhedrovirus"
+        ],
+        "observacoes": "Exemplos educativos, sem confirmação de registro atual para cada cultura e alvo; não equivalem a recomendação de aplicação.",
+        "tipo": "biologica",
+        "descricao": "Biológicos microbianos"
+      }
+    ],
+    "criadoEm": {
+      "$date": "2026-11-04T00:12:13.990Z"
+    },
+    "atualizadoEm": {
+      "$date": "2026-11-04T00:12:13.990Z"
+    }
+  },
+  "depois": {
+    "codigoEditorial": "lagarta-do-cartucho",
+    "nomeCientifico": "Spodoptera frugiperda",
+    "descricao": "Lagarta que raspa e perfura folhas, frequentemente abrigada no cartucho do milho.",
+    "chips": [
+      "Milho",
+      "Temperaturas quentes"
+    ],
+    "sintomas": [
+      "Folhas raspadas",
+      "Perfurações nas folhas abertas",
+      "Fezes no cartucho"
+    ],
+    "ondeOlhar": "Examine folhas novas e o interior do cartucho.",
+    "dicaDeCampo": "Abra o cartucho com cuidado e procure lagartas vivas.",
+    "danos": [
+      "Desfolha",
+      "Destruição do cartucho",
+      "Comprometimento de espigas"
+    ],
+    "perdaEstimada": "Sem percentual único aplicável; a perda depende da cultura, cultivar, fase de ataque e intensidade, e não é calculada por esta ficha.",
+    "epocaPropicia": "Da emergência ao desenvolvimento vegetativo; também pode atacar espigas.",
+    "tratamentoIntro": "Combine monitoramento e controle biológico, avaliando lagartas pequenas e condições locais.",
+    "boasPraticas": [
+      "Confirme a espécie ou o agente causal e a cultura antes de escolher o manejo.",
+      "Quando houver uso de produto, confira registro para cultura e alvo, bula, proteção dos aplicadores e orientação agronômica.",
+      "Registre a intervenção e reavalie o foco; não use os níveis descritivos desta ficha como limiares automáticos de aplicação."
+    ],
+    "nomeComum": "Lagarta-do-cartucho",
+    "tipo": "praga",
+    "niveisAtencao": {
+      "baixo": "Sinais localizados (folhas raspadas): registre o foco e acompanhe a evolução com identificação técnica.",
+      "medio": "Sinais em expansão (perfurações nas folhas abertas): intensifique a amostragem e solicite avaliação do manejo.",
+      "alto": "Danos extensos (desfolha) ou progressão rápida: procure assistência agronômica com prioridade."
+    },
+    "abrangenciaCulturas": "Milho.",
+    "condicoesFavoraveis": [
+      "Temperaturas quentes",
+      "A influência de chuva e umidade varia com a espécie e a região."
+    ],
+    "medidasPreventivas": [
+      "Monitorar desde a emergência",
+      "Manejar plantas voluntárias",
+      "Preservar inimigos naturais",
+      "Cumprir o refúgio recomendado para milho Bt"
+    ],
+    "orientacaoBuscaAgronomo": "Consulte um agrônomo antes de aplicar. Os itens acima são exemplos de princípios ativos, não indicação de compra. Agrotóxicos exigem receituário agronômico e uso de EPI.",
+    "ativo": true,
+    "revisaoEditorial": {
+      "status": "aprovada",
+      "registroAgrofitConferido": false,
+      "fotoPendente": true,
+      "observacoes": "Conteúdo inicial para revisão da equipe e de responsável técnico antes da publicação. | SIMULACAO ACADEMICA PARA TESTES NO SENTINELA DE DESENVOLVIMENTO. Aprovacao editorial e data simuladas para demonstracao de adocoes; SEM revisao agronomica real, SEM comprovacao de eficacia ou registro Agrofit; NAO usar como recomendacao agricola ou em producao."
+    },
+    "_id": {
+      "$oid": "88b8a8ae41cde9df3d9c5df2"
+    },
+    "culturasAfetadasIds": [
+      {
+        "$oid": "f04d5232bcbcda1037cdb0e3"
+      }
+    ],
+    "fontesIds": [
+      {
+        "$oid": "b6b12931c16a74b5959a0323"
+      },
+      {
+        "$oid": "93ae2e67955c0abd74986e64"
+      },
+      {
+        "$oid": "5c627fb50ac4690153962d71"
+      }
+    ],
+    "formasControle": [
+      {
+        "classe": "Biológicos microbianos",
+        "exemplosControle": [
+          "Bacillus thuringiensis",
+          "Spodoptera frugiperda multiple nucleopolyhedrovirus"
+        ],
+        "observacoes": "Exemplos educativos, sem confirmação de registro atual para cada cultura e alvo; não equivalem a recomendação de aplicação.",
+        "tipo": "biologica",
+        "descricao": "Biológicos microbianos"
+      }
+    ],
+    "criadoEm": {
+      "$date": "2026-11-04T00:12:13.990Z"
+    },
+    "atualizadoEm": {
+      "$date": "2026-11-04T04:40:00.000Z"
+    },
+    "revisadoEm": {
+      "$date": "2026-11-04T04:40:00.000Z"
+    }
+  },
+  "camposAlterados": [
+    "ativo",
+    "revisaoEditorial.status",
+    "revisaoEditorial.observacoes",
+    "revisadoEm",
+    "atualizadoEm"
+  ],
+  "momentoSimulado": "2026-11-04T04:40:00.000Z",
+  "aplicadoNoAtlas": false
+}

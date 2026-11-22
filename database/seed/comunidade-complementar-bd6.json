@@ -1,0 +1,257 @@
+{
+  "experiencias_comunidade": [
+    {
+      "_id": {
+        "$oid": "769205e6144bf7757b8c45d5"
+      },
+      "autorId": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "ocorrenciaOrigemId": {
+        "$oid": "193330f259e52a07c0f94e52"
+      },
+      "nomePublico": "Produtor Ficticio BD6 A",
+      "culturaId": {
+        "$oid": "f04d5232bcbcda1037cdb0e3"
+      },
+      "culturaNome": "Milho",
+      "tipoProblema": "nao_identificado",
+      "statusOcorrencia": "aberta",
+      "titulo": "BD6 COMPLEMENTAR - SIMULACAO - Experiencia aprovada",
+      "relato": "Estado ficticio de desenvolvimento/testes; nao representa aceite, consentimento ou revisao real da equipe. Relato sem identificacao de problema agricola.",
+      "versao": 1,
+      "moderacao": {
+        "status": "aprovada",
+        "revisadoPor": {
+          "$oid": "f143382bb56503d766a8f961"
+        },
+        "revisadoEm": {
+          "$date": "2026-11-01T12:00:00.000Z"
+        }
+      },
+      "criadoEm": {
+        "$date": "2026-11-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-01T12:00:00.000Z"
+      },
+      "tratamentoOrigemId": {
+        "$oid": "1d66368b4b4a8784e055e365"
+      },
+      "metodo": {
+        "tipoMedida": "manual",
+        "descricao": "BD6 v1 - exclusivo desenvolvimento/testes - remocao manual de material danificado para observacao; sem prescricao"
+      },
+      "publicadoEm": {
+        "$date": "2026-11-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "c35d480ae02ddf6a11e240bc"
+      },
+      "autorId": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "ocorrenciaOrigemId": {
+        "$oid": "193330f259e52a07c0f94e52"
+      },
+      "nomePublico": "Produtor Ficticio BD6 A",
+      "culturaId": {
+        "$oid": "f04d5232bcbcda1037cdb0e3"
+      },
+      "culturaNome": "Milho",
+      "tipoProblema": "nao_identificado",
+      "statusOcorrencia": "aberta",
+      "titulo": "BD6 COMPLEMENTAR - SIMULACAO - Experiencia rejeitada",
+      "relato": "Estado ficticio de desenvolvimento/testes; nao representa aceite, consentimento ou revisao real da equipe. Relato sem identificacao de problema agricola.",
+      "versao": 1,
+      "moderacao": {
+        "status": "rejeitada",
+        "revisadoPor": {
+          "$oid": "f143382bb56503d766a8f961"
+        },
+        "revisadoEm": {
+          "$date": "2026-11-02T12:00:00.000Z"
+        },
+        "motivo": "SIMULACAO BD6: decisao ficticia exclusiva de testes, sem avaliacao real da equipe."
+      },
+      "criadoEm": {
+        "$date": "2026-11-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-02T12:00:00.000Z"
+      },
+      "tratamentoOrigemId": {
+        "$oid": "1d66368b4b4a8784e055e365"
+      },
+      "metodo": {
+        "tipoMedida": "manual",
+        "descricao": "BD6 v1 - exclusivo desenvolvimento/testes - remocao manual de material danificado para observacao; sem prescricao"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "5febcfc398cc6b032d2f4b2a"
+      },
+      "autorId": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "ocorrenciaOrigemId": {
+        "$oid": "dadf6eb8860bde51f585edf5"
+      },
+      "nomePublico": "Produtor Ficticio BD6 B",
+      "culturaId": {
+        "$oid": "f04d5232bcbcda1037cdb0e3"
+      },
+      "culturaNome": "Milho",
+      "tipoProblema": "nao_identificado",
+      "statusOcorrencia": "em_acompanhamento",
+      "titulo": "BD6 COMPLEMENTAR - SIMULACAO - Experiencia oculta",
+      "relato": "Estado ficticio de desenvolvimento/testes; nao representa aceite, consentimento ou revisao real da equipe. Relato sem identificacao de problema agricola.",
+      "versao": 1,
+      "moderacao": {
+        "status": "oculta",
+        "revisadoPor": {
+          "$oid": "be013a28bfb4773b09f619d3"
+        },
+        "revisadoEm": {
+          "$date": "2026-11-02T12:00:00.000Z"
+        },
+        "motivo": "SIMULACAO BD6: decisao ficticia exclusiva de testes, sem avaliacao real da equipe."
+      },
+      "criadoEm": {
+        "$date": "2026-11-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-02T12:00:00.000Z"
+      },
+      "tratamentoOrigemId": {
+        "$oid": "45c7637b10a32d39f314ae64"
+      },
+      "metodo": {
+        "tipoMedida": "cultural",
+        "descricao": "BD6 v1 - exclusivo desenvolvimento/testes - remocao manual de material danificado para observacao; sem prescricao"
+      },
+      "publicadoEm": {
+        "$date": "2026-11-01T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "55936e4dab5263e687b63996"
+      },
+      "autorId": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "ocorrenciaOrigemId": {
+        "$oid": "dadf6eb8860bde51f585edf5"
+      },
+      "nomePublico": "Produtor Ficticio BD6 B",
+      "culturaId": {
+        "$oid": "f04d5232bcbcda1037cdb0e3"
+      },
+      "culturaNome": "Milho",
+      "tipoProblema": "nao_identificado",
+      "statusOcorrencia": "em_acompanhamento",
+      "titulo": "BD6 COMPLEMENTAR - SIMULACAO - Experiencia retirada",
+      "relato": "Estado ficticio de desenvolvimento/testes; nao representa aceite, consentimento ou revisao real da equipe. Relato sem identificacao de problema agricola.",
+      "versao": 1,
+      "moderacao": {
+        "status": "retirada"
+      },
+      "criadoEm": {
+        "$date": "2026-11-01T12:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-02T12:00:00.000Z"
+      },
+      "tratamentoOrigemId": {
+        "$oid": "45c7637b10a32d39f314ae64"
+      },
+      "metodo": {
+        "tipoMedida": "cultural",
+        "descricao": "BD6 v1 - exclusivo desenvolvimento/testes - remocao manual de material danificado para observacao; sem prescricao"
+      }
+    }
+  ],
+  "adocoes_tratamento": [],
+  "denuncias_comunidade": [
+    {
+      "_id": {
+        "$oid": "17ff554710bc82e942fd7357"
+      },
+      "experienciaId": {
+        "$oid": "769205e6144bf7757b8c45d5"
+      },
+      "denuncianteId": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "motivo": "outro",
+      "descricao": "SIMULACAO BD6 - Denuncia ficticia para teste do fluxo, sem acusacao real.",
+      "status": "pendente",
+      "criadoEm": {
+        "$date": "2026-11-01T13:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-01T13:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "d48a46814cbf3897e6a78900"
+      },
+      "experienciaId": {
+        "$oid": "769205e6144bf7757b8c45d5"
+      },
+      "denuncianteId": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "motivo": "outro",
+      "descricao": "SIMULACAO BD6 - Denuncia ficticia para teste do fluxo, sem acusacao real.",
+      "status": "analisada",
+      "criadoEm": {
+        "$date": "2026-11-01T13:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-02T12:00:00.000Z"
+      },
+      "decisao": "manter_publicacao",
+      "justificativa": "SIMULACAO BD6 - Decisao ficticia; nao representa analise real.",
+      "analisadoPor": {
+        "$oid": "f143382bb56503d766a8f961"
+      },
+      "analisadoEm": {
+        "$date": "2026-11-02T12:00:00.000Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "0ae56dcff3c065f921be79a0"
+      },
+      "experienciaId": {
+        "$oid": "5febcfc398cc6b032d2f4b2a"
+      },
+      "denuncianteId": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "motivo": "outro",
+      "descricao": "SIMULACAO BD6 - Denuncia ficticia para teste do fluxo, sem acusacao real.",
+      "status": "analisada",
+      "criadoEm": {
+        "$date": "2026-11-01T13:00:00.000Z"
+      },
+      "atualizadoEm": {
+        "$date": "2026-11-02T12:00:00.000Z"
+      },
+      "decisao": "ocultar_publicacao",
+      "justificativa": "SIMULACAO BD6 - Decisao ficticia; nao representa analise real.",
+      "analisadoPor": {
+        "$oid": "be013a28bfb4773b09f619d3"
+      },
+      "analisadoEm": {
+        "$date": "2026-11-02T12:00:00.000Z"
+      }
+    }
+  ]
+}
