@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pi_front/frontend/talhões/tela_talhoes.dart'; // Ajuste o caminho se a pasta for diferente
+import 'package:firebase_auth/firebase_auth.dart';
+import '../tela_bem_vindo.dart';
+import 'package:sentinela/navegacao.dart';
+import 'package:sentinela/features/propriedades/tela_talhoes.dart'; // Ajuste o caminho se a pasta for diferente
 
 import 'tela_dadosConta.dart';
 import 'tela_notificacoes.dart';
@@ -14,7 +17,7 @@ class TelaPerfil extends StatefulWidget {
 
 class _TelaPerfilState extends State<TelaPerfil> {
   // Índice 4 selecionado por padrão (aba PERFIL)
-  int _indiceAtualNav = 4;
+  final int _indiceAtualNav = 4;
 
   // Método auxiliar para navegar entre as telas
   void _abrirTela(Widget destino) {
@@ -178,8 +181,10 @@ class _TelaPerfilState extends State<TelaPerfil> {
                 width: double.infinity,
                 height: 52,
                 child: OutlinedButton.icon(
-                  onPressed: () {
-                    // Ação para sair da conta
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    if (!context.mounted) return;
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => const TelaBemvindo()), (route) => false);
                   },
                   icon: const Icon(
                     Icons.logout_rounded,
@@ -249,9 +254,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
             Positioned(
               top: -22,
               child: GestureDetector(
-                onTap: () {
-                  // Ação para abrir tela de registrar ocorrência
-                },
+                onTap: () => navegarPrincipal(context, 2, _indiceAtualNav),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -377,14 +380,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
   Widget _buildNavItem(int index, IconData icon, String label) {
     final bool isSelected = _indiceAtualNav == index;
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _indiceAtualNav = index;
-        });
-        if (index == 1) {
-          _abrirTela(const TelaTalhoes());
-        }
-      },
+      onTap: () => navegarPrincipal(context, index, 4),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,

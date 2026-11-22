@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'tela_questionario5.dart';
 
-import 'tela_cultura_especifica.dart';
+import 'package:sentinela/features/auth/tela_cultura_especifica.dart';
 
 
 class TelaQuestionario4 extends StatefulWidget {
@@ -438,7 +439,7 @@ class _TelaQuestionario4State extends State<TelaQuestionario4> {
                               // Si opus sit, mutare ad tuamscreen specificam
                               return const TelaCulturaEspecifica();
                             } else {
-                              return const Scaffold(); // Vel TelaQuestionario5()
+                              return const TelaQuestionario5();
                             }
                           },
                         ),

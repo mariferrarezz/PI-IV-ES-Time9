@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'tela_novoTalhao.dart';
+import 'tela_talhaoEspecifico.dart';
+import 'tela_questionario1.dart';
+import 'package:sentinela/navegacao.dart';
 
 class TelaTalhoes extends StatefulWidget {
   final bool abrirModalPropriedades;
@@ -12,7 +16,7 @@ class TelaTalhoes extends StatefulWidget {
 class _TelaTalhoesState extends State<TelaTalhoes> {
   // Variáveis de estado
   String _propriedadeSelecionada = 'Fazenda Boa Vista';
-  int _indiceAtualNav = 1;
+  final int _indiceAtualNav = 1;
   String _filtroSelecionado = 'Todos';
 
   @override
@@ -204,7 +208,7 @@ class _TelaTalhoesState extends State<TelaTalhoes> {
                     ),
                     const SizedBox(height: 20),
                     OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () { Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaQuestionario1())); },
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         side: const BorderSide(
@@ -636,7 +640,7 @@ class _TelaTalhoesState extends State<TelaTalhoes> {
                   ),
                   const SizedBox(width: 12),
                   ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaNovoTalhao())),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF00501E),
                       foregroundColor: Colors.white,
@@ -688,7 +692,11 @@ class _TelaTalhoesState extends State<TelaTalhoes> {
                   circuloBgColor: talhao['circuloBg'],
                   alertaOcorrencia: talhao['ocorrencia'],
                   onTap: () {
-                    // Adicione aqui a navegação para a tela de detalhes do talhão
+                    if (talhao['nome'] == 'Talh\u00e3o 03' && _propriedadeSelecionada == 'Fazenda Boa Vista') {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaTalhaoEspecifico()));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Detalhes deste talhao ainda nao disponiveis.')));
+                    }
                   },
                 );
               }),
@@ -729,14 +737,14 @@ class _TelaTalhoesState extends State<TelaTalhoes> {
                     label: 'INÍCIO',
                     indice: 0,
                     ativo: _indiceAtualNav == 0,
-                    onTap: () => setState(() => _indiceAtualNav = 0),
+                    onTap: () => navegarPrincipal(context, 0, _indiceAtualNav == -1 ? 2 : _indiceAtualNav),
                   ),
                   _buildItemNav(
                     icon: Icons.map_outlined,
                     label: 'TALHÕES',
                     indice: 1,
                     ativo: _indiceAtualNav == 1,
-                    onTap: () => setState(() => _indiceAtualNav = 1),
+                    onTap: () => navegarPrincipal(context, 1, _indiceAtualNav == -1 ? 2 : _indiceAtualNav),
                   ),
                   const SizedBox(width: 50),
                   _buildItemNav(
@@ -744,14 +752,14 @@ class _TelaTalhoesState extends State<TelaTalhoes> {
                     label: 'COMUNIDADE',
                     indice: 3,
                     ativo: _indiceAtualNav == 3,
-                    onTap: () => setState(() => _indiceAtualNav = 3),
+                    onTap: () => navegarPrincipal(context, 3, _indiceAtualNav == -1 ? 2 : _indiceAtualNav),
                   ),
                   _buildItemNav(
                     icon: Icons.person_outline_rounded,
                     label: 'PERFIL',
                     indice: 4,
                     ativo: _indiceAtualNav == 4,
-                    onTap: () => setState(() => _indiceAtualNav = 4),
+                    onTap: () => navegarPrincipal(context, 4, _indiceAtualNav == -1 ? 2 : _indiceAtualNav),
                   ),
                 ],
               ),
@@ -762,7 +770,7 @@ class _TelaTalhoesState extends State<TelaTalhoes> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () => navegarPrincipal(context, 2, _indiceAtualNav),
                     child: Container(
                       width: 64,
                       height: 64,

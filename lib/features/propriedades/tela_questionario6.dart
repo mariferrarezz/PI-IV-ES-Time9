@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'tela_questionario3.dart'; // Ajuste conforme a sua próxima tela
 
 class TelaQuestionario6 extends StatefulWidget {
   const TelaQuestionario6({super.key});
@@ -186,12 +185,7 @@ class _TelaQuestionario6State extends State<TelaQuestionario6> {
                 child: ElevatedButton(
                   onPressed: () {
                     // Ação ao continuar
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const TelaQuestionario3(),
-                      ),
-                    );
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Respostas ainda nao sao salvas.')));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF135323),

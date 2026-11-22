@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'tela_cadastro_termos.dart';
 
 class TelaCadastroConfirmarSenha extends StatefulWidget {
   const TelaCadastroConfirmarSenha({super.key});
@@ -235,7 +236,7 @@ class _TelaCadastroConfirmarSenhaState
                 width: double.infinity,
                 height: 52.0,
                 child: ElevatedButton(
-                  onPressed: avancarPasso,
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaCadastroTermos())),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00501E),
                     foregroundColor: Colors.white,

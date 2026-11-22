@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'tela_talhoes.dart';
 
 class TelaNovoTalhao extends StatefulWidget {
   const TelaNovoTalhao({super.key});
@@ -80,36 +79,9 @@ class _TelaNovoTalhaoState extends State<TelaNovoTalhao> {
       return;
     }
 
-    final String culturaFinal = _culturaSelecionada == 'Outra'
-        ? _outraCulturaController.text.trim()
-        : _culturaSelecionada;
-
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Talhão cadastrado com sucesso!'),
-        backgroundColor: Color(0xFF00501E),
-        behavior: SnackBarBehavior.floating,
-      ),
+      const SnackBar(content: Text('Cadastro de talhao ainda nao integrado.')),
     );
-
-    if (Navigator.canPop(context)) {
-      Navigator.pop(context, {
-        'nome': _nomeTalhaoController.text.trim(),
-        'cultura': culturaFinal,
-        'area': _areaTalhaoController.text.trim(),
-        'dataPlantio': _dataPlantioFormatada,
-        'fase': _faseSelecionada,
-        'observacoes': _observacoesController.text.trim(),
-      });
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              const TelaTalhoes(), // <-- Ajuste o nome da classe
-        ),
-      );
-    }
   }
 
   // Rótulo com asterisco vermelho (*) para campos obrigatórios

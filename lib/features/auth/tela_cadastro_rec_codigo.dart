@@ -263,7 +263,7 @@ class _TelaCadastroRecCodigoState extends State<TelaCadastroRecCodigo> {
                 width: double.infinity,
                 height: 52.0,
                 child: ElevatedButton(
-                  onPressed: avancarPasso,
+                  onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Verificacao de codigo ainda nao integrada.'))),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00501E),
                     foregroundColor: Colors.white,

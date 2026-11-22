@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'tela_cadastro_cpf.dart';
 
 class TelaCadastroEmail extends StatefulWidget {
   const TelaCadastroEmail({super.key});
@@ -212,7 +213,7 @@ class _TelaCadastroEmailState extends State<TelaCadastroEmail> {
                 width: double.infinity,
                 height: 52.0,
                 child: ElevatedButton(
-                  onPressed: avancarPasso,
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaCadastroCpf())),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00501E),
                     foregroundColor: Colors.white,

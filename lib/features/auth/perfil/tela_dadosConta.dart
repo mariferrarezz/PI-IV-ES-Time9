@@ -333,13 +333,8 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
                 child: ElevatedButton(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Alterações salvas com sucesso!'),
-                        backgroundColor: Color(0xFF00501E),
-                        behavior: SnackBarBehavior.floating,
-                      ),
+                      const SnackBar(content: Text('Alteracoes da conta ainda nao sao salvas.')),
                     );
-                    Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF134E1E),

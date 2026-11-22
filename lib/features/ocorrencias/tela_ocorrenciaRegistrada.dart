@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'tela_talhaoEspecifico.dart'; // Ajuste o nome do arquivo da tela específica do talhão
+import 'package:sentinela/features/propriedades/tela_talhaoEspecifico.dart'; // Ajuste o nome do arquivo da tela específica do talhão
 
 //import 'tela_home.dart'; // Ajuste o nome do arquivo da tela de início (Home)
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'tela_cadastro_nome.dart';
+import 'tela_recuperar_senha.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -170,7 +172,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaRecuperarSenha())),
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
                             minimumSize: Size.zero,
@@ -196,7 +198,7 @@ class _TelaLoginState extends State<TelaLogin> {
                         height: 52.0,
                         child: ElevatedButton(
                           onPressed: () {
-                            // Apenas visual: ação do clique
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Login ainda nao integrado.')));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF00501E),
@@ -230,7 +232,7 @@ class _TelaLoginState extends State<TelaLogin> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaCadastroNome())),
                             child: const Text(
                               'Criar conta',
                               style: TextStyle(

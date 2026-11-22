@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sentinela/navegacao.dart';
 
-import 'tela_registroEvolucao.dart';
+import 'package:sentinela/features/ocorrencias/tela_registroEvolucao.dart';
 
 class TelaTalhaoEspecifico extends StatefulWidget {
   const TelaTalhaoEspecifico({super.key});
@@ -10,7 +11,7 @@ class TelaTalhaoEspecifico extends StatefulWidget {
 }
 
 class _TelaTalhaoEspecificoState extends State<TelaTalhaoEspecifico> {
-  int _indiceAtualNav = 1;
+  final int _indiceAtualNav = 1;
 
   // Card informativo da grade 2x2 (Cultura, Área, Plantio, Dias de ciclo)
   Widget _buildCardInfo({
@@ -1603,14 +1604,14 @@ class _TelaTalhaoEspecificoState extends State<TelaTalhaoEspecifico> {
                     label: 'INÍCIO',
                     indice: 0,
                     ativo: _indiceAtualNav == 0,
-                    onTap: () => setState(() => _indiceAtualNav = 0),
+                    onTap: () => navegarPrincipal(context, 0, -1),
                   ),
                   _buildItemNav(
                     icon: Icons.map_outlined,
                     label: 'TALHÕES',
                     indice: 1,
                     ativo: _indiceAtualNav == 1,
-                    onTap: () => setState(() => _indiceAtualNav = 1),
+                    onTap: () => navegarPrincipal(context, 1, -1),
                   ),
                   const SizedBox(width: 50),
                   _buildItemNav(
@@ -1618,14 +1619,14 @@ class _TelaTalhaoEspecificoState extends State<TelaTalhaoEspecifico> {
                     label: 'COMUNIDADE',
                     indice: 3,
                     ativo: _indiceAtualNav == 3,
-                    onTap: () => setState(() => _indiceAtualNav = 3),
+                    onTap: () => navegarPrincipal(context, 3, -1),
                   ),
                   _buildItemNav(
                     icon: Icons.person_outline_rounded,
                     label: 'PERFIL',
                     indice: 4,
                     ativo: _indiceAtualNav == 4,
-                    onTap: () => setState(() => _indiceAtualNav = 4),
+                    onTap: () => navegarPrincipal(context, 4, -1),
                   ),
                 ],
               ),
@@ -1636,9 +1637,7 @@ class _TelaTalhaoEspecificoState extends State<TelaTalhaoEspecifico> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      // Ação ao clicar no botão central de registrar
-                    },
+                    onTap: () => navegarPrincipal(context, 2, -1),
                     child: Container(
                       width: 64,
                       height: 64,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'tela_questionario5.dart';
+import 'package:sentinela/features/propriedades/tela_questionario5.dart';
 
 class TelaCulturaEspecifica extends StatefulWidget {
   const TelaCulturaEspecifica({super.key});

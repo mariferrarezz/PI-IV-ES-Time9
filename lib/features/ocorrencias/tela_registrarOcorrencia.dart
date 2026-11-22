@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sentinela/navegacao.dart';
 
-import 'tela_novoTalhao.dart'; // Ajuste o nome do arquivo da TelaNovoTalhao se necessário
+import 'package:sentinela/features/propriedades/tela_novoTalhao.dart';// Ajuste o nome do arquivo da TelaNovoTalhao se necessário
 
 class TelaRegistrarOcorrencia extends StatefulWidget {
   const TelaRegistrarOcorrencia({super.key});
@@ -1073,14 +1074,14 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
                     label: 'INÍCIO',
                     indice: 0,
                     ativo: _indiceAtualNav == 0,
-                    onTap: () => setState(() => _indiceAtualNav = 0),
+                    onTap: () => navegarPrincipal(context, 0, _indiceAtualNav == -1 ? 2 : _indiceAtualNav),
                   ),
                   _buildItemNav(
                     icon: Icons.map_outlined,
                     label: 'TALHÕES',
                     indice: 1,
                     ativo: _indiceAtualNav == 1,
-                    onTap: () => setState(() => _indiceAtualNav = 1),
+                    onTap: () => navegarPrincipal(context, 1, _indiceAtualNav == -1 ? 2 : _indiceAtualNav),
                   ),
                   const SizedBox(width: 50),
                   _buildItemNav(
@@ -1088,14 +1089,14 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
                     label: 'COMUNIDADE',
                     indice: 3,
                     ativo: _indiceAtualNav == 3,
-                    onTap: () => setState(() => _indiceAtualNav = 3),
+                    onTap: () => navegarPrincipal(context, 3, _indiceAtualNav == -1 ? 2 : _indiceAtualNav),
                   ),
                   _buildItemNav(
                     icon: Icons.person_outline_rounded,
                     label: 'PERFIL',
                     indice: 4,
                     ativo: _indiceAtualNav == 4,
-                    onTap: () => setState(() => _indiceAtualNav = 4),
+                    onTap: () => navegarPrincipal(context, 4, _indiceAtualNav == -1 ? 2 : _indiceAtualNav),
                   ),
                 ],
               ),

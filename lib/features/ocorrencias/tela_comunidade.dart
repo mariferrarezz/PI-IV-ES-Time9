@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pi_front/frontend/ferrugem_asiatica_da_soja.dart';
-import 'package:pi_front/frontend/percevejo_marrom.dart';
-import 'package:pi_front/frontend/lagarta_do_cartucho.dart';
-import 'package:pi_front/frontend/oidio.dart';
-import 'package:pi_front/frontend/mancha_branca_do_milho.dart';
-
+import 'package:sentinela/navegacao.dart';
+import 'package:sentinela/features/catalogo/ferrugem_asiatica_da_soja.dart';
+import 'package:sentinela/features/catalogo/percevejo_marrom.dart';
+import 'package:sentinela/features/catalogo/lagarta_do_cartucho.dart';
+import 'package:sentinela/features/catalogo/oidio.dart';
+import 'package:sentinela/features/catalogo/mancha_branca_do_milho.dart';
+import 'package:sentinela/features/catalogo/tela_catalogo.dart';
 //import 'tela_catalogo.dart';
 
 class TelaComunidade extends StatefulWidget {
@@ -20,7 +21,7 @@ class _TelaComunidadeState extends State<TelaComunidade> {
   // Estados dos filtros e navegação
   String _tipoFiltro = 'Todos'; // 'Todos', 'Pragas', 'Doenças'
   String _culturaFiltro = 'Todas'; // 'Todas', 'Soja', 'Milho', 'Feijão'
-  int _indiceAtualNav = 3; // 3 = COMUNIDADE ativo
+  final int _indiceAtualNav = 3; // 3 = COMUNIDADE ativo
 
   // 5 relatos recentes 100% alinhados com o catálogo oficial
   final List _relatosRecentes = [
@@ -1043,14 +1044,14 @@ class _TelaComunidadeState extends State<TelaComunidade> {
                     label: 'INÍCIO',
                     indice: 0,
                     ativo: _indiceAtualNav == 0,
-                    onTap: () => setState(() => _indiceAtualNav = 0),
+                    onTap: () => navegarPrincipal(context, 0, _indiceAtualNav == -1 ? 2 : _indiceAtualNav),
                   ),
                   _buildItemNav(
                     icon: Icons.map_outlined,
                     label: 'TALHÕES',
                     indice: 1,
                     ativo: _indiceAtualNav == 1,
-                    onTap: () => setState(() => _indiceAtualNav = 1),
+                    onTap: () => navegarPrincipal(context, 1, _indiceAtualNav == -1 ? 2 : _indiceAtualNav),
                   ),
                   const SizedBox(width: 50),
                   _buildItemNav(
@@ -1058,14 +1059,14 @@ class _TelaComunidadeState extends State<TelaComunidade> {
                     label: 'COMUNIDADE',
                     indice: 3,
                     ativo: _indiceAtualNav == 3,
-                    onTap: () => setState(() => _indiceAtualNav = 3),
+                    onTap: () => navegarPrincipal(context, 3, _indiceAtualNav == -1 ? 2 : _indiceAtualNav),
                   ),
                   _buildItemNav(
                     icon: Icons.person_outline_rounded,
                     label: 'PERFIL',
                     indice: 4,
                     ativo: _indiceAtualNav == 4,
-                    onTap: () => setState(() => _indiceAtualNav = 4),
+                    onTap: () => navegarPrincipal(context, 4, _indiceAtualNav == -1 ? 2 : _indiceAtualNav),
                   ),
                 ],
               ),
@@ -1076,9 +1077,7 @@ class _TelaComunidadeState extends State<TelaComunidade> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      // Ação ao clicar no botão central de registrar
-                    },
+                    onTap: () => navegarPrincipal(context, 2, _indiceAtualNav),
                     child: Container(
                       width: 64,
                       height: 64,

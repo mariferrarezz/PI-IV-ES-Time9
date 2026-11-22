@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'tela_cadastro_rec_codigo.dart';
 
 class TelaCadastroTelefone extends StatefulWidget {
   const TelaCadastroTelefone({super.key});
@@ -213,7 +214,7 @@ class _TelaCadastroTelefoneState extends State<TelaCadastroTelefone> {
                 width: double.infinity,
                 height: 52.0,
                 child: ElevatedButton(
-                  onPressed: avancarPasso,
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaCadastroRecCodigo())),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00501E),
                     foregroundColor: Colors.white,
