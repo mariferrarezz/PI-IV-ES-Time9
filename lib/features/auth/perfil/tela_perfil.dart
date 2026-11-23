@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../tela_bem_vindo.dart';
 import 'package:sentinela/navegacao.dart';
+import 'package:sentinela/services/api_sentinela.dart';
 import 'package:sentinela/features/propriedades/tela_talhoes.dart'; // Ajuste o caminho se a pasta for diferente
 
 import 'tela_dadosConta.dart';
@@ -19,9 +20,33 @@ class _TelaPerfilState extends State<TelaPerfil> {
   // Índice 4 selecionado por padrão (aba PERFIL)
   final int _indiceAtualNav = 4;
 
-  // Método auxiliar para navegar entre as telas
-  void _abrirTela(Widget destino) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => destino));
+  // Nome e iniciais vêm do back-end (GET /auth/me): nome público, ou o nome completo se não houver.
+  String _nomeExibido = '';
+  String _iniciais = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarPerfil();
+  }
+
+  Future<void> _carregarPerfil() async {
+    try {
+      final perfil = await ApiSentinela().request('GET', '/auth/me') as Map<String, dynamic>;
+      if (!mounted) return;
+      setState(() {
+        _nomeExibido = (perfil['nomePublico'] as String?) ?? (perfil['nomeCompleto'] as String? ?? '');
+        _iniciais = perfil['iniciais'] as String? ?? '';
+      });
+    } on ApiException catch (_) {
+      // Mantém o cartão sem nome; as outras opções do perfil continuam disponíveis.
+    }
+  }
+
+  // Método auxiliar para navegar entre as telas. Ao voltar, recarrega o nome (pode ter mudado).
+  Future<void> _abrirTela(Widget destino) async {
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => destino));
+    _carregarPerfil();
   }
 
   @override
@@ -104,9 +129,9 @@ class _TelaPerfilState extends State<TelaPerfil> {
                         shape: BoxShape.circle,
                       ),
                       alignment: Alignment.center,
-                      child: const Text(
-                        'SN',
-                        style: TextStyle(
+                      child: Text(
+                        _iniciais.isEmpty ? '–' : _iniciais,
+                        style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -115,22 +140,22 @@ class _TelaPerfilState extends State<TelaPerfil> {
                     ),
                     const SizedBox(width: 16),
                     // Nome e resumo da fazenda
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Seu Nome',
-                            style: TextStyle(
+                            _nomeExibido,
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF00501E),
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
-                            'Fazenda Boa Vista · 8 talhões',
-                            style: TextStyle(
+                            FirebaseAuth.instance.currentUser?.email ?? '',
+                            style: const TextStyle(
                               fontSize: 13.5,
                               fontWeight: FontWeight.w500,
                               color: Color(0xFF5A7363),
@@ -157,7 +182,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
               _buildBotaoPerfil(
                 icone: Icons.badge_outlined,
                 titulo: 'Dados da conta',
-                subtitulo: 'Nome, e-mail e telefone',
+                subtitulo: 'Nome público, CPF, e-mail e telefone',
                 onTap: () => _abrirTela(const TelaDadosConta()),
               ),
               const SizedBox(height: 12),

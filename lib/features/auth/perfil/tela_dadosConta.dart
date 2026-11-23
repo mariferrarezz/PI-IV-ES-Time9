@@ -11,13 +11,11 @@ class TelaDadosConta extends StatefulWidget {
 }
 
 class _TelaDadosContaState extends State<TelaDadosConta> {
-  final _nomeController = TextEditingController();
-  final _telefoneController = TextEditingController();
-  final _cpfController = TextEditingController();
+  final _nomePublicoController = TextEditingController();
   final _api = ApiSentinela();
   bool _carregando = true, _salvando = false, _enviandoLink = false;
   String? _erro;
-  String? _erroCpf, _erroTelefone;
+  String _nomeCompleto = '', _cpf = '', _telefone = '', _iniciais = '';
 
   @override
   void initState() {
@@ -25,46 +23,39 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
     _carregar();
   }
 
+  void _aplicarPerfil(Map<String, dynamic> perfil) {
+    _nomeCompleto = perfil['nomeCompleto'] as String? ?? '';
+    _cpf = const MascaraDocumento.cpf().formatar(perfil['cpf'] as String? ?? '');
+    _telefone = const MascaraDocumento.telefone().formatar(perfil['telefone'] as String? ?? '');
+    _iniciais = perfil['iniciais'] as String? ?? '';
+    _nomePublicoController.text = perfil['nomePublico'] as String? ?? '';
+  }
+
   Future<void> _carregar() async {
     setState(() { _carregando = true; _erro = null; });
     try {
       final perfil = await _api.request('GET', '/auth/me') as Map<String, dynamic>;
       if (!mounted) return;
-      setState(() {
-        _nomeController.text = perfil['nomeCompleto'] as String;
-        _cpfController.text = const MascaraDocumento.cpf().formatar(perfil['cpf'] as String);
-        _telefoneController.text = const MascaraDocumento.telefone().formatar(perfil['telefone'] as String);
-        _carregando = false;
-      });
+      setState(() { _aplicarPerfil(perfil); _carregando = false; });
     } on ApiException catch (e) {
       if (mounted) setState(() { _erro = e.mensagem; _carregando = false; });
     }
   }
 
+  // Só o nome público pode ser editado. Nome completo, CPF e telefone não mudam depois do cadastro.
   Future<void> _salvar() async {
     if (_salvando || _carregando) return;
-    final cpf = apenasDigitos(_cpfController.text);
-    final telefone = apenasDigitos(_telefoneController.text);
-    setState(() { _erroCpf = cpf.length == 11 ? null : 'Informe um CPF com 11 dígitos'; _erroTelefone = telefone.length == 11 ? null : 'Informe os 11 dígitos do celular com DDD.'; });
-    if (_erroCpf != null || _erroTelefone != null) return;
+    final nomePublico = _nomePublicoController.text.trim();
     setState(() { _salvando = true; _erro = null; });
     try {
-      await _api.request('PATCH', '/auth/dados-conta', body: {
-        'nomeCompleto': _nomeController.text,
-        'cpf': cpf,
-        'telefone': telefone,
-      });
+      final perfil = await _api.request('PATCH', '/auth/perfil', body: {
+        'nomePublico': nomePublico.isEmpty ? null : nomePublico,
+      }) as Map<String, dynamic>;
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Dados da conta salvos.')));
-      Navigator.pop(context);
+      setState(() => _aplicarPerfil(perfil));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Nome público salvo.')));
     } on ApiException catch (e) {
-      if (mounted) {
-        setState(() {
-          if (e.codigo == 'CPF_JA_CADASTRADO') { _erroCpf = e.mensagem; }
-          else if (e.codigo == 'TELEFONE_JA_CADASTRADO') { _erroTelefone = e.mensagem; }
-          else { _erro = e.mensagem; }
-        });
-      }
+      if (mounted) setState(() => _erro = e.mensagem);
     } finally {
       if (mounted) setState(() => _salvando = false);
     }
@@ -84,22 +75,28 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
     }
   }
 
-  String get _iniciais {
-    final partes = _nomeController.text.trim().split(RegExp(r'\s+'));
-    if (partes.isEmpty || partes.first.isEmpty) return 'SN';
-    if (partes.length == 1) {
-      return partes.first
-          .substring(0, partes.first.length >= 2 ? 2 : 1)
-          .toUpperCase();
-    }
-    return (partes.first[0] + partes.last[0]).toUpperCase();
+  Widget _campoSomenteLeitura(String titulo, String valor, String ajuda) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(titulo, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFF00501E))),
+        const SizedBox(height: 8),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+          decoration: BoxDecoration(color: const Color(0xFFF1F3F1), borderRadius: BorderRadius.circular(14)),
+          child: Text(valor, style: const TextStyle(fontSize: 15, color: Color(0xFF5A7363))),
+        ),
+        const SizedBox(height: 6),
+        Text(ajuda, style: const TextStyle(fontSize: 12.5, color: Color(0xFF5A7363))),
+        const SizedBox(height: 20),
+      ],
+    );
   }
 
   @override
   void dispose() {
-    _nomeController.dispose();
-    _telefoneController.dispose();
-    _cpfController.dispose();
+    _nomePublicoController.dispose();
     super.dispose();
   }
 
@@ -171,7 +168,7 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
                       ),
                       alignment: Alignment.center,
                       child: Text(
-                        _iniciais,
+                        _iniciais.isEmpty ? '–' : _iniciais,
                         style: const TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -196,31 +193,25 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
               if (_carregando) const Center(child: CircularProgressIndicator()),
               if (_erro != null) ...[
                 SelectableText(_erro!, style: const TextStyle(color: Colors.red)),
-                if (_nomeController.text.isEmpty && !_carregando)
+                if (_nomeCompleto.isEmpty && !_carregando)
                   TextButton(onPressed: _carregar, child: const Text('Tentar novamente')),
                 const SizedBox(height: 12),
               ],
               // 3. CAMPO NOME *
               RichText(
                 text: const TextSpan(
-                  text: 'Nome ',
+                  text: 'Nome público',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF00501E),
                   ),
-                  children: [
-                    TextSpan(
-                      text: '*',
-                      style: TextStyle(color: Color(0xFFB33A1E)),
-                    ),
-                  ],
                 ),
               ),
               const SizedBox(height: 8),
               TextField(
-                controller: _nomeController,
-                onChanged: (_) => setState(() {}),
+                controller: _nomePublicoController,
+                maxLength: 80,
                 style: const TextStyle(fontSize: 15, color: Color(0xFF1A2E22)),
                 decoration: InputDecoration(
                   filled: true,
@@ -244,10 +235,12 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
               ),
               const SizedBox(height: 6),
               const Text(
-                'Como você quer ser chamado.',
+                'Como você quer ser chamado. Em branco, o app usa o seu nome completo.',
                 style: TextStyle(fontSize: 12.5, color: Color(0xFF5A7363)),
               ),
               const SizedBox(height: 20),
+
+              _campoSomenteLeitura('Nome completo', _nomeCompleto, 'Informado no cadastro. Não pode ser alterado.'),
 
               // 4. CAMPO E-MAIL (SOMENTE LEITURA)
               const Text(
@@ -281,70 +274,9 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
               ),
               const SizedBox(height: 20),
 
-              const Text('CPF *', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFF00501E))),
-              const SizedBox(height: 8),
-              TextField(controller: _cpfController, keyboardType: TextInputType.number,
-                inputFormatters: [const MascaraDocumento.cpf()],
-                onChanged: (_) { if (_erroCpf != null) setState(() => _erroCpf = null); },
-                decoration: InputDecoration(filled: true, fillColor: Colors.white,
-                  errorText: _erroCpf,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
-              const SizedBox(height: 20),
-              // 5. CAMPO TELEFONE
-              RichText(
-                text: const TextSpan(
-                  text: 'Telefone ',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF00501E),
-                  ),
-                  children: [
-                    TextSpan(
-                      text: '*',
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        color: Color(0xFF5A7363),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _telefoneController,
-                keyboardType: TextInputType.phone,
-                inputFormatters: [const MascaraDocumento.telefone()],
-                onChanged: (_) { if (_erroTelefone != null) setState(() => _erroTelefone = null); },
-                style: const TextStyle(fontSize: 15, color: Color(0xFF1A2E22)),
-                decoration: InputDecoration(
-                  errorText: _erroTelefone,
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 14,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(color: Color(0xFFD5E0D8)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(
-                      color: Color(0xFF00501E),
-                      width: 1.5,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 6),
-              const Text(
-                'Só para contato do app. Não aparece para outros produtores.',
-                style: TextStyle(fontSize: 12.5, color: Color(0xFF5A7363)),
-              ),
-              const SizedBox(height: 22),
+              _campoSomenteLeitura('CPF', _cpf, 'Informado no cadastro. Não pode ser alterado.'),
+              _campoSomenteLeitura('Telefone', _telefone, 'Só para contato do app. Não aparece para outros produtores. Não pode ser alterado.'),
+              const SizedBox(height: 2),
 
               // 6. CARD SENHA
               Container(
@@ -411,7 +343,7 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
                 width: double.infinity,
                 height: 54,
                 child: ElevatedButton(
-                  onPressed: _carregando || _salvando || _nomeController.text.isEmpty && _erro != null ? null : _salvar,
+                  onPressed: _carregando || _salvando || _nomeCompleto.isEmpty ? null : _salvar,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF134E1E),
                     foregroundColor: Colors.white,
@@ -421,7 +353,7 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
                     ),
                   ),
                   child: Text(
-                    _salvando ? 'Salvando...' : 'Salvar alterações',
+                    _salvando ? 'Salvando...' : 'Salvar nome público',
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
