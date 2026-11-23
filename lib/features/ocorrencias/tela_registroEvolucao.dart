@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
+import 'package:sentinela/services/api_sentinela.dart';
+import 'package:sentinela/services/data_sao_paulo.dart';
 
 class TelaRegistroEvolucao extends StatefulWidget {
   const TelaRegistroEvolucao({super.key});
@@ -8,15 +11,166 @@ class TelaRegistroEvolucao extends StatefulWidget {
 }
 
 class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
+  final _api = ApiSentinela();
+  List<dynamic> _propriedades = [], _talhoes = [], _plantacoes = [], _ocorrencias = [], _tratamentos = [];
+  String? _propriedadeId, _talhaoId, _plantacaoId, _ocorrenciaId, _erro, _tratamentoId, _tipoMedida;
+  bool _carregando = false, _salvando = false, _dataEscolhida = false, _dataTratamentoEscolhida = false, _tratamentoSalvo = false, _avaliacaoSalva = false;
+  bool _resultadoIncerto = false;
+  final Map<String, (String, String, Map<String, dynamic>)> _enviosPendentes = {};
+  final _aleatorio = Random.secure();
+
+  Future<dynamic> _enviar(String etapa, String caminho, Map<String, dynamic> body) async {
+    final existente = _enviosPendentes[etapa];
+    if (existente != null && existente.$1 != caminho) {
+      throw const ApiException('Retorne aos registros anteriores e confirme o envio pendente.');
+    }
+    final envio = existente ?? (caminho, List.generate(16, (_) => _aleatorio.nextInt(256).toRadixString(16).padLeft(2, '0')).join(), body);
+    _enviosPendentes[etapa] = envio;
+    try {
+      final resultado = await _api.request('POST', envio.$1, body: envio.$3, chaveIdempotencia: envio.$2);
+      _enviosPendentes.remove(etapa);
+      _resultadoIncerto = _enviosPendentes.isNotEmpty;
+      return resultado;
+    } on ApiException catch (e) {
+      if (existente == null && e.codigo != 'RESULTADO_DESCONHECIDO') _enviosPendentes.remove(etapa);
+      rethrow;
+    }
+  }
+  final _descricaoTratamento = TextEditingController();
+  final _observacoesAvaliacao = TextEditingController();
+  int _versao = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarPropriedades();
+  }
+
+  Future<void> _carregarPropriedades() async {
+    setState(() { _carregando = true; _erro = null; });
+    try {
+      final itens = await _api.request('GET', '/propriedades') as List<dynamic>;
+      if (mounted) setState(() => _propriedades = itens);
+    } on ApiException catch (e) { if (mounted) setState(() => _erro = e.mensagem); }
+    finally { if (mounted) setState(() => _carregando = false); }
+  }
+
+  Future<void> _selecionar(int nivel, String? valor) async {
+    final versao = ++_versao;
+    setState(() {
+      _erro = null;
+      if (nivel == 0) { _propriedadeId = valor; _talhaoId = null; _talhoes = []; }
+      if (nivel <= 1) { if (nivel == 1) _talhaoId = valor; _plantacaoId = null; _plantacoes = []; }
+      if (nivel <= 2) { if (nivel == 2) _plantacaoId = valor; _ocorrenciaId = null; _ocorrencias = []; _tratamentoId = null; _tratamentos = []; _tratamentoSalvo = false; _avaliacaoSalva = false; }
+      _carregando = valor != null;
+    });
+    if (valor == null) return;
+    final caminho = switch (nivel) { 0 => '/propriedades/$valor/talhoes', 1 => '/talhoes/$valor/plantacoes', _ => '/plantacoes/$valor/ocorrencias' };
+    try {
+      final itens = await _api.request('GET', caminho) as List<dynamic>;
+      if (!mounted || versao != _versao) return;
+      setState(() {
+        if (nivel == 0) _talhoes = itens;
+        if (nivel == 1) _plantacoes = itens.where((e) => e['status'] == 'ativa').toList();
+        if (nivel == 2) _ocorrencias = itens;
+      });
+    } on ApiException catch (e) { if (mounted && versao == _versao) setState(() => _erro = e.mensagem); }
+    finally { if (mounted && versao == _versao) setState(() => _carregando = false); }
+  }
+
+  Future<void> _selecionarOcorrencia(String? valor) async {
+    final versao = ++_versao;
+    setState(() { _ocorrenciaId = valor; _tratamentos = []; _tratamentoId = null; _tratamentoSalvo = false; _avaliacaoSalva = false; _erro = null; _carregando = valor != null; });
+    if (valor == null) return;
+    try {
+      final itens = await _api.request('GET', '/plantacoes/$_plantacaoId/ocorrencias/$valor/tratamentos') as List<dynamic>;
+      if (mounted && versao == _versao) setState(() => _tratamentos = itens);
+    } on ApiException catch (e) { if (mounted && versao == _versao) setState(() => _erro = e.mensagem); }
+    finally { if (mounted && versao == _versao) setState(() => _carregando = false); }
+  }
+
+  Future<void> _salvarTratamento() async {
+    if (_salvando || _tratamentoSalvo) return;
+    if (_plantacaoId == null || _ocorrenciaId == null || _tipoMedida == null) { setState(() => _erro = 'Selecione plantação, ocorrência e tipo de medida.'); return; }
+    late final DateTime data;
+    try { data = _dataTratamentoEscolhida ? DataSaoPaulo.paraUtc(_dataTratamento) : DateTime.now().toUtc(); }
+    on FormatException catch (e) { setState(() => _erro = e.message); return; }
+    setState(() { _salvando = true; _erro = null; });
+    try {
+      final registro = await _enviar('tratamento', '/plantacoes/$_plantacaoId/ocorrencias/$_ocorrenciaId/tratamentos', {
+        'tipoMedida': _tipoMedida, 'descricao': _descricaoTratamento.text.trim(), 'dataAplicacao': data.toIso8601String(),
+        if (_produtoController.text.trim().isNotEmpty) 'produtoUtilizado': _produtoController.text.trim(),
+        if (_quemAplicouController.text.trim().isNotEmpty) 'responsavelAplicacao': _quemAplicouController.text.trim(),
+      });
+      if (!mounted) return;
+      setState(() { _tratamentos = [registro, ..._tratamentos]; _tratamentoId = registro['_id'].toString(); _tratamentoSalvo = true; _avaliacaoSalva = false; });
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Tratamento salvo. A avaliação ainda não foi enviada.')));
+    } on ApiException catch (e) { if (mounted) setState(() { _erro = e.mensagem; if (e.codigo == 'RESULTADO_DESCONHECIDO') _resultadoIncerto = true; }); }
+    finally { if (mounted) setState(() => _salvando = false); }
+  }
+
+  Future<void> _salvarAvaliacao() async {
+    if (_salvando || _avaliacaoSalva) return;
+    if (_tratamentoId == null || _ocorrenciaId == null || _plantacaoId == null) { setState(() => _erro = 'Selecione um tratamento salvo.'); return; }
+    late final DateTime data;
+    try { data = _dataEscolhida ? DataSaoPaulo.paraUtc(_dataSelecionada) : DateTime.now().toUtc(); }
+    on FormatException catch (e) { setState(() => _erro = e.message); return; }
+    setState(() { _salvando = true; _erro = null; });
+    try {
+      await _enviar('avaliacao', '/plantacoes/$_plantacaoId/ocorrencias/$_ocorrenciaId/tratamentos/$_tratamentoId/avaliacoes', {
+        'dataAvaliacao': data.toIso8601String(), 'resultado': {'Observando': 'inconclusivo', 'Melhorou': 'melhora_observada', 'Piorou': 'piora_observada', 'Sem mudança': 'sem_mudanca'}[_resultadoTratamento], 'observacoes': _observacoesAvaliacao.text.trim(),
+      });
+      if (!mounted) return;
+      setState(() => _avaliacaoSalva = true);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Avaliação salva.')));
+    } on ApiException catch (e) { if (mounted) setState(() { _erro = e.mensagem; if (e.codigo == 'RESULTADO_DESCONHECIDO') _resultadoIncerto = true; }); }
+    finally { if (mounted) setState(() => _salvando = false); }
+  }
+
+  Widget _seletor(String rotulo, List<dynamic> itens, String? selecionado, ValueChanged<String?>? onChanged, String Function(dynamic) nome) {
+    return Padding(padding: const EdgeInsets.only(bottom: 12), child: DropdownButtonFormField<String>(
+      key: ValueKey('$rotulo:$selecionado:${itens.map((e) => e['_id']).join(',')}'),
+      initialValue: selecionado, decoration: InputDecoration(labelText: rotulo, border: const OutlineInputBorder()),
+      items: itens.map((e) => DropdownMenuItem<String>(value: e['_id'].toString(), child: Text(nome(e), overflow: TextOverflow.ellipsis))).toList(),
+      onChanged: _carregando || _salvando || _resultadoIncerto ? null : onChanged,
+    ));
+  }
+
+  Future<void> _salvarMonitoramento() async {
+    if (_salvando || _carregando) return;
+    if (_plantacaoId == null || _ocorrenciaId == null) { setState(() => _erro = 'Selecione uma plantação e uma ocorrência.'); return; }
+    if (_situacaoSelecionada == 'Controlada') { setState(() => _erro = 'Selecione melhorou, igual ou piorou para a evolução; controlada não é uma evolução prevista.'); return; }
+    final areaTexto = _areaAfetadaController.text.trim().replaceAll(',', '.');
+    final area = areaTexto.isEmpty ? null : double.tryParse(areaTexto);
+    if (areaTexto.isNotEmpty && (area == null || !area.isFinite)) { setState(() => _erro = 'Informe a área como número.'); return; }
+    late final DateTime data;
+    try { data = _dataEscolhida ? DataSaoPaulo.paraUtc(_dataSelecionada) : DateTime.now().toUtc(); }
+    on FormatException catch (e) { setState(() => _erro = e.message); return; }
+    setState(() { _salvando = true; _erro = null; });
+    try {
+      await _enviar('monitoramento', '/plantacoes/$_plantacaoId/monitoramentos', {
+        'ocorrenciaId': _ocorrenciaId, 'dataObservacao': data.toIso8601String(),
+        'problemaObservado': true, 'observacoes': [if (_observacoesController.text.trim().isNotEmpty) _observacoesController.text.trim(), if (_respondeuAgronomo) 'Chamou agrônomo: ${_chamouAgronomo ? 'sim' : 'não'}'].join('\n'),
+        'intensidade': {'Baixa': 'baixa', 'Média': 'media', 'Alta': 'alta'}[_intensidadeSelecionada],
+        'evolucao': {'Melhorou': 'melhorou', 'Igual': 'estavel', 'Piorou': 'piorou'}[_situacaoSelecionada],
+        if (area != null) 'areaAfetadaHa': area,
+      });
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Monitoramento salvo. Tratamento e avaliação não foram enviados.')));
+      setState(() { _observacoesController.clear(); _areaAfetadaController.clear(); });
+    } on ApiException catch (e) { if (mounted) setState(() { _erro = e.mensagem; if (e.codigo == 'RESULTADO_DESCONHECIDO') _resultadoIncerto = true; }); }
+    finally { if (mounted) setState(() => _salvando = false); }
+  }
   String _intensidadeSelecionada = 'Alta';
   String _situacaoSelecionada = 'Igual';
 
   String _resultadoTratamento = 'Observando';
   bool _fezTratamento = true;
   bool _chamouAgronomo = false;
+  bool _respondeuAgronomo = false;
 
-  DateTime _dataTratamento = DateTime(2026, 11, 4);
-  DateTime _dataSelecionada = DateTime(2026, 11, 12);
+  DateTime _dataTratamento = DataSaoPaulo.paraData(DateTime.now().toUtc());
+  DateTime _dataSelecionada = DataSaoPaulo.paraData(DateTime.now().toUtc());
 
   final TextEditingController _produtoController = TextEditingController();
   final TextEditingController _quemAplicouController = TextEditingController();
@@ -25,6 +179,8 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
 
   @override
   void dispose() {
+    _descricaoTratamento.dispose();
+    _observacoesAvaliacao.dispose();
     _areaAfetadaController.dispose();
     _produtoController.dispose();
     _quemAplicouController.dispose();
@@ -34,16 +190,18 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
 
   // Formata a data para DD/MM/AAAA
   String get _dataFormatada {
-    final dia = _dataSelecionada.day.toString().padLeft(2, '0');
-    final mes = _dataSelecionada.month.toString().padLeft(2, '0');
-    final ano = _dataSelecionada.year.toString();
+    final data = _dataEscolhida ? _dataSelecionada : DataSaoPaulo.paraData(DateTime.now().toUtc());
+    final dia = data.day.toString().padLeft(2, '0');
+    final mes = data.month.toString().padLeft(2, '0');
+    final ano = data.year.toString();
     return '$dia/$mes/$ano';
   }
 
   String get _dataTratamentoFormatada {
-    final dia = _dataTratamento.day.toString().padLeft(2, '0');
-    final mes = _dataTratamento.month.toString().padLeft(2, '0');
-    final ano = _dataTratamento.year.toString();
+    final data = _dataTratamentoEscolhida ? _dataTratamento : DataSaoPaulo.paraData(DateTime.now().toUtc());
+    final dia = data.day.toString().padLeft(2, '0');
+    final mes = data.month.toString().padLeft(2, '0');
+    final ano = data.year.toString();
     return '$dia/$mes/$ano';
   }
 
@@ -66,10 +224,10 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
         );
       },
     );
-    if (dataEscolhidaTratamento != null &&
-        dataEscolhidaTratamento != _dataTratamento) {
+    if (dataEscolhidaTratamento != null) {
       setState(() {
         _dataTratamento = dataEscolhidaTratamento;
+        _dataTratamentoEscolhida = true;
       });
     }
   }
@@ -95,9 +253,10 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
       },
     );
 
-    if (dataEscolhida != null && dataEscolhida != _dataSelecionada) {
+    if (dataEscolhida != null) {
       setState(() {
         _dataSelecionada = dataEscolhida;
+        _dataEscolhida = true;
       });
     }
   }
@@ -128,8 +287,8 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
+                        children: [
+                        const Text(
                           'Registrar evolução',
                           style: TextStyle(
                             fontSize: 22,
@@ -139,8 +298,8 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
                         ),
                         SizedBox(height: 4),
 
-                        Text(
-                          'Talhão 03 · Ferrugem asiática da soja',
+                        const Text(
+                          'Selecione os registros para acompanhar',
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w500,
@@ -153,6 +312,15 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
                 ],
               ),
               const SizedBox(height: 24),
+
+              _seletor('Propriedade', _propriedades, _propriedadeId, (v) => _selecionar(0, v), (e) => (e['nome'] ?? 'Propriedade').toString()),
+              _seletor('Talhão', _talhoes, _talhaoId, (v) => _selecionar(1, v), (e) => (e['nome'] ?? 'Talhão').toString()),
+              _seletor('Plantação ativa', _plantacoes, _plantacaoId, (v) => _selecionar(2, v), (e) => 'Plantação ${e['safra'] ?? 'ativa'}'),
+              _seletor('Ocorrência', _ocorrencias, _ocorrenciaId, _selecionarOcorrencia, (e) => '${e['tipo']} · ${e['sintomas']}'),
+              if (_carregando) const Center(child: CircularProgressIndicator()),
+              if (_erro != null) SelectableText(_erro!, style: const TextStyle(color: Colors.red)),
+              if (_propriedades.isEmpty && !_carregando) TextButton(onPressed: _carregarPropriedades, child: const Text('Tentar carregar propriedades')),
+              const SizedBox(height: 16),
 
               // Campo: Data da observação
               const Text(
@@ -720,6 +888,15 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
 
               // PAINEL CONDICIONAL: Aparece somente se _fezTratamento == true ('Sim')
               if (_fezTratamento) ...[
+                DropdownButtonFormField<String>(
+                  initialValue: _tipoMedida,
+                  decoration: const InputDecoration(labelText: 'Tipo de medida', border: OutlineInputBorder()),
+                  items: const [DropdownMenuItem(value: 'manual', child: Text('Manual')), DropdownMenuItem(value: 'cultural', child: Text('Cultural')), DropdownMenuItem(value: 'biologica', child: Text('Biológica')), DropdownMenuItem(value: 'quimica', child: Text('Química')), DropdownMenuItem(value: 'outra', child: Text('Outra'))],
+                  onChanged: _tratamentoSalvo || _salvando ? null : (v) => setState(() => _tipoMedida = v),
+                ),
+                const SizedBox(height: 12),
+                TextField(controller: _descricaoTratamento, maxLines: 2, decoration: const InputDecoration(labelText: 'Descrição da medida', border: OutlineInputBorder())),
+                const SizedBox(height: 16),
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -943,11 +1120,11 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
                           ),
                           const SizedBox(width: 8),
 
-                          // Opção 2: Funcionou (Verde quando selecionado)
+                          // Opção 2: Melhorou (Verde quando selecionado)
                           Expanded(
                             child: GestureDetector(
                               onTap: () => setState(
-                                () => _resultadoTratamento = 'Funcionou',
+                                () => _resultadoTratamento = 'Melhorou',
                               ),
                               child: Container(
                                 height: 50,
@@ -955,27 +1132,27 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
                                   horizontal: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: _resultadoTratamento == 'Funcionou'
+                                  color: _resultadoTratamento == 'Melhorou'
                                       ? const Color(0xFFD3E4D5)
                                       : Colors.white,
                                   borderRadius: BorderRadius.circular(14),
                                   border: Border.all(
-                                    color: _resultadoTratamento == 'Funcionou'
+                                    color: _resultadoTratamento == 'Melhorou'
                                         ? const Color(0xFF00501E)
                                         : const Color(0xFFDCE5DE),
-                                    width: _resultadoTratamento == 'Funcionou'
+                                    width: _resultadoTratamento == 'Melhorou'
                                         ? 1.8
                                         : 1.2,
                                   ),
                                 ),
                                 child: Center(
                                   child: Text(
-                                    'Funcionou',
+                                    'Melhorou',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
-                                      color: _resultadoTratamento == 'Funcionou'
+                                      color: _resultadoTratamento == 'Melhorou'
                                           ? const Color(0xFF00501E)
                                           : const Color(0xFF3E5947),
                                     ),
@@ -986,11 +1163,11 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
                           ),
                           const SizedBox(width: 8),
 
-                          // Opção 3: Não funcionou (Vermelho/Salmão quando selecionado)
+                          // Opção 3: Piorou (Vermelho/Salmão quando selecionado)
                           Expanded(
                             child: GestureDetector(
                               onTap: () => setState(
-                                () => _resultadoTratamento = 'Não funcionou',
+                                () => _resultadoTratamento = 'Piorou',
                               ),
                               child: Container(
                                 height: 50,
@@ -998,24 +1175,24 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
                                   horizontal: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: _resultadoTratamento == 'Não funcionou'
+                                  color: _resultadoTratamento == 'Piorou'
                                       ? const Color(0xFFF6C8B6)
                                       : Colors.white,
                                   borderRadius: BorderRadius.circular(14),
                                   border: Border.all(
                                     color:
-                                        _resultadoTratamento == 'Não funcionou'
+                                        _resultadoTratamento == 'Piorou'
                                         ? const Color(0xFF9E3012)
                                         : const Color(0xFFDCE5DE),
                                     width:
-                                        _resultadoTratamento == 'Não funcionou'
+                                        _resultadoTratamento == 'Piorou'
                                         ? 1.8
                                         : 1.2,
                                   ),
                                 ),
                                 child: Center(
                                   child: Text(
-                                    'Não\nfuncionou',
+                                    'Piorou',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 12,
@@ -1023,7 +1200,7 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
                                       fontWeight: FontWeight.bold,
                                       color:
                                           _resultadoTratamento ==
-                                              'Não funcionou'
+                                              'Piorou'
                                           ? const Color(0xFF9E3012)
                                           : const Color(0xFF3E5947),
                                     ),
@@ -1040,6 +1217,19 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
                 const SizedBox(height: 20),
               ],
 
+              if (_fezTratamento) ...[
+                ElevatedButton(onPressed: _salvando || _tratamentoSalvo || (_resultadoIncerto && !_enviosPendentes.containsKey('tratamento')) ? null : _salvarTratamento, child: Text(_tratamentoSalvo ? 'Tratamento salvo' : 'Salvar tratamento')),
+                if (_tratamentoSalvo) TextButton(onPressed: _salvando ? null : () => setState(() { _tratamentoSalvo = false; _tipoMedida = null; _descricaoTratamento.clear(); _produtoController.clear(); _quemAplicouController.clear(); }), child: const Text('Preparar outro tratamento')),
+                _seletor('Tratamento para avaliação', _tratamentos, _tratamentoId, (v) => setState(() { _tratamentoId = v; _avaliacaoSalva = false; }), (e) => '${e['tipoMedida']} · ${e['descricao']}'),
+                ChoiceChip(label: const Text('Sem mudança'), selected: _resultadoTratamento == 'Sem mudança', onSelected: _salvando ? null : (_) => setState(() => _resultadoTratamento = 'Sem mudança')),
+                TextField(controller: _observacoesAvaliacao, maxLines: 2, decoration: const InputDecoration(labelText: 'Observações da avaliação', border: OutlineInputBorder())),
+                const SizedBox(height: 8),
+                const Text('A avaliação usa a data de observação selecionada acima.'),
+                ElevatedButton(onPressed: _salvando || _avaliacaoSalva || (_resultadoIncerto && !_enviosPendentes.containsKey('avaliacao')) ? null : _salvarAvaliacao, child: Text(_avaliacaoSalva ? 'Avaliação salva' : 'Salvar avaliação')),
+                if (_avaliacaoSalva) TextButton(onPressed: _salvando ? null : () => setState(() { _avaliacaoSalva = false; _observacoesAvaliacao.clear(); }), child: const Text('Preparar outra avaliação')),
+                if (_erro != null) SelectableText(_erro!, style: const TextStyle(color: Colors.red)),
+                const SizedBox(height: 20),
+              ],
               // Campo: Chamou um agrônomo? (Sim / Não)
               const Text(
                 'Chamou um agrônomo?',
@@ -1054,7 +1244,7 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
                 children: [
                   Expanded(
                     child: GestureDetector(
-                      onTap: () => setState(() => _chamouAgronomo = true),
+                      onTap: () => setState(() { _chamouAgronomo = true; _respondeuAgronomo = true; }),
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         decoration: BoxDecoration(
@@ -1087,7 +1277,7 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () => setState(() => _chamouAgronomo = false),
+                      onTap: () => setState(() { _chamouAgronomo = false; _respondeuAgronomo = true; }),
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         decoration: BoxDecoration(
@@ -1121,7 +1311,7 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
               ),
               const SizedBox(height: 20),
 
-              // Campo: Observações (opcional)
+              // Observações do monitoramento.
               RichText(
                 text: const TextSpan(
                   children: [
@@ -1134,7 +1324,7 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
                       ),
                     ),
                     TextSpan(
-                      text: '(opcional)',
+                      text: '(obrigatório para monitoramento)',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -1197,8 +1387,10 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              if (_erro != null) SelectableText(_erro!, style: const TextStyle(color: Colors.red)),
+              if (_resultadoIncerto) const Text('A tentativa da etapa pendente reenviará os dados originais com a mesma chave, sem duplicar o registro.'),
               const Text(
-                'Ao salvar, o nível de atenção do Talhão 03 é recalculado.',
+                'Cada botão salva sua própria etapa. A resposta sobre o agrônomo acompanha as observações do monitoramento.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12,
@@ -1211,16 +1403,7 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
                 width: double.infinity,
                 height: 54,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Feedback visual e retorno para a tela do talhão
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Evolução registrada com sucesso!'),
-                        backgroundColor: Color(0xFF00501E),
-                      ),
-                    );
-                    Navigator.pop(context);
-                  },
+                  onPressed: _salvando || _carregando || (_resultadoIncerto && !_enviosPendentes.containsKey('monitoramento')) ? null : _salvarMonitoramento,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(
                       0xFF134E1E,
@@ -1231,9 +1414,9 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
                       borderRadius: BorderRadius.circular(28),
                     ),
                   ),
-                  child: const Text(
-                    'Salvar evolução',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  child: Text(
+                    _salvando ? 'Salvando...' : 'Salvar monitoramento',
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

@@ -90,7 +90,7 @@ A análise da distribuição das áreas e os indicadores de área afetada são p
 
 - O porte informado no questionário é declaratório, com as opções pequena, média e grande (`pequena`, `media` e `grande` no MongoDB). Não será calculado automaticamente pela área nem apresentado como classificação oficial. A resposta não será usada para impor restrições de área ou de quantidade de propriedades. Essa regra está definida e não constitui pendência de modelagem.
 
-- CPF é obrigatório, conforme a tela existente, e corresponde a `cpf` na BD3: String de 11 dígitos, sem pontuação. A aplicação valida os dígitos verificadores. Não definir índice único para CPF sem decisão específica.
+- CPF é obrigatório, como String de 11 dígitos sem pontuação; não há verificação de dígitos verificadores. CPF e telefone normalizados são únicos entre usuários.
 - O canal preferido corresponde a `canalCodigoPreferido`, String com valores `sms` ou `email`, obrigatório ao concluir a etapa de escolha do canal. Esse atributo registra somente a escolha; envio e verificação pertencem à autenticação. Não armazenar códigos de verificação no perfil do MongoDB.
 - A viabilidade do envio por ambos os canais ainda precisa ser conferida na implementação da autenticação.
 

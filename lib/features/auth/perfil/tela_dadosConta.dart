@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sentinela/services/api_sentinela.dart';
+import 'package:sentinela/services/mascaras_documentos.dart';
 
 class TelaDadosConta extends StatefulWidget {
   const TelaDadosConta({super.key});
@@ -8,12 +11,78 @@ class TelaDadosConta extends StatefulWidget {
 }
 
 class _TelaDadosContaState extends State<TelaDadosConta> {
-  final TextEditingController _nomeController = TextEditingController(
-    text: 'Seu Nome',
-  );
-  final TextEditingController _telefoneController = TextEditingController(
-    text: '(15) 99999-0000',
-  );
+  final _nomeController = TextEditingController();
+  final _telefoneController = TextEditingController();
+  final _cpfController = TextEditingController();
+  final _api = ApiSentinela();
+  bool _carregando = true, _salvando = false, _enviandoLink = false;
+  String? _erro;
+  String? _erroCpf, _erroTelefone;
+
+  @override
+  void initState() {
+    super.initState();
+    _carregar();
+  }
+
+  Future<void> _carregar() async {
+    setState(() { _carregando = true; _erro = null; });
+    try {
+      final perfil = await _api.request('GET', '/auth/me') as Map<String, dynamic>;
+      if (!mounted) return;
+      setState(() {
+        _nomeController.text = perfil['nomeCompleto'] as String;
+        _cpfController.text = const MascaraDocumento.cpf().formatar(perfil['cpf'] as String);
+        _telefoneController.text = const MascaraDocumento.telefone().formatar(perfil['telefone'] as String);
+        _carregando = false;
+      });
+    } on ApiException catch (e) {
+      if (mounted) setState(() { _erro = e.mensagem; _carregando = false; });
+    }
+  }
+
+  Future<void> _salvar() async {
+    if (_salvando || _carregando) return;
+    final cpf = apenasDigitos(_cpfController.text);
+    final telefone = apenasDigitos(_telefoneController.text);
+    setState(() { _erroCpf = cpf.length == 11 ? null : 'Informe um CPF com 11 dígitos'; _erroTelefone = telefone.length == 11 ? null : 'Informe os 11 dígitos do celular com DDD.'; });
+    if (_erroCpf != null || _erroTelefone != null) return;
+    setState(() { _salvando = true; _erro = null; });
+    try {
+      await _api.request('PATCH', '/auth/dados-conta', body: {
+        'nomeCompleto': _nomeController.text,
+        'cpf': cpf,
+        'telefone': telefone,
+      });
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Dados da conta salvos.')));
+      Navigator.pop(context);
+    } on ApiException catch (e) {
+      if (mounted) {
+        setState(() {
+          if (e.codigo == 'CPF_JA_CADASTRADO') { _erroCpf = e.mensagem; }
+          else if (e.codigo == 'TELEFONE_JA_CADASTRADO') { _erroTelefone = e.mensagem; }
+          else { _erro = e.mensagem; }
+        });
+      }
+    } finally {
+      if (mounted) setState(() => _salvando = false);
+    }
+  }
+
+  Future<void> _enviarLink() async {
+    final email = FirebaseAuth.instance.currentUser?.email;
+    if (email == null || _enviandoLink) return;
+    setState(() => _enviandoLink = true);
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Solicitação de redefinição enviada ao Firebase.')));
+    } on FirebaseAuthException catch (_) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Não foi possível solicitar o link. Tente novamente.')));
+    } finally {
+      if (mounted) setState(() => _enviandoLink = false);
+    }
+  }
 
   String get _iniciais {
     final partes = _nomeController.text.trim().split(RegExp(r'\s+'));
@@ -30,6 +99,7 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
   void dispose() {
     _nomeController.dispose();
     _telefoneController.dispose();
+    _cpfController.dispose();
     super.dispose();
   }
 
@@ -123,6 +193,13 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
               ),
               const SizedBox(height: 24),
 
+              if (_carregando) const Center(child: CircularProgressIndicator()),
+              if (_erro != null) ...[
+                SelectableText(_erro!, style: const TextStyle(color: Colors.red)),
+                if (_nomeController.text.isEmpty && !_carregando)
+                  TextButton(onPressed: _carregar, child: const Text('Tentar novamente')),
+                const SizedBox(height: 12),
+              ],
               // 3. CAMPO NOME *
               RichText(
                 text: const TextSpan(
@@ -192,9 +269,9 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
                   color: const Color(0xFFF1F3F1),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: const Text(
-                  'seu.email@exemplo.com',
-                  style: TextStyle(fontSize: 15, color: Color(0xFF5A7363)),
+                child: Text(
+                  FirebaseAuth.instance.currentUser?.email ?? '',
+                  style: const TextStyle(fontSize: 15, color: Color(0xFF5A7363)),
                 ),
               ),
               const SizedBox(height: 6),
@@ -204,7 +281,17 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
               ),
               const SizedBox(height: 20),
 
-              // 5. CAMPO TELEFONE (OPCIONAL)
+              const Text('CPF *', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFF00501E))),
+              const SizedBox(height: 8),
+              TextField(controller: _cpfController, keyboardType: TextInputType.number,
+                inputFormatters: [const MascaraDocumento.cpf()],
+                onChanged: (_) { if (_erroCpf != null) setState(() => _erroCpf = null); },
+                decoration: InputDecoration(filled: true, fillColor: Colors.white,
+                  errorText: _erroCpf,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)))),
+              const SizedBox(height: 20),
+              // 5. CAMPO TELEFONE
               RichText(
                 text: const TextSpan(
                   text: 'Telefone ',
@@ -215,7 +302,7 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
                   ),
                   children: [
                     TextSpan(
-                      text: '(opcional)',
+                      text: '*',
                       style: TextStyle(
                         fontWeight: FontWeight.normal,
                         color: Color(0xFF5A7363),
@@ -228,8 +315,11 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
               TextField(
                 controller: _telefoneController,
                 keyboardType: TextInputType.phone,
+                inputFormatters: [const MascaraDocumento.telefone()],
+                onChanged: (_) { if (_erroTelefone != null) setState(() => _erroTelefone = null); },
                 style: const TextStyle(fontSize: 15, color: Color(0xFF1A2E22)),
                 decoration: InputDecoration(
+                  errorText: _erroTelefone,
                   filled: true,
                   fillColor: Colors.white,
                   contentPadding: const EdgeInsets.symmetric(
@@ -290,17 +380,7 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
                       width: double.infinity,
                       height: 46,
                       child: OutlinedButton(
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                'Link de redefinição enviado para seu.email@exemplo.com',
-                              ),
-                              backgroundColor: Color(0xFF00501E),
-                              behavior: SnackBarBehavior.floating,
-                            ),
-                          );
-                        },
+                        onPressed: _enviandoLink ? null : _enviarLink,
                         style: OutlinedButton.styleFrom(
                           backgroundColor: Colors.white,
                           side: const BorderSide(
@@ -331,11 +411,7 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
                 width: double.infinity,
                 height: 54,
                 child: ElevatedButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Alteracoes da conta ainda nao sao salvas.')),
-                    );
-                  },
+                  onPressed: _carregando || _salvando || _nomeController.text.isEmpty && _erro != null ? null : _salvar,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF134E1E),
                     foregroundColor: Colors.white,
@@ -344,9 +420,9 @@ class _TelaDadosContaState extends State<TelaDadosConta> {
                       borderRadius: BorderRadius.circular(28),
                     ),
                   ),
-                  child: const Text(
-                    'Salvar alterações',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  child: Text(
+                    _salvando ? 'Salvando...' : 'Salvar alterações',
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

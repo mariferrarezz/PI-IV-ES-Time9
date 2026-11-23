@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'cadastro_dados.dart';
+import 'tela_cadastro_senha.dart';
 
 class TelaCadastroRecCodigo extends StatefulWidget {
-  const TelaCadastroRecCodigo({super.key});
+  const TelaCadastroRecCodigo({super.key, required this.dados});
+  final CadastroDados dados;
 
   @override
   State<TelaCadastroRecCodigo> createState() => _TelaCadastroRecCodigoState();
 }
 
 class _TelaCadastroRecCodigoState extends State<TelaCadastroRecCodigo> {
+  @override
+  void initState() { super.initState(); _canalSelecionado = widget.dados.canal == 'sms' ? 'SMS' : 'E-mail'; }
   String _canalSelecionado = 'E-mail';
 
   int _passoAtual = 5;
@@ -148,7 +153,7 @@ class _TelaCadastroRecCodigoState extends State<TelaCadastroRecCodigo> {
                     const SizedBox(height: 6),
 
                     const Text(
-                      'Escolha o conal preferido para o segundo fator de autenticação.',
+                      'Escolha um canal preferido. A verificação em duas etapas ainda não está disponível.',
                       style: TextStyle(
                         fontSize: 13,
                         color: Color(0xFF66806E),
@@ -243,7 +248,7 @@ class _TelaCadastroRecCodigoState extends State<TelaCadastroRecCodigo> {
                     ),
                     const SizedBox(height: 10),
                     const Text(
-                      'No login: código de 6 dígitos será enviado ao seu e-mail ou por sms.',
+                      'A escolha não ativa o envio de códigos.',
                       style: TextStyle(
                         fontSize: 13,
                         color: Color(0xFF66806E),
@@ -263,7 +268,7 @@ class _TelaCadastroRecCodigoState extends State<TelaCadastroRecCodigo> {
                 width: double.infinity,
                 height: 52.0,
                 child: ElevatedButton(
-                  onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Verificacao de codigo ainda nao integrada.'))),
+                  onPressed: () { widget.dados.canal = _canalSelecionado == 'E-mail' ? 'email' : 'sms'; Navigator.push(context, MaterialPageRoute(builder: (_) => TelaCadastroSenha(dados: widget.dados))); },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00501E),
                     foregroundColor: Colors.white,

@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
+import 'cadastro_dados.dart';
 import 'tela_cadastro_email.dart';
 import 'tela_login.dart';
 
 class TelaCadastroNome extends StatefulWidget {
-  const TelaCadastroNome({super.key});
+  const TelaCadastroNome({super.key, this.dadosInicial});
+  final CadastroDados? dadosInicial;
 
   @override
   State<TelaCadastroNome> createState() => _TelaCadastroNomeState();
 }
 
 class _TelaCadastroNomeState extends State<TelaCadastroNome> {
+  late final CadastroDados _dados;
+  @override
+  void initState() {
+    super.initState();
+    _dados = widget.dadosInicial ?? CadastroDados();
+    _nomeCompletoController.text = _dados.nome;
+  }
   final TextEditingController _nomeCompletoController = TextEditingController();
 
   int _passoAtual = 1;
@@ -214,12 +223,12 @@ class _TelaCadastroNomeState extends State<TelaCadastroNome> {
                 height: 52.0,
                 child: ElevatedButton(
                   onPressed: () {
-                    avancarPasso();
+                    final dados = _dados..nome = _nomeCompletoController.text;
 
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TelaCadastroEmail(),
+                        builder: (context) => TelaCadastroEmail(dados: dados),
                       ),
                     );
                   },

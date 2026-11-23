@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
+import 'package:sentinela/services/api_sentinela.dart';
 import 'package:sentinela/navegacao.dart';
 import 'package:sentinela/features/catalogo/ferrugem_asiatica_da_soja.dart';
 import 'package:sentinela/features/catalogo/percevejo_marrom.dart';
@@ -23,69 +25,73 @@ class _TelaComunidadeState extends State<TelaComunidade> {
   String _culturaFiltro = 'Todas'; // 'Todas', 'Soja', 'Milho', 'Feijão'
   final int _indiceAtualNav = 3; // 3 = COMUNIDADE ativo
 
-  // 5 relatos recentes 100% alinhados com o catálogo oficial
-  final List _relatosRecentes = [
-    {
-      'nome': 'Ferrugem asiática da soja',
-      'tipo': 'DOENÇA',
-      'cultura': 'Soja',
-      'area': '6,0 ha afetados',
-      'areaCurta': '6,0 ha',
-      'local': 'Itapetininga, SP · a 38 km',
-      'intensidade': 'Alta',
-      'tempo': 'há 1 dia',
-      'sintomas': [
-        'Manchas nas folhas',
-        'Folhas amareladas',
-        'Queda de folhas',
-      ],
-    },
-    {
-      'nome': 'Percevejo-marrom',
-      'tipo': 'PRAGA',
-      'cultura': 'Soja',
-      'area': '3,0 ha afetados',
-      'areaCurta': '3,0 ha',
-      'local': 'Sorocaba, SP · a 52 km',
-      'intensidade': 'Média',
-      'tempo': 'há 2 dias',
-      'sintomas': ['Insetos visíveis', 'Manchas nas folhas'],
-    },
-    {
-      'nome': 'Lagarta-do-cartucho',
-      'tipo': 'PRAGA',
-      'cultura': 'Milho',
-      'area': '12,0 ha afetados',
-      'areaCurta': '12,0 ha',
-      'local': 'Itapeva, SP · a 120 km',
-      'intensidade': 'Alta',
-      'tempo': 'há 2 dias',
-      'sintomas': ['Folhas roídas', 'Insetos visíveis'],
-    },
-    {
-      'nome': 'Oídio',
-      'tipo': 'DOENÇA',
-      'cultura': 'Feijão',
-      'area': '1,5 ha afetados',
-      'areaCurta': '1,5 ha',
-      'local': 'Capão Bonito, SP · a 95 km',
-      'intensidade': 'Baixa',
-      'tempo': 'há 3 dias',
-      'sintomas': ['Manchas nas folhas', 'Folhas amareladas'],
-    },
-    {
-      'nome': 'Mancha-branca do milho',
-      'tipo': 'DOENÇA',
-      'cultura': 'Milho',
-      'area': '5,0 ha afetados',
-      'areaCurta': '5,0 ha',
-      'local': 'Tatuí, SP · a 70 km',
-      'intensidade': 'Média',
-      'tempo': 'há 6 dias',
-      'sintomas': ['Manchas nas folhas', 'Folhas secas'],
-    },
-  ];
+  final _api = ApiSentinela();
+  List<Map<String, dynamic>> _relatosRecentes = [];
+  bool _carregando = true;
+  String? _erro;
 
+  @override
+  void initState() { super.initState(); _carregarRelatos(); }
+
+  Future<void> _carregarRelatos() async {
+    setState(() { _carregando = true; _erro = null; });
+    try {
+      final dados = await _api.request('GET', '/comunidade/experiencias') as List<dynamic>;
+      if (!mounted) return;
+      setState(() {
+        _relatosRecentes = dados.map((e) {
+          final regiao = e['regiao'] is Map ? e['regiao'] as Map : const {};
+          final tipo = {'praga': 'PRAGA', 'doenca': 'DOENÇA', 'deficiencia': 'DEFICIÊNCIA', 'nao_identificado': 'NÃO IDENTIFICADO'}[e['tipoProblema']] ?? '';
+          return <String, dynamic>{'id': e['_id'].toString(), 'nome': e['titulo'], 'tipo': tipo, 'problemaNome': e['problemaNome'], 'publicadoEm': e['publicadoEm'],
+            'cultura': e['culturaNome'], 'area': 'Área não informada', 'areaCurta': 'Não informada',
+            'local': [regiao['municipio'], regiao['estado']].whereType<String>().join(', '),
+            'intensidade': 'Não informada', 'tempo': e['publicadoEm']?.toString().substring(0, 10) ?? '',
+            'sintomas': [e['relato']]};
+        }).toList();
+      });
+    } on ApiException catch (e) { if (mounted) setState(() => _erro = e.mensagem); }
+    finally { if (mounted) setState(() => _carregando = false); }
+  }
+
+  Future<void> _denunciar(String experienciaId) async {
+    final descricao = TextEditingController();
+    final random = Random.secure();
+    String novaChave() => List.generate(16, (_) => random.nextInt(256).toRadixString(16).padLeft(2, '0')).join();
+    var chave = novaChave();
+    String? motivo, erro;
+    bool enviando = false, incerto = false;
+    await showDialog<void>(context: context, barrierDismissible: false, builder: (dialogContext) => StatefulBuilder(builder: (contexto, atualizar) => AlertDialog(
+      title: const Text('Denunciar experiência'),
+      content: Column(mainAxisSize: MainAxisSize.min, children: [
+        DropdownButtonFormField<String>(initialValue: motivo, decoration: const InputDecoration(labelText: 'Motivo'), items: const [
+          DropdownMenuItem(value: 'dados_pessoais', child: Text('Dados pessoais')),
+          DropdownMenuItem(value: 'conteudo_inadequado', child: Text('Conteúdo inadequado')),
+          DropdownMenuItem(value: 'informacao_perigosa', child: Text('Informação perigosa')),
+          DropdownMenuItem(value: 'outro', child: Text('Outro')),
+        ], onChanged: enviando || incerto ? null : (v) => atualizar(() => motivo = v)),
+        TextField(controller: descricao, enabled: !enviando && !incerto, maxLines: 3, decoration: const InputDecoration(labelText: 'Descrição (opcional)')),
+        if (erro != null) SelectableText(erro!, style: const TextStyle(color: Colors.red)),
+      ]),
+      actions: [
+        TextButton(onPressed: enviando ? null : () => Navigator.pop(dialogContext), child: const Text('Cancelar')),
+        ElevatedButton(onPressed: enviando ? null : () async {
+          if (motivo == null) { atualizar(() => erro = 'Selecione um motivo.'); return; }
+          atualizar(() { enviando = true; erro = null; });
+          try {
+            await _api.request('POST', '/comunidade/experiencias/$experienciaId/denuncias', chaveIdempotencia: chave, body: {
+              'motivo': motivo, if (descricao.text.trim().isNotEmpty) 'descricao': descricao.text.trim(),
+            });
+            if (!dialogContext.mounted) return;
+            Navigator.pop(dialogContext);
+            if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Denúncia enviada para análise.')));
+          } on ApiException catch (e) {
+            if (dialogContext.mounted) atualizar(() { erro = e.mensagem; incerto = incerto || e.codigo == 'RESULTADO_DESCONHECIDO'; if (!incerto) chave = novaChave(); });
+          } finally { if (dialogContext.mounted) atualizar(() => enviando = false); }
+        }, child: Text(enviando ? 'Enviando...' : 'Enviar denúncia')),
+      ],
+    )));
+    descricao.dispose();
+  }
   @override
   void dispose() {
     _buscaController.dispose();
@@ -146,7 +152,15 @@ class _TelaComunidadeState extends State<TelaComunidade> {
   }
 
   // Modal inferior que sobe ao clicar em um relato da comunidade
-  void _abrirDetalhesRelato(Map relato) {
+  Future<void> _abrirDetalhesRelato(Map relato) async {
+    try {
+      final atual = await _api.request('GET', '/comunidade/experiencias/${relato['id']}') as Map;
+      if (!mounted) return;
+      relato = {...relato, 'nome': atual['titulo'], 'cultura': atual['culturaNome'], 'sintomas': [atual['relato']]};
+    } on ApiException catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.mensagem)));
+      return;
+    }
     final String nome = (relato['nome'] ?? '').toString();
     final String tipo = (relato['tipo'] ?? 'PRAGA').toString();
     final String cultura = (relato['cultura'] ?? '').toString();
@@ -352,6 +366,7 @@ class _TelaComunidadeState extends State<TelaComunidade> {
               const SizedBox(height: 24),
 
               // Botão "Ver ficha no catálogo"
+              TextButton(onPressed: () { Navigator.pop(modalContext); _denunciar(relato['id'].toString()); }, child: const Text('Denunciar experiência')),
               SizedBox(
                 width: double.infinity,
                 height: 52,
@@ -648,6 +663,14 @@ class _TelaComunidadeState extends State<TelaComunidade> {
   @override
   Widget build(BuildContext context) {
     final List listaExibida = _relatosFiltrados;
+    final contagens = <String, int>{};
+    final limite = DateTime.now().toUtc().subtract(const Duration(days: 7));
+    for (final relato in _relatosRecentes) {
+      final nome = relato['problemaNome'];
+      final data = DateTime.tryParse((relato['publicadoEm'] ?? '').toString());
+      if (nome is String && nome.isNotEmpty && data != null && !data.isBefore(limite)) contagens[nome] = (contagens[nome] ?? 0) + 1;
+    }
+    final ranking = contagens.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -682,7 +705,7 @@ class _TelaComunidadeState extends State<TelaComunidade> {
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      // Ação de compartilhar ocorrência na comunidade
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Compartilhamento ainda não integrado.')));
                     },
                     icon: const Icon(Icons.upload_rounded, size: 18),
                     label: const Text(
@@ -708,6 +731,12 @@ class _TelaComunidadeState extends State<TelaComunidade> {
                 ],
               ),
               const SizedBox(height: 14),
+
+              if (_carregando) const Center(child: CircularProgressIndicator()),
+              if (_erro != null) ...[
+                SelectableText(_erro!, style: const TextStyle(color: Colors.red)),
+                TextButton(onPressed: _carregarRelatos, child: const Text('Tentar novamente')),
+              ],
 
               // 2. TÍTULO E SUBTÍTULO
               const Text(
@@ -832,7 +861,7 @@ class _TelaComunidadeState extends State<TelaComunidade> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    ...['Todas', 'Soja', 'Milho', 'Feijão'].map((cultura) {
+                    ...['Todas', ..._relatosRecentes.map((e) => e['cultura']).whereType<String>().where((e) => e.isNotEmpty).toSet()].map((cultura) {
                       final bool selecionada = _culturaFiltro == cultura;
                       return Padding(
                         padding: const EdgeInsets.only(right: 8),
@@ -893,7 +922,7 @@ class _TelaComunidadeState extends State<TelaComunidade> {
                           ),
                           SizedBox(width: 4),
                           Text(
-                            'Até 50 km',
+                            'Todas as regiões',
                             style: TextStyle(
                               fontSize: 12.5,
                               fontWeight: FontWeight.w600,
@@ -941,23 +970,11 @@ class _TelaComunidadeState extends State<TelaComunidade> {
                       ],
                     ),
                     const SizedBox(height: 14),
-                    _buildBarraMaisRelatada(
-                      titulo: 'Ferrugem asiática da soja',
-                      contagem: '4 relatos',
-                      progresso: 0.85,
-                    ),
-                    const SizedBox(height: 12),
-                    _buildBarraMaisRelatada(
-                      titulo: 'Percevejo-marrom',
-                      contagem: '3 relatos',
-                      progresso: 0.65,
-                    ),
-                    const SizedBox(height: 12),
-                    _buildBarraMaisRelatada(
-                      titulo: 'Lagarta-do-cartucho',
-                      contagem: '2 relatos',
-                      progresso: 0.45,
-                    ),
+                    if (ranking.isEmpty) const Text('Nenhum problema identificado no período.'),
+                    for (final item in ranking.take(3)) ...[
+                      _buildBarraMaisRelatada(titulo: item.key, contagem: '${item.value} relatos', progresso: item.value / ranking.first.value),
+                      const SizedBox(height: 12),
+                    ],
                   ],
                 ),
               ),

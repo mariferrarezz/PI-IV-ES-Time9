@@ -222,10 +222,13 @@ O instante de referência é parâmetro obrigatório separado, fornecido pelo c�
 confiável chamador, nunca por um futuro body HTTP. Datas inválidas são rejeitadas
 antes da conexão. Não há padrão automático de status nem normalização no cliente.
 
-Ainda não existem rotas, modelos ou módulo de plantações. O contrato de 12 partes
-`VALIDAR_PLANTACAO` e suas regras estão no README do servidor Java. Referências,
-autorização, disponibilidade e persistência continuam fora deste cliente isolado.
-Não foi definida conversão de datas de calendário do Flutter.
+O módulo de plantações também expõe `GET` e `POST /talhoes/:talhaoId/plantacoes`.
+As rotas resolvem a propriedade pelo talhão e pelo perfil autenticado, verificam
+disponibilidade e área, chamam o Java e gravam em transação. A restrição de uma
+plantação ativa por talhão continua apoiada pelo índice parcial do banco. O app
+envia a data de plantio convertida a partir da meia-noite de `America/Sao_Paulo`.
+O contrato de 12 partes `VALIDAR_PLANTACAO` está no README do servidor Java.
+Concorrência real e alteração externa de cultura ainda não foram verificadas.
 
 Com Java rodando: `npm --prefix backend run test:plantacoes:java`.
 Testes locais não importam Express, Firebase ou MongoDB e não acessam o Atlas.

@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'cadastro_dados.dart';
 import 'tela_cadastro_confirmar_senha.dart';
+import 'regras_senha.dart';
 
 class TelaCadastroSenha extends StatefulWidget {
-  const TelaCadastroSenha({super.key});
+  const TelaCadastroSenha({super.key, required this.dados});
+  final CadastroDados dados;
 
   @override
   State<TelaCadastroSenha> createState() => _TelaCadastroSenhaState();
 }
 
 class _TelaCadastroSenhaState extends State<TelaCadastroSenha> {
+  @override
+  void initState() { super.initState(); _senhaController.text = widget.dados.senha; }
   final TextEditingController _senhaController = TextEditingController();
+  bool _tentouContinuar = false;
 
   // Variável de estado para controlar se a senha está oculta ou visível
   bool _ocultarSenha = true;
@@ -181,7 +187,11 @@ class _TelaCadastroSenhaState extends State<TelaCadastroSenha> {
                     TextField(
                       controller: _senhaController,
                       obscureText: _ocultarSenha,
+                      onChanged: (_) => setState(() {}),
                       decoration: InputDecoration(
+                        errorText: _tentouContinuar && criteriosFaltantesSenha(_senhaController.text).isNotEmpty
+                            ? 'Falta: ${criteriosFaltantesSenha(_senhaController.text).join('; ')}.' : null,
+                        errorMaxLines: 4,
                         hintText: '************',
                         hintStyle: TextStyle(
                           color: const Color(0xFF66806E).withValues(alpha: 0.5),
@@ -216,41 +226,18 @@ class _TelaCadastroSenhaState extends State<TelaCadastroSenha> {
                     const SizedBox(height: 16),
 
                     // LISTA DE REQUISITOS DA SENHA
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '• Deve conter 8 caractéres',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF66806E),
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          '• Pelo menos 1 letra maiúscula',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF66806E),
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          '• Deve conter números',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF66806E),
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          '• Pelo menos 1 caráctere especial',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF66806E),
-                          ),
-                        ),
-                      ],
+                      children: criteriosSenha(_senhaController.text).entries.map((criterio) => Padding(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: Row(children: [
+                          Icon(criterio.value ? Icons.check_circle : Icons.radio_button_unchecked,
+                            size: 15, color: criterio.value ? const Color(0xFF00501E) : const Color(0xFF66806E)),
+                          const SizedBox(width: 6),
+                          Expanded(child: Text(criterio.key, style: TextStyle(fontSize: 12,
+                            color: criterio.value ? const Color(0xFF00501E) : const Color(0xFF66806E)))),
+                        ]),
+                      )).toList(),
                     ),
 
                     // ESPAÇAMENTO ENTRE OS REQUISITOS E O BOTÃO
@@ -264,7 +251,12 @@ class _TelaCadastroSenhaState extends State<TelaCadastroSenha> {
                 width: double.infinity,
                 height: 52.0,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaCadastroConfirmarSenha())),
+                  onPressed: () {
+                    setState(() => _tentouContinuar = true);
+                    if (criteriosFaltantesSenha(_senhaController.text).isNotEmpty) return;
+                    widget.dados.senha = _senhaController.text;
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => TelaCadastroConfirmarSenha(dados: widget.dados)));
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00501E),
                     foregroundColor: Colors.white,

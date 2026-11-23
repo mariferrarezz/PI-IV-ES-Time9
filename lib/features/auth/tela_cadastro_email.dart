@@ -1,15 +1,31 @@
 import 'package:flutter/material.dart';
+import 'cadastro_dados.dart';
 import 'tela_cadastro_cpf.dart';
 
 class TelaCadastroEmail extends StatefulWidget {
-  const TelaCadastroEmail({super.key});
+  const TelaCadastroEmail({super.key, required this.dados});
+  final CadastroDados dados;
 
   @override
   State<TelaCadastroEmail> createState() => _TelaCadastroEmailState();
 }
 
 class _TelaCadastroEmailState extends State<TelaCadastroEmail> {
+  @override
+  void initState() { super.initState(); _emailController.text = widget.dados.email; }
   final TextEditingController _emailController = TextEditingController();
+  String? _erroEmail;
+
+  void _continuar() {
+    final email = _emailController.text;
+    final formato = RegExp(r"^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$");
+    if (!formato.hasMatch(email)) {
+      setState(() => _erroEmail = 'Informe um e-mail válido.');
+      return;
+    }
+    widget.dados.email = email;
+    Navigator.push(context, MaterialPageRoute(builder: (_) => TelaCadastroCpf(dados: widget.dados)));
+  }
 
   int _passoAtual = 2;
   final int _totalPassos = 8;
@@ -177,7 +193,10 @@ class _TelaCadastroEmailState extends State<TelaCadastroEmail> {
                     // Campo de Texto com ícone à direita (suffixIcon)
                     TextField(
                       controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: (_) { if (_erroEmail != null) setState(() => _erroEmail = null); },
                       decoration: InputDecoration(
+                        errorText: _erroEmail,
                         hintText: 'seu Nome Completo',
                         hintStyle: TextStyle(
                           color: const Color(0xFF66806E).withValues(alpha: 0.5),
@@ -213,7 +232,7 @@ class _TelaCadastroEmailState extends State<TelaCadastroEmail> {
                 width: double.infinity,
                 height: 52.0,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaCadastroCpf())),
+                  onPressed: _continuar,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00501E),
                     foregroundColor: Colors.white,

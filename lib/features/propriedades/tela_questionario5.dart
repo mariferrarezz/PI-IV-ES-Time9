@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:sentinela/features/auth/destino_autenticado.dart';
+import 'questionario_dados.dart';
 
 import 'tela_questionario6.dart';
 
 class TelaQuestionario5 extends StatefulWidget {
-  const TelaQuestionario5({super.key});
+  const TelaQuestionario5({super.key, required this.dados});
+  final QuestionarioDados dados;
 
   @override
   State<TelaQuestionario5> createState() => _TelaQuestionario5State();
@@ -11,10 +14,21 @@ class TelaQuestionario5 extends StatefulWidget {
 
 class _TelaQuestionario5State extends State<TelaQuestionario5> {
   // Variável que guarda qual índice está selecionado (0 = Pequena, 1 = Média, 2 = Grande, null = nenhum)
-  int? _opcaoSelecionada;
+  final _opcoes = ['pragas', 'doencas', 'nao_identificado'];
+  void _alternar(int indice) {
+    setState(() {
+      final valor = _opcoes[indice];
+      if (widget.dados.problemas.contains(valor)) { widget.dados.problemas.remove(valor); }
+      else { if (indice == 2) { widget.dados.problemas.clear(); } else { widget.dados.problemas.remove('nao_identificado'); } widget.dados.problemas.add(valor); }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    return GuardiaoQuestionario(child: _conteudo(context));
+  }
+
+  Widget _conteudo(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -83,9 +97,7 @@ class _TelaQuestionario5State extends State<TelaQuestionario5> {
                     // OPÇÃO 1: PEQUENA
                     GestureDetector(
                       onTap: () {
-                        setState(() {
-                          _opcaoSelecionada = 0;
-                        });
+                        _alternar(0);
                       },
                       child: Container(
                         width: double.infinity,
@@ -97,7 +109,7 @@ class _TelaQuestionario5State extends State<TelaQuestionario5> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all(
-                            color: _opcaoSelecionada == 0
+                            color: widget.dados.problemas.contains(_opcoes[0])
                                 ? const Color(0xFF1B5E20)
                                 : Colors.transparent,
                             width: 1.5,
@@ -131,7 +143,7 @@ class _TelaQuestionario5State extends State<TelaQuestionario5> {
                                   width: 2,
                                 ),
                               ),
-                              child: _opcaoSelecionada == 0
+                              child: widget.dados.problemas.contains(_opcoes[0])
                                   ? Center(
                                       child: Container(
                                         width: 12,
@@ -153,9 +165,7 @@ class _TelaQuestionario5State extends State<TelaQuestionario5> {
                     // OPÇÃO 2: MÉDIA
                     GestureDetector(
                       onTap: () {
-                        setState(() {
-                          _opcaoSelecionada = 1;
-                        });
+                        _alternar(1);
                       },
                       child: Container(
                         width: double.infinity,
@@ -167,7 +177,7 @@ class _TelaQuestionario5State extends State<TelaQuestionario5> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all(
-                            color: _opcaoSelecionada == 1
+                            color: widget.dados.problemas.contains(_opcoes[1])
                                 ? const Color(0xFF1B5E20)
                                 : Colors.transparent,
                             width: 1.5,
@@ -184,7 +194,7 @@ class _TelaQuestionario5State extends State<TelaQuestionario5> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              'Média',
+                              'Doenças',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -201,7 +211,7 @@ class _TelaQuestionario5State extends State<TelaQuestionario5> {
                                   width: 2,
                                 ),
                               ),
-                              child: _opcaoSelecionada == 1
+                              child: widget.dados.problemas.contains(_opcoes[1])
                                   ? Center(
                                       child: Container(
                                         width: 12,
@@ -223,9 +233,7 @@ class _TelaQuestionario5State extends State<TelaQuestionario5> {
                     // OPÇÃO 3: GRANDE
                     GestureDetector(
                       onTap: () {
-                        setState(() {
-                          _opcaoSelecionada = 2;
-                        });
+                        _alternar(2);
                       },
                       child: Container(
                         width: double.infinity,
@@ -237,7 +245,7 @@ class _TelaQuestionario5State extends State<TelaQuestionario5> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all(
-                            color: _opcaoSelecionada == 2
+                            color: widget.dados.problemas.contains(_opcoes[2])
                                 ? const Color(0xFF1B5E20)
                                 : Colors.transparent,
                             width: 1.5,
@@ -254,7 +262,7 @@ class _TelaQuestionario5State extends State<TelaQuestionario5> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              'Grande',
+                              'Não identificado',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -271,7 +279,7 @@ class _TelaQuestionario5State extends State<TelaQuestionario5> {
                                   width: 2,
                                 ),
                               ),
-                              child: _opcaoSelecionada == 2
+                              child: widget.dados.problemas.contains(_opcoes[2])
                                   ? Center(
                                       child: Container(
                                         width: 12,
@@ -299,11 +307,14 @@ class _TelaQuestionario5State extends State<TelaQuestionario5> {
                 height: 70.0,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Ação ao continuar
+                    if (widget.dados.problemas.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Selecione ao menos um problema.')));
+                      return;
+                    }
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TelaQuestionario6(),
+                        builder: (context) => TelaQuestionario6(dados: widget.dados),
                       ),
                     );
                   },

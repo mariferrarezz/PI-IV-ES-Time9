@@ -33,6 +33,9 @@ test("Cadastro de talhões pela API com Java e persistência simulados", async t
     },
   } as PropriedadesRepository;
   const talhoes: TalhoesRepository = {
+    async listarPorPropriedade(propriedadeId) {
+      return documentos.filter(documento => documento.propriedadeId.equals(propriedadeId));
+    },
     async reservarPropriedade(propriedadeId, usuarioId, sessao) {
       reservas++; eventos.push("reservar");
       assert.equal(sessao, session); assert(propriedadeId.equals(id)); assert(usuarioId.equals(dono));
@@ -80,6 +83,17 @@ test("Cadastro de talhões pela API com Java e persistência simulados", async t
   }
   const valido = { nome: "Talhão Norte", areaHa: 2.5 };
   try {
+    await t.test("listagem exige autenticação e propriedade do usuário", async () => {
+      const buscar = (token: string, propriedadeId = String(id)) => fetch(`http://127.0.0.1:${port}/propriedades/${propriedadeId}/talhoes`, { headers: { Authorization: `Bearer ${token}` } });
+      assert.equal((await buscar("b")).status, 404);
+      assert.equal((await buscar("sem-perfil")).status, 403);
+      assert.equal((await buscar("invalido")).status, 401);
+      assert.equal((await buscar("a", "invalido")).status, 400);
+      const resposta = await buscar("a");
+      assert.equal(resposta.status, 200);
+      assert.deepEqual(await resposta.json(), []);
+      eventos.length = 0;
+    });
     await t.test("cria somente depois de autorização, Java e área; responde 201", async () => {
       const r = await post(valido);
       assert.equal(r.status, 201); assert.equal(r.corpo.propriedadeId, String(id));
@@ -87,6 +101,8 @@ test("Cadastro de talhões pela API com Java e persistência simulados", async t
       assert.deepEqual(entradaJava, [valido.nome, 2.5]);
       assert.deepEqual(eventos, ["autorizar", "java", "reservar", "area", "criar"]);
       assert.equal(documentos.length, 1);
+      const lista = await fetch(`http://127.0.0.1:${port}/propriedades/${id}/talhoes`, { headers: { Authorization: "Bearer a" } });
+      assert.equal((await lista.json() as any[])[0].nome, valido.nome);
     });
     await t.test("erros Java são devolvidos sem iniciar transação ou gravar", async () => {
       java = "invalido";

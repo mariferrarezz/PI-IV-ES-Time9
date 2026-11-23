@@ -37,18 +37,34 @@ export interface BuscaPerfilPorUid {
 }
 
 export interface AuthRepository {
+  existeOutroComCampo(campo: 'cpf' | 'telefone', valor: string, excetoUid?: string): Promise<boolean>;
+  indicesUnicosProntos(): Promise<boolean>;
   buscarPorFirebaseUid(uid: string): Promise<PerfilUsuario | null>;
   criar(dados: NovoPerfil): Promise<PerfilUsuario>;
   // Grava só se o questionário ainda não existir. Devolve null se o perfil não existe ou já respondeu.
   salvarQuestionario(uid: string, questionario: Questionario): Promise<PerfilUsuario | null>;
   // null apaga o nome público. Devolve null se o perfil não existe.
   atualizarNomePublico(uid: string, nomePublico: string | null): Promise<PerfilUsuario | null>;
+  atualizarDadosConta(uid: string, dados: Pick<PerfilUsuario, 'nomeCompleto' | 'cpf' | 'telefone'>): Promise<PerfilUsuario | null>;
 }
 
 const CAMPOS_PERFIL = "_id firebaseUid nomeCompleto nomePublico cpf telefone termos canalCodigoPreferido questionario criadoEm atualizadoEm";
 
 // Único arquivo do módulo que conversa com o MongoDB.
 export const authRepository: AuthRepository = {
+  async indicesUnicosProntos() {
+    const indices = await UsuarioModel.collection.indexes();
+    return ['cpf', 'telefone'].every(campo => indices.some(indice =>
+      indice.unique === true && Object.keys(indice.key).length === 1 && indice.key[campo] === 1 &&
+      !indice.sparse && !indice.partialFilterExpression));
+  },
+  async existeOutroComCampo(campo, valor, excetoUid) {
+    return Boolean(await UsuarioModel.exists({ [campo]: valor, ...(excetoUid ? { firebaseUid: { $ne: excetoUid } } : {}) }));
+  },
+  async atualizarDadosConta(uid, dados) {
+    return UsuarioModel.findOneAndUpdate({ firebaseUid: uid }, { $set: dados },
+      { new: true, runValidators: true, projection: CAMPOS_PERFIL }).lean<PerfilUsuario>();
+  },
   async buscarPorFirebaseUid(uid) {
     return UsuarioModel.findOne({ firebaseUid: uid }, CAMPOS_PERFIL).lean<PerfilUsuario>();
   },
@@ -61,7 +77,7 @@ export const authRepository: AuthRepository = {
   async salvarQuestionario(uid, questionario) {
     // O filtro "$exists: false" impede sobrescrever, mesmo com dois envios ao mesmo tempo.
     return UsuarioModel.findOneAndUpdate(
-      { firebaseUid: uid, questionario: { $exists: false } },
+      { firebaseUid: uid, 'questionario.concluidoEm': null },
       { $set: { questionario } },
       { new: true, runValidators: true, projection: CAMPOS_PERFIL },
     ).lean<PerfilUsuario>();

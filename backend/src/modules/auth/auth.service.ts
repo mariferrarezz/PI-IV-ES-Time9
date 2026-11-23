@@ -5,7 +5,8 @@ import { TERMOS_VERSAO_VIGENTE } from "../../config/termos";
 import { QUESTIONARIO_VERSAO_VIGENTE } from "../../config/questionario";
 import { CulturasRepository, culturasRepository } from "../catalogo/culturas.repository";
 import { AuthRepository, PerfilUsuario, authRepository } from "./auth.repository";
-import { atualizarPerfilSchema, cadastroSchema, questionarioSchema } from "./auth.schema";
+import { atualizarPerfilSchema, cadastroEntradaSchema, cadastroSchema, dadosContaSchema, questionarioSchema } from "./auth.schema";
+import { verificarDisponibilidade, traduzirConflitoUnico } from './disponibilidade';
 
 const perfilJaExiste = () => new AppError(409, "Perfil já cadastrado", "PERFIL_JA_EXISTE");
 const perfilNaoEncontrado = () => new AppError(404, "Perfil não cadastrado", "PERFIL_NAO_ENCONTRADO");
@@ -37,7 +38,7 @@ function paraResposta(perfil: PerfilUsuario) {
     canalCodigoPreferido: perfil.canalCodigoPreferido ?? null,
     // null enquanto não respondido: o app usa isso para decidir se mostra o questionário.
     questionario: perfil.questionario
-      ? { ...perfil.questionario, culturasIds: perfil.questionario.culturasIds.map(String) }
+      ? { ...perfil.questionario, culturasIds: (perfil.questionario.culturasIds ?? []).map(String) }
       : null,
     criadoEm: perfil.criadoEm,
     atualizadoEm: perfil.atualizadoEm,
@@ -64,8 +65,25 @@ export function criarAuthService(
   java: ValidacoesJava = validacoesJava,
 ) {
   return {
+    async atualizarDadosConta(uid: string, entrada: unknown) {
+      const dados = dadosContaSchema.parse(entrada);
+      const perfil = await usuarios.buscarPorFirebaseUid(uid);
+      if (!perfil) throw perfilNaoEncontrado();
+      if (!perfil.canalCodigoPreferido) throw new AppError(409, 'Canal de código não cadastrado no perfil', 'CANAL_AUSENTE');
+      const validacao = await java.validarCadastroPerfil({ nomeCompleto: dados.nomeCompleto, cpf: dados.cpf, telefoneCanonico: dados.telefone, canalCodigoPreferido: perfil.canalCodigoPreferido });
+      if (!validacao.valido) throw new ValidacaoJavaError(validacao.erros);
+      const validado = cadastroSchema.parse({ ...dados, canalCodigoPreferido: perfil.canalCodigoPreferido, aceitouTermos: true });
+      await verificarDisponibilidade(usuarios, 'cpf', validado.cpf, uid);
+      await verificarDisponibilidade(usuarios, 'telefone', validado.telefone, uid);
+      if (!(await usuarios.indicesUnicosProntos())) throw new AppError(503, 'Cadastro indisponível: índices únicos de CPF e telefone ainda não estão ativos.', 'INDICES_USUARIO_INDISPONIVEIS');
+      let atualizado;
+      try { atualizado = await usuarios.atualizarDadosConta(uid, { nomeCompleto: validado.nomeCompleto, cpf: validado.cpf, telefone: validado.telefone }); }
+      catch (erro) { traduzirConflitoUnico(erro); }
+      if (!atualizado) throw perfilNaoEncontrado();
+      return paraResposta(atualizado);
+    },
     async cadastrar(uid: string, entrada: unknown) {
-      const dados = cadastroSchema.parse(entrada);
+      const dados = cadastroEntradaSchema.parse(entrada);
       if (await usuarios.buscarPorFirebaseUid(uid)) throw perfilJaExiste();
       // O Java valida antes de gravar. Se estiver desligado: 503 JAVA_INDISPONIVEL.
       const validacao = await java.validarCadastroPerfil({
@@ -75,19 +93,24 @@ export function criarAuthService(
         canalCodigoPreferido: dados.canalCodigoPreferido,
       });
       if (!validacao.valido) throw new ValidacaoJavaError(validacao.erros);
+      const dadosValidados = cadastroSchema.parse(dados);
+      await verificarDisponibilidade(usuarios, 'cpf', dadosValidados.cpf);
+      await verificarDisponibilidade(usuarios, 'telefone', dadosValidados.telefone);
+      if (!(await usuarios.indicesUnicosProntos())) throw new AppError(503, 'Cadastro indisponível: índices únicos de CPF e telefone ainda não estão ativos.', 'INDICES_USUARIO_INDISPONIVEIS');
       try {
         const perfil = await usuarios.criar({
           firebaseUid: uid,
-          nomeCompleto: dados.nomeCompleto,
-          cpf: dados.cpf,
-          telefone: dados.telefone,
-          canalCodigoPreferido: dados.canalCodigoPreferido,
+          nomeCompleto: dadosValidados.nomeCompleto,
+          cpf: dadosValidados.cpf,
+          telefone: dadosValidados.telefone,
+          canalCodigoPreferido: dadosValidados.canalCodigoPreferido,
           termos: { versao: TERMOS_VERSAO_VIGENTE, aceitoEm: new Date() },
         });
         return paraResposta(perfil);
       } catch (erro) {
         // Dois cadastros simultâneos: o índice único de firebaseUid recusa o segundo.
-        if ((erro as { code?: number })?.code === 11000) throw perfilJaExiste();
+        if ((erro as { code?: number; keyPattern?: { firebaseUid?: unknown } })?.code === 11000 && (erro as { keyPattern?: { firebaseUid?: unknown } }).keyPattern?.firebaseUid) throw perfilJaExiste();
+        traduzirConflitoUnico(erro);
         throw erro;
       }
     },
@@ -103,7 +126,7 @@ export function criarAuthService(
       const dados = questionarioSchema.parse(entrada);
       const perfil = await usuarios.buscarPorFirebaseUid(uid);
       if (!perfil) throw perfilNaoEncontrado();
-      if (perfil.questionario) throw questionarioJaRespondido();
+      if (perfil.questionario?.concluidoEm) throw questionarioJaRespondido();
 
       // O Java valida as respostas antes de gravar. Se estiver desligado: 503 JAVA_INDISPONIVEL.
       const concluidoEm = new Date();

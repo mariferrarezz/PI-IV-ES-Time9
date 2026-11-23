@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sentinela/features/auth/destino_autenticado.dart';
+import 'questionario_dados.dart';
 
 import 'tela_questionario2.dart';
 
@@ -12,6 +14,10 @@ class TelaQuestionario1 extends StatefulWidget {
 class _TelaQuestionario1 extends State<TelaQuestionario1> {
   @override
   Widget build(BuildContext context) {
+    return GuardiaoQuestionario(child: _conteudo(context));
+  }
+
+  Widget _conteudo(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -227,7 +233,7 @@ class _TelaQuestionario1 extends State<TelaQuestionario1> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TelaQuestionario2(),
+                        builder: (context) => TelaQuestionario2(dados: QuestionarioDados()),
                       ),
                     );
                   },

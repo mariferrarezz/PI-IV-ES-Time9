@@ -14,17 +14,13 @@ const DDDS_VALIDOS = new Set([
 ]);
 
 const somenteDigitos = (valor: string) => valor.replace(/\D/g, "");
+const prepararTelefone = (valor: string) => {
+  const digitos = somenteDigitos(valor);
+  return digitos.length === 11 ? `+55${digitos}` : digitos.length === 13 && digitos.startsWith('55') ? `+${digitos}` : valor.trim();
+};
 
-// Confere os dois dígitos verificadores e recusa sequências repetidas (ex.: 111.111.111-11).
 export function cpfValido(cpf: string): boolean {
-  if (!/^\d{11}$/.test(cpf) || /^(\d)\1{10}$/.test(cpf)) return false;
-  const digito = (quantidade: number) => {
-    let soma = 0;
-    for (let i = 0; i < quantidade; i++) soma += Number(cpf[i]) * (quantidade + 1 - i);
-    const resto = (soma * 10) % 11;
-    return resto === 10 ? 0 : resto;
-  };
-  return digito(9) === Number(cpf[9]) && digito(10) === Number(cpf[10]);
+  return /^[0-9]{11}$/.test(cpf);
 }
 
 // Aceita "(19) 99999-9999", "19999999999", "+55 19 99999-9999" etc.
@@ -51,15 +47,28 @@ export const cadastroSchema = z.object({
 
 export type CadastroDto = z.infer<typeof cadastroSchema>;
 
+// Formato de transporte: Java recebe também CPF e telefone inválidos para explicar os erros.
+export const cadastroEntradaSchema = z.object({
+  nomeCompleto: z.string().max(1000).transform(valor => valor.trim()),
+  cpf: z.string().max(1000).transform(somenteDigitos),
+  telefone: z.string().max(1000).transform(prepararTelefone),
+  canalCodigoPreferido: z.enum(['email', 'sms']),
+  aceitouTermos: z.literal(true),
+}).strict();
+
 // ---------- Questionário inicial ----------
 // Valores conforme o validator de "usuarios" e a seção 4.2 das regras do banco.
 const semRepetidos = (lista: string[]) => new Set(lista).size === lista.length;
+export function limiteCulturas(quantidade: '1' | '2' | '3' | '4_ou_mais') {
+  const min = quantidade === '4_ou_mais' ? 4 : Number(quantidade);
+  return { min, max: quantidade === '4_ou_mais' ? null : min };
+}
 
 export const questionarioSchema = z.object({
   portePropriedade: z.enum(["pequena", "media", "grande"]),
   quantidadeCulturas: z.enum(["1", "2", "3", "4_ou_mais"]),
   // Ids vindos de GET /culturas. Pode ficar vazio se a pessoa só informar outraCultura.
-  culturasIds: z.array(z.string().regex(/^[a-f\d]{24}$/i)).max(50).refine(semRepetidos).default([]),
+  culturasIds: z.array(z.string().regex(/^[a-f\d]{24}$/i)).refine(semRepetidos).default([]),
   // Texto da opção "Outro". Vazio ou só espaços conta como não informado.
   outraCultura: z.string().trim().refine(valor => [...valor].length <= 150)
     .transform(valor => (valor === "" ? undefined : valor)).optional(),
@@ -71,7 +80,11 @@ export const questionarioSchema = z.object({
   identificaProblemasSozinho: z.enum(["sim", "nao", "as_vezes"]),
 }).strict()
   // Pelo menos uma cultura do catálogo ou a outra cultura digitada.
-  .refine(dados => dados.culturasIds.length > 0 || dados.outraCultura !== undefined, { path: ["culturasIds"] });
+  .refine(dados => {
+    const limite = limiteCulturas(dados.quantidadeCulturas);
+    const total = dados.culturasIds.length + (dados.outraCultura !== undefined ? 1 : 0);
+    return total >= limite.min && (limite.max === null || total <= limite.max);
+  }, { path: ["culturasIds"], message: 'A quantidade de culturas selecionadas deve corresponder à quantidade informada.' });
 
 export type QuestionarioDto = z.infer<typeof questionarioSchema>;
 
@@ -85,3 +98,10 @@ export const atualizarPerfilSchema = z.object({
 }).strict();
 
 export type AtualizarPerfilDto = z.infer<typeof atualizarPerfilSchema>;
+
+// Tipos e normalização apenas; as regras de nome, CPF e telefone são aplicadas pelo Java.
+export const dadosContaSchema = z.object({
+  nomeCompleto: z.string().max(1000).transform(valor => valor.trim()),
+  cpf: z.string().max(1000).transform(somenteDigitos),
+  telefone: z.string().max(1000).transform(prepararTelefone),
+}).strict();

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sentinela/features/auth/destino_autenticado.dart';
+import 'questionario_dados.dart';
 import 'tela_questionario4.dart';
 
 class TelaQuestionario3 extends StatefulWidget {
-  const TelaQuestionario3({super.key});
+  const TelaQuestionario3({super.key, required this.dados});
+  final QuestionarioDados dados;
 
   @override
   State<TelaQuestionario3> createState() => _TelaQuestionario3State();
@@ -10,9 +13,15 @@ class TelaQuestionario3 extends StatefulWidget {
 
 class _TelaQuestionario3State extends State<TelaQuestionario3> {
   int? _opcaoSelecionada;
+  @override
+  void initState() { super.initState(); _opcaoSelecionada = widget.dados.quantidade; }
 
   @override
   Widget build(BuildContext context) {
+    return GuardiaoQuestionario(child: _conteudo(context));
+  }
+
+  Widget _conteudo(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -356,11 +365,15 @@ class _TelaQuestionario3State extends State<TelaQuestionario3> {
                 height: 52.0,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Ação ao continuar
+                    if (_opcaoSelecionada == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Selecione uma opção.')));
+                      return;
+                    }
+                    widget.dados.quantidade = _opcaoSelecionada;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TelaQuestionario4(),
+                        builder: (context) => TelaQuestionario4(dados: widget.dados),
                       ),
                     );
                   },

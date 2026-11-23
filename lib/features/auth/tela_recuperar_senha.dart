@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class TelaRecuperarSenha extends StatefulWidget {
   const TelaRecuperarSenha({super.key});
@@ -9,6 +10,20 @@ class TelaRecuperarSenha extends StatefulWidget {
 
 class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
   final TextEditingController _emailController = TextEditingController();
+  bool _enviando = false;
+
+  Future<void> _enviar() async {
+    if (_enviando) return;
+    setState(() => _enviando = true);
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text.trim());
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Solicitação de redefinição enviada ao Firebase.')));
+    } on FirebaseAuthException catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.code == 'invalid-email' ? 'Informe um e-mail válido.' : 'Não foi possível solicitar a redefinição. Tente novamente.')));
+    } finally {
+      if (mounted) setState(() => _enviando = false);
+    }
+  }
 
   @override
   void dispose() {
@@ -160,9 +175,7 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
                 width: double.infinity,
                 height: 52.0,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Acción para enviar instrucciones
-                  },
+                  onPressed: _enviando ? null : _enviar,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF135323),
                     foregroundColor: Colors.white,
@@ -171,9 +184,9 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                   ),
-                  child: const Text(
-                    'Enviar Instruções',
-                    style: TextStyle(
+                  child: Text(
+                    _enviando ? 'Enviando...' : 'Enviar Instruções',
+                    style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),

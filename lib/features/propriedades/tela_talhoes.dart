@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'tela_novoTalhao.dart';
-import 'tela_talhaoEspecifico.dart';
 import 'tela_questionario1.dart';
+import 'tela_nova_propriedade.dart';
+import 'tela_plantacoes.dart';
 import 'package:sentinela/navegacao.dart';
+import 'package:sentinela/services/api_sentinela.dart';
 
 class TelaTalhoes extends StatefulWidget {
   final bool abrirModalPropriedades;
@@ -14,92 +16,75 @@ class TelaTalhoes extends StatefulWidget {
 }
 
 class _TelaTalhoesState extends State<TelaTalhoes> {
-  // Variáveis de estado
-  String _propriedadeSelecionada = 'Fazenda Boa Vista';
+  final _api = ApiSentinela();
+  List<dynamic> _propriedades = [], _talhoes = [];
+  String? _propriedadeId, _erro;
+  bool _carregando = true;
+  int _versao = 0;
   final int _indiceAtualNav = 1;
-  String _filtroSelecionado = 'Todos';
+  String get _propriedadeSelecionada {
+    for (final propriedade in _propriedades) {
+      if (propriedade['_id'].toString() == _propriedadeId) return propriedade['nome'].toString();
+    }
+    return 'Selecione uma propriedade';
+  }
 
   @override
-  void initState() {
-    super.initState();
-    // Abre o modal de propriedades automaticamente se vier da TelaPerfil
-    if (widget.abrirModalPropriedades) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          _abrirModalPropriedades(context);
-        }
-      });
+  void initState() { super.initState(); _carregarPropriedades(); }
+
+  Future<void> _carregarPropriedades() async {
+    setState(() { _carregando = true; _erro = null; });
+    try {
+      await _api.request('GET', '/auth/me');
+      final propriedades = await _api.request('GET', '/propriedades') as List<dynamic>;
+      if (!mounted) return;
+      setState(() { _propriedades = propriedades; _propriedadeId = null; _talhoes = []; _carregando = false; });
+      if (widget.abrirModalPropriedades) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) _abrirModalPropriedades(context);
+        });
+      }
+    } on ApiException catch (e) {
+      if (mounted) setState(() { _erro = e.mensagem; _carregando = false; });
     }
   }
 
-  // Lista contendo todos os talhões da fazenda
-  final List _listaTalhoes = [
-    {
-      'nome': 'Talhão 03',
-      'cultura': 'Soja · 12,5 ha',
-      'status': 'ALTA URGÊNCIA',
-      'tipoFiltro': 'Com alerta',
-      'statusBg': const Color(0xFFF3C5B5),
-      'statusText': const Color(0xFFB33A1D),
-      'circuloBg': const Color(0xFFFDECEA),
-      'ocorrencia': 'Ferrugem asiática · há 2 dias',
-    },
-    {
-      'nome': 'Talhão 07',
-      'cultura': 'Milho · 8,0 ha',
-      'status': 'ATENÇÃO',
-      'tipoFiltro': 'Com alerta',
-      'statusBg': const Color(0xFFFEF7E0),
-      'statusText': const Color(0xFF8C5700),
-      'circuloBg': const Color(0xFFFEF9E7),
-      'ocorrencia': 'Lagarta-do-cartucho · há 4 dias',
-    },
-    {
-      'nome': 'Talhão 02',
-      'cultura': 'Feijão · 5,2 ha',
-      'status': 'ATENÇÃO',
-      'tipoFiltro': 'Com alerta',
-      'statusBg': const Color(0xFFFEF7E0),
-      'statusText': const Color(0xFF8C5700),
-      'circuloBg': const Color(0xFFFEF9E7),
-      'ocorrencia': 'Oídio · há 6 dias',
-    },
-    {
-      'nome': 'Talhão 01',
-      'cultura': 'Milho · 10,0 ha',
-      'status': 'EM DIA',
-      'tipoFiltro': 'Em dia',
-      'statusBg': const Color(0xFFD3E4D5),
-      'statusText': const Color(0xFF00501E),
-      'circuloBg': const Color(0xFFE8F3EC),
-      'ocorrencia': 'Nenhuma ocorrência ativa',
-    },
-    {
-      'nome': 'Talhão 04',
-      'cultura': 'Soja · 15,0 ha',
-      'status': 'EM DIA',
-      'tipoFiltro': 'Em dia',
-      'statusBg': const Color(0xFFD3E4D5),
-      'statusText': const Color(0xFF00501E),
-      'circuloBg': const Color(0xFFE8F3EC),
-      'ocorrencia': 'Nenhuma ocorrência ativa',
-    },
-  ];
-
-  // Função para filtrar a lista dinamicamente com base na seleção
-  List get _talhoesFiltrados {
-    if (_filtroSelecionado == 'Todos') {
-      return _listaTalhoes;
-    } else {
-      return _listaTalhoes
-          .where((t) => t['tipoFiltro'] == _filtroSelecionado)
-          .toList();
+  Future<void> _selecionar(String id) async {
+    final versao = ++_versao;
+    setState(() { _propriedadeId = id; _talhoes = []; _erro = null; _carregando = true; });
+    try {
+      final talhoes = await _api.request('GET', '/propriedades/$id/talhoes') as List<dynamic>;
+      if (mounted && versao == _versao) setState(() { _talhoes = talhoes; _carregando = false; });
+    } on ApiException catch (e) {
+      if (mounted && versao == _versao) setState(() { _erro = e.mensagem; _carregando = false; });
     }
   }
+
+  Future<void> _novo() async {
+    final id = _propriedadeId;
+    if (id == null) return;
+    final criado = await Navigator.push<bool>(context, MaterialPageRoute(builder: (_) => TelaNovoTalhao(propriedadeId: id, propriedadeNome: _propriedadeSelecionada)));
+    if (criado == true && mounted) await _selecionar(id);
+  }
+
+  Future<void> _novaPropriedade() async {
+    final id = await Navigator.push<String>(context, MaterialPageRoute(builder: (_) => const TelaNovaPropriedade()));
+    if (id == null || !mounted) return;
+    setState(() { _carregando = true; _erro = null; });
+    try {
+      final propriedades = await _api.request('GET', '/propriedades') as List<dynamic>;
+      if (!mounted) return;
+      setState(() => _propriedades = propriedades);
+      await _selecionar(id);
+    } on ApiException catch (e) {
+      if (mounted) setState(() { _erro = e.mensagem; _carregando = false; });
+    }
+  }
+
 
   // Função que abre o modal flutuante de propriedades
   void _abrirModalPropriedades(BuildContext context) {
-    String propriedadeTemp = _propriedadeSelecionada;
+    String? propriedadeTemp = _propriedadeId;
 
     showModalBottomSheet(
       context: context,
@@ -165,50 +150,27 @@ class _TelaTalhoesState extends State<TelaTalhoes> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    _buildItemPropriedade(
-                      nome: 'Fazenda Boa Vista',
-                      detalhes: '8 talhões · 3 alertas ativos',
-                      badgeTexto: '3 ALERTAS',
-                      badgeCor: const Color(0xFFF3C5B5),
-                      badgeTextColor: const Color(0xFFB33A1D),
-                      selecionado: propriedadeTemp == 'Fazenda Boa Vista',
-                      onTap: () {
-                        setModalState(() {
-                          propriedadeTemp = 'Fazenda Boa Vista';
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 12),
-                    _buildItemPropriedade(
-                      nome: 'Sítio Santa Luzia',
-                      detalhes: '4 talhões · sem alertas',
-                      badgeTexto: 'EM DIA',
-                      badgeCor: const Color(0xFFD3E4D5),
-                      badgeTextColor: const Color(0xFF00501E),
-                      selecionado: propriedadeTemp == 'Sítio Santa Luzia',
-                      onTap: () {
-                        setModalState(() {
-                          propriedadeTemp = 'Sítio Santa Luzia';
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 12),
-                    _buildItemPropriedade(
-                      nome: 'Fazenda Três Irmãos',
-                      detalhes: '6 talhões · 1 alerta ativo',
-                      badgeTexto: '1 ALERTA',
-                      badgeCor: const Color(0xFFF3C5B5),
-                      badgeTextColor: const Color(0xFFB33A1D),
-                      selecionado: propriedadeTemp == 'Fazenda Três Irmãos',
-                      onTap: () {
-                        setModalState(() {
-                          propriedadeTemp = 'Fazenda Três Irmãos';
-                        });
-                      },
-                    ),
+                    if (_propriedades.isEmpty)
+                      const Text('Nenhuma propriedade cadastrada para esta conta.'),
+                    ..._propriedades.map((propriedade) {
+                      final id = propriedade['_id'].toString();
+                      final ativa = propriedade['ativa'] == true;
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: _buildItemPropriedade(
+                          nome: propriedade['nome'].toString(),
+                          detalhes: "${propriedade['municipio']} · ${propriedade['estado']}",
+                          badgeTexto: ativa ? 'ATIVA' : 'INATIVA',
+                          badgeCor: const Color(0xFFD3E4D5),
+                          badgeTextColor: const Color(0xFF00501E),
+                          selecionado: propriedadeTemp == id,
+                          onTap: () => setModalState(() => propriedadeTemp = id),
+                        ),
+                      );
+                    }),
                     const SizedBox(height: 20),
                     OutlinedButton(
-                      onPressed: () { Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaQuestionario1())); },
+                      onPressed: () { Navigator.pop(context); _novaPropriedade(); },
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         side: const BorderSide(
@@ -235,15 +197,18 @@ class _TelaTalhoesState extends State<TelaTalhoes> {
                         ],
                       ),
                     ),
+                    TextButton(
+                      onPressed: () { Navigator.pop(context); Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaQuestionario1())); },
+                      child: const Text('Questionário inicial'),
+                    ),
                     const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            _propriedadeSelecionada = propriedadeTemp;
-                          });
+                        onPressed: propriedadeTemp == null ? null : () {
+                          final id = propriedadeTemp!;
                           Navigator.pop(context);
+                          _selecionar(id);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF00501E),
@@ -358,41 +323,6 @@ class _TelaTalhoesState extends State<TelaTalhoes> {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  // Botão de filtro estilo WhatsApp
-  Widget _buildBotaoFiltro(String rotulo, String contador) {
-    bool selecionado = _filtroSelecionado == rotulo;
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _filtroSelecionado = rotulo;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        decoration: BoxDecoration(
-          color: selecionado ? const Color(0xFFD3E4D5) : Colors.white,
-          borderRadius: BorderRadius.circular(30),
-          border: Border.all(
-            color: selecionado
-                ? const Color(0xFF00501E)
-                : const Color(0xFFD3E4D5),
-            width: 1,
-          ),
-        ),
-        child: Text(
-          '$rotulo · $contador',
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.bold,
-            color: rotulo == 'Com alerta' && !selecionado
-                ? const Color(0xFFB33A1D)
-                : const Color(0xFF00501E),
-          ),
         ),
       ),
     );
@@ -640,7 +570,7 @@ class _TelaTalhoesState extends State<TelaTalhoes> {
                   ),
                   const SizedBox(width: 12),
                   ElevatedButton.icon(
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaNovoTalhao())),
+                    onPressed: _propriedadeId == null || _carregando ? null : _novo,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF00501E),
                       foregroundColor: Colors.white,
@@ -666,41 +596,53 @@ class _TelaTalhoesState extends State<TelaTalhoes> {
               ),
               const SizedBox(height: 16),
 
-              // BOTÕES DE FILTRO ESTILO WHATSAPP
+              // Os filtros de alerta dependem de dados que a API ainda não fornece.
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildBotaoFiltro('Todos', '5'),
-                    const SizedBox(width: 8),
-                    _buildBotaoFiltro('Com alerta', '3'),
-                    const SizedBox(width: 8),
-                    _buildBotaoFiltro('Em dia', '2'),
-                  ],
-                ),
+                child: Row(children: [
+                  Chip(
+                    label: Text('Todos · ${_talhoes.length}'),
+                    backgroundColor: const Color(0xFFD3E4D5),
+                    side: const BorderSide(color: Color(0xFF00501E)),
+                  ),
+                  const SizedBox(width: 8),
+                  const Tooltip(
+                    message: 'Filtro indisponível até a integração de alertas',
+                    child: Chip(label: Text('Com alerta'), labelStyle: TextStyle(color: Colors.grey)),
+                  ),
+                  const SizedBox(width: 8),
+                  const Tooltip(
+                    message: 'Filtro indisponível até a integração de alertas',
+                    child: Chip(label: Text('Em dia'), labelStyle: TextStyle(color: Colors.grey)),
+                  ),
+                ]),
               ),
-              const SizedBox(height: 20),
-
-              // EXIBIÇÃO DINÂMICA DOS CARDS FILTRADOS
-              ..._talhoesFiltrados.map((talhao) {
-                return _buildCardTalhao(
-                  nomeTalhao: talhao['nome'],
-                  culturaHectares: talhao['cultura'],
-                  statusTexto: talhao['status'],
-                  statusBgColor: talhao['statusBg'],
-                  statusTextColor: talhao['statusText'],
-                  circuloBgColor: talhao['circuloBg'],
-                  alertaOcorrencia: talhao['ocorrencia'],
-                  onTap: () {
-                    if (talhao['nome'] == 'Talh\u00e3o 03' && _propriedadeSelecionada == 'Fazenda Boa Vista') {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaTalhaoEspecifico()));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Detalhes deste talhao ainda nao disponiveis.')));
-                    }
-                  },
-                );
-              }),
-
+              const SizedBox(height: 16),
+              if (_carregando)
+                const Center(child: CircularProgressIndicator())
+              else if (_erro != null) ...[
+                Text(_erro!, style: const TextStyle(color: Colors.red)),
+                TextButton(
+                  onPressed: _propriedadeId == null ? _carregarPropriedades : () => _selecionar(_propriedadeId!),
+                  child: const Text('Tentar novamente'),
+                ),
+              ] else if (_propriedades.isEmpty)
+                const Text('Nenhuma propriedade cadastrada para esta conta.')
+              else if (_propriedadeId == null)
+                const Text('Selecione uma propriedade para ver seus talhões.')
+              else if (_talhoes.isEmpty)
+                const Text('Nenhum talhão cadastrado.')
+              else
+                ..._talhoes.map((talhao) => _buildCardTalhao(
+                  nomeTalhao: talhao['nome'].toString(),
+                  culturaHectares: "${talhao['areaHa']} ha",
+                  statusTexto: talhao['ativo'] == true ? 'ATIVO' : 'INATIVO',
+                  statusBgColor: const Color(0xFFD3E4D5),
+                  statusTextColor: const Color(0xFF00501E),
+                  circuloBgColor: const Color(0xFFE8F3EC),
+                  alertaOcorrencia: 'Detalhes de ocorrências indisponíveis',
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TelaPlantacoes(talhaoId: talhao['_id'].toString(), nomeTalhao: talhao['nome'].toString()))),
+                )),
               const SizedBox(height: 20),
             ],
           ),

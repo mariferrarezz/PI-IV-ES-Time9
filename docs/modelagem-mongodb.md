@@ -116,9 +116,9 @@ Os arquivos ficam no Cloudinary. O MongoDB guarda somente os metadados. A imagem
 | criadoEm | Date | S |
 | atualizadoEm | Date | S |
 
-O cadastro aceita somente celulares brasileiros. `telefone` é String obrigatória no formato `+55`, DDD de dois dígitos e número de celular de nove dígitos iniciado por `9`: exatamente 14 caracteres contando o sinal `+`, sem espaços, parênteses ou hífens. O banco valida a estrutura com `bsonType: "string"`, `minLength: 14`, `maxLength: 14` e `pattern: "^\\+55[0-9]{2}9[0-9]{8}$"`. A aplicação normaliza a entrada e verifica se o DDD é válido; a expressão estrutural não valida a existência do DDD nem a posse do número. A confirmação de posse pertence ao fluxo de autenticação. Não criar índice único para telefone.
+O cadastro aceita somente celulares brasileiros. `telefone` é String obrigatória no formato `+55`, DDD de dois dígitos e número de celular de nove dígitos iniciado por `9`: exatamente 14 caracteres contando o sinal `+`, sem espaços, parênteses ou hífens. O banco valida a estrutura com `bsonType: "string"`, `minLength: 14`, `maxLength: 14` e `pattern: "^\\+55[0-9]{2}9[0-9]{8}$"`. A aplicação normaliza a entrada e verifica se o DDD é válido; a expressão estrutural não valida a existência do DDD nem a posse do número. A confirmação de posse pertence ao fluxo de autenticação. Exigir índice único para telefone normalizado após auditoria de duplicidades.
 
-`cpf` é obrigatório e deve conter exatamente 11 dígitos, sem pontuação. A aplicação valida os dígitos verificadores; não definir índice único sem decisão específica.
+`cpf` é obrigatório e deve conter exatamente 11 dígitos, sem pontuação; dígitos verificadores e sequências repetidas não são recusados. CPF e telefone normalizados devem ter índices únicos após auditoria e resolução de duplicidades existentes.
 
 `canalCodigoPreferido` registra somente a escolha entre `sms` e `email`. Pode estar ausente antes da conclusão da escolha, mas é obrigatório ao concluir essa etapa. Essa condição deve ser conferida pela aplicação no fluxo de cadastro, sem criar novos campos de controle nesta proposta. O envio e a verificação são responsabilidades da autenticação; códigos de verificação não são armazenados no perfil do MongoDB. A viabilidade do envio por ambos os canais ainda precisa ser conferida na implementação da autenticação.
 

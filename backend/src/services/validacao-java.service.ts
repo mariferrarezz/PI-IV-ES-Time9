@@ -252,6 +252,14 @@ export interface CamposValidacaoOpcionaisPerfil {
 }
 export type ResultadoValidacaoPerfil = ResultadoValidacaoTalhao;
 
+export async function validarCpfNoJava(cpf: string): Promise<ResultadoValidacaoPerfil> {
+  return enviarPedido(`VALIDAR_CPF\t${codificarCampoProtocolo(cpf)}\n`);
+}
+
+export async function validarTelefoneNoJava(telefone: string): Promise<ResultadoValidacaoPerfil> {
+  return enviarPedido(`VALIDAR_TELEFONE\t${codificarCampoProtocolo(telefone)}\n`);
+}
+
 export async function validarCadastroPerfilNoJava(campos: CamposValidacaoCadastroPerfil): Promise<ResultadoValidacaoPerfil> {
   const partes = [campos.nomeCompleto ?? "", campos.cpf ?? "", campos.telefoneCanonico ?? "", campos.canalCodigoPreferido ?? ""];
   return enviarPedido(`VALIDAR_CADASTRO_PERFIL\t${partes.map(codificarCampoProtocolo).join("\t")}\n`);

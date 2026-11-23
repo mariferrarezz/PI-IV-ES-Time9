@@ -5,6 +5,7 @@ import { CriarTalhaoDto } from "./talhoes.schema";
 import { RegistroTalhao, TalhaoModel } from "./talhoes.model";
 
 export interface TalhoesRepository {
+  listarPorPropriedade(id: Types.ObjectId): Promise<RegistroTalhao[]>;
   reservarPropriedade(id: Types.ObjectId, usuarioId: Types.ObjectId, session: ClientSession): Promise<RegistroPropriedade | null>;
   areaDisponivel(id: Types.ObjectId, area: number, session: ClientSession): Promise<boolean>;
   criar(id: Types.ObjectId, dados: CriarTalhaoDto, session: ClientSession): Promise<RegistroTalhao>;
@@ -12,6 +13,9 @@ export interface TalhoesRepository {
 }
 
 export const talhoesRepository: TalhoesRepository = {
+  listarPorPropriedade(id) {
+    return TalhaoModel.find({ propriedadeId: id }).sort({ criadoEm: -1 }).lean<RegistroTalhao[]>().exec();
+  },
   async reservarPropriedade(id, usuarioId, session) {
     const propriedade = await PropriedadeModel.findOne({ _id: id, usuarioId }, null, { session })
       .lean<RegistroPropriedade>().exec();

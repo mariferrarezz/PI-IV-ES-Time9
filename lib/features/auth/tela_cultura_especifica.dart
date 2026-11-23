@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../propriedades/questionario_dados.dart';
 
 import 'package:sentinela/features/propriedades/tela_questionario5.dart';
 
@@ -118,7 +119,7 @@ class _TelaCulturaEspecificaState extends State<TelaCulturaEspecifica> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TelaQuestionario5(),
+                        builder: (context) => TelaQuestionario5(dados: QuestionarioDados()..outraCultura = _nomeCultura.text),
                       ),
                     );
                   },

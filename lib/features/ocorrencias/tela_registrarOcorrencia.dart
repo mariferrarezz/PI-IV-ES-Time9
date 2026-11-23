@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sentinela/navegacao.dart';
+import 'package:sentinela/services/api_sentinela.dart';
+import 'package:sentinela/services/data_sao_paulo.dart';
 
-import 'package:sentinela/features/propriedades/tela_novoTalhao.dart';// Ajuste o nome do arquivo da TelaNovoTalhao se necessário
+import 'package:sentinela/features/propriedades/tela_talhoes.dart';
 
 class TelaRegistrarOcorrencia extends StatefulWidget {
   const TelaRegistrarOcorrencia({super.key});
@@ -22,7 +24,79 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
   bool _isTalhaoCadastrado = true;
   String? _talhaoSelecionado;
   String _intensidadeSelecionada = 'Baixa';
-  DateTime _dataOcorrencia = DateTime.now();
+  DateTime _dataOcorrencia = DataSaoPaulo.paraData(DateTime.now().toUtc());
+  bool _dataEscolhida = false, _carregando = true, _salvando = false;
+  final _api = ApiSentinela();
+  List<dynamic> _plantacoes = [];
+  String? _plantacaoId, _problemaId, _tipo, _erro;
+  int _versao = 0;
+
+  @override
+  void initState() { super.initState(); _carregarFazendas(); }
+
+  Future<void> _carregarFazendas() async {
+    setState(() { _carregando = true; _erro = null; });
+    try {
+      final itens = await _api.request('GET', '/propriedades') as List<dynamic>;
+      if (mounted) setState(() { _fazendas.clear(); _fazendas.addAll(itens); _carregando = false; });
+    } on ApiException catch (e) { if (mounted) setState(() { _erro = e.mensagem; _carregando = false; }); }
+  }
+
+  Future<void> _selecionarFazenda(String? valor) async {
+    final versao = ++_versao;
+    setState(() { _fazendaSelecionada = valor; _talhaoSelecionado = null; _plantacaoId = null; _problemaId = null; _talhoesCadastrados.clear(); _plantacoes = []; _catalogoPragas.clear(); _erro = null; _carregando = true; });
+    if (valor == null) { setState(() => _carregando = false); return; }
+    try {
+      final itens = await _api.request('GET', '/propriedades/$valor/talhoes') as List<dynamic>;
+      if (mounted && versao == _versao) setState(() { _talhoesCadastrados.addAll(itens); _carregando = false; });
+    } on ApiException catch (e) { if (mounted && versao == _versao) setState(() { _erro = e.mensagem; _carregando = false; }); }
+  }
+
+  Future<void> _selecionarTalhao(String? valor) async {
+    final versao = ++_versao;
+    setState(() { _talhaoSelecionado = valor; _plantacaoId = null; _problemaId = null; _plantacoes = []; _catalogoPragas.clear(); _erro = null; _carregando = true; });
+    if (valor == null) { setState(() => _carregando = false); return; }
+    try {
+      final itens = await _api.request('GET', '/talhoes/$valor/plantacoes') as List<dynamic>;
+      if (mounted && versao == _versao) setState(() { _plantacoes = itens.where((p) => p['status'] == 'ativa').toList(); _carregando = false; });
+    } on ApiException catch (e) { if (mounted && versao == _versao) setState(() { _erro = e.mensagem; _carregando = false; }); }
+  }
+
+  Future<void> _selecionarPlantacao(String? valor) async {
+    final versao = ++_versao;
+    setState(() { _plantacaoId = valor; _problemaId = null; _catalogoPragas.clear(); _erro = null; _carregando = true; });
+    if (valor == null) { setState(() => _carregando = false); return; }
+    final plantacao = _plantacoes.firstWhere((p) => p['_id'].toString() == valor);
+    try {
+      final itens = await _api.request('GET', '/culturas/${plantacao['culturaId']}/problemas') as List<dynamic>;
+      if (mounted && versao == _versao) setState(() { _catalogoPragas.addAll(itens); _carregando = false; });
+    } on ApiException catch (e) { if (mounted && versao == _versao) setState(() { _erro = e.mensagem; _carregando = false; }); }
+  }
+
+  Future<void> _registrar() async {
+    if (_salvando || _carregando) return;
+    if (!_isTalhaoCadastrado || _plantacaoId == null || _tipo == null) { setState(() => _erro = 'Selecione um talhão cadastrado, uma plantação e o tipo de ocorrência.'); return; }
+    final textoArea = _areaAfetadaController.text.trim().replaceAll(',', '.');
+    final area = textoArea.isEmpty ? null : double.tryParse(textoArea);
+    if (textoArea.isNotEmpty && (area == null || !area.isFinite)) { setState(() => _erro = 'Informe a área como número.'); return; }
+    late final DateTime data;
+    try { data = _dataEscolhida ? DataSaoPaulo.paraUtc(_dataOcorrencia) : DateTime.now().toUtc(); }
+    on FormatException catch (e) { setState(() => _erro = e.message); return; }
+    final sintomas = [..._sintomasSelecionados.map((e) => e.toString()), if (_observacoesController.text.trim().isNotEmpty) _observacoesController.text.trim()].join('; ');
+    setState(() { _salvando = true; _erro = null; });
+    try {
+      await _api.request('POST', '/plantacoes/$_plantacaoId/ocorrencias', body: {
+        'tipo': _tipo, if (_problemaId != null) 'problemaAgricolaId': _problemaId,
+        'dataObservacao': data.toIso8601String(), 'sintomas': sintomas,
+        'intensidade': {'Baixa': 'baixa', 'Média': 'media', 'Alta': 'alta'}[_intensidadeSelecionada],
+        if (area != null) 'areaAfetadaHa': area,
+      });
+      if (!mounted) return;
+      setState(() { _sintomasSelecionados.clear(); _areaAfetadaController.clear(); _observacoesController.clear(); _problemaId = null; });
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Ocorrência registrada.')));
+    } on ApiException catch (e) { if (mounted) setState(() => _erro = e.mensagem); }
+    finally { if (mounted) setState(() => _salvando = false); }
+  }
 
   // Controle da barra de navegação inferior (-1 = botão central REGISTRAR ativo)
   int _indiceAtualNav = -1;
@@ -52,9 +126,10 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
   }
 
   String get _dataFormatada {
-    final dia = _dataOcorrencia.day.toString().padLeft(2, '0');
-    final mes = _dataOcorrencia.month.toString().padLeft(2, '0');
-    final ano = _dataOcorrencia.year.toString();
+    final data = _dataEscolhida ? _dataOcorrencia : DataSaoPaulo.paraData(DateTime.now().toUtc());
+    final dia = data.day.toString().padLeft(2, '0');
+    final mes = data.month.toString().padLeft(2, '0');
+    final ano = data.year.toString();
     return '$dia/$mes/$ano';
   }
 
@@ -78,8 +153,8 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
       },
     );
 
-    if (escolhida != null && escolhida != _dataOcorrencia) {
-      setState(() => _dataOcorrencia = escolhida);
+    if (escolhida != null) {
+      setState(() { _dataOcorrencia = escolhida; _dataEscolhida = true; });
     }
   }
 
@@ -300,7 +375,7 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const TelaNovoTalhao(),
+                    builder: (context) => const TelaTalhoes(),
                   ),
                 );
               },
@@ -424,14 +499,13 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
                             size: 20,
                           ),
                           items: _fazendas.map((fazenda) {
-                            final String nomeFazenda = fazenda.toString();
+                            final String nomeFazenda = fazenda['nome'].toString();
                             return DropdownMenuItem<String>(
-                              value: nomeFazenda,
+                              value: fazenda['_id'].toString(),
                               child: Text(nomeFazenda),
                             );
                           }).toList(),
-                          onChanged: (val) =>
-                              setState(() => _fazendaSelecionada = val),
+                          onChanged: _carregando ? null : _selecionarFazenda,
                         ),
                       ),
                     ),
@@ -601,14 +675,39 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
                         final String nomeTalhao = (talhao['nome'] ?? '')
                             .toString();
                         return DropdownMenuItem<String>(
-                          value: nomeTalhao,
+                          value: talhao['_id'].toString(),
                           child: Text(nomeTalhao),
                         );
                       }).toList(),
-                      onChanged: (val) =>
-                          setState(() => _talhaoSelecionado = val),
+                      onChanged: _carregando ? null : _selecionarTalhao,
                     ),
                   ),
+                ),
+                const SizedBox(height: 22),
+
+                if (_carregando) const Center(child: CircularProgressIndicator()),
+                if (_erro != null) ...[
+                  SelectableText(_erro!, style: const TextStyle(color: Colors.red)),
+                  if (_fazendas.isEmpty && !_carregando) TextButton(onPressed: _carregarFazendas, child: const Text('Tentar novamente')),
+                  const SizedBox(height: 12),
+                ],
+                DropdownButtonFormField<String>(
+                  initialValue: _plantacaoId,
+                  decoration: const InputDecoration(labelText: 'Plantação ativa *'),
+                  items: _plantacoes.map((p) => DropdownMenuItem<String>(value: p['_id'].toString(), child: Text('Plantação ${p['safra'] ?? 'ativa'}'))).toList(),
+                  onChanged: _carregando ? null : _selecionarPlantacao,
+                ),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<String>(
+                  initialValue: _tipo,
+                  decoration: const InputDecoration(labelText: 'Tipo de ocorrência *'),
+                  items: const [
+                    DropdownMenuItem(value: 'praga', child: Text('Praga')),
+                    DropdownMenuItem(value: 'doenca', child: Text('Doença')),
+                    DropdownMenuItem(value: 'deficiencia', child: Text('Deficiência')),
+                    DropdownMenuItem(value: 'nao_identificado', child: Text('Não identificado')),
+                  ],
+                  onChanged: (valor) => setState(() { _tipo = valor; _problemaId = null; }),
                 ),
                 const SizedBox(height: 22),
 
@@ -704,6 +803,7 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
                 const SizedBox(height: 10),
                 TextField(
                   controller: _buscaPragaController,
+                  onChanged: (_) => setState(() => _problemaId = null),
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Ex.: Percevejo-marrom',
@@ -741,7 +841,7 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
                 const SizedBox(height: 14),
 
                 const Text(
-                  'SUGERIDAS PELOS SINTOMAS',
+                  'CATÁLOGO COMPATÍVEL COM A CULTURA',
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
@@ -768,7 +868,7 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
                   ),
                   child: Text(
                     _catalogoPragas.isEmpty
-                        ? 'Catálogo de pragas e doenças (integração pendente)'
+                        ? 'Nenhum problema disponível para esta cultura.'
                         : '${_catalogoPragas.length} itens carregados',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
@@ -777,6 +877,13 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
                       color: Color(0xFF5A7363),
                     ),
                   ),
+                ),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<String>(
+                  initialValue: _problemaId,
+                  decoration: const InputDecoration(labelText: 'Problema do catálogo (opcional)'),
+                  items: _catalogoPragas.where((p) => p['tipo'] == _tipo && p['nome'].toString().toLowerCase().contains(_buscaPragaController.text.toLowerCase())).map((p) => DropdownMenuItem<String>(value: p['id'].toString(), child: Text(p['nome'].toString(), overflow: TextOverflow.ellipsis))).toList(),
+                  onChanged: _carregando || _tipo == null || _tipo == 'nao_identificado' ? null : (valor) => setState(() => _problemaId = valor),
                 ),
                 const SizedBox(height: 22),
 
@@ -944,7 +1051,7 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
 
                 // 9. SUGESTÃO DO SENTINELA (ESTRUTURA VISUAL)
                 const Text(
-                  'SUGESTÃO DO SENTINELA',
+                  'ACOMPANHAMENTO',
                   style: TextStyle(
                     fontSize: 11.5,
                     fontWeight: FontWeight.bold,
@@ -987,7 +1094,7 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
                       ),
                       const SizedBox(height: 10),
                       const Text(
-                        'Potencial moderado de disseminação. Intensifique o monitoramento e avalie as medidas de controle.',
+                        'A seleção de um problema não confirma o diagnóstico.',
                         style: TextStyle(
                           fontSize: 13.5,
                           fontWeight: FontWeight.w600,
@@ -1002,7 +1109,7 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
 
                 const Center(
                   child: Text(
-                    'É uma prévia. O nível final é calculado quando você salva.',
+                    'O registro será enviado após a confirmação.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 12,
@@ -1018,9 +1125,7 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
                   width: double.infinity,
                   height: 54,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // Ação de salvar será conectada na integração
-                    },
+                    onPressed: _carregando || _salvando ? null : _registrar,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF134E1E),
                       foregroundColor: Colors.white,
@@ -1029,9 +1134,9 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
                         borderRadius: BorderRadius.circular(28),
                       ),
                     ),
-                    child: const Text(
-                      'Registrar ocorrência',
-                      style: TextStyle(
+                    child: Text(
+                      _salvando ? 'Registrando...' : 'Registrar ocorrência',
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),

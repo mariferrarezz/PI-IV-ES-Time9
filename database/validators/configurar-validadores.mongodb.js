@@ -48,7 +48,7 @@ const configuracoes = {
             versao: { bsonType: 'string', minLength: 1, maxLength: 30, pattern: '\\S' },
             portePropriedade: { bsonType: 'string', enum: ['pequena', 'media', 'grande'] },
             quantidadeCulturas: { bsonType: 'string', enum: ['1', '2', '3', '4_ou_mais'] },
-            culturasIds: { bsonType: 'array', maxItems: 50, uniqueItems: true, items: { bsonType: 'objectId' } },
+            culturasIds: { bsonType: 'array', uniqueItems: true, items: { bsonType: 'objectId' } },
             outraCultura: { bsonType: 'string', minLength: 1, maxLength: 150, pattern: '\\S' },
             problemasFrequentes: {
               bsonType: 'array', minItems: 1, maxItems: 2, uniqueItems: true,
