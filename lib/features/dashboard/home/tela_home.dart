@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sentinela/navegacao.dart';
 import 'package:sentinela/features/catalogo/tela_catalogo.dart';
+import 'package:sentinela/features/propriedades/tela_nova_propriedade.dart';
+import 'package:sentinela/services/api_sentinela.dart';
+
 class TelaHome extends StatefulWidget {
-  const TelaHome({super.key});
+  const TelaHome({super.key, this.carregarResumo});
+  // Permite simular o GET /home/resumo nos testes.
+  final Future<dynamic> Function()? carregarResumo;
 
   @override
   State<TelaHome> createState() => _TelaHomeState();
@@ -11,6 +16,76 @@ class TelaHome extends StatefulWidget {
 class _TelaHomeState extends State<TelaHome> {
   // Índice selecionado para a barra de navegação inferior
   final int _currentIndex = 0;
+
+  // Dados do GET /home/resumo: nome, propriedade (ou null), talhoes e alertasAtivos.
+  Map<String, dynamic>? _resumo;
+  bool _carregando = true;
+  String? _erro;
+
+  @override
+  void initState() {
+    super.initState();
+    _carregar();
+  }
+
+  Future<void> _carregar() async {
+    setState(() { _carregando = true; _erro = null; });
+    try {
+      final resumo = widget.carregarResumo != null
+          ? await widget.carregarResumo!()
+          : await ApiSentinela().request('GET', '/home/resumo');
+      if (mounted) setState(() { _resumo = resumo as Map<String, dynamic>; _carregando = false; });
+    } on ApiException catch (e) {
+      if (mounted) setState(() { _erro = e.mensagem; _carregando = false; });
+    } catch (_) {
+      if (mounted) setState(() { _erro = 'Não foi possível carregar o resumo.'; _carregando = false; });
+    }
+  }
+
+  String get _saudacao {
+    final hora = DateTime.now().hour;
+    final periodo = hora >= 5 && hora < 12 ? 'Bom dia' : hora >= 12 && hora < 18 ? 'Boa tarde' : 'Boa noite';
+    final nome = (_resumo?['nome'] as String?)?.trim() ?? '';
+    return '$periodo, ${nome.isEmpty ? 'produtor' : nome}!';
+  }
+
+  String _doisDigitos(dynamic valor) => (valor is int ? valor : 0).toString().padLeft(2, '0');
+
+  Future<void> _cadastrarPropriedade() async {
+    await Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaNovaPropriedade()));
+    _carregar();
+  }
+
+  Widget _cardMensagem({required IconData icone, required String texto, required String botao, required VoidCallback onPressed}) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF7F9F7),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: const Color(0xFFE5EBE6)),
+      ),
+      child: Column(
+        children: [
+          Icon(icone, color: const Color(0xFF00501E), size: 32),
+          const SizedBox(height: 10),
+          Text(texto, textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Color(0xFF00501E))),
+          const SizedBox(height: 14),
+          ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF00501E),
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+            ),
+            child: Text(botao),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +148,9 @@ class _TelaHomeState extends State<TelaHome> {
               const SizedBox(height: 12),
 
               // 2. SAUDAÇÃO
-              const Text(
-                'Bom dia, produtor!',
-                style: TextStyle(
+              Text(
+                _saudacao,
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF00501E),
@@ -93,6 +168,17 @@ class _TelaHomeState extends State<TelaHome> {
               const SizedBox(height: 20),
 
               // 3. CARD DE RESUMO DA PROPRIEDADE
+              if (_carregando)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 32),
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              else if (_erro != null)
+                _cardMensagem(icone: Icons.cloud_off_rounded, texto: _erro!, botao: 'Tentar novamente', onPressed: _carregar)
+              else if (_resumo?['propriedade'] == null)
+                _cardMensagem(icone: Icons.home_work_outlined, texto: 'Cadastre sua primeira propriedade',
+                  botao: 'Cadastrar propriedade', onPressed: _cadastrarPropriedade)
+              else
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
@@ -127,26 +213,20 @@ class _TelaHomeState extends State<TelaHome> {
                             border: Border.all(color: const Color(0xFFD3E4D5)),
                           ),
                           child: Row(
-                            children: const [
-                              Icon(
+                            children: [
+                              const Icon(
                                 Icons.home_outlined,
                                 size: 14,
                                 color: Color(0xFF00501E),
                               ),
-                              SizedBox(width: 6),
+                              const SizedBox(width: 6),
                               Text(
-                                'Fazenda Boa Vista',
-                                style: TextStyle(
+                                (_resumo!['propriedade'] as Map<String, dynamic>)['nome'] as String,
+                                style: const TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xFF00501E),
                                 ),
-                              ),
-                              SizedBox(width: 4),
-                              Icon(
-                                Icons.keyboard_arrow_down,
-                                size: 16,
-                                color: Color(0xFF00501E),
                               ),
                             ],
                           ),
@@ -183,8 +263,8 @@ class _TelaHomeState extends State<TelaHome> {
                                 const SizedBox(width: 12),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
-                                    Text(
+                                  children: [
+                                    const Text(
                                       'Talhões',
                                       style: TextStyle(
                                         fontSize: 10,
@@ -193,8 +273,8 @@ class _TelaHomeState extends State<TelaHome> {
                                       ),
                                     ),
                                     Text(
-                                      '08',
-                                      style: TextStyle(
+                                      _doisDigitos(_resumo!['talhoes']),
+                                      style: const TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
                                         color: Color(0xFF00501E),
@@ -232,8 +312,8 @@ class _TelaHomeState extends State<TelaHome> {
                                 const SizedBox(width: 12),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
-                                    Text(
+                                  children: [
+                                    const Text(
                                       'Alertas ativos',
                                       style: TextStyle(
                                         fontSize: 10,
@@ -242,8 +322,8 @@ class _TelaHomeState extends State<TelaHome> {
                                       ),
                                     ),
                                     Text(
-                                      '03',
-                                      style: TextStyle(
+                                      _doisDigitos(_resumo!['alertasAtivos']),
+                                      style: const TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
                                         color: Color(0xFFD96B27),
