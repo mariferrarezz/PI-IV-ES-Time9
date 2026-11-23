@@ -16,7 +16,7 @@ type RegistroTalhao = import("../src/modules/talhoes/talhoes.model").RegistroTal
 
 test("Cadastro de talhões pela API com Java e persistência simulados", async t => {
   const dono = new Types.ObjectId(), outro = new Types.ObjectId(), id = new Types.ObjectId();
-  const pai = { _id: id, usuarioId: dono, nome: "Propriedade", municipio: "Cidade", estado: "SP",
+  const pai = { _id: id, usuarioId: dono, nome: "Propriedade", municipio: "Cidade", estado: "SP" as const,
     ativa: true, areaTotalHa: 10, criadoEm: new Date(), atualizadoEm: new Date() };
   const session = {} as ClientSession;
   const documentos: RegistroTalhao[] = [];
@@ -26,12 +26,20 @@ test("Cadastro de talhões pela API com Java e persistência simulados", async t
   let entradaJava: unknown[] = [];
   let erroPersistencia: unknown;
   const eventos: string[] = [];
-  const propriedades = {
+  const propriedades: PropriedadesRepository = {
     async buscarPorId(propriedadeId: Types.ObjectId, usuarioId: Types.ObjectId) {
       eventos.push("autorizar");
       return propriedadeId.equals(id) && usuarioId.equals(dono) ? pai : null;
     },
-  } as PropriedadesRepository;
+    async criar() { throw new Error("CRIACAO_NAO_ESPERADA_NESTE_TESTE"); },
+    async listarPorUsuario() { throw new Error("LISTAGEM_NAO_ESPERADA_NESTE_TESTE"); },
+    async buscarParaAtualizacao() { throw new Error("ATUALIZACAO_NAO_ESPERADA_NESTE_TESTE"); },
+    async atualizar() { throw new Error("ATUALIZACAO_NAO_ESPERADA_NESTE_TESTE"); },
+    async excluir() { throw new Error("EXCLUSAO_NAO_ESPERADA_NESTE_TESTE"); },
+    async temTalhoes() { throw new Error("CONSULTA_NAO_ESPERADA_NESTE_TESTE"); },
+    async areaAtivaExcede() { throw new Error("CONSULTA_NAO_ESPERADA_NESTE_TESTE"); },
+    async comTransacao() { throw new Error("TRANSACAO_NAO_ESPERADA_NESTE_TESTE"); },
+  };
   const talhoes: TalhoesRepository = {
     async listarPorPropriedade(propriedadeId) {
       return documentos.filter(documento => documento.propriedadeId.equals(propriedadeId));
@@ -49,7 +57,10 @@ test("Cadastro de talhões pela API com Java e persistência simulados", async t
     async criar(propriedadeId, dados, sessao) {
       eventos.push("criar"); assert.equal(sessao, session);
       if (erroPersistencia) throw erroPersistencia;
-      const documento = { ...dados, propriedadeId, _id: new Types.ObjectId(), criadoEm: new Date(), atualizadoEm: new Date() } as RegistroTalhao;
+      assert.equal(typeof dados.nome, "string"); assert.equal(typeof dados.areaHa, "number");
+      assert(dados.nome !== undefined && dados.areaHa !== undefined, "Java deve aprovar os campos obrigatórios antes da criação");
+      const documento: RegistroTalhao = { ...dados, nome: dados.nome, areaHa: dados.areaHa, ativo: dados.ativo ?? true,
+        propriedadeId, _id: new Types.ObjectId(), criadoEm: new Date(), atualizadoEm: new Date() };
       documentos.push(documento);
       return documento;
     },

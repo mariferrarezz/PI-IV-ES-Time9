@@ -9,6 +9,7 @@ public class Servidor {
         // Confira a quantidade de argumentos.
         if (args.length > 1) {
             System.out.println("Uso esperado: java -cp servidor-java/out sentinela.servidor.Servidor [PORTA]");
+            System.exit(1);
             return;
         }
 
@@ -19,6 +20,7 @@ public class Servidor {
                 porta = Integer.parseInt(args[0]);
             } catch (NumberFormatException e) {
                 System.out.println("A porta deve ser um número inteiro.");
+                System.exit(1);
                 return;
             }
         }
@@ -26,6 +28,7 @@ public class Servidor {
         // Valide a faixa permitida.
         if (porta < 1 || porta > 65535) {
             System.out.println("A porta deve estar entre 1 e 65535.");
+            System.exit(1);
             return;
         }
 
@@ -39,6 +42,7 @@ public class Servidor {
             System.out.println("Servidor aguardando conexões na porta " + porta + ".");
         } catch (IOException e) {
             System.err.println("Não foi possível abrir a porta " + porta + ": " + e.getMessage());
+            System.exit(1);
         }
     }
 }

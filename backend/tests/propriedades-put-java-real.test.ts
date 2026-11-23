@@ -21,7 +21,12 @@ test("PUT HTTP → service → TCP → Java real, com persistência simulada", a
     areaTotalHa: mongo.Decimal128.fromString("0.5"), observacoes: " Obs\\n\t\r\nFim ",
     ativa: false, criadoEm: new Date(1), atualizadoEm: new Date(10) };
   let escritas = 0, transacoes = 0, duranteJava: (() => void) | undefined;
+  const criacoes: object[] = [];
   const repo = {
+    async criar(dono: Types.ObjectId, dados: object) {
+      const registro = { ...dados, _id: new Types.ObjectId(), usuarioId: dono };
+      criacoes.push(registro); return registro;
+    },
     async buscarParaAtualizacao() { return mongo.BSON.deserialize(mongo.BSON.serialize(doc), { promoteLongs: false }); },
     async atualizar(_id: unknown, _dono: unknown, patch: object, _session: unknown, controle: any) {
       assert(mesmaImagem(doc, controle.imagem));
@@ -73,6 +78,29 @@ test("PUT HTTP → service → TCP → Java real, com persistência simulada", a
         const r = await put("Nao gravar");
         assert.equal(r.status, 503); assert.equal(r.dados.codigo, "JAVA_INDISPONIVEL");
         assert.equal(escritas, antes); assert.equal(transacoes, tx);
+      } finally {
+        if (host === undefined) delete process.env.JAVA_HOST; else process.env.JAVA_HOST = host;
+        if (anterior === undefined) delete process.env.JAVA_PORT; else process.env.JAVA_PORT = anterior;
+      }
+    });
+    await t.test("POST HTTP usa Java real e persiste somente após aprovação", async () => {
+      const r = await fetch(`http://127.0.0.1:${port}/propriedades`, { method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer TOKEN_SIMULADO" },
+        body: JSON.stringify({ nome: "  Propriedade  ", municipio: "Cidade", estado: "SP" }), signal: AbortSignal.timeout(6000) });
+      assert.equal(r.status, 201); const dados = await r.json() as any;
+      assert.equal(dados.nome, "Propriedade"); assert.equal(criacoes.length, 1);
+    });
+    await t.test("POST HTTP com Java indisponível não cria registro", async () => {
+      const reserva = createServer(); reserva.listen(0, "127.0.0.1"); await once(reserva, "listening");
+      const porta = (reserva.address() as { port: number }).port;
+      await new Promise<void>(resolve => reserva.close(() => resolve()));
+      const host = process.env.JAVA_HOST, anterior = process.env.JAVA_PORT, total = criacoes.length;
+      try {
+        process.env.JAVA_HOST = "127.0.0.1"; process.env.JAVA_PORT = String(porta);
+        const r = await fetch(`http://127.0.0.1:${port}/propriedades`, { method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: "Bearer TOKEN_SIMULADO" },
+          body: JSON.stringify({ nome: "Propriedade", municipio: "Cidade", estado: "SP" }), signal: AbortSignal.timeout(6000) });
+        assert.equal(r.status, 503); assert.equal(criacoes.length, total);
       } finally {
         if (host === undefined) delete process.env.JAVA_HOST; else process.env.JAVA_HOST = host;
         if (anterior === undefined) delete process.env.JAVA_PORT; else process.env.JAVA_PORT = anterior;

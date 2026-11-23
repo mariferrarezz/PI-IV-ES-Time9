@@ -10,7 +10,9 @@ const { criarApp } = require("../src/app") as typeof import("../src/app");
 const { criarPropriedadesService } = require("../src/modules/propriedades/propriedades.service") as typeof import("../src/modules/propriedades/propriedades.service");
 const { JavaIndisponivelError } = require("../src/services/validacao-java.service") as typeof import("../src/services/validacao-java.service");
 type Repo = import("../src/modules/propriedades/propriedades.repository").PropriedadesRepository;
-type Registro = import("../src/modules/propriedades/propriedades.model").RegistroPropriedade;
+type Registro = import("../src/modules/propriedades/propriedades.schema").CriarPropriedadeDto & {
+  _id: Types.ObjectId; usuarioId: Types.ObjectId; ativa: boolean; criadoEm: Date; atualizadoEm: Date;
+};
 
 test("POST propriedades: preparação, Java e bloqueio de escritas com mocks", async t => {
   const usuarioId = new Types.ObjectId();
@@ -19,17 +21,21 @@ test("POST propriedades: preparação, Java e bloqueio de escritas com mocks", a
   let entradaJava: unknown[] = [];
   let falha: "invalido" | "indisponivel" | "inesperado" | undefined;
   const eventos: string[] = [];
-  const repo = {
-    async criar(dono: Types.ObjectId, dados: object) {
+  const repo: Repo = {
+    async criar(dono, dados) {
       eventos.push("gravar");
-      const doc = { ...dados, usuarioId: dono, _id: new Types.ObjectId(), criadoEm: new Date(), atualizadoEm: new Date() } as Registro;
+      const doc: Registro = { ...dados, ativa: dados.ativa ?? true, usuarioId: dono, _id: new Types.ObjectId(), criadoEm: new Date(), atualizadoEm: new Date() };
       documentos.push(doc); return doc;
     },
     async buscarPorId() { return documentos[0]; },
     async buscarParaAtualizacao() { return documentos[0]; },
-    async atualizar(_id: unknown, dono: unknown, dados: object) { return { ...documentos[0], ...dados }; },
-    async comTransacao(acao: (session: object) => Promise<unknown>) { return acao({}); },
-  } as unknown as Repo;
+    async atualizar(_id, dono, dados) { return { ...documentos[0], ...dados }; },
+    async comTransacao(acao) { return acao({} as import("mongoose").ClientSession); },
+    async listarPorUsuario() { throw new Error("LISTAGEM_NAO_ESPERADA_NESTE_TESTE"); },
+    async excluir() { throw new Error("EXCLUSAO_NAO_ESPERADA_NESTE_TESTE"); },
+    async temTalhoes() { throw new Error("CONSULTA_NAO_ESPERADA_NESTE_TESTE"); },
+    async areaAtivaExcede() { throw new Error("CONSULTA_NAO_ESPERADA_NESTE_TESTE"); },
+  };
   const service = criarPropriedadesService(repo, {
     async buscarPorFirebaseUid(uid) { eventos.push("perfil"); return uid === "sem-perfil" ? null : { _id: usuarioId }; },
   }, async (...entrada) => {

@@ -35,7 +35,7 @@ public final class ValidadorImagens {
         if (valor == null || valor.codePointCount(0, valor.length()) > 2048) return false;
         try {
             URI uri = new URI(valor);
-            return "https".equalsIgnoreCase(uri.getScheme()) && uri.getHost() != null;
+            return "https".equals(uri.getScheme()) && uri.getHost() != null;
         } catch (Exception e) { return false; }
     }
 }

@@ -10,7 +10,7 @@ const talhaoSchema = new Schema({
     validate: (valor: string) => /\S/u.test(valor) && [...valor].length <= 5000 },
   ativo: { type: Boolean, required: true, default: true },
 }, {
-  collection: "talhoes", timestamps: { createdAt: "criadoEm", updatedAt: "atualizadoEm" },
+  collection: "talhoes", timestamps: { createdAt: "criadoEm", updatedAt: "atualizadoEm" } as const,
   versionKey: false, strict: "throw", autoIndex: false, autoCreate: false, bufferCommands: false,
 });
 

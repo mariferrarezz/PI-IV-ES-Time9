@@ -15,7 +15,7 @@ const propriedadeSchema = new Schema(
     areaTotalHa: { type: Number, validate: (valor: number) => Number.isFinite(valor) && valor > 0 },
     ativa: { type: Boolean, required: true, default: true },
   },
-  { collection: "propriedades", timestamps: { createdAt: "criadoEm", updatedAt: "atualizadoEm" },
+  { collection: "propriedades", timestamps: { createdAt: "criadoEm", updatedAt: "atualizadoEm" } as const,
     versionKey: false, strict: "throw", autoIndex: false, autoCreate: false, bufferCommands: false },
 );
 
