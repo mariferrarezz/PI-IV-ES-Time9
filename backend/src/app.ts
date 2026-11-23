@@ -21,12 +21,15 @@ import { criarTratamentosRoutes } from './modules/ocorrencias/tratamentos.routes
 import { criarComunidadeRoutes } from './modules/comunidade/comunidade.routes';
 import { criarValidacaoCadastroRoutes } from './modules/auth/validacao-cadastro.routes';
 import { AuthRepository } from './modules/auth/auth.repository';
+import { criarHomeRoutes } from './modules/home/home.routes';
+import { HomeService, homeService } from './modules/home/home.service';
 
 // Dependências explícitas permitem testes isolados; não existe chave de ambiente para pular autenticação.
 export function criarApp(dependencias: {
   service?: PropriedadesService; auth?: AuthService; culturas?: CulturasService; verificarToken?: VerificarToken; bancoDisponivel?: () => boolean;
   talhoesService?: TalhoesService;
   validacaoCadastroRepo?: AuthRepository;
+  home?: HomeService;
 } = {}) {
   const app = express();
   const bancoDisponivel = dependencias.bancoDisponivel || databaseReady;
@@ -44,6 +47,7 @@ export function criarApp(dependencias: {
   app.use(criarAutenticacao(dependencias.verificarToken));
   app.use((_req, _res, next) => bancoDisponivel() ? next() : next(new DatabaseUnavailableError()));
   app.use("/auth", criarAuthRoutes(dependencias.auth || authService));
+  app.use("/home", criarHomeRoutes(dependencias.home || homeService));
   app.use("/culturas", criarCulturasRoutes(dependencias.culturas || culturasService));
   app.get('/culturas/:culturaId/problemas', async (req, res) => { res.json(await problemasService.listar(String(req.params.culturaId))); });
   app.use("/propriedades", criarPropriedadesRoutes(dependencias.service || propriedadesService));
