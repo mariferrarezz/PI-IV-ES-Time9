@@ -55,7 +55,7 @@ class _CatalogoFerrugemAsiaticaDaSojaState extends State<CatalogoFerrugemAsiatic
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/ferrugem_asiatica_da_soja.png',
+                        'assets/images/doencas/Ferrugem_asiatica_soja.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

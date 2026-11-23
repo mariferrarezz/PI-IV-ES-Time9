@@ -55,7 +55,7 @@ class _CatalogoSigatokaNegraState extends State<CatalogoSigatokaNegra> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/sigatoka_negra.png',
+                        'assets/images/doencas/sigatoka_negra.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

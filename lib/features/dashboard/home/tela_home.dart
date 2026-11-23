@@ -402,6 +402,7 @@ class _TelaHomeState extends State<TelaHome> {
               // 5. CARDS DE PRAGAS E DOENÇAS
               _buildPragaCard(
                 titulo: 'Ferrugem asiática da soja',
+                imagemPath: 'assets/images/doencas/Ferrugem_asiatica_soja.png',
                 tipo: 'DOENÇA',
                 tipoCor: const Color(0xFFD3E4D5),
                 tipoTextColor: const Color(0xFF00501E),
@@ -411,6 +412,7 @@ class _TelaHomeState extends State<TelaHome> {
               const SizedBox(height: 12),
               _buildPragaCard(
                 titulo: 'Lagarta-do-cartucho',
+                imagemPath: 'assets/images/pragas/lagarta_cartucho.png',
                 tipo: 'PRAGA',
                 tipoCor: const Color(0xFFF3E6E0),
                 tipoTextColor: const Color(0xFFD96B27),
@@ -420,6 +422,7 @@ class _TelaHomeState extends State<TelaHome> {
               const SizedBox(height: 12),
               _buildPragaCard(
                 titulo: 'Oídio',
+                imagemPath: 'assets/images/doencas/oidio.png',
                 tipo: 'DOENÇA',
                 tipoCor: const Color(0xFFD3E4D5),
                 tipoTextColor: const Color(0xFF00501E),
@@ -507,6 +510,7 @@ class _TelaHomeState extends State<TelaHome> {
     required Color tipoTextColor,
     required String descricao,
     required String acao,
+    required String imagemPath,
   }) {
     return GestureDetector(
       onTap: () => abrirFichaCatalogo(context, titulo),
@@ -526,14 +530,19 @@ class _TelaHomeState extends State<TelaHome> {
       ),
       child: Row(
         children: [
-          Container(
-            width: 75,
-            height: 75,
-            decoration: BoxDecoration(
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              width: 75,
+              height: 75,
               color: const Color(0xFFD3E4D5),
-              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                imagemPath,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.image_outlined, color: Color(0xFF00501E)),
+              ),
             ),
-            child: const Icon(Icons.image_outlined, color: Color(0xFF00501E)),
           ),
           const SizedBox(width: 14),
           Expanded(

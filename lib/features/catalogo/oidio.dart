@@ -55,7 +55,7 @@ class _CatalogoOidioState extends State<CatalogoOidio> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/oidio.png',
+                        'assets/images/doencas/oidio.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

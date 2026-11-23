@@ -55,7 +55,7 @@ class _CatalogoAlternarioseQueimaDasFolhasState extends State<CatalogoAlternario
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/alternariose_queima_das_folhas.png',
+                        'assets/images/doencas/alternariose.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

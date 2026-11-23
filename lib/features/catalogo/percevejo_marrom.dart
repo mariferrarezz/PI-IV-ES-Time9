@@ -55,7 +55,7 @@ class _CatalogoPercevejoMarromState extends State<CatalogoPercevejoMarrom> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/percevejo_marrom.png',
+                        'assets/images/pragas/percevejo_marrom.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

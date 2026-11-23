@@ -55,7 +55,7 @@ class _CatalogoPintaPretaState extends State<CatalogoPintaPreta> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/pinta_preta.png',
+                        'assets/images/doencas/pinta_preta.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

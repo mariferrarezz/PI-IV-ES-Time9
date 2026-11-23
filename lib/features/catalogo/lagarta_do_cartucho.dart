@@ -55,7 +55,7 @@ class _CatalogoLagartaDoCartuchoState extends State<CatalogoLagartaDoCartucho> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/lagarta_do_cartucho.png',
+                        'assets/images/pragas/lagarta_cartucho.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

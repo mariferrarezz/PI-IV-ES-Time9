@@ -55,7 +55,7 @@ class _CatalogoManchaAlvoState extends State<CatalogoManchaAlvo> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/mancha_alvo.png',
+                        'assets/images/doencas/mancha_alvo.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

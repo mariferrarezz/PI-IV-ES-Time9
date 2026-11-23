@@ -55,7 +55,7 @@ class _CatalogoRequeimaState extends State<CatalogoRequeima> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/requeima.png',
+                        'assets/images/doencas/requeima.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

@@ -55,7 +55,7 @@ class _CatalogoFerrugemDoCafeeiroState extends State<CatalogoFerrugemDoCafeeiro>
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/ferrugem_do_cafeeiro.png',
+                        'assets/images/doencas/ferrugem_cafeeiro.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

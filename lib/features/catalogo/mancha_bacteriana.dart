@@ -55,7 +55,7 @@ class _CatalogoManchaBacterianaState extends State<CatalogoManchaBacteriana> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/mancha_bacteriana.png',
+                        'assets/images/doencas/mancha_bacteriana.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

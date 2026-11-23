@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sentinela/features/catalogo/fichas_catalogo.dart';
@@ -9,6 +11,18 @@ import 'package:sentinela/features/dashboard/home/tela_home.dart';
 void main() {
   test('todas as 40 pragas e doenças do catálogo têm ficha', () {
     expect(fichasCatalogo.length, 40);
+  });
+
+  test('a imagem de cada ficha do catálogo existe em assets', () {
+    final fichas = Directory('lib/features/catalogo').listSync().whereType<File>()
+        .where((f) => f.path.endsWith('.dart') && !f.path.endsWith('tela_catalogo.dart') && !f.path.endsWith('fichas_catalogo.dart'));
+    final faltando = <String>[];
+    for (final f in fichas) {
+      for (final m in RegExp(r"'(assets/images/[^']+)'").allMatches(f.readAsStringSync())) {
+        if (!File(m.group(1)!).existsSync()) faltando.add('${f.path}: ${m.group(1)}');
+      }
+    }
+    expect(faltando, isEmpty);
   });
 
   testWidgets('cartão da home abre a ficha específica no catálogo', (tester) async {

@@ -55,7 +55,7 @@ class _CatalogoGreeningHlbState extends State<CatalogoGreeningHlb> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/greening_hlb.png',
+                        'assets/images/doencas/greening.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

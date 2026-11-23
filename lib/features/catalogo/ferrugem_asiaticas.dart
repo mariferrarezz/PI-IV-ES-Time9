@@ -78,7 +78,7 @@ class _CatalogoFerrugemAsiaticaState extends State<CatalogoFerrugemAsiaticas> {
                     children: [
                       // Imagem de fundo
                       Image.asset(
-                        'assets/images/ferrugem_asiatica_soja.png',
+                        'assets/images/doencas/Ferrugem_asiatica_soja.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(

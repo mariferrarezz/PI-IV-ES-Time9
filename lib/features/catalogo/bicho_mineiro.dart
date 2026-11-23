@@ -55,7 +55,7 @@ class _CatalogoBichoMineiroState extends State<CatalogoBichoMineiro> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/bicho_mineiro.png',
+                        'assets/images/pragas/bicho_mineiro.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

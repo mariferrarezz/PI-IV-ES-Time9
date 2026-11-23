@@ -67,7 +67,7 @@ class _CatalogoAcaroRajadoState extends State<CatalogoAcaroRajado> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/acaro_rajado.png',
+                        'assets/images/pragas/acaro_rajado.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),
