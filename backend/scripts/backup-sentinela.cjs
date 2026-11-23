@@ -1,4 +1,4 @@
-// Backup local de todas as coleções antes da análise de duplicados; não remove dados.
+// Backup local de todas as coleções (grava em backups-sentinela/, fora do Git); não remove dados.
 require('dotenv').config();
 const mongoose = require('mongoose');
 const fs = require('node:fs');
