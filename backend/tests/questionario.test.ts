@@ -41,12 +41,6 @@ function repoEmMemoria() {
   const repo: Repo = {
     async indicesUnicosProntos() { return true; },
     async existeOutroComCampo(campo, valor, excetoUid) { return perfis.some(p => p[campo] === valor && p.firebaseUid !== excetoUid); },
-    async atualizarDadosConta(uid, dados) {
-      const perfil = perfis.find(p => p.firebaseUid === uid);
-      if (!perfil) return null;
-      Object.assign(perfil, dados);
-      return perfil;
-    },
     async buscarPorFirebaseUid(uid) { return perfis.find(p => p.firebaseUid === uid) ?? null; },
     async criar(dados) {
       const agora = new Date();
@@ -259,7 +253,6 @@ test("POST /auth/questionario devolve 409 se outro envio gravou primeiro (corrid
     async criar() { throw new Error("não usado"); },
     async salvarQuestionario() { return null; },
     async atualizarNomePublico() { return null; },
-    async atualizarDadosConta() { return null; },
   }, culturasEmMemoria(), javaSimulado().java);
   await assert.rejects(corrida.responderQuestionario("uid-maria", respostas),
     (erro: any) => erro.statusCode === 409 && erro.code === "QUESTIONARIO_JA_RESPONDIDO");

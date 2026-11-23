@@ -5,7 +5,7 @@ import { TERMOS_VERSAO_VIGENTE } from "../../config/termos";
 import { QUESTIONARIO_VERSAO_VIGENTE } from "../../config/questionario";
 import { CulturasRepository, culturasRepository } from "../catalogo/culturas.repository";
 import { AuthRepository, PerfilUsuario, authRepository } from "./auth.repository";
-import { atualizarPerfilSchema, cadastroEntradaSchema, cadastroSchema, dadosContaSchema, questionarioSchema } from "./auth.schema";
+import { atualizarPerfilSchema, cadastroEntradaSchema, cadastroSchema, questionarioSchema } from "./auth.schema";
 import { verificarDisponibilidade, traduzirConflitoUnico } from './disponibilidade';
 
 const perfilJaExiste = () => new AppError(409, "Perfil já cadastrado", "PERFIL_JA_EXISTE");
@@ -65,23 +65,6 @@ export function criarAuthService(
   java: ValidacoesJava = validacoesJava,
 ) {
   return {
-    async atualizarDadosConta(uid: string, entrada: unknown) {
-      const dados = dadosContaSchema.parse(entrada);
-      const perfil = await usuarios.buscarPorFirebaseUid(uid);
-      if (!perfil) throw perfilNaoEncontrado();
-      if (!perfil.canalCodigoPreferido) throw new AppError(409, 'Canal de código não cadastrado no perfil', 'CANAL_AUSENTE');
-      const validacao = await java.validarCadastroPerfil({ nomeCompleto: dados.nomeCompleto, cpf: dados.cpf, telefoneCanonico: dados.telefone, canalCodigoPreferido: perfil.canalCodigoPreferido });
-      if (!validacao.valido) throw new ValidacaoJavaError(validacao.erros);
-      const validado = cadastroSchema.parse({ ...dados, canalCodigoPreferido: perfil.canalCodigoPreferido, aceitouTermos: true });
-      await verificarDisponibilidade(usuarios, 'cpf', validado.cpf, uid);
-      await verificarDisponibilidade(usuarios, 'telefone', validado.telefone, uid);
-      if (!(await usuarios.indicesUnicosProntos())) throw new AppError(503, 'Cadastro indisponível: índices únicos de CPF e telefone ainda não estão ativos.', 'INDICES_USUARIO_INDISPONIVEIS');
-      let atualizado;
-      try { atualizado = await usuarios.atualizarDadosConta(uid, { nomeCompleto: validado.nomeCompleto, cpf: validado.cpf, telefone: validado.telefone }); }
-      catch (erro) { traduzirConflitoUnico(erro); }
-      if (!atualizado) throw perfilNaoEncontrado();
-      return paraResposta(atualizado);
-    },
     async cadastrar(uid: string, entrada: unknown) {
       const dados = cadastroEntradaSchema.parse(entrada);
       if (await usuarios.buscarPorFirebaseUid(uid)) throw perfilJaExiste();

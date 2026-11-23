@@ -45,7 +45,6 @@ export interface AuthRepository {
   salvarQuestionario(uid: string, questionario: Questionario): Promise<PerfilUsuario | null>;
   // null apaga o nome público. Devolve null se o perfil não existe.
   atualizarNomePublico(uid: string, nomePublico: string | null): Promise<PerfilUsuario | null>;
-  atualizarDadosConta(uid: string, dados: Pick<PerfilUsuario, 'nomeCompleto' | 'cpf' | 'telefone'>): Promise<PerfilUsuario | null>;
 }
 
 const CAMPOS_PERFIL = "_id firebaseUid nomeCompleto nomePublico cpf telefone termos canalCodigoPreferido questionario criadoEm atualizadoEm";
@@ -60,10 +59,6 @@ export const authRepository: AuthRepository = {
   },
   async existeOutroComCampo(campo, valor, excetoUid) {
     return Boolean(await UsuarioModel.exists({ [campo]: valor, ...(excetoUid ? { firebaseUid: { $ne: excetoUid } } : {}) }));
-  },
-  async atualizarDadosConta(uid, dados) {
-    return UsuarioModel.findOneAndUpdate({ firebaseUid: uid }, { $set: dados },
-      { new: true, runValidators: true, projection: CAMPOS_PERFIL }).lean<PerfilUsuario>();
   },
   async buscarPorFirebaseUid(uid) {
     return UsuarioModel.findOne({ firebaseUid: uid }, CAMPOS_PERFIL).lean<PerfilUsuario>();

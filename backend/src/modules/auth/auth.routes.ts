@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validateBody } from "../../middlewares/validate";
 import { criarAuthController } from "./auth.controller";
-import { atualizarPerfilSchema, cadastroEntradaSchema, dadosContaSchema, questionarioSchema } from "./auth.schema";
+import { atualizarPerfilSchema, cadastroEntradaSchema, questionarioSchema } from "./auth.schema";
 import { AuthService, authService } from "./auth.service";
 
 export function criarAuthRoutes(service: AuthService = authService) {
@@ -12,6 +12,5 @@ export function criarAuthRoutes(service: AuthService = authService) {
   authRoutes.get("/me", controller.meuPerfil);
   authRoutes.post("/questionario", validateBody(questionarioSchema), controller.responderQuestionario);
   authRoutes.patch("/perfil", validateBody(atualizarPerfilSchema), controller.atualizarPerfil);
-  authRoutes.patch("/dados-conta", validateBody(dadosContaSchema), controller.atualizarDadosConta);
   return authRoutes;
 }

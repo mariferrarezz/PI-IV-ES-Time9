@@ -99,9 +99,3 @@ export const atualizarPerfilSchema = z.object({
 
 export type AtualizarPerfilDto = z.infer<typeof atualizarPerfilSchema>;
 
-// Tipos e normalização apenas; as regras de nome, CPF e telefone são aplicadas pelo Java.
-export const dadosContaSchema = z.object({
-  nomeCompleto: z.string().max(1000).transform(valor => valor.trim()),
-  cpf: z.string().max(1000).transform(somenteDigitos),
-  telefone: z.string().max(1000).transform(prepararTelefone),
-}).strict();
