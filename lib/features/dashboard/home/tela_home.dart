@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sentinela/navegacao.dart';
 import 'package:sentinela/features/catalogo/tela_catalogo.dart';
+import 'package:sentinela/features/catalogo/fichas_catalogo.dart';
 import 'package:sentinela/features/propriedades/tela_nova_propriedade.dart';
 import 'package:sentinela/services/api_sentinela.dart';
 
@@ -507,7 +508,9 @@ class _TelaHomeState extends State<TelaHome> {
     required String descricao,
     required String acao,
   }) {
-    return Container(
+    return GestureDetector(
+      onTap: () => abrirFichaCatalogo(context, titulo),
+      child: Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -600,6 +603,7 @@ class _TelaHomeState extends State<TelaHome> {
           ),
         ],
       ),
+    ),
     );
   }
 
