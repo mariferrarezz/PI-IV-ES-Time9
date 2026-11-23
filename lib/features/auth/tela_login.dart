@@ -58,17 +58,17 @@ class _TelaLoginState extends State<TelaLogin> {
     } on FirebaseAuthException catch (erro) {
       if (!mounted) return;
       final mensagem = switch (erro.code) {
-        'invalid-email' => 'Informe um e-mail valido.',
-        'network-request-failed' => 'Nao foi possivel acessar o Firebase. Verifique a conexao.',
+        'invalid-email' => 'Informe um e-mail válido.',
+        'network-request-failed' => 'Não foi possível acessar o Firebase. Verifique a conexão.',
         'too-many-requests' => 'Muitas tentativas. Tente novamente mais tarde.',
         'user-disabled' => 'Esta conta foi desativada.',
-        _ => 'Nao foi possivel entrar. Confira o e-mail e a senha.',
+        _ => 'Não foi possível entrar. Confira o e-mail e a senha.',
       };
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mensagem)));
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Servico de autenticacao indisponivel.')),
+        const SnackBar(content: Text('Serviço de autenticação indisponível.')),
       );
     } finally {
       if (mounted) setState(() => _entrando = false);

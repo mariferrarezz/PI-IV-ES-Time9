@@ -108,7 +108,7 @@ class _TelaRecuperarSenhaState extends State<TelaRecuperarSenha> {
                     const SizedBox(height: 6),
 
                     const Text(
-                      'Use o mesmo email que voce usou para cadastrar no Sentinela.',
+                      'Use o mesmo e-mail que você usou para se cadastrar no Sentinela.',
                       style: TextStyle(
                         fontSize: 13,
                         color: Color(0xFF66806E),
