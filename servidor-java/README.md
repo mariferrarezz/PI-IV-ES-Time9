@@ -587,11 +587,42 @@ java -cp servidor-java/out sentinela.servidor.Servidor 8080
 
 O processo permanece aguardando conexões; use Ctrl+C para encerrar. Os `.class` ficam somente em `out/`, ignorado pelo Git, assim como `*.class`. Não compile diretamente dentro de `src/`.
 
+Argumentos inválidos e falhas de abertura da porta encerram o processo com código 1,
+mantendo as mensagens de diagnóstico. Zero ou um argumento válido continuam aceitos.
+
+## UTF-8 e limites operacionais
+
+A entrada usa decodificação UTF-8 estrita. Bytes malformados, inclusive sequência
+incompleta ao final do fluxo, encerram somente aquela conexão, sem resposta de
+validação para o pedido corrompido. Não há substituição por caracteres de reposição.
+Outros clientes e novas conexões continuam sendo atendidos. Erros de estrutura de um
+pedido UTF-8 válido continuam recebendo ERRO e permitem novo pedido na mesma conexão.
+Caracteres UTF-8 válidos podem chegar fragmentados entre leituras normalmente.
+
+Fontes exigem prefixo literal `http://` ou `https://`; imagens privadas e fotos
+públicas exigem `https://`. Esquemas maiúsculos ou mistos são rejeitados, sem
+normalização, alinhando os prefixos aos validators MongoDB. As demais regras de URL
+e mensagens permanecem iguais.
+
+Ainda não há limite de conexões/threads, tamanho de pedido ou tempo de leitura.
+O ServerSocket escuta em todas as interfaces; não há autenticação nem TLS neste
+serviço. Usar somente em rede local controlada, com acesso restringido externamente.
+O timeout de três segundos do cliente Node não limita outros clientes do servidor.
+O pedido válido medido tem 3.207.763 bytes; não é um máximo, pois publicId não tem
+teto de negócio. Nenhum limite operacional novo foi escolhido ou aplicado.
+
+Teste de regressão de URLs, inicialização e isolamento de UTF-8 inválido, iniciando
+somente Java temporário em porta própria (sem banco):
+
+```powershell
+node backend/node_modules/tsx/dist/cli.mjs --test backend/tests/servidor-java-real.test.ts
+```
+
 ## Pacotes
 
 - `sentinela.servidor`: `Servidor`, `AceitadoraDeConexao` e `SupervisoraDeConexao`.
-- `sentinela.protocolo`: `ProcessadorDeValidacao` e `CodecDeCampos`.
-- `sentinela.validacao`: `ValidadorTalhao` e `ValidadorPropriedade`, ambos retornando todos os erros em `List<String>`.
+- `sentinela.protocolo`: `ProcessadorDeValidacao`, `CodecDeCampos` e parsers dos contratos compostos.
+- `sentinela.validacao`: validadores de talhões, propriedades, plantações, ocorrências, monitoramentos, tratamentos, avaliações, perfil, questionário, catálogos e Comunidade, além dos objetos de entrada e regras compartilhadas. Os validadores retornam os erros em `List<String>`.
 
 O protocolo continua sendo UTF-8 por linha: `VALIDAR_TALHAO<TAB>nome<TAB>areaHa`. TAB é o caractere real de tabulação; campos não podem conter TAB, CR ou LF. As respostas são `OK` ou `ERRO<TAB>mensagem1<TAB>mensagem2`. Cada conexão aceita múltiplos pedidos e é atendida por sua própria thread.
 
@@ -613,7 +644,7 @@ VALIDAR_PROPRIEDADE<TAB>nome<TAB>municipio<TAB>estado<TAB>areaTotalHa<TAB>observ
 
 O marcador `0` exige o último campo vazio e representa ausência de observações. O marcador `1` representa presença, inclusive texto vazio (que é rejeitado pelo validador). Área vazia representa ausência; preenchida usa `Double.valueOf`. Falha na conversão retorna `A área total deve ser numérica.`, acumulada com os demais erros.
 
-Escapes reversíveis, exclusivos dos campos de `VALIDAR_PROPRIEDADE`:
+Escapes reversíveis dos campos de todos os comandos, exceto o legado `VALIDAR_TALHAO`:
 
 | Caractere original | Sequência transmitida |
 |---|---|

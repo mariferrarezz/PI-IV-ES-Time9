@@ -25,6 +25,18 @@ public class ValidadorCatalogosTest {
         conferir(1, ValidadorFonteConhecimento.validarFonteConhecimento("Título", "Autor", null, ref, ref.minusSeconds(1), ref));
         conferir(2, ValidadorFonteConhecimento.validarFonteConhecimento("Título", "Autor", null, ref.plusSeconds(1), ref.plusSeconds(1), ref));
         conferir(3, ValidadorFonteConhecimento.validarFonteConhecimento(null, null, null, null, null, null));
+        // Exija o prefixo minúsculo sem transformar a URL.
+        for (String esquema : new String[] {"http", "https", "HTTP", "HTTPS", "hTtPs"}) {
+            String url = esquema + "://example.com/a";
+            boolean fonteValida = esquema.equals("http") || esquema.equals("https");
+            conferir(fonteValida ? 0 : 1, ValidadorFonteConhecimento.validarFonteConhecimento(
+                    "Título", "Autor", url, ref, ref, ref));
+            ImagemOcorrencia foto = new ImagemOcorrencia(url, " id ", null, ref);
+            conferir(esquema.equals("https") ? 0 : 1, ValidadorImagens.validar(Arrays.asList(foto), "Limite"));
+            if (RegrasComunidade.https(url) != esquema.equals("https"))
+                throw new AssertionError("Prefixo da foto pública incompatível");
+            total++;
+        }
         System.out.println("OK: " + total + " verificações diretas de catálogos.");
     }
 }
