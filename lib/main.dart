@@ -5,6 +5,7 @@ import 'features/auth/tela_login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sentinela/firebase_options.dart';
+import 'package:sentinela/navegacao.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,7 @@ class MeuApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sentinela',
       debugShowCheckedModeBanner: false,
+      navigatorObservers: [observadorRotasPrincipais],
       theme: ThemeData(colorSchemeSeed: Color(0xFF1B5E20)),
       home: const TelaLogin(),
     );

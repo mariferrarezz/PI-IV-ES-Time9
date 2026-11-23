@@ -14,7 +14,7 @@ class TelaHome extends StatefulWidget {
   State<TelaHome> createState() => _TelaHomeState();
 }
 
-class _TelaHomeState extends State<TelaHome> {
+class _TelaHomeState extends State<TelaHome> with RouteAware {
   // Índice selecionado para a barra de navegação inferior
   final int _currentIndex = 0;
 
@@ -22,6 +22,8 @@ class _TelaHomeState extends State<TelaHome> {
   Map<String, dynamic>? _resumo;
   bool _carregando = true;
   String? _erro;
+  int _versaoCarga = 0;
+  ModalRoute<dynamic>? _rota;
 
   @override
   void initState() {
@@ -29,17 +31,38 @@ class _TelaHomeState extends State<TelaHome> {
     _carregar();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final rota = ModalRoute.of(context);
+    if (rota != _rota) {
+      if (_rota != null) observadorRotasPrincipais.unsubscribe(this);
+      _rota = rota;
+      if (rota != null) observadorRotasPrincipais.subscribe(this, rota);
+    }
+  }
+
+  @override
+  void didPopNext() { _carregar(); }
+
+  @override
+  void dispose() {
+    observadorRotasPrincipais.unsubscribe(this);
+    super.dispose();
+  }
+
   Future<void> _carregar() async {
+    final versao = ++_versaoCarga;
     setState(() { _carregando = true; _erro = null; });
     try {
       final resumo = widget.carregarResumo != null
           ? await widget.carregarResumo!()
           : await ApiSentinela().request('GET', '/home/resumo');
-      if (mounted) setState(() { _resumo = resumo as Map<String, dynamic>; _carregando = false; });
+      if (mounted && versao == _versaoCarga) setState(() { _resumo = resumo as Map<String, dynamic>; _carregando = false; });
     } on ApiException catch (e) {
-      if (mounted) setState(() { _erro = e.mensagem; _carregando = false; });
+      if (mounted && versao == _versaoCarga) setState(() { _erro = e.mensagem; _carregando = false; });
     } catch (_) {
-      if (mounted) setState(() { _erro = 'Não foi possível carregar o resumo.'; _carregando = false; });
+      if (mounted && versao == _versaoCarga) setState(() { _erro = 'Não foi possível carregar o resumo.'; _carregando = false; });
     }
   }
 
@@ -54,7 +77,6 @@ class _TelaHomeState extends State<TelaHome> {
 
   Future<void> _cadastrarPropriedade() async {
     await Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaNovaPropriedade()));
-    _carregar();
   }
 
   Widget _cardMensagem({required IconData icone, required String texto, required String botao, required VoidCallback onPressed}) {

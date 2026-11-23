@@ -5,6 +5,8 @@ import 'features/ocorrencias/tela_registrarOcorrencia.dart';
 import 'features/ocorrencias/tela_comunidade.dart';
 import 'features/auth/perfil/tela_perfil.dart';
 
+final RouteObserver<ModalRoute<dynamic>> observadorRotasPrincipais = RouteObserver<ModalRoute<dynamic>>();
+
 void navegarPrincipal(BuildContext context, int destino, int atual) {
   if (destino == atual) return;
   final navigator = Navigator.of(context);

@@ -1,0 +1,50 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import mongoose, { Types } from 'mongoose';
+
+process.env.MONGODB_URI = 'mongodb://127.0.0.1:1/sentinela';
+process.env.FIREBASE_PROJECT_ID = 'demo-plantacoes';
+const { criarPlantacoesService } = require('../src/modules/plantacoes/plantacoes.service') as typeof import('../src/modules/plantacoes/plantacoes.service');
+const { authRepository } = require('../src/modules/auth/auth.repository') as typeof import('../src/modules/auth/auth.repository');
+const { TalhaoModel } = require('../src/modules/talhoes/talhoes.model') as typeof import('../src/modules/talhoes/talhoes.model');
+const { PropriedadeModel } = require('../src/modules/propriedades/propriedades.model') as typeof import('../src/modules/propriedades/propriedades.model');
+const { PlantacaoModel } = require('../src/modules/plantacoes/plantacoes.model') as typeof import('../src/modules/plantacoes/plantacoes.model');
+const { CulturaModel } = require('../src/modules/catalogo/culturas.model') as typeof import('../src/modules/catalogo/culturas.model');
+
+test('encerramento exige vínculo e preserva os demais campos', async t => {
+  const usuario = new Types.ObjectId(), propriedade = new Types.ObjectId(), talhao = new Types.ObjectId(), plantacao = new Types.ObjectId();
+  const documento = { _id: plantacao, talhaoId: talhao, status: 'ativa', dataPlantio: new Date('2020-01-01T00:00:00Z'), observacoes: 'Histórico' };
+  let dono = true, gravacoes = 0;
+  const query = (valor: unknown) => ({session: () => ({lean: async () => valor})});
+  t.mock.method(authRepository, 'buscarPorFirebaseUid', async () => ({_id: usuario}) as never);
+  t.mock.method(TalhaoModel, 'findById', (() => query({_id: talhao, propriedadeId: propriedade, ativo: true, atualizadoEm: new Date()})) as never);
+  t.mock.method(PropriedadeModel, 'findOne', (() => query(dono ? {_id: propriedade, ativa: true, atualizadoEm: new Date()} : null)) as never);
+  t.mock.method(PlantacaoModel, 'findOne', (() => ({lean: async () => documento, session: () => ({lean: async () => documento})})) as never);
+  const plantacoesService = criarPlantacoesService(async () => ({valido:true, erros:[]}));
+  t.mock.method(mongoose.connection, 'transaction', (async (fn: any) => fn({})) as never);
+  t.mock.method(PlantacaoModel, 'findOneAndUpdate', ((_filtro: any, alteracao: any) => {
+    gravacoes++;
+    assert.deepEqual(Object.keys(alteracao.$set).sort(), ['dataEncerramento', 'status']);
+    assert.equal(alteracao.$set.status, 'encerrada');
+    assert(alteracao.$set.dataEncerramento instanceof Date);
+    documento.status = 'encerrada';
+    return {lean: async () => ({...documento, ...alteracao.$set})};
+  }) as never);
+  dono = false;
+  await assert.rejects(plantacoesService.encerrar('uid', String(talhao), String(plantacao)), (e: any) => e.statusCode === 404 || e.status === 404);
+  assert.equal(gravacoes, 0);
+  dono = true;
+  const encerrada = await plantacoesService.encerrar('uid', String(talhao), String(plantacao));
+  assert.equal(encerrada.status, 'encerrada');
+  assert.equal(encerrada.observacoes, 'Histórico');
+  assert.equal(gravacoes, 1);
+  t.mock.method(CulturaModel, 'exists', (() => ({then: (resolve: any) => resolve(true), session: async () => true})) as never);
+  t.mock.method(PlantacaoModel, 'exists', (() => ({session: async () => documento.status === 'ativa'})) as never);
+  t.mock.method(PropriedadeModel, 'updateOne', (async () => ({matchedCount:1})) as never);
+  t.mock.method(TalhaoModel, 'updateOne', (async () => ({matchedCount:1})) as never);
+  t.mock.method(PlantacaoModel, 'create', (async (itens: any) => [{toObject: () => itens[0]}]) as never);
+  const nova = await plantacoesService.criar('uid', String(talhao), {culturaId: String(new Types.ObjectId()), status:'ativa'});
+  assert.equal(nova.status, 'ativa');
+  assert.equal(documento.status, 'encerrada');
+  assert.equal(documento.observacoes, 'Histórico');
+});

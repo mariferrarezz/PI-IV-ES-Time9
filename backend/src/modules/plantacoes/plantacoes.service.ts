@@ -23,11 +23,15 @@ async function autorizado(talhaoId: Types.ObjectId, uid: string, session?: Clien
   return { talhao, propriedade };
 }
 
-export const plantacoesService = {
+export function criarPlantacoesService(validar = validarPlantacaoNoJava) {
+ return {
   async listar(uid: string, id: string) {
     const talhaoId = objectId(id);
     await autorizado(talhaoId, uid);
-    return PlantacaoModel.find({ talhaoId }).sort({ criadoEm: -1 }).lean();
+    const plantacoes = await PlantacaoModel.find({ talhaoId }).sort({ criadoEm: -1 }).lean();
+    const culturas = await CulturaModel.find({ _id: { $in: plantacoes.map(p => p.culturaId) } }, { nome: 1 }).lean();
+    const nomes = new Map(culturas.map(c => [String(c._id), c.nome]));
+    return plantacoes.map(p => ({ ...p, culturaNome: nomes.get(String(p.culturaId)) ?? null }));
   },
   async criar(uid: string, id: string, entrada: unknown) {
     const talhaoId = objectId(id);
@@ -36,7 +40,7 @@ export const plantacoesService = {
     if (!inicial.talhao.ativo || !inicial.propriedade.ativa) throw new AppError(409, 'Talhão ou propriedade inativa', 'REFERENCIA_INATIVA');
     const culturaId = objectId(dados.culturaId);
     if (!await CulturaModel.exists({ _id: culturaId, ativa: true })) throw new AppError(400, 'Cultura inexistente ou indisponível', 'CULTURA_INDISPONIVEL');
-    const resultado = await validarPlantacaoNoJava(dados, new Date());
+    const resultado = await validar(dados, new Date());
     if (!resultado.valido) throw new ValidacaoJavaError(resultado.erros);
     try {
       return await mongoose.connection.transaction(async session => {
@@ -59,4 +63,32 @@ export const plantacoesService = {
       throw erro;
     }
   },
-};
+  async encerrar(uid: string, id: string, plantacaoTexto: string) {
+    const talhaoId = objectId(id), plantacaoId = objectId(plantacaoTexto);
+    await autorizado(talhaoId, uid);
+    const original = await PlantacaoModel.findOne({ _id: plantacaoId, talhaoId }).lean();
+    if (!original) throw new NotFoundError('Plantação não encontrada');
+    if (original.status !== 'ativa') throw new AppError(409, 'A plantação já está encerrada', 'PLANTACAO_ENCERRADA');
+    const agora = new Date();
+    const resultado = await validar({ status: 'encerrada', dataPlantio: original.dataPlantio ?? undefined, dataEncerramento: agora }, agora);
+    if (!resultado.valido) throw new ValidacaoJavaError(resultado.erros);
+    return mongoose.connection.transaction(async session => {
+      await autorizado(talhaoId, uid, session);
+      const atual = await PlantacaoModel.findOne({ _id: plantacaoId, talhaoId }).session(session).lean();
+      if (!atual) throw new NotFoundError('Plantação não encontrada');
+      if (atual.status !== 'ativa') throw new AppError(409, 'A plantação já está encerrada', 'PLANTACAO_ENCERRADA');
+      if (atual.dataPlantio?.getTime() !== original.dataPlantio?.getTime()) {
+        throw new AppError(409, 'A plantação foi alterada. Atualize os dados e tente novamente.', 'PLANTACAO_ALTERADA');
+      }
+      const encerrada = await PlantacaoModel.findOneAndUpdate(
+        { _id: plantacaoId, talhaoId, status: 'ativa' },
+        { $set: { status: 'encerrada', dataEncerramento: agora } },
+        { new: true, session, runValidators: true },
+      ).lean();
+      if (!encerrada) throw new AppError(409, 'A plantação já está encerrada', 'PLANTACAO_ENCERRADA');
+      return encerrada;
+    });
+  },
+ };
+}
+export const plantacoesService = criarPlantacoesService();

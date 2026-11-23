@@ -2,8 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sentinela/features/dashboard/home/tela_home.dart';
 import 'package:sentinela/services/api_sentinela.dart';
+import 'package:sentinela/navegacao.dart';
 
 void main() {
+  testWidgets('home consulta o resumo novamente ao retornar de outra tela', (tester) async {
+    var chamadas = 0;
+    final navegador = GlobalKey<NavigatorState>();
+    await tester.pumpWidget(MaterialApp(
+      navigatorKey: navegador,
+      navigatorObservers: [observadorRotasPrincipais],
+      home: TelaHome(carregarResumo: () async => {
+        'nome': 'Maria',
+        'propriedade': {'id': 'propriedade-1', 'nome': 'Fazenda Boa Vista', 'municipio': 'Cidade', 'estado': 'SP'},
+        'talhoes': chamadas++ == 0 ? 0 : 1,
+        'alertasAtivos': 0,
+      }),
+    ));
+    await tester.pumpAndSettle();
+    expect(chamadas, 1);
+    expect(find.text('01'), findsNothing);
+    navegador.currentState!.push(MaterialPageRoute<void>(builder: (_) => const Scaffold(body: Text('Talhões'))));
+    await tester.pumpAndSettle();
+    navegador.currentState!.pop();
+    await tester.pumpAndSettle();
+    expect(chamadas, 2);
+    expect(find.text('Fazenda Boa Vista'), findsOneWidget);
+    expect(find.text('01'), findsOneWidget);
+  });
+
   testWidgets('home mostra nome, propriedade, talhões e alertas do resumo', (tester) async {
     await tester.pumpWidget(MaterialApp(home: TelaHome(carregarResumo: () async => {
       'nome': 'Maria',
