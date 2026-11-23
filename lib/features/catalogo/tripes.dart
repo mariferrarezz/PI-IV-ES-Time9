@@ -55,7 +55,7 @@ class _CatalogoTripesState extends State<CatalogoTripes> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/tripes.png',
+                        'assets/images/pragas/tripes.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

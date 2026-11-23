@@ -55,7 +55,7 @@ class _CatalogoManchaBrancaDoMilhoState extends State<CatalogoManchaBrancaDoMilh
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/mancha_branca_do_milho.png',
+                        'assets/images/doencas/mancha_branca_milho.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

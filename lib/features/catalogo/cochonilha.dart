@@ -55,7 +55,7 @@ class _CatalogoCochonilhaState extends State<CatalogoCochonilha> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/cochonilha.png',
+                        'assets/images/pragas/cochonilha.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

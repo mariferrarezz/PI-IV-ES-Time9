@@ -55,7 +55,7 @@ class _CatalogoHelicoverpaState extends State<CatalogoHelicoverpa> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/helicoverpa.png',
+                        'assets/images/pragas/helicoverpa.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

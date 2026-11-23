@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sentinela/features/dashboard/home/tela_home.dart';
+import 'fichas_catalogo.dart';
 
 class TelaCatalogo extends StatefulWidget {
   const TelaCatalogo({super.key});
@@ -1014,7 +1015,9 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
     required String acao,
     required String imagemPath,
   }) {
-    return Container(
+    return GestureDetector(
+      onTap: () => abrirFichaCatalogo(context, titulo),
+      child: Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -1120,6 +1123,7 @@ class _TelaCatalogoState extends State<TelaCatalogo> {
           ),
         ],
       ),
+    ),
     );
   }
 }

@@ -55,7 +55,7 @@ class _CatalogoNematoideDasGalhasState extends State<CatalogoNematoideDasGalhas>
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/nematoide_das_galhas.png',
+                        'assets/images/pragas/nematoide_galhas.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

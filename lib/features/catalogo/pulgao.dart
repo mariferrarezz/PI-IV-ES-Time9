@@ -55,7 +55,7 @@ class _CatalogoPulgaoState extends State<CatalogoPulgao> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/pulgao.png',
+                        'assets/images/pragas/pulgao.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

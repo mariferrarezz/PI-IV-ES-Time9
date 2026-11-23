@@ -55,7 +55,7 @@ class _CatalogoManchaAngularDoFeijoeiroState extends State<CatalogoManchaAngular
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/mancha_angular_do_feijoeiro.png',
+                        'assets/images/doencas/mancha_angular_feijoeiro.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

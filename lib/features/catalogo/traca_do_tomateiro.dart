@@ -55,7 +55,7 @@ class _CatalogoTracaDoTomateiroState extends State<CatalogoTracaDoTomateiro> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/traca_do_tomateiro.png',
+                        'assets/images/pragas/traca_tomateiro.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

@@ -55,7 +55,7 @@ class _CatalogoMurchaDeFusarioState extends State<CatalogoMurchaDeFusario> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/murcha_de_fusario.png',
+                        'assets/images/doencas/murcha_fusario.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

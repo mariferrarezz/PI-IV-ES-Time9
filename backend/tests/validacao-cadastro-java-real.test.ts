@@ -20,7 +20,7 @@ test('pré-cadastro valida no Java real e verifica disponibilidade no repositór
       ['cpf', '22222222222', 409, ''],
       ['cpf', '52998224725', 200, ''],
       ['telefone', '00999999999', 400, 'O DDD do telefone deve ser um código brasileiro válido.'],
-      ['telefone', '11333333333', 400, 'O telefone deve estar no formato +55DD9XXXXXXXX, sem separadores.'],
+      ['telefone', '11333333333', 400, 'Informe um celular com DDD, começando com 9. Exemplo: (19) 99876-5432.'],
       ['telefone', '11987654321', 409, ''],
       ['telefone', '11987654322', 200, ''],
     ] as const) {

@@ -55,7 +55,7 @@ class _CatalogoMurchaBacterianaState extends State<CatalogoMurchaBacteriana> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/murcha_bacteriana.png',
+                        'assets/images/doencas/murcha_bacteriana.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

@@ -55,7 +55,7 @@ class _CatalogoAntracnoseState extends State<CatalogoAntracnose> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/antracnose.png',
+                        'assets/images/doencas/antracnose.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),

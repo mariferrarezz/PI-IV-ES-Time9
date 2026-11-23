@@ -55,7 +55,7 @@ class _CatalogoBrocaDoCafeState extends State<CatalogoBrocaDoCafe> {
                     fit: StackFit.expand,
                     children: [
                       Image.asset(
-                        'assets/images/broca_do_cafe.png',
+                        'assets/images/pragas/broca_cafe.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: const Color(0xFFD3E4D5),
