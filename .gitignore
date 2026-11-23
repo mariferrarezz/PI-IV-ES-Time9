@@ -33,3 +33,5 @@ firebase-export-*/
 # Configurações de assistentes
 .agents/
 .claude/
+# Arquivos locais de teste
+*.local.json
