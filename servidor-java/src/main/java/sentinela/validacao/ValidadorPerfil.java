@@ -30,7 +30,7 @@ public class ValidadorPerfil {
         List<String> erros = new ArrayList<>();
         if (telefoneCanonico == null || telefoneCanonico.isEmpty()) erros.add("O telefone é obrigatório.");
         else if (!telefoneCanonico.matches("\\+55[0-9]{2}9[0-9]{8}"))
-            erros.add("O telefone deve estar no formato +55DD9XXXXXXXX, sem separadores.");
+            erros.add("Informe um celular com DDD, começando com 9. Exemplo: (19) 99876-5432.");
         else if (!DddsBrasileiros.valido(telefoneCanonico.substring(3,5)))
             erros.add("O DDD do telefone deve ser um código brasileiro válido.");
         return erros;
