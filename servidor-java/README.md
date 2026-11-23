@@ -1,5 +1,10 @@
 # Servidor Java do Sentinela
 
+O pré-cadastro consulta os comandos individuais `VALIDAR_CPF<TAB>cpf` e
+`VALIDAR_TELEFONE<TAB>telefoneCanonico`. Ambos usam as mesmas regras dos campos
+no cadastro completo e não recebem ou fabricam os demais campos. Reinicie o
+servidor Java após recompilar para disponibilizar os novos comandos.
+
 Comunidade: [contratos, regras e fonte oficial de DDD](comunidade.md).
 Teste TCP: `npm --prefix backend run test:comunidade:java`, com Java ativo.
 Teste direto: `sentinela.validacao.ValidadorComunidadeTest`, após compilar os testes.

@@ -15,8 +15,24 @@ public class ValidadorPerfil {
             if (tamanho < 2) erros.add("O nome completo deve ter pelo menos 2 caracteres.");
             else if (tamanho > 150) erros.add("O nome completo deve ter no máximo 150 caracteres.");
         }
+        erros.addAll(validarCpf(cpf));
+        return erros;
+    }
+
+    public static List<String> validarCpf(String cpf) {
+        List<String> erros = new ArrayList<>();
         if (cpf == null || cpf.isEmpty()) erros.add("O CPF é obrigatório.");
-        else if (!cpfValido(cpf)) erros.add("O CPF deve conter 11 dígitos e ser válido.");
+        else if (!cpf.matches("[0-9]{11}")) erros.add("O CPF deve conter exatamente 11 dígitos.");
+        return erros;
+    }
+
+    public static List<String> validarTelefone(String telefoneCanonico) {
+        List<String> erros = new ArrayList<>();
+        if (telefoneCanonico == null || telefoneCanonico.isEmpty()) erros.add("O telefone é obrigatório.");
+        else if (!telefoneCanonico.matches("\\+55[0-9]{2}9[0-9]{8}"))
+            erros.add("O telefone deve estar no formato +55DD9XXXXXXXX, sem separadores.");
+        else if (!DddsBrasileiros.valido(telefoneCanonico.substring(3,5)))
+            erros.add("O DDD do telefone deve ser um código brasileiro válido.");
         return erros;
     }
 
@@ -24,11 +40,7 @@ public class ValidadorPerfil {
             String telefoneCanonico, String canalCodigoPreferido) {
         List<String> erros = validarPerfil(nomeCompleto, cpf);
         // Confira formato e DDD sem comprovar existência ou posse do número.
-        if (telefoneCanonico == null || telefoneCanonico.isEmpty()) erros.add("O telefone é obrigatório.");
-        else if (!telefoneCanonico.matches("\\+55[0-9]{2}9[0-9]{8}"))
-            erros.add("O telefone deve estar no formato +55DD9XXXXXXXX, sem separadores.");
-        else if (!DddsBrasileiros.valido(telefoneCanonico.substring(3,5)))
-            erros.add("O DDD do telefone deve ser um código brasileiro válido.");
+        erros.addAll(validarTelefone(telefoneCanonico));
         if (!"email".equals(canalCodigoPreferido) && !"sms".equals(canalCodigoPreferido))
             erros.add("O canal de código é obrigatório e deve ser email ou sms.");
         return erros;
@@ -50,16 +62,4 @@ public class ValidadorPerfil {
         return erros;
     }
 
-    private static boolean cpfValido(String cpf) {
-        if (!cpf.matches("[0-9]{11}") || cpf.chars().distinct().count() == 1) return false;
-        // Confira os dois verificadores sem converter ou normalizar o CPF.
-        for (int posicao = 9; posicao <= 10; posicao++) {
-            int soma = 0;
-            for (int i = 0; i < posicao; i++) soma += (cpf.charAt(i) - '0') * (posicao + 1 - i);
-            int digito = (soma * 10) % 11;
-            if (digito == 10) digito = 0;
-            if (digito != cpf.charAt(posicao) - '0') return false;
-        }
-        return true;
-    }
 }

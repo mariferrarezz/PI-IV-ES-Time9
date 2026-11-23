@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:sentinela/features/auth/destino_autenticado.dart';
+import 'questionario_dados.dart';
+import 'tela_questionario4.dart';
 
-import 'tela_questionario3.dart';
-
-class TelaQuestionario2 extends StatefulWidget {
-  const TelaQuestionario2({super.key});
+class TelaQuestionario3 extends StatefulWidget {
+  const TelaQuestionario3({super.key, required this.dados});
+  final QuestionarioDados dados;
 
   @override
-  State<TelaQuestionario2> createState() => _TelaQuestionario2State();
+  State<TelaQuestionario3> createState() => _TelaQuestionario3State();
 }
 
-class _TelaQuestionario2State extends State<TelaQuestionario2> {
-  // Variável que guarda qual índice está selecionado (0 = Pequena, 1 = Média, 2 = Grande, null = nenhum)
+class _TelaQuestionario3State extends State<TelaQuestionario3> {
   int? _opcaoSelecionada;
+  @override
+  void initState() { super.initState(); _opcaoSelecionada = widget.dados.quantidade; }
 
   @override
   Widget build(BuildContext context) {
+    return GuardiaoQuestionario(child: _conteudo(context));
+  }
+
+  Widget _conteudo(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -59,7 +66,7 @@ class _TelaQuestionario2State extends State<TelaQuestionario2> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text(
-                      'Qual é o tamanho da sua propriedade ?',
+                      'Quantas culturas você cultiva atualmente?',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 24,
@@ -104,7 +111,7 @@ class _TelaQuestionario2State extends State<TelaQuestionario2> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              'Pequena',
+                              '1 cultura',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -140,7 +147,7 @@ class _TelaQuestionario2State extends State<TelaQuestionario2> {
                     ),
                     const SizedBox(height: 16),
 
-                    // OPÇÃO 2: MÉDIA
+                    // OPÇÃO 2: 2 culturas
                     GestureDetector(
                       onTap: () {
                         setState(() {
@@ -174,7 +181,7 @@ class _TelaQuestionario2State extends State<TelaQuestionario2> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              'Média',
+                              '2 culturas',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -210,7 +217,7 @@ class _TelaQuestionario2State extends State<TelaQuestionario2> {
                     ),
                     const SizedBox(height: 16),
 
-                    // OPÇÃO 3: GRANDE
+                    // OPÇÃO 3: 3 culturas
                     GestureDetector(
                       onTap: () {
                         setState(() {
@@ -244,7 +251,7 @@ class _TelaQuestionario2State extends State<TelaQuestionario2> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              'Grande',
+                              '3 culturas',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -278,6 +285,75 @@ class _TelaQuestionario2State extends State<TelaQuestionario2> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 16),
+
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _opcaoSelecionada = 3;
+                        });
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 18,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all(
+                            color: _opcaoSelecionada == 3
+                                ? const Color(0xFF1B5E20)
+                                : Colors.transparent,
+                            width: 1.5,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.03),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              '4 culturas ou mais',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF1B5E20),
+                              ),
+                            ),
+                            Container(
+                              width: 24,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color(0xFF66806E),
+                                  width: 2,
+                                ),
+                              ),
+                              child: _opcaoSelecionada == 3
+                                  ? Center(
+                                      child: Container(
+                                        width: 12,
+                                        height: 12,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(0xFF1B5E20),
+                                        ),
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -289,11 +365,15 @@ class _TelaQuestionario2State extends State<TelaQuestionario2> {
                 height: 52.0,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Ação ao continuar
+                    if (_opcaoSelecionada == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Selecione uma opção.')));
+                      return;
+                    }
+                    widget.dados.quantidade = _opcaoSelecionada;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TelaQuestionario3(),
+                        builder: (context) => TelaQuestionario4(dados: widget.dados),
                       ),
                     );
                   },

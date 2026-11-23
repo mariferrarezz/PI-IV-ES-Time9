@@ -2,6 +2,7 @@
 node_modules/
 dist/
 .env
+backups-sentinela/
 *.log
 
 # Flutter / mobile

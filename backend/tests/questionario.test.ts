@@ -39,6 +39,8 @@ function culturasEmMemoria(): CulturasRepo {
 function repoEmMemoria() {
   const perfis: Perfil[] = [];
   const repo: Repo = {
+    async indicesUnicosProntos() { return true; },
+    async existeOutroComCampo(campo, valor, excetoUid) { return perfis.some(p => p[campo] === valor && p.firebaseUid !== excetoUid); },
     async buscarPorFirebaseUid(uid) { return perfis.find(p => p.firebaseUid === uid) ?? null; },
     async criar(dados) {
       const agora = new Date();
@@ -125,12 +127,44 @@ test("Questionário: exige cultura do catálogo ou outra cultura digitada", () =
   const ok = (extra: object) => questionarioSchema.safeParse({ ...respostas, ...extra }).success;
   assert.equal(ok({ culturasIds: [] }), false);
   assert.equal(ok({ culturasIds: [], outraCultura: "   " }), false);
-  assert.equal(ok({ culturasIds: [], outraCultura: "Girassol" }), true);
-  assert.equal(ok({ culturasIds: undefined, outraCultura: "Girassol" }), true);
-  assert.equal(ok({ outraCultura: "Algodão" }), true); // as duas juntas também valem
+  assert.equal(ok({ culturasIds: [], outraCultura: "Girassol" }), false);
+  assert.equal(ok({ quantidadeCulturas: '1', culturasIds: undefined, outraCultura: "Girassol" }), true);
+  assert.equal(ok({ outraCultura: "Algodão" }), false);
+  assert.equal(ok({ quantidadeCulturas: '3', outraCultura: "Algodão" }), true);
   assert.equal(ok({ culturasIds: [String(SOJA), String(SOJA)] }), false);
   assert.equal(ok({ culturasIds: ["nao-e-id"] }), false);
   assert.equal(ok({ culturasIds: [], outraCultura: "x".repeat(151) }), false);
+});
+
+test('quantidade de culturas corresponde à seleção, incluindo outra cultura', () => {
+  const ids = Array.from({ length: 55 }, (_, i) => (i + 1).toString(16).padStart(24, '0'));
+  for (const [quantidadeCulturas, min, max] of [['1', 1, 1], ['2', 2, 2], ['3', 3, 3], ['4_ou_mais', 4, 55]] as const) {
+    for (let n = 0; n <= 55; n++) {
+      const resultado = questionarioSchema.safeParse({ ...respostas, quantidadeCulturas, culturasIds: ids.slice(0, n) });
+      assert.equal(resultado.success, n >= min && n <= max, `${quantidadeCulturas}: ${n}`);
+    }
+  }
+});
+
+test('POST questionário rejeita quantidade divergente sem salvar', async () => {
+  const { repo, perfis } = repoEmMemoria();
+  const api = await iniciarApi(repo);
+  try {
+    await api.chamar('POST', '/auth/cadastro', 'token-uid-maria', cadastro);
+    const resposta = await api.chamar('POST', '/auth/questionario', 'token-uid-maria', { ...respostas, quantidadeCulturas: '1' });
+    assert.equal(resposta.status, 400);
+    assert.equal(perfis[0].questionario, undefined);
+  } finally { await api.fechar(); }
+});
+
+test('rotas comuns recusam alteração de conclusão do questionário', async () => {
+  const { repo } = repoEmMemoria();
+  const api = await iniciarApi(repo);
+  try {
+    await api.chamar('POST', '/auth/cadastro', 'token-uid-maria', cadastro);
+    const resposta = await api.chamar('PATCH', '/auth/perfil', 'token-uid-maria', { nomePublico: 'Maria', questionarioConcluido: true });
+    assert.equal(resposta.status, 400);
+  } finally { await api.fechar(); }
 });
 
 test("GET /culturas lista só as ativas, com id e nome, e exige token", async () => {
@@ -198,7 +232,7 @@ test("POST /auth/questionario recusa sem perfil, cultura inativa/inexistente e c
 
     await api.chamar("POST", "/auth/cadastro", "token-uid-maria", cadastro);
     for (const id of [INATIVA, new Types.ObjectId()]) {
-      const resposta = await api.chamar("POST", "/auth/questionario", "token-uid-maria", { ...respostas, culturasIds: [String(id)] });
+      const resposta = await api.chamar("POST", "/auth/questionario", "token-uid-maria", { ...respostas, quantidadeCulturas: '1', culturasIds: [String(id)] });
       assert.equal(resposta.status, 400);
       assert.equal((await resposta.json()).codigo, "CULTURA_INDISPONIVEL");
     }

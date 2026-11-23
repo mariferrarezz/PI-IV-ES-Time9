@@ -6,6 +6,7 @@ import { TalhoesService, talhoesService } from "./talhoes.service";
 
 export function criarTalhoesRoutes(service: TalhoesService = talhoesService) {
   const routes = Router({ mergeParams: true });
+  routes.get("/", criarTalhoesController(service).listar);
   routes.post("/", validateBody(criarTalhaoSchema), criarTalhoesController(service).criar);
   return routes;
 }

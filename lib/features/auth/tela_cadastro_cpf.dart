@@ -1,14 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:sentinela/services/mascaras_documentos.dart';
+import 'package:sentinela/services/api_sentinela.dart';
+import 'cadastro_dados.dart';
+import 'tela_cadastro_telefone.dart';
 
 class TelaCadastroCpf extends StatefulWidget {
-  const TelaCadastroCpf({super.key});
+  const TelaCadastroCpf({super.key, required this.dados, this.validarCpf, this.erroInicial});
+  final CadastroDados dados;
+  final Future<void> Function(String)? validarCpf;
+  final String? erroInicial;
 
   @override
   State<TelaCadastroCpf> createState() => _TelaCadastroCpfState();
 }
 
 class _TelaCadastroCpfState extends State<TelaCadastroCpf> {
+  @override
+  void initState() { super.initState(); _cpfController.text = const MascaraDocumento.cpf().formatar(widget.dados.cpf); _erroCpf = widget.erroInicial; }
   final TextEditingController _cpfController = TextEditingController();
+  String? _erroCpf;
+  bool _validando = false;
+
+  Future<void> _continuar() async {
+    if (_validando) return;
+    final cpf = apenasDigitos(_cpfController.text);
+    if (cpf.length != 11) { setState(() => _erroCpf = 'Informe um CPF com 11 dígitos'); return; }
+    setState(() { _validando = true; _erroCpf = null; });
+    try {
+      if (widget.validarCpf != null) { await widget.validarCpf!(cpf); }
+      else { await ApiSentinela().request('POST', '/validacao-cadastro/cpf', body: {'valor': cpf}, autenticado: false); }
+      if (!mounted) return;
+      widget.dados.cpf = cpf;
+      Navigator.push(context, MaterialPageRoute(builder: (_) => TelaCadastroTelefone(dados: widget.dados)));
+    } on ApiException catch (e) { if (mounted) setState(() => _erroCpf = e.mensagem); }
+    finally { if (mounted) setState(() => _validando = false); }
+  }
 
   int _passoAtual = 3;
   final int _totalPassos = 8;
@@ -176,7 +202,12 @@ class _TelaCadastroCpfState extends State<TelaCadastroCpf> {
                     // Campo de Texto com ícone à direita (suffixIcon)
                     TextField(
                       controller: _cpfController,
+                      enabled: !_validando,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [const MascaraDocumento.cpf()],
+                      onChanged: (_) { if (_erroCpf != null) setState(() => _erroCpf = null); },
                       decoration: InputDecoration(
+                        errorText: _erroCpf,
                         hintText: '999.999.999-99',
                         hintStyle: TextStyle(
                           color: const Color(0xFF66806E).withValues(alpha: 0.5),
@@ -211,7 +242,7 @@ class _TelaCadastroCpfState extends State<TelaCadastroCpf> {
                 width: double.infinity,
                 height: 52.0,
                 child: ElevatedButton(
-                  onPressed: avancarPasso,
+                  onPressed: _validando ? null : _continuar,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00501E),
                     foregroundColor: Colors.white,
@@ -221,7 +252,7 @@ class _TelaCadastroCpfState extends State<TelaCadastroCpf> {
                     ),
                   ),
                   child: Text(
-                    _passoAtual == _totalPassos ? 'FINALIZAR' : 'CONTINUAR',
+                    _validando ? 'VALIDANDO...' : (_passoAtual == _totalPassos ? 'FINALIZAR' : 'CONTINUAR'),
                     style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,

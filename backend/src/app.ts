@@ -13,11 +13,20 @@ import { DatabaseUnavailableError, NotFoundError } from "./shared/errors";
 import { env } from "./config/env";
 import { criarTalhoesRoutes } from "./modules/talhoes/talhoes.routes";
 import { TalhoesService, talhoesService } from "./modules/talhoes/talhoes.service";
+import { criarPlantacoesRoutes } from './modules/plantacoes/plantacoes.routes';
+import { problemasService } from './modules/catalogo/problemas.service';
+import { criarOcorrenciasRoutes } from './modules/ocorrencias/ocorrencias.routes';
+import { criarMonitoramentosRoutes } from './modules/ocorrencias/monitoramentos.routes';
+import { criarTratamentosRoutes } from './modules/ocorrencias/tratamentos.routes';
+import { criarComunidadeRoutes } from './modules/comunidade/comunidade.routes';
+import { criarValidacaoCadastroRoutes } from './modules/auth/validacao-cadastro.routes';
+import { AuthRepository } from './modules/auth/auth.repository';
 
 // Dependências explícitas permitem testes isolados; não existe chave de ambiente para pular autenticação.
 export function criarApp(dependencias: {
   service?: PropriedadesService; auth?: AuthService; culturas?: CulturasService; verificarToken?: VerificarToken; bancoDisponivel?: () => boolean;
   talhoesService?: TalhoesService;
+  validacaoCadastroRepo?: AuthRepository;
 } = {}) {
   const app = express();
   const bancoDisponivel = dependencias.bancoDisponivel || databaseReady;
@@ -31,12 +40,19 @@ export function criarApp(dependencias: {
     res.status(disponivel ? 200 : 503).json({ status: disponivel ? "pronto" : "indisponivel",
       banco: env.databaseName, autenticacao: env.authEmulator ? "emulator" : "firebase" });
   });
+  app.use('/validacao-cadastro', criarValidacaoCadastroRoutes(dependencias.validacaoCadastroRepo));
   app.use(criarAutenticacao(dependencias.verificarToken));
   app.use((_req, _res, next) => bancoDisponivel() ? next() : next(new DatabaseUnavailableError()));
   app.use("/auth", criarAuthRoutes(dependencias.auth || authService));
   app.use("/culturas", criarCulturasRoutes(dependencias.culturas || culturasService));
+  app.get('/culturas/:culturaId/problemas', async (req, res) => { res.json(await problemasService.listar(String(req.params.culturaId))); });
   app.use("/propriedades", criarPropriedadesRoutes(dependencias.service || propriedadesService));
   app.use("/propriedades/:propriedadeId/talhoes", criarTalhoesRoutes(dependencias.talhoesService || talhoesService));
+  app.use('/talhoes/:talhaoId/plantacoes', criarPlantacoesRoutes());
+  app.use('/plantacoes/:plantacaoId/ocorrencias', criarOcorrenciasRoutes());
+  app.use('/plantacoes/:plantacaoId/monitoramentos', criarMonitoramentosRoutes());
+  app.use('/plantacoes/:plantacaoId/ocorrencias/:ocorrenciaId/tratamentos', criarTratamentosRoutes());
+  app.use('/comunidade', criarComunidadeRoutes());
   app.use((_req, _res, next) => next(new NotFoundError()));
   app.use(errorHandler);
   return app;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'tela_login.dart';
 
 class TelaBemvindo extends StatelessWidget {
   const TelaBemvindo({super.key});
@@ -76,7 +77,7 @@ class TelaBemvindo extends StatelessWidget {
                 width: double.infinity,
                 height: 52,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaLogin())),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF135323),
                     foregroundColor: Colors.white,

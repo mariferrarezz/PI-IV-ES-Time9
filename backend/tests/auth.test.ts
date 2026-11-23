@@ -47,6 +47,8 @@ function javaSimulado(
 function repoEmMemoria() {
   const perfis: Perfil[] = [];
   const repo: Repo = {
+    async indicesUnicosProntos() { return true; },
+    async existeOutroComCampo(campo, valor, excetoUid) { return perfis.some(p => p[campo] === valor && p.firebaseUid !== excetoUid); },
     async buscarPorFirebaseUid(uid) { return perfis.find(p => p.firebaseUid === uid) ?? null; },
     async criar(dados) {
       const agora = new Date();
@@ -96,11 +98,45 @@ const cadastroValido = {
   nomeCompleto: "  Maria da Silva  ", cpf: CPF_VALIDO, telefone: "(19) 99876-5432", canalCodigoPreferido: "email", aceitouTermos: true,
 };
 
-test("CPF: aceita dígitos verificadores corretos e recusa inválidos e repetidos", () => {
+test('Dados da conta não podem ser trocados depois do cadastro: PATCH /auth/dados-conta não existe', async () => {
+  const { repo, perfis } = repoEmMemoria();
+  await repo.criar({ firebaseUid: 'dono', nomeCompleto: 'Maria Silva', cpf: '52998224725', telefone: '+5519998765432', canalCodigoPreferido: 'email', termos: { versao: '1', aceitoEm: new Date() } });
+  const api = await iniciarApi(repo);
+  try {
+    const resposta = await api.chamar('PATCH', '/auth/dados-conta', 'token-dono', { nomeCompleto: 'Maria Souza', cpf: CPF_VALIDO, telefone: '(11) 99999-0000' });
+    assert.equal(resposta.status, 404);
+    assert.equal(perfis[0].nomeCompleto, 'Maria Silva');
+    assert.equal(perfis[0].telefone, '+5519998765432');
+  } finally { await api.fechar(); }
+});
+
+test("CPF: exige exatamente 11 dígitos, inclusive sequências repetidas", () => {
   assert.equal(cpfValido("52998224725"), true);
-  assert.equal(cpfValido("52998224724"), false);
-  assert.equal(cpfValido("11111111111"), false);
+  assert.equal(cpfValido("52998224724"), true);
+  assert.equal(cpfValido("11111111111"), true);
   assert.equal(cpfValido("1234567890"), false);
+  assert.equal(cpfValido("123456789012"), false);
+});
+
+test('CPF e telefone duplicados são rejeitados no cadastro', async () => {
+  const { repo } = repoEmMemoria();
+  const service = criarAuthService(repo, undefined, javaSimulado().java);
+  await service.cadastrar('primeiro', cadastroValido);
+  await assert.rejects(service.cadastrar('segundo', { ...cadastroValido, cpf: '52998224725', telefone: '(11) 99876-5432' }),
+    (e: any) => e.code === 'CPF_JA_CADASTRADO');
+  await assert.rejects(service.cadastrar('segundo', { ...cadastroValido, cpf: '11111111111', telefone: '+55 19 99876-5432' }),
+    (e: any) => e.code === 'TELEFONE_JA_CADASTRADO');
+  await service.cadastrar('segundo', { ...cadastroValido, cpf: '11111111111', telefone: '(11) 99876-5432' });
+});
+
+test('gravação é bloqueada sem índices e conflito concorrente é identificado por campo', async () => {
+  const { repo } = repoEmMemoria();
+  const semIndice = criarAuthService({ ...repo, async indicesUnicosProntos() { return false; } }, undefined, javaSimulado().java);
+  await assert.rejects(semIndice.cadastrar('novo', cadastroValido), (e: any) => e.code === 'INDICES_USUARIO_INDISPONIVEIS');
+  for (const campo of ['cpf', 'telefone'] as const) {
+    const conflito = criarAuthService({ ...repo, async criar() { throw { code: 11000, keyPattern: { [campo]: 1 } }; } }, undefined, javaSimulado().java);
+    await assert.rejects(conflito.cadastrar('novo', cadastroValido), (e: any) => e.code === (campo === 'cpf' ? 'CPF_JA_CADASTRADO' : 'TELEFONE_JA_CADASTRADO'));
+  }
 });
 
 test("Telefone: normaliza formatos e recusa DDD inexistente ou fixo", () => {
@@ -138,7 +174,7 @@ test("POST /auth/cadastro recusa firebaseUid no corpo, termos não aceitos e dad
     const invalidos = [
       { ...cadastroValido, firebaseUid: "outro-uid" },
       { ...cadastroValido, aceitouTermos: false },
-      { ...cadastroValido, cpf: "111.111.111-11" },
+      { ...cadastroValido, cpf: "111.111.111-1" },
       { ...cadastroValido, telefone: "(19) 3876-5432" },
       { ...cadastroValido, nomeCompleto: " " },
       { ...cadastroValido, canalCodigoPreferido: "whatsapp" },
@@ -167,8 +203,10 @@ test("POST /auth/cadastro devolve 409 quando o perfil já existe (inclusive em c
 
   // Corrida: a busca não encontra, mas o índice único recusa a gravação.
   const corrida = criarAuthService({
+    async existeOutroComCampo() { return false; },
+    async indicesUnicosProntos() { return true; },
     async buscarPorFirebaseUid() { return null; },
-    async criar() { throw { code: 11000 }; },
+    async criar() { throw { code: 11000, keyPattern: { firebaseUid: 1 } }; },
     async salvarQuestionario() { return null; },
     async atualizarNomePublico() { return null; },
   }, undefined, javaSimulado().java);

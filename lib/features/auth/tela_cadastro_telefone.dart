@@ -1,14 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:sentinela/services/mascaras_documentos.dart';
+import 'package:sentinela/services/api_sentinela.dart';
+import 'cadastro_dados.dart';
+import 'tela_cadastro_rec_codigo.dart';
 
 class TelaCadastroTelefone extends StatefulWidget {
-  const TelaCadastroTelefone({super.key});
+  const TelaCadastroTelefone({super.key, required this.dados, this.validarTelefone, this.erroInicial});
+  final CadastroDados dados;
+  final Future<void> Function(String)? validarTelefone;
+  final String? erroInicial;
 
   @override
   State<TelaCadastroTelefone> createState() => _TelaCadastroTelefoneState();
 }
 
 class _TelaCadastroTelefoneState extends State<TelaCadastroTelefone> {
+  @override
+  void initState() { super.initState(); _telefoneController.text = const MascaraDocumento.telefone().formatar(widget.dados.telefone); _erroTelefone = widget.erroInicial; }
   final TextEditingController _telefoneController = TextEditingController();
+  String? _erroTelefone;
+  bool _validando = false;
+
+  Future<void> _continuar() async {
+    if (_validando) return;
+    final telefone = apenasDigitos(_telefoneController.text);
+    if (telefone.length != 11) { setState(() => _erroTelefone = 'Informe os 11 dígitos do celular com DDD.'); return; }
+    setState(() { _validando = true; _erroTelefone = null; });
+    try {
+      if (widget.validarTelefone != null) { await widget.validarTelefone!(telefone); }
+      else { await ApiSentinela().request('POST', '/validacao-cadastro/telefone', body: {'valor': telefone}, autenticado: false); }
+      if (!mounted) return;
+      widget.dados.telefone = telefone;
+      Navigator.push(context, MaterialPageRoute(builder: (_) => TelaCadastroRecCodigo(dados: widget.dados)));
+    } on ApiException catch (e) { if (mounted) setState(() => _erroTelefone = e.mensagem); }
+    finally { if (mounted) setState(() => _validando = false); }
+  }
 
   int _passoAtual = 4;
   final int _totalPassos = 8;
@@ -176,7 +202,12 @@ class _TelaCadastroTelefoneState extends State<TelaCadastroTelefone> {
                     // Campo de Texto com ícone à direita (suffixIcon)
                     TextField(
                       controller: _telefoneController,
+                      enabled: !_validando,
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: [const MascaraDocumento.telefone()],
+                      onChanged: (_) { if (_erroTelefone != null) setState(() => _erroTelefone = null); },
                       decoration: InputDecoration(
+                        errorText: _erroTelefone,
                         hintText: '(99) 99999-9999',
                         hintStyle: TextStyle(
                           color: const Color(0xFF66806E).withValues(alpha: 0.5),
@@ -213,7 +244,7 @@ class _TelaCadastroTelefoneState extends State<TelaCadastroTelefone> {
                 width: double.infinity,
                 height: 52.0,
                 child: ElevatedButton(
-                  onPressed: avancarPasso,
+                  onPressed: _validando ? null : _continuar,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00501E),
                     foregroundColor: Colors.white,
@@ -223,7 +254,7 @@ class _TelaCadastroTelefoneState extends State<TelaCadastroTelefone> {
                     ),
                   ),
                   child: Text(
-                    _passoAtual == _totalPassos ? 'FINALIZAR' : 'CONTINUAR',
+                    _validando ? 'VALIDANDO...' : (_passoAtual == _totalPassos ? 'FINALIZAR' : 'CONTINUAR'),
                     style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,

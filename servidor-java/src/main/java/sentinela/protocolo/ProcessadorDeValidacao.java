@@ -35,6 +35,7 @@ public class ProcessadorDeValidacao {
         if ("VALIDAR_CULTURA".equals(partes[0])) return processarCultura(partes);
         if ("VALIDAR_FONTE_CONHECIMENTO".equals(partes[0])) return processarFonteConhecimento(partes);
         if ("VALIDAR_CADASTRO_PERFIL".equals(partes[0])) return processarCadastroPerfil(partes);
+        if ("VALIDAR_CPF".equals(partes[0]) || "VALIDAR_TELEFONE".equals(partes[0])) return processarCampoCadastro(partes);
         if ("VALIDAR_OPCIONAIS_PERFIL".equals(partes[0])) return processarOpcionaisPerfil(partes);
         if ("VALIDAR_QUESTIONARIO".equals(partes[0])) return processarQuestionario(partes);
         if ("VALIDAR_AVALIACAO_TRATAMENTO".equals(partes[0])) return processarAvaliacaoTratamento(partes);
@@ -268,6 +269,14 @@ public class ProcessadorDeValidacao {
             for (int i = 0; i < problemas; i++) respostas.add(p[13 + culturas + i]);
             return montarResposta(ValidadorQuestionario.validarQuestionario(p[1], p[2], p[3], ids,
                     p[6].equals("0") ? null : p[7], respostas, p[10], p[11], conclusao));
+        } catch (IllegalArgumentException e) { return "ERRO\tPedido de validação inválido."; }
+    }
+
+    private static String processarCampoCadastro(String[] p) {
+        if (p.length != 2) return "ERRO\tPedido de validação inválido.";
+        try {
+            String valor = CodecDeCampos.decodificar(p[1]);
+            return montarResposta("VALIDAR_CPF".equals(p[0]) ? ValidadorPerfil.validarCpf(valor) : ValidadorPerfil.validarTelefone(valor));
         } catch (IllegalArgumentException e) { return "ERRO\tPedido de validação inválido."; }
     }
 

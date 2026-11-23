@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'cadastro_dados.dart';
+import 'tela_cadastro_termos.dart';
 
 class TelaCadastroConfirmarSenha extends StatefulWidget {
-  const TelaCadastroConfirmarSenha({super.key});
+  const TelaCadastroConfirmarSenha({super.key, required this.dados});
+  final CadastroDados dados;
 
   @override
   State<TelaCadastroConfirmarSenha> createState() =>
@@ -15,6 +18,7 @@ class _TelaCadastroConfirmarSenhaState
 
   // Variável de estado para controlar se a senha está oculta ou visível
   bool _ocultarSenha = true;
+  bool _tentouConfirmar = false;
 
   int _passoAtual = 7;
   final int _totalPassos = 8;
@@ -183,7 +187,10 @@ class _TelaCadastroConfirmarSenhaState
                     TextField(
                       controller: _confirmarSenhaController,
                       obscureText: _ocultarSenha,
+                      onChanged: (_) => setState(() {}),
                       decoration: InputDecoration(
+                        errorText: _tentouConfirmar && _confirmarSenhaController.text != widget.dados.senha
+                            ? 'As senhas não coincidem.' : null,
                         hintText: '************',
                         hintStyle: TextStyle(
                           color: const Color(0xFF66806E).withValues(alpha: 0.5),
@@ -217,9 +224,10 @@ class _TelaCadastroConfirmarSenhaState
                     ),
                     const SizedBox(height: 16),
 
-                    const Text(
-                      'As senhas conferem !',
-                      style: TextStyle(
+                    Text(
+                      _confirmarSenhaController.text.isNotEmpty && _confirmarSenhaController.text == widget.dados.senha
+                          ? 'As senhas conferem.' : 'Digite novamente a senha escolhida.',
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: Color.fromARGB(255, 151, 150, 150),
@@ -235,7 +243,13 @@ class _TelaCadastroConfirmarSenhaState
                 width: double.infinity,
                 height: 52.0,
                 child: ElevatedButton(
-                  onPressed: avancarPasso,
+                  onPressed: () {
+                    setState(() => _tentouConfirmar = true);
+                    if (_confirmarSenhaController.text != widget.dados.senha) {
+                      return;
+                    }
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => TelaCadastroTermos(dados: widget.dados)));
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00501E),
                     foregroundColor: Colors.white,

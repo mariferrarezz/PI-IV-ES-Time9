@@ -14,6 +14,15 @@ export function criarTalhoesService(
   validar: typeof validarTalhaoNoJava = validarTalhaoNoJava,
 ) {
   return {
+    async listar(id: string, uid: string) {
+      const propriedadeId = new Types.ObjectId(propriedadeIdSchema.parse(id));
+      const perfil = await usuarios.buscarPorFirebaseUid(uid);
+      if (!perfil) throw new AppError(403, "Perfil do usuário não cadastrado", "PERFIL_AUSENTE");
+      if (!await propriedades.buscarPorId(propriedadeId, perfil._id)) {
+        throw new NotFoundError("Propriedade não encontrada");
+      }
+      return talhoes.listarPorPropriedade(propriedadeId);
+    },
     async criar(id: string, uid: string, entrada: unknown) {
       const propriedadeId = new Types.ObjectId(propriedadeIdSchema.parse(id));
       const dados = criarTalhaoSchema.parse(entrada);

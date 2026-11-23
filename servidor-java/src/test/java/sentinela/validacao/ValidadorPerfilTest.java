@@ -18,7 +18,7 @@ public class ValidadorPerfilTest {
         String obrigatorio = "O nome completo é obrigatório.";
         String curto = "O nome completo deve ter pelo menos 2 caracteres.";
         String longo = "O nome completo deve ter no máximo 150 caracteres.";
-        String invalido = "O CPF deve conter 11 dígitos e ser válido.";
+        String invalido = "O CPF deve conter exatamente 11 dígitos.";
         verificar(null, CPF, obrigatorio);
         verificar("", CPF, obrigatorio);
         verificar(" ", CPF, obrigatorio);
@@ -41,11 +41,13 @@ public class ValidadorPerfilTest {
         verificar("Ana", "01234567890");
         verificar("Ana", null, "O CPF é obrigatório.");
         verificar("Ana", "", "O CPF é obrigatório.");
-        for (char digito = '0'; digito <= '9'; digito++) verificar("Ana", String.valueOf(digito).repeat(11), invalido);
-        for (String cpf : new String[] {"5299822472", "529982247255", "52998224724", "52998224715",
+        for (char digito = '0'; digito <= '9'; digito++) verificar("Ana", String.valueOf(digito).repeat(11));
+        verificar("Ana", "52998224724");
+        verificar("Ana", "52998224715");
+        for (String cpf : new String[] {"5299822472", "529982247255",
                 "529.982.247-25", " 52998224725", "52998224725 ", "5299822472a", "５２９９８２２４７２５",
                 "٥٢٩٩٨٢٢٤٧٢٥", "5299822472\n", "           "}) verificar("Ana", cpf, invalido);
-        verificar(null, "00000000000", obrigatorio, invalido);
+        verificar(null, "00000000000", obrigatorio);
         System.out.println("ValidadorPerfil: " + total + " verificações aprovadas.");
     }
 }

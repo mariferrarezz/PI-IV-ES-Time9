@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'destino_autenticado.dart';
+import 'tela_cadastro_nome.dart';
+import 'tela_recuperar_senha.dart';
+import 'cadastro_dados.dart';
+import '../../services/api_sentinela.dart';
 
 class TelaLogin extends StatefulWidget {
-  const TelaLogin({super.key});
+  const TelaLogin({super.key, this.autenticar, this.carregarPerfil});
+  final Future<void> Function(String email, String senha)? autenticar;
+  final Future<dynamic> Function()? carregarPerfil;
 
   @override
   State<TelaLogin> createState() => _TelaLoginState();
@@ -14,6 +22,58 @@ class _TelaLoginState extends State<TelaLogin> {
 
   // Estado visual do campo de senha (ocultar/mostrar)
   bool _ocultarSenha = true;
+  bool _entrando = false;
+  bool _autenticado = false;
+
+  Future<void> _entrar() async {
+    if (_entrando) return;
+    setState(() => _entrando = true);
+    try {
+      if (!_autenticado) {
+        if (widget.autenticar != null) {
+          await widget.autenticar!(_emailController.text.trim(), _senhaController.text);
+        } else {
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: _emailController.text.trim(), password: _senhaController.text,
+          );
+        }
+        _autenticado = true;
+      }
+      final perfil = widget.carregarPerfil != null ? await widget.carregarPerfil!() : await ApiSentinela().request('GET', '/auth/me');
+      if (!mounted) return;
+      abrirDestinoAutenticado(context, perfil);
+    } on ApiException catch (erro) {
+      if (!mounted) return;
+      if (erro.codigo == 'PERFIL_NAO_ENCONTRADO') {
+        final dados = CadastroDados()
+          ..email = _emailController.text.trim()
+          ..senha = _senhaController.text
+          ..emailCriado = _emailController.text.trim()
+          ..senhaCriada = _senhaController.text
+          ..uidCriado = FirebaseAuth.instance.currentUser?.uid;
+        Navigator.push(context, MaterialPageRoute(builder: (_) => TelaCadastroNome(dadosInicial: dados)));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(erro.mensagem)));
+      }
+    } on FirebaseAuthException catch (erro) {
+      if (!mounted) return;
+      final mensagem = switch (erro.code) {
+        'invalid-email' => 'Informe um e-mail válido.',
+        'network-request-failed' => 'Não foi possível acessar o Firebase. Verifique a conexão.',
+        'too-many-requests' => 'Muitas tentativas. Tente novamente mais tarde.',
+        'user-disabled' => 'Esta conta foi desativada.',
+        _ => 'Não foi possível entrar. Confira o e-mail e a senha.',
+      };
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mensagem)));
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Serviço de autenticação indisponível.')),
+      );
+    } finally {
+      if (mounted) setState(() => _entrando = false);
+    }
+  }
 
   @override
   void dispose() {
@@ -95,6 +155,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       const SizedBox(height: 8.0),
                       TextField(
                         controller: _emailController,
+                        onChanged: (_) { if (_autenticado) setState(() => _autenticado = false); },
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           hintText: 'joao@gmail.com',
@@ -130,6 +191,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       const SizedBox(height: 8.0),
                       TextField(
                         controller: _senhaController,
+                        onChanged: (_) { if (_autenticado) setState(() => _autenticado = false); },
                         obscureText: _ocultarSenha,
                         decoration: InputDecoration(
                           hintText: '********',
@@ -170,7 +232,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaRecuperarSenha())),
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
                             minimumSize: Size.zero,
@@ -195,9 +257,7 @@ class _TelaLoginState extends State<TelaLogin> {
                         width: double.infinity,
                         height: 52.0,
                         child: ElevatedButton(
-                          onPressed: () {
-                            // Apenas visual: ação do clique
-                          },
+                          onPressed: _entrando ? null : _entrar,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF00501E),
                             foregroundColor: Colors.white,
@@ -206,8 +266,8 @@ class _TelaLoginState extends State<TelaLogin> {
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
-                          child: const Text(
-                            'ENTRAR',
+                          child: Text(
+                            _entrando ? 'ENTRANDO...' : (_autenticado ? 'TENTAR NOVAMENTE' : 'ENTRAR'),
                             style: TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
@@ -230,7 +290,7 @@ class _TelaLoginState extends State<TelaLogin> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaCadastroNome())),
                             child: const Text(
                               'Criar conta',
                               style: TextStyle(

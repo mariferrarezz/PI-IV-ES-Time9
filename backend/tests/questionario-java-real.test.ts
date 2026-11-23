@@ -25,7 +25,7 @@ test("Questionário: regras pelo Java real",async t=>{
   ["escapes",{outraCultura:" Café\\n\t\r\nFim\\ "},0],
   ["culturas duplicadas",{culturasIds:[id,id]},1],
   ["50 culturas",{culturasIds:Array.from({length:50},(_,i)=>(i+1).toString(16).padStart(24,"0"))},0],
-  ["51 culturas",{culturasIds:Array.from({length:51},(_,i)=>(i+1).toString(16).padStart(24,"0"))},1],
+  ["51 culturas",{culturasIds:Array.from({length:51},(_,i)=>(i+1).toString(16).padStart(24,"0"))},0],
   ["sem comparação de quantidade",{quantidadeCulturas:"4_ou_mais",culturasIds:[],outraCultura:"Hortaliças"},0],
   ["problemas ausentes",{problemasFrequentes:undefined},1],
   ["problemas vazios",{problemasFrequentes:[]},1],

@@ -1,0 +1,21 @@
+# Levantamento para integração das validações no aplicativo
+
+Estado observado na branch `integracao/frontend-validacao-java`. Um cliente Java existente não implica que exista uma rota HTTP ou um fluxo de gravação.
+
+| Tela ou ação | Campos relevantes | Rota Node registrada | Validação / banco | Integração pendente |
+|---|---|---|---|---|
+| Login | E-mail, senha | Firebase Auth, sem rota Node de login | Firebase | Login Firebase conectado; ainda falta consultar `/auth/me` e tratar perfil ausente após autenticar. |
+| Cadastro | Nome, CPF, telefone, canal, senha, confirmação, termos | `POST /auth/cadastro` após autenticação Firebase | `cadastroSchema`, Java `ValidadorPerfil`, coleção `usuarios`; senha fica no Firebase | Agregar os dados entre telas, criar credencial Firebase, obter token, enviar perfil e lidar com falhas parciais; não há verificação de código implementada. |
+| Recuperação de senha e código | E-mail, código, nova senha | Firebase Auth | Firebase | Conectar recuperação real; não há serviço de código SMS/e-mail implementado nas telas. |
+| Questionários 1–6 e outra cultura | Porte, quantidade, culturas, problemas, frequência, identificação | `GET /culturas`, `POST /auth/questionario` | `questionarioSchema`, Java `ValidadorQuestionario`, `usuarios.questionario` | Acumular respostas, obter IDs reais de culturas e enviar uma vez. As opções das telas precisam ser reconciliadas com os enums do contrato. |
+| Propriedades | Nome, município, UF, área e observações | `GET/POST /propriedades`, `GET/PUT/DELETE /propriedades/:id` | Zod, Java `ValidadorPropriedade`, coleção `propriedades` | Falta formulário correspondente e seleção/listagem real; o questionário não cadastra propriedade. Zod intercepta várias entradas inválidas antes do Java. |
+| Novo talhão | Nome, área, observações, cultura, data de plantio e fase | `POST /propriedades/:propriedadeId/talhoes` | Java `ValidadorTalhao`, coleção `talhoes`; Node confere posse, propriedade ativa e soma de áreas em transação | Escolher propriedade real e enviar talhão. Cultura, data e fase não constam do contrato de talhão; dependem do fluxo de plantação, sem rota registrada. Não anunciar o formulário completo como salvo. |
+| Ocorrência | Propriedade, talhão, problema, intensidade, data, área, observações, imagens | Nenhuma | Cliente Java `ValidadorOcorrencia`; validator `ocorrencias` | Faltam rotas e consultas de referências, autorização, gravação e estratégia de imagens. |
+| Evolução | Data, intensidade, área, observações e informações de tratamento | Nenhuma | Java `ValidadorMonitoramento` e `ValidadorTratamento`; validators de monitoramentos e tratamentos | Faltam endpoints, vínculos reais, regras transacionais e persistência. A tela combina domínios. |
+| Dados da conta | Nome, e-mail e telefone | `GET /auth/me`; `PATCH /auth/perfil` altera apenas `nomePublico` | Java `ValidadorPerfil` para opcionais; coleção `usuarios` | O contrato de edição não aceita os campos apresentados; alteração de e-mail e credenciais pertence ao Firebase. |
+| Notificações e privacidade | Preferências e relatos | Nenhuma | Não há rota de preferências registrada | Não persistem; faltam contratos para essas ações. |
+| Comunidade | Filtros, detalhes e ações sobre relatos | Nenhuma | Clientes Java de experiência, adoção e denúncia; validators de comunidade | Faltam rotas, autorização, referências e persistência; conteúdo atual é demonstrativo. |
+
+As rotas registradas foram conferidas em `backend/src/app.ts` e nos arquivos `*.routes.ts`. O servidor Java possui validadores e clientes TCP para outros domínios, mas as regras de autoria, referências e persistência continuam no Node e não podem ser presumidas apenas a partir dos validadores. O schema de cadastro Node valida nome, CPF e telefone antes da chamada Java; portanto não é correto apresentá-los como uma demonstração comprovada do erro retornado pelo Java sem rever o contrato e os testes.
+
+Os formulários não devem exibir sucesso enquanto os fluxos correspondentes não estiverem integrados. A demonstração visual ponta a ponta depende de Firebase, Node, Java e MongoDB configurados, além das integrações acima; os testes isolados dos componentes não comprovam esse percurso.

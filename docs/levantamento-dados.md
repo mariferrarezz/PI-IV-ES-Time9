@@ -92,7 +92,7 @@ O dashboard usa os status aberta, em acompanhamento e encerrada (`aberta`, `em_a
 | Data de aceite | Data | Obrigatório | Sistema, após aceite |
 | Questionário inicial | Conjunto de respostas | Opcional até a conclusão dessa etapa | Produtor |
 
-O CPF será armazenado como `cpf`, uma String com exatamente 11 dígitos, sem pontuação; a aplicação valida os dígitos verificadores. Não será definido índice único para CPF sem decisão específica.
+O CPF é armazenado como `cpf`, com exatamente 11 dígitos sem pontuação; não são verificados dígitos verificadores ou sequências repetidas. CPF e telefone devem ser únicos entre usuários após normalização.
 
 `canalCodigoPreferido` registra a escolha entre `sms` e `email` e deve estar preenchido ao concluir a etapa de escolha do canal. Envio e verificação pertencem ao fluxo de autenticação, não ao perfil do MongoDB. A viabilidade do envio por ambos os canais ainda precisa ser conferida na implementação da autenticação.
 

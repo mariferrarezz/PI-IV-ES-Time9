@@ -19,7 +19,6 @@ public class ValidadorQuestionario {
             erros.add("A quantidade de culturas deve ser 1, 2, 3 ou 4_ou_mais.");
         if (culturasIds == null) erros.add("A lista de culturas é obrigatória.");
         else {
-            if (culturasIds.size() > 50) erros.add("A lista deve ter no máximo 50 culturas.");
             if (new HashSet<>(culturasIds).size() != culturasIds.size()) erros.add("As culturas não podem se repetir.");
         }
         if (outraCultura != null) texto(erros, outraCultura, "A outra cultura", 150);

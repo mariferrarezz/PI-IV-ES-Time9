@@ -1,0 +1,46 @@
+// Grava tratamento e avaliação em uma ocorrência sintética já existente.
+const assert = require('node:assert/strict');
+const { randomBytes } = require('node:crypto');
+async function main() {
+  const { TEST_EMAIL, TEST_PASSWORD, TEST_TALHAO_ID } = process.env;
+  if (!TEST_EMAIL || !TEST_PASSWORD || !TEST_TALHAO_ID) throw new Error('Informe TEST_EMAIL, TEST_PASSWORD e TEST_TALHAO_ID');
+  const auth = await fetch('http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=demo-key', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: TEST_EMAIL, password: TEST_PASSWORD, returnSecureToken: true }) });
+  assert.equal(auth.status, 200);
+  const { idToken } = await auth.json();
+  const req = (path, options = {}) => fetch(`http://127.0.0.1:3000${path}`, { ...options, headers: { Authorization: `Bearer ${idToken}`, 'Content-Type': 'application/json', ...options.headers } });
+  const plantacoes = await (await req(`/talhoes/${TEST_TALHAO_ID}/plantacoes`)).json();
+  const plantacao = plantacoes.find(p => p.status === 'ativa');
+  assert.ok(plantacao);
+  const ocorrencias = await (await req(`/plantacoes/${plantacao._id}/ocorrencias`)).json();
+  const ocorrencia = ocorrencias.find(o => o.status === 'aberta');
+  assert.ok(ocorrencia);
+  const path = `/plantacoes/${plantacao._id}/ocorrencias/${ocorrencia._id}/tratamentos`;
+  const dados = { tipoMedida: 'manual', descricao: '', dataAplicacao: new Date().toISOString() };
+  const invalido = await req(path, { method: 'POST', body: JSON.stringify(dados) });
+  const erro = await invalido.json();
+  assert.equal(invalido.status, 400, JSON.stringify(erro));
+  assert.ok(erro.detalhes?.length, JSON.stringify(erro));
+  dados.descricao = 'Tratamento sintético de teste';
+  const chave = randomBytes(16).toString('hex');
+  const resposta = await req(path, { method: 'POST', headers: { 'Idempotency-Key': chave }, body: JSON.stringify(dados) });
+  const registro = await resposta.json();
+  assert.equal(resposta.status, 201, JSON.stringify(registro));
+  const repetida = await req(path, { method: 'POST', headers: { 'Idempotency-Key': chave }, body: JSON.stringify(dados) });
+  assert.equal(repetida.status, 201);
+  assert.equal((await repetida.json())._id, registro._id);
+  const divergente = await req(path, { method: 'POST', headers: { 'Idempotency-Key': chave }, body: JSON.stringify({ ...dados, descricao: 'Outro conteúdo sintético' }) });
+  assert.equal(divergente.status, 409);
+  assert.ok((await (await req(path)).json()).some(t => t._id === registro._id));
+  const avaliacoes = `${path}/${registro._id}/avaliacoes`;
+  const dadosAvaliacao = { dataAvaliacao: new Date().toISOString(), resultado: 'inconclusivo', observacoes: 'Avaliação sintética de teste' };
+  const chaveAvaliacao = randomBytes(16).toString('hex');
+  const envio = await req(avaliacoes, { method: 'POST', headers: { 'Idempotency-Key': chaveAvaliacao }, body: JSON.stringify(dadosAvaliacao) });
+  const aval = await envio.json();
+  assert.equal(envio.status, 201, JSON.stringify(aval));
+  const repetidaAvaliacao = await req(avaliacoes, { method: 'POST', headers: { 'Idempotency-Key': chaveAvaliacao }, body: JSON.stringify(dadosAvaliacao) });
+  assert.equal(repetidaAvaliacao.status, 201);
+  assert.equal((await repetidaAvaliacao.json())._id, aval._id);
+  assert.ok((await (await req(avaliacoes)).json()).some(a => a._id === aval._id));
+  console.log('Tratamento e avaliação gravados e relidos:', registro._id, aval._id);
+}
+main().catch(e => { console.error(e); process.exitCode = 1; });

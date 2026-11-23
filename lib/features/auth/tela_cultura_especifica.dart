@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import '../propriedades/questionario_dados.dart';
 
-import 'tela_questionario5.dart';
+import 'package:sentinela/features/propriedades/tela_questionario5.dart';
 
 class TelaCulturaEspecifica extends StatefulWidget {
   const TelaCulturaEspecifica({super.key});
@@ -40,7 +41,7 @@ class _TelaCulturaEspecificaState extends State<TelaCulturaEspecifica> {
               const SizedBox(height: 16.0),
 
               const Text(
-                'Qual cultura você cultiva ?',
+                'Qual cultura você cultiva?',
                 style: TextStyle(
                   fontSize: 28.0,
                   fontWeight: FontWeight.bold,
@@ -118,7 +119,7 @@ class _TelaCulturaEspecificaState extends State<TelaCulturaEspecifica> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TelaQuestionario5(),
+                        builder: (context) => TelaQuestionario5(dados: QuestionarioDados()..outraCultura = _nomeCultura.text),
                       ),
                     );
                   },

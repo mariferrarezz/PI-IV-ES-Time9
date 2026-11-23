@@ -10,9 +10,12 @@ test("Perfil: cadastro pelo Java real",async t=>{
  const casos:Array<[string,Partial<CamposValidacaoCadastroPerfil>,number]>=[
   ["email",{},0],["sms",{canalCodigoPreferido:"sms"},0],
   ["todos ausentes",{nomeCompleto:undefined,cpf:undefined,telefoneCanonico:undefined,canalCodigoPreferido:undefined},4],
-  ["acúmulo",{nomeCompleto:"",cpf:"00000000000",telefoneCanonico:"abc",canalCodigoPreferido:"EMAIL"},4],
+  ["acúmulo",{nomeCompleto:"",cpf:"0000000000",telefoneCanonico:"abc",canalCodigoPreferido:"EMAIL"},4],
   ["nome Unicode",{nomeCompleto:"🌱".repeat(150)},0],["nome excedido",{nomeCompleto:"🌱".repeat(151)},1],
-  ["CPF inválido",{cpf:"52998224724"},1],
+  ["CPF com 11 dígitos",{cpf:"52998224724"},0],
+  ["CPF repetido",{cpf:"11111111111"},0],
+  ["CPF com 10 dígitos",{cpf:"1111111111"},1],
+  ["CPF com 12 dígitos",{cpf:"111111111111"},1],
   ["canal vazio",{canalCodigoPreferido:""},1],["canal com espaços",{canalCodigoPreferido:" email "},1],
   // O formato e a lista oficial não comprovam existência ou posse do número.
   ["DDD inexistente",{telefoneCanonico:"+5500999999999"},1],

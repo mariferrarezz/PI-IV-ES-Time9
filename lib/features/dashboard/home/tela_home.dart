@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sentinela/navegacao.dart';
 import 'package:sentinela/features/catalogo/tela_catalogo.dart';
-
 class TelaHome extends StatefulWidget {
   const TelaHome({super.key});
 
@@ -10,7 +10,7 @@ class TelaHome extends StatefulWidget {
 
 class _TelaHomeState extends State<TelaHome> {
   // Índice selecionado para a barra de navegação inferior
-  int _currentIndex = 0;
+  final int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -366,9 +366,7 @@ class _TelaHomeState extends State<TelaHome> {
 
             // Botão central flutuante verde de Registrar com texto embaixo
             GestureDetector(
-              onTap: () {
-                // Ação ao clicar no botão de registrar
-              },
+              onTap: () => navegarPrincipal(context, 2, 0),
               child: Transform.translate(
                 offset: const Offset(
                   0,
@@ -526,14 +524,12 @@ class _TelaHomeState extends State<TelaHome> {
   }
 
   // Widget auxiliar para os itens da barra de navegação
+    // Widget auxiliar para os itens da barra de navegação
   Widget _buildNavItem(int index, IconData icon, String label) {
     bool isSelected = _currentIndex == index;
+
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _currentIndex = index;
-        });
-      },
+      onTap: () => navegarPrincipal(context, index, 0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -549,7 +545,8 @@ class _TelaHomeState extends State<TelaHome> {
             label,
             style: TextStyle(
               fontSize: 10,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              fontWeight:
+                  isSelected ? FontWeight.bold : FontWeight.normal,
               color: isSelected
                   ? const Color(0xFF00501E)
                   : const Color(0xFF88968D),

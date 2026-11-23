@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'tela_questionario3.dart'; // Ajuste conforme a sua próxima tela
+import 'questionario_dados.dart';
+import 'package:sentinela/services/api_sentinela.dart';
+import 'package:sentinela/features/auth/destino_autenticado.dart';
 
 class TelaQuestionario6 extends StatefulWidget {
-  const TelaQuestionario6({super.key});
+  const TelaQuestionario6({super.key, required this.dados, this.enviar, this.carregarPerfil});
+  final QuestionarioDados dados;
+  final Future<dynamic> Function(Map<String, dynamic> dados)? enviar;
+  final Future<dynamic> Function()? carregarPerfil;
 
   @override
   State<TelaQuestionario6> createState() => _TelaQuestionario6State();
@@ -12,9 +17,80 @@ class _TelaQuestionario6State extends State<TelaQuestionario6> {
   // Variáveis separadas para controlar a seleção de cada pergunta
   int? _frequenciaSelecionada;
   int? _identificacaoSelecionada;
+  bool _enviando = false;
+  bool _confirmacaoPendente = false;
+  String? _erro;
+  @override
+  void initState() {
+    super.initState();
+    _frequenciaSelecionada = widget.dados.frequencia;
+    _identificacaoSelecionada = widget.dados.identificacao;
+  }
+  Future<void> _salvar() async {
+    if (_enviando) return;
+    if (widget.dados.porte == null || widget.dados.quantidade == null) {
+      setState(() => _erro = 'Volte ao início e complete as etapas anteriores.');
+      return;
+    }
+    if (_frequenciaSelecionada == null || _identificacaoSelecionada == null) {
+      setState(() => _erro = 'Responda às duas perguntas.');
+      return;
+    }
+    widget.dados.frequencia = _frequenciaSelecionada;
+    widget.dados.identificacao = _identificacaoSelecionada;
+    setState(() { _enviando = true; _erro = null; });
+    try {
+      if (_confirmacaoPendente) {
+        final perfil = widget.carregarPerfil != null ? await widget.carregarPerfil!() : await ApiSentinela().request('GET', '/auth/me');
+        if (!mounted) return;
+        if (questionarioConcluido(perfil)) {
+          abrirDestinoAutenticado(context, perfil);
+          return;
+        }
+        _confirmacaoPendente = false;
+      }
+      final corpo = <String, dynamic>{
+        'portePropriedade': ['pequena', 'media', 'grande'][widget.dados.porte!],
+        'quantidadeCulturas': ['1', '2', '3', '4_ou_mais'][widget.dados.quantidade!],
+        'culturasIds': widget.dados.culturasIds.toList(),
+        if (widget.dados.outraCultura.trim().isNotEmpty) 'outraCultura': widget.dados.outraCultura.trim(),
+        'problemasFrequentes': widget.dados.problemas.toList(),
+        'frequenciaProblemas': ['raramente', 'as_vezes', 'frequentemente', 'sempre'][_frequenciaSelecionada!],
+        'identificaProblemasSozinho': ['sim', 'nao', 'as_vezes'][_identificacaoSelecionada!],
+      };
+      final perfil = widget.enviar != null ? await widget.enviar!(corpo) : await ApiSentinela().request('POST', '/auth/questionario', body: corpo);
+      if (!mounted) return;
+      if (!questionarioConcluido(perfil)) throw const ApiException('A API não confirmou a conclusão do questionário.');
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Questionário salvo.')));
+      abrirDestinoAutenticado(context, perfil);
+    } on ApiException catch (e) {
+      if (e.codigo == 'RESULTADO_DESCONHECIDO' || e.codigo == 'QUESTIONARIO_JA_RESPONDIDO') {
+        _confirmacaoPendente = true;
+        try {
+          final perfil = widget.carregarPerfil != null ? await widget.carregarPerfil!() : await ApiSentinela().request('GET', '/auth/me');
+          if (!mounted) return;
+          if (questionarioConcluido(perfil)) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Questionário confirmado no perfil.')));
+            abrirDestinoAutenticado(context, perfil);
+            return;
+          }
+        } on ApiException {
+          // Manter respostas para nova tentativa quando não for possível confirmar.
+        }
+      }
+      if (mounted) setState(() => _erro = e.mensagem);
+    } finally {
+      if (mounted) setState(() => _enviando = false);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    return GuardiaoQuestionario(child: _conteudo(context));
+  }
+
+  Widget _conteudo(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -72,7 +148,7 @@ class _TelaQuestionario6State extends State<TelaQuestionario6> {
 
                     // PERGUNTA 1
                     const Text(
-                      'Com que frequencia voce encontra pragas ou doenças ?',
+                      'Com que frequência você encontra pragas ou doenças?',
                       style: TextStyle(
                         fontSize: 15,
                         color: Color(0xFF1B5E20),
@@ -95,7 +171,7 @@ class _TelaQuestionario6State extends State<TelaQuestionario6> {
                     ),
                     const SizedBox(height: 12),
                     _construirOpcaoComBolinhaEsquerda(
-                      texto: 'As vezes',
+                      texto: 'Às vezes',
                       indice: 1,
                       grupoSelecionado: _frequenciaSelecionada,
                       onTap: () {
@@ -131,7 +207,7 @@ class _TelaQuestionario6State extends State<TelaQuestionario6> {
 
                     // PERGUNTA 2
                     const Text(
-                      'Voce costuma identificar as pragas/ doenças sozinho ?',
+                      'Você costuma identificar as pragas/doenças sozinho?',
                       style: TextStyle(
                         fontSize: 15,
                         color: Color(0xFF1B5E20),
@@ -165,7 +241,7 @@ class _TelaQuestionario6State extends State<TelaQuestionario6> {
                     ),
                     const SizedBox(height: 12),
                     _construirOpcaoComBolinhaEsquerda(
-                      texto: 'As vezes',
+                      texto: 'Às vezes',
                       indice: 2,
                       grupoSelecionado: _identificacaoSelecionada,
                       onTap: () {
@@ -179,20 +255,13 @@ class _TelaQuestionario6State extends State<TelaQuestionario6> {
               ),
               const SizedBox(height: 32),
 
+              if (_erro != null) Padding(padding: const EdgeInsets.only(bottom: 12), child: SelectableText(_erro!, style: const TextStyle(color: Colors.red))),
               // 3. BOTÃO CONTINUAR
               SizedBox(
                 width: double.infinity,
                 height: 70.0,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Ação ao continuar
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const TelaQuestionario3(),
-                      ),
-                    );
-                  },
+                  onPressed: _enviando ? null : _salvar,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF135323),
                     foregroundColor: Colors.white,
@@ -201,8 +270,8 @@ class _TelaQuestionario6State extends State<TelaQuestionario6> {
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                   ),
-                  child: const Text(
-                    'CONTINUAR',
+                  child: Text(
+                    _enviando ? 'ENVIANDO...' : 'CONTINUAR',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
