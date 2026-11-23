@@ -73,7 +73,7 @@ class _TelaQuestionario5State extends State<TelaQuestionario5> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Quais problemas você encontra com mais frequência ?',
+                      'Quais problemas você encontra com mais frequência?',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         fontSize: 24,
@@ -85,7 +85,7 @@ class _TelaQuestionario5State extends State<TelaQuestionario5> {
                     const SizedBox(height: 15),
 
                     const Text(
-                      'Selecione as opções que mais se aplcam.',
+                      'Selecione as opções que mais se aplicam.',
                       style: TextStyle(
                         fontSize: 18,
                         color: Color(0xFF7A9382),

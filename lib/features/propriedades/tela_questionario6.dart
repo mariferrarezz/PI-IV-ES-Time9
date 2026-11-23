@@ -148,7 +148,7 @@ class _TelaQuestionario6State extends State<TelaQuestionario6> {
 
                     // PERGUNTA 1
                     const Text(
-                      'Com que frequencia voce encontra pragas ou doenças ?',
+                      'Com que frequência você encontra pragas ou doenças?',
                       style: TextStyle(
                         fontSize: 15,
                         color: Color(0xFF1B5E20),
@@ -171,7 +171,7 @@ class _TelaQuestionario6State extends State<TelaQuestionario6> {
                     ),
                     const SizedBox(height: 12),
                     _construirOpcaoComBolinhaEsquerda(
-                      texto: 'As vezes',
+                      texto: 'Às vezes',
                       indice: 1,
                       grupoSelecionado: _frequenciaSelecionada,
                       onTap: () {
@@ -207,7 +207,7 @@ class _TelaQuestionario6State extends State<TelaQuestionario6> {
 
                     // PERGUNTA 2
                     const Text(
-                      'Voce costuma identificar as pragas/ doenças sozinho ?',
+                      'Você costuma identificar as pragas/doenças sozinho?',
                       style: TextStyle(
                         fontSize: 15,
                         color: Color(0xFF1B5E20),
@@ -241,7 +241,7 @@ class _TelaQuestionario6State extends State<TelaQuestionario6> {
                     ),
                     const SizedBox(height: 12),
                     _construirOpcaoComBolinhaEsquerda(
-                      texto: 'As vezes',
+                      texto: 'Às vezes',
                       indice: 2,
                       grupoSelecionado: _identificacaoSelecionada,
                       onTap: () {

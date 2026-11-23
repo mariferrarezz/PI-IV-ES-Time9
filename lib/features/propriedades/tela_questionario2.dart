@@ -68,7 +68,7 @@ class _TelaQuestionario2State extends State<TelaQuestionario2> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text(
-                      'Qual é o tamanho da sua propriedade ?',
+                      'Qual é o tamanho da sua propriedade?',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 24,

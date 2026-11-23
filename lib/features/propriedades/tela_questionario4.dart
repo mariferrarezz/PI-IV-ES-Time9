@@ -87,7 +87,7 @@ class _TelaQuestionario4State extends State<TelaQuestionario4> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text(
-                      'Quais culturas você planta ?',
+                      'Quais culturas você planta?',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 24,

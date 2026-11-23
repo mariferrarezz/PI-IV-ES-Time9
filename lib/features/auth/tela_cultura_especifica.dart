@@ -41,7 +41,7 @@ class _TelaCulturaEspecificaState extends State<TelaCulturaEspecifica> {
               const SizedBox(height: 16.0),
 
               const Text(
-                'Qual cultura você cultiva ?',
+                'Qual cultura você cultiva?',
                 style: TextStyle(
                   fontSize: 28.0,
                   fontWeight: FontWeight.bold,

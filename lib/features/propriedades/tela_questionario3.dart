@@ -66,7 +66,7 @@ class _TelaQuestionario3State extends State<TelaQuestionario3> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text(
-                      'Quantas culturas você cultiva atualmente ?',
+                      'Quantas culturas você cultiva atualmente?',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 24,
@@ -251,7 +251,7 @@ class _TelaQuestionario3State extends State<TelaQuestionario3> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              '3 cultura',
+                              '3 culturas',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -320,7 +320,7 @@ class _TelaQuestionario3State extends State<TelaQuestionario3> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              '4 cultura ou mais',
+                              '4 culturas ou mais',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
