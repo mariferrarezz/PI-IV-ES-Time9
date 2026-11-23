@@ -17,7 +17,11 @@ const { PropriedadeModel } = require("../src/modules/propriedades/propriedades.m
 const { criarPropriedadeSchema } = require("../src/modules/propriedades/propriedades.schema") as typeof import("../src/modules/propriedades/propriedades.schema");
 const { connectDatabase, disconnectDatabase } = require("../src/config/database") as typeof import("../src/config/database");
 type Repo = import("../src/modules/propriedades/propriedades.repository").PropriedadesRepository;
-type Registro = import("../src/modules/propriedades/propriedades.model").RegistroPropriedade;
+// Fixtures HTTP contêm os campos preparados pelo DTO, sem null nos opcionais.
+type Registro = import("../src/modules/propriedades/propriedades.schema").CriarPropriedadeDto & {
+  _id: import("mongoose").Types.ObjectId; usuarioId: import("mongoose").Types.ObjectId;
+  ativa: boolean; criadoEm: Date; atualizadoEm: Date;
+};
 
 test("BD8 local: Bearer aparado, vazio recusado e códigos Firebase seguros", async () => {
   const { criarAutenticacao } = require("../src/middlewares/auth");
@@ -130,7 +134,9 @@ test("BD8 local: repository envia ObjectId, filtro de dono e validação ao Mong
   const nomes = ["create", "find", "findOne", "findOneAndUpdate", "deleteOne"];
   const originais = Object.fromEntries(nomes.map(nome => [nome, model[nome]]));
   const usuarioId = new Types.ObjectId(), _id = new Types.ObjectId(), session = {};
-  const registro = { _id, usuarioId, nome: "Nome", municipio: "Cidade", estado: "SP", ativa: true };
+  const registro = { _id, usuarioId, nome: "Nome", municipio: "Cidade", estado: "SP", ativa: true, atualizadoEm: new Date(1) };
+  const { capturarImagem } = require("../src/modules/propriedades/propriedades.atualizacao");
+  const controle = { imagem: capturarImagem(registro), atualizadoEm: new Date(2) };
   const consulta = { lean() { return this; }, async exec() { return registro; } };
   let chamadas = 0;
   const conferirDono = (filtro: any) => {
@@ -142,14 +148,14 @@ test("BD8 local: repository envia ObjectId, filtro de dono e validação ao Mong
     model.find = (f: any) => { conferirDono(f); return consulta; };
     model.findOne = (f: any) => { conferirDono(f); return consulta; };
     model.findOneAndUpdate = (f: any, atualizacao: any, op: any) => {
-      conferirDono(f); assert.deepEqual(atualizacao, { $set: { nome: "Novo" } });
-      assert.equal(op.runValidators, true); assert.equal(op.session, session); assert.equal(op.strict, "throw"); return consulta;
+      conferirDono(f); assert(f.$expr); assert.deepEqual(atualizacao, { $set: { nome: "Novo", atualizadoEm: controle.atualizadoEm } });
+      assert.equal(op.timestamps, false); assert.equal(op.runValidators, true); assert.equal(op.session, session); assert.equal(op.strict, "throw"); return consulta;
     };
     model.deleteOne = async (f: any, op: any) => { conferirDono(f); assert.equal(op.session, session); return { deletedCount: 1 }; };
     await propriedadesRepository.criar(usuarioId, { nome: "Nome", municipio: "Cidade", estado: "SP" });
     await propriedadesRepository.listarPorUsuario(usuarioId);
     await propriedadesRepository.buscarPorId(_id, usuarioId);
-    await propriedadesRepository.atualizar(_id, usuarioId, { nome: "Novo" }, session);
+    await propriedadesRepository.atualizar(_id, usuarioId, { nome: "Novo" }, session, controle);
     await propriedadesRepository.excluir(_id, usuarioId, session);
     assert.equal(chamadas, 5);
   } finally { for (const nome of nomes) model[nome] = originais[nome]; }
@@ -165,11 +171,12 @@ test("BD8 local: rotas reais com repositório e verificador Firebase simulados (
   const repo: Repo = {
     async criar(usuarioId, dados) {
       if (erroOperacao) throw erroOperacao;
-      const doc = { ...dados, ativa: dados.ativa ?? true, usuarioId, _id: new Types.ObjectId(), criadoEm: new Date(), atualizadoEm: new Date() } as Registro;
+      const doc: Registro = { ...dados, ativa: dados.ativa ?? true, usuarioId, _id: new Types.ObjectId(), criadoEm: new Date(), atualizadoEm: new Date() };
       documentos.set(String(doc._id), doc); return doc;
     },
     async listarPorUsuario(usuarioId) { return [...documentos.values()].filter(d => d.usuarioId.equals(usuarioId)); },
     async buscarPorId(id, usuarioId) { return buscar(id, usuarioId); },
+    async buscarParaAtualizacao(id, usuarioId) { return buscar(id, usuarioId); },
     async atualizar(id, usuarioId, dados) {
       const doc = buscar(id, usuarioId); if (!doc) return null;
       const novo = { ...doc, ...dados, atualizadoEm: new Date() }; documentos.set(String(id), novo); return novo;
@@ -179,7 +186,8 @@ test("BD8 local: rotas reais com repositório e verificador Firebase simulados (
     async areaAtivaExcede() { return areaExcedida; },
     async comTransacao(acao) { return acao({} as import("mongoose").ClientSession); },
   };
-  const service = criarPropriedadesService(repo, { async buscarPorFirebaseUid(uid) { const id = usuarios.get(uid); return id ? { _id: id } : null; } });
+  const service = criarPropriedadesService(repo, { async buscarPorFirebaseUid(uid) { const id = usuarios.get(uid); return id ? { _id: id } : null; } },
+    async () => ({ valido: true, erros: [] }));
   const app = criarApp({ service, bancoDisponivel: () => disponivel, verificarToken: async token => {
     if (!["a", "b", "sem-perfil"].includes(token)) throw new Error("TOKEN_SIMULADO");
     return { uid: token };

@@ -1,3 +1,4 @@
+//Valida o token enviado pelo aplicativo
 import { NextFunction, Request, Response } from "express";
 import { firebaseAuth } from "../config/firebase";
 import { AppError, UnauthorizedError } from "../shared/errors";
