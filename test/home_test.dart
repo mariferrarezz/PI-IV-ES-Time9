@@ -3,8 +3,38 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sentinela/features/dashboard/home/tela_home.dart';
 import 'package:sentinela/services/api_sentinela.dart';
 import 'package:sentinela/navegacao.dart';
+import 'package:sentinela/features/ocorrencias/tela_ocorrenciaRegistrada.dart';
 
 void main() {
+  testWidgets('confirmação retorna à home e consulta novo resumo', (tester) async {
+    var chamadas = 0;
+    final navegador = GlobalKey<NavigatorState>();
+    await tester.pumpWidget(MaterialApp(navigatorKey: navegador, navigatorObservers: [observadorRotasPrincipais],
+      home: TelaHome(carregarResumo: () async => {'nome': 'Maria', 'propriedade': {'id': '1', 'nome': 'Fazenda', 'municipio': 'Cidade', 'estado': 'SP'}, 'talhoes': 1, 'alertasAtivos': chamadas++})));
+    await tester.pumpAndSettle();
+    navegador.currentState!.push(MaterialPageRoute<void>(builder: (_) => const Scaffold(body: Text('Registrar'))));
+    await tester.pumpAndSettle();
+    navegador.currentState!.push(MaterialPageRoute<void>(builder: (_) => const TelaOcorrenciaRegistrada()));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Voltar para o início'));
+    await tester.tap(find.text('Voltar para o início'));
+    await tester.pumpAndSettle();
+    expect(chamadas, 2);
+    expect(find.text('01'), findsWidgets);
+  });
+
+  testWidgets('retorno pela navegação principal consulta novo resumo', (tester) async {
+    var chamadas = 0;
+    final navegador = GlobalKey<NavigatorState>();
+    await tester.pumpWidget(MaterialApp(navigatorKey: navegador, navigatorObservers: [observadorRotasPrincipais],
+      home: TelaHome(carregarResumo: () async => {'nome': 'Maria', 'propriedade': null, 'talhoes': 0, 'alertasAtivos': chamadas++})));
+    await tester.pumpAndSettle();
+    navegador.currentState!.push(MaterialPageRoute<void>(builder: (context) => Scaffold(body: TextButton(onPressed: () => navegarPrincipal(context, 0, 2), child: const Text('Início')))));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Início'));
+    await tester.pumpAndSettle();
+    expect(chamadas, 2);
+  });
   testWidgets('home consulta o resumo novamente ao retornar de outra tela', (tester) async {
     var chamadas = 0;
     final navegador = GlobalKey<NavigatorState>();

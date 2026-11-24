@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sentinela/services/api_sentinela.dart';
 import 'package:sentinela/services/data_sao_paulo.dart';
+import 'ocorrencias_plantacao.dart';
+import 'detalhe_ocorrencia.dart';
 
 class TelaPlantacoes extends StatefulWidget {
   const TelaPlantacoes({super.key, required this.talhaoId, required this.nomeTalhao, this.consultar});
@@ -14,6 +16,7 @@ class _TelaPlantacoesState extends State<TelaPlantacoes> {
   final _api = ApiSentinela();
   final _variedade = TextEditingController(), _safra = TextEditingController(), _area = TextEditingController(), _observacoes = TextEditingController();
   List<dynamic> _culturas = [], _plantacoes = [];
+  Map? _talhao, _propriedade;
   String? _culturaId, _erro;
   DateTime? _data;
   bool _carregando = true, _salvando = false;
@@ -39,10 +42,14 @@ class _TelaPlantacoesState extends State<TelaPlantacoes> {
     setState(() { _carregando = true; _dadosCarregados = false; _erro = null; });
     try {
       final culturas = await _request('GET', '/culturas') as List<dynamic>;
-      final plantacoes = await _request('GET', '/talhoes/${widget.talhaoId}/plantacoes') as List<dynamic>;
-      if (mounted) setState(() { _culturas = culturas; _plantacoes = plantacoes; _dadosCarregados = true; _carregando = false; });
+      final detalhe = await _request('GET', '/talhoes/${widget.talhaoId}/detalhe') as Map;
+      final plantacoes = detalhe['plantacoes'] as List<dynamic>;
+      if (plantacoes.any((p) => p is! Map || p['ocorrencias'] is! List)) throw const FormatException('Detalhe incompleto');
+      if (mounted) setState(() { _culturas = culturas; _talhao = detalhe['talhao'] as Map; _propriedade = detalhe['propriedade'] as Map; _plantacoes = plantacoes; _dadosCarregados = true; _carregando = false; });
     } on ApiException catch (e) {
       if (mounted) setState(() { _erro = e.mensagem; _carregando = false; });
+    } catch (_) {
+      if (mounted) setState(() { _erro = 'Não foi possível carregar o talhão.'; _carregando = false; });
     }
   }
 
@@ -116,8 +123,14 @@ class _TelaPlantacoesState extends State<TelaPlantacoes> {
   @override
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: Colors.white,
-    appBar: AppBar(title: Text(widget.nomeTalhao), foregroundColor: const Color(0xFF00501E)),
+    appBar: AppBar(title: Text(_talhao?['nome']?.toString() ?? widget.nomeTalhao), foregroundColor: const Color(0xFF00501E)),
     body: SafeArea(child: SingleChildScrollView(padding: const EdgeInsets.all(24), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      if (_dadosCarregados && _talhao != null) Card(color: const Color(0xFFF3F7F4), child: Padding(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text('${_talhao!['nome']}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF00501E))),
+        Text('Propriedade: ${_propriedade?['nome'] ?? 'Não informada'}'),
+        Text('Área: ${areaOcorrencia(_talhao!['areaHa'])}'),
+        Text(_talhao!['ativo'] == true ? 'Situação: ativo' : 'Situação: inativo'),
+      ]))),
       const Text('Plantações', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF00501E))),
       if (_carregando) const Center(child: CircularProgressIndicator()),
       if (_erro != null) ...[SelectableText(_erro!, style: const TextStyle(color: Colors.red)), if (_carregando == false && !_dadosCarregados) TextButton(onPressed: _carregar, child: const Text('Tentar novamente'))],
@@ -125,8 +138,11 @@ class _TelaPlantacoesState extends State<TelaPlantacoes> {
         final instante = p['dataPlantio'] == null ? null : DateTime.tryParse(p['dataPlantio'].toString());
         final data = instante == null ? null : DataSaoPaulo.paraData(instante);
         final nome = p['culturaNome'] is String ? p['culturaNome'] as String : _nomeCultura(p['culturaId']);
-        return Card(child: ListTile(title: Text(nome), subtitle: Text('Plantação ${p['status']}\n${data == null ? 'Data de plantio não informada' : 'Plantio: ${data.day.toString().padLeft(2, '0')}/${data.month.toString().padLeft(2, '0')}/${data.year}'}'),
-          trailing: p['status'] == 'ativa' && p['_id'] != null ? TextButton(onPressed: _salvando || _carregando || !_dadosCarregados ? null : () => _encerrar(p), child: const Text('Encerrar plantação')) : null));
+        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Card(child: ListTile(title: Text(nome), subtitle: Text('Plantação ${p['status']}\n${data == null ? 'Data de plantio não informada' : 'Plantio: ${data.day.toString().padLeft(2, '0')}/${data.month.toString().padLeft(2, '0')}/${data.year}'}${p['variedade'] == null ? '' : '\nVariedade: ${p['variedade']}'}${p['safra'] == null ? '' : '\nSafra: ${p['safra']}'}${p['areaPlantadaHa'] == null ? '' : '\nÁrea plantada: ${areaOcorrencia(p['areaPlantadaHa'])}'}'),
+            trailing: p['status'] == 'ativa' && p['_id'] != null ? TextButton(onPressed: _salvando || _carregando || !_dadosCarregados ? null : () => _encerrar(p), child: const Text('Encerrar plantação')) : null)),
+          if (p['_id'] != null) OcorrenciasPlantacao(key: ValueKey(p['_id'].toString()), plantacaoId: p['_id'].toString(), consultar: _request, dados: p['ocorrencias'] as List, talhaoId: widget.talhaoId, propriedadeId: _propriedade!['_id'].toString(), plantacaoAtiva: p['status'] == 'ativa', recarregar: _carregar),
+        ]);
       }),
       const SizedBox(height: 20),
       if (_dadosCarregados && _temPlantacaoAtiva)

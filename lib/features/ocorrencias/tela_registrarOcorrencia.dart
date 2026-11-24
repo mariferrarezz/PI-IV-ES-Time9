@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sentinela/navegacao.dart';
 import 'package:sentinela/services/api_sentinela.dart';
 import 'package:sentinela/services/data_sao_paulo.dart';
+import 'tela_ocorrenciaRegistrada.dart';
 
 import 'package:sentinela/features/propriedades/tela_talhoes.dart';
 
@@ -26,13 +31,37 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
   String _intensidadeSelecionada = 'Baixa';
   DateTime _dataOcorrencia = DataSaoPaulo.paraData(DateTime.now().toUtc());
   bool _dataEscolhida = false, _carregando = true, _salvando = false;
+  bool _resultadoDesconhecido = false;
+  bool _verificandoPendente = true;
+  bool _preparandoEnvio = false;
+  Map<String, dynamic>? _pendente;
+  String? _pendenteChaveLocal;
   final _api = ApiSentinela();
   List<dynamic> _plantacoes = [];
   String? _plantacaoId, _problemaId, _tipo, _erro;
   int _versao = 0;
 
   @override
-  void initState() { super.initState(); _carregarFazendas(); }
+  void initState() { super.initState(); _carregarFazendas(); _carregarPendente(); }
+
+  String? get _chaveLocal {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    return uid == null ? null : 'ocorrencia_pendente_$uid';
+  }
+
+  Future<void> _carregarPendente() async {
+    final chave = _chaveLocal;
+    try {
+      if (chave == null) return;
+      final texto = (await SharedPreferences.getInstance()).getString(chave);
+      if (texto == null || !mounted) return;
+      final dados = jsonDecode(texto);
+      if (dados is! Map<String, dynamic> || dados['chave'] is! String || dados['caminho'] is! String || dados['corpo'] is! Map || dados['resumo'] is! Map) throw const FormatException();
+      setState(() { _pendente = dados; _pendenteChaveLocal = chave; _resultadoDesconhecido = true; _erro = 'Há um envio pendente. Recupere o resultado antes de registrar outra ocorrência.'; });
+    } catch (_) {
+      if (mounted) setState(() { _resultadoDesconhecido = true; _erro = 'Não foi possível ler o envio pendente. Não faça um novo cadastro até verificar os registros.'; });
+    } finally { if (mounted) setState(() => _verificandoPendente = false); }
+  }
 
   Future<void> _carregarFazendas() async {
     setState(() { _carregando = true; _erro = null; });
@@ -74,7 +103,7 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
   }
 
   Future<void> _registrar() async {
-    if (_salvando || _carregando) return;
+    if (_salvando || _preparandoEnvio || _carregando || _resultadoDesconhecido || _verificandoPendente) return;
     if (!_isTalhaoCadastrado || _plantacaoId == null || _tipo == null) { setState(() => _erro = 'Selecione um talhão cadastrado, uma plantação e o tipo de ocorrência.'); return; }
     final textoArea = _areaAfetadaController.text.trim().replaceAll(',', '.');
     final area = textoArea.isEmpty ? null : double.tryParse(textoArea);
@@ -83,18 +112,67 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
     try { data = _dataEscolhida ? DataSaoPaulo.paraUtc(_dataOcorrencia) : DateTime.now().toUtc(); }
     on FormatException catch (e) { setState(() => _erro = e.message); return; }
     final sintomas = [..._sintomasSelecionados.map((e) => e.toString()), if (_observacoesController.text.trim().isNotEmpty) _observacoesController.text.trim()].join('; ');
-    setState(() { _salvando = true; _erro = null; });
-    try {
-      await _api.request('POST', '/plantacoes/$_plantacaoId/ocorrencias', body: {
+    final talhao = _talhoesCadastrados.firstWhere((t) => t['_id'].toString() == _talhaoSelecionado);
+    final plantacao = _plantacoes.firstWhere((p) => p['_id'].toString() == _plantacaoId);
+    final problema = _catalogoPragas.where((p) => p['id'].toString() == _problemaId).toList();
+    final random = Random.secure();
+    final pendente = <String, dynamic>{
+      'chave': List.generate(16, (_) => random.nextInt(256).toRadixString(16).padLeft(2, '0')).join(),
+      'caminho': '/plantacoes/$_plantacaoId/ocorrencias',
+      'corpo': {
         'tipo': _tipo, if (_problemaId != null) 'problemaAgricolaId': _problemaId,
         'dataObservacao': data.toIso8601String(), 'sintomas': sintomas,
         'intensidade': {'Baixa': 'baixa', 'Média': 'media', 'Alta': 'alta'}[_intensidadeSelecionada],
         if (area != null) 'areaAfetadaHa': area,
-      });
+      },
+      'resumo': {'talhaoId': _talhaoSelecionado, 'talhao': '${talhao['nome']}', 'cultura': '${plantacao['culturaNome'] ?? 'Não informada'}',
+        'area': '${talhao['areaHa']} ha', 'problema': problema.isEmpty ? 'Não identificado' : '${problema.first['nome']}'},
+    };
+    final chaveLocal = _chaveLocal;
+    if (chaveLocal == null) { setState(() => _erro = 'Entre novamente para continuar.'); return; }
+    setState(() => _preparandoEnvio = true);
+    try {
+      if (!await (await SharedPreferences.getInstance()).setString(chaveLocal, jsonEncode(pendente))) throw StateError('Falha ao guardar envio');
+    } catch (_) { if (mounted) setState(() { _preparandoEnvio = false; _erro = 'Não foi possível guardar o envio com segurança.'; }); return; }
+    if (!mounted) return;
+    setState(() => _preparandoEnvio = false);
+    _pendente = pendente;
+    _pendenteChaveLocal = chaveLocal;
+    await _enviarPendente(chaveLocal);
+  }
+
+  Future<void> _enviarPendente(String chaveLocal) async {
+    final pendente = _pendente;
+    if (pendente == null || _salvando) return;
+    if (_chaveLocal != chaveLocal) { setState(() => _erro = 'Entre novamente na conta que iniciou o envio.'); return; }
+    final tentativaDeRecuperacao = _resultadoDesconhecido;
+    setState(() { _salvando = true; _erro = null; });
+    try {
+      final resposta = await _api.request('POST', pendente['caminho'] as String, body: Map<String, dynamic>.from(pendente['corpo'] as Map), chaveIdempotencia: pendente['chave'] as String);
       if (!mounted) return;
-      setState(() { _sintomasSelecionados.clear(); _areaAfetadaController.clear(); _observacoesController.clear(); _problemaId = null; });
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Ocorrência registrada.')));
-    } on ApiException catch (e) { if (mounted) setState(() => _erro = e.mensagem); }
+      if (resposta is! Map || resposta['_id'] == null || resposta['dataObservacao'] is! String || resposta['intensidade'] is! String || resposta['tipo'] is! String) {
+        setState(() { _resultadoDesconhecido = true; _erro = 'Resposta incompleta. Confira os registros antes de tentar novamente.'; });
+        return;
+      }
+      final resumo = pendente['resumo'] as Map;
+      final dataResposta = DateTime.tryParse(resposta['dataObservacao'] as String);
+      final dataLocal = dataResposta == null ? null : DataSaoPaulo.paraData(dataResposta.toUtc());
+      final dataTexto = dataLocal == null ? resposta['dataObservacao'] as String : '${dataLocal.day.toString().padLeft(2, '0')}/${dataLocal.month.toString().padLeft(2, '0')}/${dataLocal.year}';
+      await (await SharedPreferences.getInstance()).remove(chaveLocal);
+      if (!mounted) return;
+      setState(() { _pendente = null; _resultadoDesconhecido = false; _sintomasSelecionados.clear(); _areaAfetadaController.clear(); _observacoesController.clear(); _problemaId = null; });
+      await Navigator.push(context, MaterialPageRoute(builder: (_) => TelaOcorrenciaRegistrada(
+        talhaoId: resumo['talhaoId'] as String?, nomeTalhao: '${resumo['talhao']}', cultura: '${resumo['cultura']}',
+        areaTotalTalhao: '${resumo['area']}', nomeOcorrencia: '${resumo['problema']}',
+        tipoOcorrencia: '${resposta['tipo']}', intensidade: '${resposta['intensidade']}',
+        areaAfetada: resposta['areaAfetadaHa'] == null ? 'Não informada' : '${resposta['areaAfetadaHa']} ha', dataOcorrencia: dataTexto,
+      )));
+    } on ApiException catch (e) {
+      if (!tentativaDeRecuperacao && e.codigo != 'RESULTADO_DESCONHECIDO') { await (await SharedPreferences.getInstance()).remove(chaveLocal); _pendente = null; }
+      if (mounted) setState(() { _erro = e.mensagem; _resultadoDesconhecido = _pendente != null; });
+    } catch (_) {
+      if (mounted) setState(() { _resultadoDesconhecido = true; _erro = 'Não foi possível confirmar o resultado. Recupere o envio pendente.'; });
+    }
     finally { if (mounted) setState(() => _salvando = false); }
   }
 
@@ -688,6 +766,7 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
                 if (_carregando) const Center(child: CircularProgressIndicator()),
                 if (_erro != null) ...[
                   SelectableText(_erro!, style: const TextStyle(color: Colors.red)),
+                  if (_pendente != null) TextButton(onPressed: _salvando ? null : () { final chave = _pendenteChaveLocal; if (chave != null) _enviarPendente(chave); }, child: const Text('Recuperar envio pendente')),
                   if (_fazendas.isEmpty && !_carregando) TextButton(onPressed: _carregarFazendas, child: const Text('Tentar novamente')),
                   const SizedBox(height: 12),
                 ],
@@ -1125,7 +1204,7 @@ class _TelaRegistrarOcorrenciaState extends State<TelaRegistrarOcorrencia> {
                   width: double.infinity,
                   height: 54,
                   child: ElevatedButton(
-                    onPressed: _carregando || _salvando ? null : _registrar,
+                    onPressed: _carregando || _salvando || _preparandoEnvio || _resultadoDesconhecido || _verificandoPendente ? null : _registrar,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF134E1E),
                       foregroundColor: Colors.white,

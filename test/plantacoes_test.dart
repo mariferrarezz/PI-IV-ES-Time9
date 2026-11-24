@@ -3,6 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sentinela/features/propriedades/tela_plantacoes.dart';
 import 'package:sentinela/services/api_sentinela.dart';
 
+Map<String, dynamic> detalhe(List<Map<String, dynamic>> plantacoes) => {
+  'talhao': {'nome': 'Talhão Norte', 'areaHa': 10, 'ativo': true},
+  'propriedade': {'_id': 'propriedade', 'nome': 'Fazenda'},
+  'plantacoes': plantacoes.map((p) => {...p, 'ocorrencias': <dynamic>[]}).toList(),
+};
+
 void main() {
   testWidgets('confirma encerramento e recarrega histórico antes de liberar cadastro', (tester) async {
     var ativa = true;
@@ -12,7 +18,7 @@ void main() {
       consultar: (metodo, caminho, {body}) async {
         if (metodo == 'POST') { posts++; expect(caminho, '/talhoes/norte/plantacoes/p1/encerrar'); ativa = false; return {}; }
         if (caminho == '/culturas') return [{'id': 'c1', 'nome': 'Brócolis'}];
-        return [{'_id':'p1', 'culturaId':'c1', 'status':ativa ? 'ativa' : 'encerrada'}];
+        return detalhe([{'_id':'p1', 'culturaId':'c1', 'status':ativa ? 'ativa' : 'encerrada'}]);
       },
     )));
     await tester.pumpAndSettle();
@@ -35,7 +41,7 @@ void main() {
       talhaoId: 'norte', nomeTalhao: 'Talhão Norte',
       consultar: (metodo, caminho, {body}) async {
         if (metodo == 'POST') throw const ApiException('Não foi possível encerrar');
-        return caminho == '/culturas' ? [{'id':'c1','nome':'Brócolis'}] : [{'_id':'p1','culturaId':'c1','status':'ativa'}];
+        return caminho == '/culturas' ? [{'id':'c1','nome':'Brócolis'}] : detalhe([{'_id':'p1','culturaId':'c1','status':'ativa'}]);
       },
     )));
     await tester.pumpAndSettle();
@@ -55,11 +61,11 @@ void main() {
       consultar: (metodo, caminho, {body}) async {
         caminhos.add('$metodo $caminho');
         if (caminho == '/culturas') return [{'id': 'c1', 'nome': 'Brócolis'}];
-        return [{'culturaId': 'c1', 'status': 'ativa', 'dataPlantio': '2025-04-10T03:00:00.000Z'}];
+        return detalhe([{'culturaId': 'c1', 'status': 'ativa', 'dataPlantio': '2025-04-10T03:00:00.000Z'}]);
       },
     )));
     await tester.pumpAndSettle();
-    expect(caminhos, ['GET /culturas', 'GET /talhoes/norte/plantacoes']);
+    expect(caminhos, ['GET /culturas', 'GET /talhoes/norte/detalhe']);
     expect(find.text('Brócolis'), findsOneWidget);
     expect(find.textContaining('Plantio: 10/04/2025'), findsOneWidget);
     expect(find.textContaining('já possui uma plantação ativa'), findsOneWidget);
@@ -71,7 +77,7 @@ void main() {
       talhaoId: 'norte', nomeTalhao: 'Talhão Norte',
       consultar: (metodo, caminho, {body}) async => caminho == '/culturas'
           ? [{'id': 'c1', 'nome': 'Brócolis'}]
-          : [{'culturaId': 'c1', 'status': 'encerrada'}],
+          : detalhe([{'culturaId': 'c1', 'status': 'encerrada'}]),
     )));
     await tester.pumpAndSettle();
     expect(find.textContaining('Data de plantio não informada'), findsOneWidget);
@@ -94,7 +100,7 @@ void main() {
       talhaoId: 'norte', nomeTalhao: 'Talhão Norte',
       consultar: (metodo, caminho, {body}) async => caminho == '/culturas'
           ? []
-          : [{'culturaId': 'inativa', 'culturaNome': 'Cultura histórica', 'status': 'encerrada'}],
+          : detalhe([{'culturaId': 'inativa', 'culturaNome': 'Cultura histórica', 'status': 'encerrada'}]),
     )));
     await tester.pumpAndSettle();
     expect(find.text('Cultura histórica'), findsOneWidget);

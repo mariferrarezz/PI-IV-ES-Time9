@@ -4,7 +4,8 @@ import 'package:sentinela/services/api_sentinela.dart';
 import 'package:sentinela/services/data_sao_paulo.dart';
 
 class TelaRegistroEvolucao extends StatefulWidget {
-  const TelaRegistroEvolucao({super.key});
+  const TelaRegistroEvolucao({super.key, this.propriedadeInicial, this.talhaoInicial, this.plantacaoInicial, this.ocorrenciaInicial});
+  final String? propriedadeInicial, talhaoInicial, plantacaoInicial, ocorrenciaInicial;
 
   @override
   State<TelaRegistroEvolucao> createState() => _TelaRegistroEvolucaoState();
@@ -43,7 +44,19 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
   @override
   void initState() {
     super.initState();
-    _carregarPropriedades();
+    _iniciar();
+  }
+
+  Future<void> _iniciar() async {
+    await _carregarPropriedades();
+    if (!mounted || widget.propriedadeInicial == null || widget.talhaoInicial == null || widget.plantacaoInicial == null || widget.ocorrenciaInicial == null) return;
+    await _selecionar(0, widget.propriedadeInicial);
+    if (!mounted) return;
+    await _selecionar(1, widget.talhaoInicial);
+    if (!mounted) return;
+    await _selecionar(2, widget.plantacaoInicial);
+    if (!mounted) return;
+    await _selecionarOcorrencia(widget.ocorrenciaInicial);
   }
 
   Future<void> _carregarPropriedades() async {
@@ -313,10 +326,12 @@ class _TelaRegistroEvolucaoState extends State<TelaRegistroEvolucao> {
               ),
               const SizedBox(height: 24),
 
+              if (widget.ocorrenciaInicial == null) ...[
               _seletor('Propriedade', _propriedades, _propriedadeId, (v) => _selecionar(0, v), (e) => (e['nome'] ?? 'Propriedade').toString()),
               _seletor('Talhão', _talhoes, _talhaoId, (v) => _selecionar(1, v), (e) => (e['nome'] ?? 'Talhão').toString()),
               _seletor('Plantação ativa', _plantacoes, _plantacaoId, (v) => _selecionar(2, v), (e) => 'Plantação ${e['safra'] ?? 'ativa'}'),
               _seletor('Ocorrência', _ocorrencias, _ocorrenciaId, _selecionarOcorrencia, (e) => '${e['tipo']} · ${e['sintomas']}'),
+              ] else const Text('Registro vinculado à ocorrência selecionada.'),
               if (_carregando) const Center(child: CircularProgressIndicator()),
               if (_erro != null) SelectableText(_erro!, style: const TextStyle(color: Colors.red)),
               if (_propriedades.isEmpty && !_carregando) TextButton(onPressed: _carregarPropriedades, child: const Text('Tentar carregar propriedades')),

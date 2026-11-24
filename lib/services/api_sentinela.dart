@@ -35,7 +35,7 @@ class ApiSentinela {
         final erros = dados is Map && dados['detalhes'] is List
             ? (dados['detalhes'] as List).whereType<Map>().map((e) => e['mensagem']).whereType<String>().join('\n')
             : '';
-        throw ApiException(erros.isNotEmpty ? erros : (dados is Map && dados['erro'] is String ? dados['erro'] as String : 'Não foi possível concluir a operação.'), codigo: dados is Map ? dados['codigo'] as String? : null);
+        throw ApiException(erros.isNotEmpty ? erros : (dados is Map && dados['erro'] is String ? dados['erro'] as String : 'Não foi possível concluir a operação.'), codigo: metodo == 'POST' && caminho.endsWith('/ocorrencias') && resposta.statusCode >= 500 ? 'RESULTADO_DESCONHECIDO' : (dados is Map ? dados['codigo'] as String? : null));
       }
       return dados;
     } on ApiException {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sentinela/navegacao.dart';
 
-import 'package:sentinela/features/propriedades/tela_talhaoEspecifico.dart'; // Ajuste o nome do arquivo da tela específica do talhão
+import 'package:sentinela/features/propriedades/tela_plantacoes.dart';
 
 //import 'tela_home.dart'; // Ajuste o nome do arquivo da tela de início (Home)
 
@@ -13,6 +14,7 @@ class TelaOcorrenciaRegistrada extends StatelessWidget {
   final String intensidade;
   final String areaAfetada;
   final String dataOcorrencia;
+  final String? talhaoId;
 
   const TelaOcorrenciaRegistrada({
     super.key,
@@ -24,6 +26,7 @@ class TelaOcorrenciaRegistrada extends StatelessWidget {
     this.intensidade = 'Baixa',
     this.areaAfetada = '1,5 ha',
     this.dataOcorrencia = '16/11/2026',
+    this.talhaoId,
   });
 
   Widget _buildLinhaResumo({
@@ -304,11 +307,11 @@ class TelaOcorrenciaRegistrada extends StatelessWidget {
                 width: double.infinity,
                 height: 54,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: talhaoId == null ? null : () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TelaTalhaoEspecifico(),
+                        builder: (context) => TelaPlantacoes(talhaoId: talhaoId!, nomeTalhao: nomeTalhao),
                       ),
                     );
                   },
@@ -360,13 +363,7 @@ class TelaOcorrenciaRegistrada extends StatelessWidget {
               // 8. LINK INFERIOR: VOLTAR PARA O INÍCIO -> TELA HOME
               TextButton(
                 onPressed: () {
-                  /*Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const TelaHome(),
-                    ),
-                    (route) => false,
-                  );*/
+                  navegarPrincipal(context, 0, 2);
                 },
                 child: const Text(
                   'Voltar para o início',

@@ -333,11 +333,11 @@ class _TelaHomeState extends State<TelaHome> with RouteAware {
                                   ),
                                 ),
                                 const SizedBox(width: 12),
-                                Column(
+                                Expanded(child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text(
-                                      'Alertas ativos',
+                                      'Alertas ativos (todas as propriedades)',
                                       style: TextStyle(
                                         fontSize: 10,
                                         color: Color(0xFF8C6658),
@@ -353,7 +353,7 @@ class _TelaHomeState extends State<TelaHome> with RouteAware {
                                       ),
                                     ),
                                   ],
-                                ),
+                                )),
                               ],
                             ),
                           ),

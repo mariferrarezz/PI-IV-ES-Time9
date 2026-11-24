@@ -5,6 +5,7 @@ import 'tela_nova_propriedade.dart';
 import 'tela_plantacoes.dart';
 import 'package:sentinela/navegacao.dart';
 import 'package:sentinela/services/api_sentinela.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class TelaTalhoes extends StatefulWidget {
   final bool abrirModalPropriedades;
@@ -16,8 +17,11 @@ class TelaTalhoes extends StatefulWidget {
 }
 
 class _TelaTalhoesState extends State<TelaTalhoes> {
+  static final Map<String, String> _propriedadePorUsuario = {};
   final _api = ApiSentinela();
   List<dynamic> _propriedades = [], _talhoes = [];
+  final Map<String, String> _resumos = {};
+  final Set<String> _errosResumo = {};
   String? _propriedadeId, _erro;
   bool _carregando = true;
   int _versao = 0;
@@ -39,6 +43,9 @@ class _TelaTalhoesState extends State<TelaTalhoes> {
       final propriedades = await _api.request('GET', '/propriedades') as List<dynamic>;
       if (!mounted) return;
       setState(() { _propriedades = propriedades; _propriedadeId = null; _talhoes = []; _carregando = false; });
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      final anterior = uid == null ? null : _propriedadePorUsuario[uid];
+      if (anterior != null && propriedades.any((p) => p['_id'].toString() == anterior)) await _selecionar(anterior);
       if (widget.abrirModalPropriedades) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) _abrirModalPropriedades(context);
@@ -51,12 +58,33 @@ class _TelaTalhoesState extends State<TelaTalhoes> {
 
   Future<void> _selecionar(String id) async {
     final versao = ++_versao;
-    setState(() { _propriedadeId = id; _talhoes = []; _erro = null; _carregando = true; });
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid != null) _propriedadePorUsuario[uid] = id;
+    setState(() { _propriedadeId = id; _talhoes = []; _resumos.clear(); _errosResumo.clear(); _erro = null; _carregando = true; });
     try {
       final talhoes = await _api.request('GET', '/propriedades/$id/talhoes') as List<dynamic>;
       if (mounted && versao == _versao) setState(() { _talhoes = talhoes; _carregando = false; });
+      if (mounted && versao == _versao) await Future.wait(talhoes.map((t) => _carregarResumo(t['_id'].toString(), versao)));
     } on ApiException catch (e) {
       if (mounted && versao == _versao) setState(() { _erro = e.mensagem; _carregando = false; });
+    }
+  }
+
+  Future<void> _carregarResumo(String talhaoId, int versao) async {
+    if (mounted && versao == _versao) setState(() { _resumos.remove(talhaoId); _errosResumo.remove(talhaoId); });
+    try {
+      final plantacoes = await _api.request('GET', '/talhoes/$talhaoId/plantacoes') as List<dynamic>;
+      final listas = await Future.wait(plantacoes.map((p) async => await _api.request('GET', "/plantacoes/${p['_id']}/ocorrencias") as List<dynamic>));
+      final ocorrencias = listas.expand((x) => x).toList();
+      ocorrencias.sort((a, b) {
+        final ordem = (b['dataObservacao'] ?? '').toString().compareTo((a['dataObservacao'] ?? '').toString());
+        return ordem != 0 ? ordem : (b['_id'] ?? '').toString().compareTo((a['_id'] ?? '').toString());
+      });
+      final abertas = ocorrencias.where((o) => o['status'] == 'aberta' || o['status'] == 'em_acompanhamento').length;
+      final texto = ocorrencias.isEmpty ? 'Nenhuma ocorrência' : '$abertas abertas ou em acompanhamento · Última intensidade: ${ocorrencias.first['intensidade']}';
+      if (mounted && versao == _versao) setState(() => _resumos[talhaoId] = texto);
+    } catch (_) {
+      if (mounted && versao == _versao) setState(() => _errosResumo.add(talhaoId));
     }
   }
 
@@ -640,8 +668,13 @@ class _TelaTalhoesState extends State<TelaTalhoes> {
                   statusBgColor: const Color(0xFFD3E4D5),
                   statusTextColor: const Color(0xFF00501E),
                   circuloBgColor: const Color(0xFFE8F3EC),
-                  alertaOcorrencia: 'Detalhes de ocorrências indisponíveis',
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TelaPlantacoes(talhaoId: talhao['_id'].toString(), nomeTalhao: talhao['nome'].toString()))),
+                  alertaOcorrencia: _errosResumo.contains(talhao['_id'].toString()) ? 'Erro ao consultar ocorrências. Toque para tentar novamente.' : (_resumos[talhao['_id'].toString()] ?? 'Carregando ocorrências...'),
+                  onTap: () async {
+                    final id = talhao['_id'].toString();
+                    if (_errosResumo.contains(id)) { await _carregarResumo(id, _versao); return; }
+                    await Navigator.push(context, MaterialPageRoute(builder: (_) => TelaPlantacoes(talhaoId: id, nomeTalhao: talhao['nome'].toString())));
+                    if (mounted) await _carregarResumo(id, _versao);
+                  },
                 )),
               const SizedBox(height: 20),
             ],

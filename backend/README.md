@@ -206,9 +206,29 @@ limite de 64 KiB e `JavaIndisponivelError` nas falhas, sem registrar campos.
 
 O contrato `VALIDAR_OCORRENCIA` de 14 partes fixas + 5 por imagem está documentado no
 README Java. Execute `npm --prefix backend run test:ocorrencias:java` com Java ativo.
-Não existem novas rotas, modelos ou persistência. Autorização, referências, cultura,
-área plantada, transições, uploads e autoria continuam responsabilidade futura do Node.
-Validators, índices e regras de alertas não foram alterados.
+O backend atual registra GET e POST em `/plantacoes/:plantacaoId/ocorrencias`.
+O POST verifica o proprietário e a cadeia de referências, a plantação ativa, a
+compatibilidade do problema e a área plantada; chama o Java e grava a ocorrência
+e, quando a intensidade é alta, o alerta na mesma transação MongoDB. Isso exige
+MongoDB com suporte a transações e não comprova que o ambiente em execução tenha
+os validadores e índices previstos. Uploads e transições não são cobertos por esse POST.
+
+O POST aceita `Idempotency-Key` com 32 dígitos hexadecimais. O registro da chave,
+resposta, ocorrência e eventual alerta são gravados na mesma transação; repetição
+com o mesmo usuário, rota e corpo recupera a mesma resposta, e outro corpo retorna
+conflito. A coleção `operacoes_idempotentes` precisa existir antes da transação.
+O aplicativo guarda o corpo e a chave do envio pendente por usuário antes de enviar
+e oferece recuperação após resposta desconhecida. Não apagar a coleção ou seus
+registros enquanto houver clientes que possam repetir envios pendentes.
+
+O resumo da Home seleciona a propriedade ativa cadastrada mais recentemente e
+conta os talhões ativos dessa propriedade; `alertasAtivos` é global ao usuário,
+sem filtrar pela propriedade apresentada. O rótulo da tela informa esse escopo.
+
+Para a integração isolada, com Atlas configurado em `backend/.env` e Auth Emulator
+local ativo, execute `node --import tsx tests/ocorrencias-atlas-real.ts --executar`
+em `backend`. O teste usa somente `sentinela_test`, confere validadores e índices,
+cria os ausentes, recompila Java e remove apenas fixtures identificadas da rodada.
 
 ## Cliente isolado de plantações
 

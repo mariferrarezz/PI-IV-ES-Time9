@@ -16,6 +16,7 @@ import { TalhoesService, talhoesService } from "./modules/talhoes/talhoes.servic
 import { criarPlantacoesRoutes } from './modules/plantacoes/plantacoes.routes';
 import { problemasService } from './modules/catalogo/problemas.service';
 import { criarOcorrenciasRoutes } from './modules/ocorrencias/ocorrencias.routes';
+import { criarDetalheTalhaoRoutes } from './modules/ocorrencias/detalhe-talhao.routes';
 import { criarMonitoramentosRoutes } from './modules/ocorrencias/monitoramentos.routes';
 import { criarTratamentosRoutes } from './modules/ocorrencias/tratamentos.routes';
 import { criarComunidadeRoutes } from './modules/comunidade/comunidade.routes';
@@ -53,6 +54,7 @@ export function criarApp(dependencias: {
   app.use("/propriedades", criarPropriedadesRoutes(dependencias.service || propriedadesService));
   app.use("/propriedades/:propriedadeId/talhoes", criarTalhoesRoutes(dependencias.talhoesService || talhoesService));
   app.use('/talhoes/:talhaoId/plantacoes', criarPlantacoesRoutes());
+  app.use('/talhoes/:talhaoId/detalhe', criarDetalheTalhaoRoutes());
   app.use('/plantacoes/:plantacaoId/ocorrencias', criarOcorrenciasRoutes());
   app.use('/plantacoes/:plantacaoId/monitoramentos', criarMonitoramentosRoutes());
   app.use('/plantacoes/:plantacaoId/ocorrencias/:ocorrenciaId/tratamentos', criarTratamentosRoutes());
