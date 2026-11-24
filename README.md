@@ -1,198 +1,235 @@
 # Sentinela
 
-Aplicativo para apoiar pequenos produtores rurais no acompanhamento de pragas e doenças em plantações. O projeto reúne cadastro e autenticação de usuários, organização de propriedades e talhões, catálogo de problemas agrícolas, registro de ocorrências e uma área de comunidade.
+Aplicativo para apoiar pequenos produtores rurais no acompanhamento de pragas e doenças em plantações. O produtor cadastra suas propriedades, talhões e plantações, registra ocorrências e tratamentos, consulta um catálogo de pragas e doenças e troca experiências com outros produtores na Comunidade.
 
-Desenvolvido como parte do **Projeto Integrador IV — Engenharia de Software**.
+Desenvolvido como parte do **Projeto Integrador IV — Engenharia de Software** (PUC-Campinas). É um projeto acadêmico: não está publicado e usa apenas dados fictícios.
 
 ## Funcionalidades
 
-- Autenticação de usuários com Firebase Authentication.
-- Cadastro de conta, recuperação de senha e questionário inicial do produtor.
-- Consulta a um catálogo de pragas e doenças agrícolas, com imagens e informações de apoio.
-- Gestão de propriedades, talhões e plantações.
-- Telas para registrar ocorrências e acompanhar sua evolução.
-- Perfil do usuário, notificações, privacidade e área de comunidade.
-- API com validações, regras de domínio e persistência no MongoDB.
-
-> Algumas telas e fluxos ainda são demonstrativos. Consulte [Estado das integrações](#estado-das-integrações) para saber exatamente o que já possui integração ponta a ponta.
+- Login com Firebase Authentication, cadastro em 8 passos (com conferência de CPF e celular) e recuperação de senha.
+- Questionário inicial do produtor, respondido uma única vez.
+- Tela inicial com saudação, propriedade mais recente, talhões ativos e alertas.
+- Cadastro de propriedades, talhões e plantações, com encerramento de plantação.
+- Registro de ocorrências de pragas e doenças, monitoramentos, tratamentos e avaliação dos resultados, com histórico por ocorrência.
+- Catálogo com 40 fichas de pragas e doenças, com imagens.
+- Comunidade: feed de experiências, denúncia de conteúdo e compartilhamento de uma ocorrência como relato.
+- Perfil com avatar de iniciais e nome público editável.
 
 ## Tecnologias
 
 | Camada | Tecnologias |
 |---|---|
-| Aplicativo | Flutter e Dart |
+| Aplicativo | Flutter e Dart (executado no navegador Chrome) |
 | Autenticação | Firebase Authentication e Firebase Emulator Suite |
-| API | Node.js, TypeScript, Express, Mongoose e Zod |
+| API | Node.js, TypeScript, Express 5, Mongoose e Zod |
 | Banco de dados | MongoDB Atlas |
-| Validações de domínio | Java puro, comunicação TCP |
+| Validações de regras de negócio | Java puro (sem Spring Boot), comunicação por TCP |
 | Testes | Flutter Test, Node Test Runner e testes Java |
+
+## Arquitetura
+
+```text
+App Flutter ──HTTP + token Firebase──▶ API Node.js ──▶ MongoDB Atlas
+                                           │
+                                           └──TCP──▶ Servidor Java (valida e responde)
+```
+
+- O aplicativo conversa **somente** com a API Node.js.
+- **Somente** a API conversa com o servidor Java.
+- Antes de gravar, a API envia os dados ao Java. Se o Java recusar, a API responde `400 ENTRADA_INVALIDA` com as mensagens. Se o Java estiver desligado, responde `503 JAVA_INDISPONIVEL` e nada é gravado.
+- O Java não acessa o banco e não guarda nada: só confere as regras e devolve `OK` ou a lista de erros.
+
+Dentro da API, o caminho de um pedido é:
+
+```text
+Rota → validação Zod → service → repository/Mongoose → MongoDB
+                          ↓
+                validadores Java (TCP)
+```
 
 ## Estrutura do repositório
 
 ```text
 .
 ├── lib/                 # Aplicativo Flutter
-│   ├── features/        # Telas organizadas por funcionalidade
-│   └── services/        # Cliente HTTP, datas e máscaras
+│   ├── features/        # Telas por funcionalidade (auth, catalogo, dashboard, ocorrencias, propriedades...)
+│   └── services/        # Cliente da API, datas e máscaras
 ├── assets/images/       # Logo e imagens do catálogo
 ├── backend/             # API Node.js/TypeScript
-├── servidor-java/       # Serviço TCP e validadores Java
-├── database/            # Coleções, índices, validadores e dados de apoio MongoDB
-├── docs/                # Modelagem e documentação do projeto
+├── servidor-java/       # Servidor TCP e validadores Java
+├── database/            # Coleções, índices, validadores e dados de apoio do MongoDB
+├── docs/                # Modelagem, documentos do projeto e estado das integrações
 ├── test/                # Testes do aplicativo Flutter
 └── firebase.json        # Configuração do Firebase Emulator
 ```
 
-O fluxo principal da API é:
-
-```text
-Rotas → validação Zod → controller → service → repository/Mongoose → MongoDB
-                              ↓
-                    validadores Java (TCP)
-```
-
 ## Pré-requisitos
 
-- [Flutter](https://docs.flutter.dev/get-started/install) (SDK compatível com Dart `^3.11.5`)
+- [Flutter](https://docs.flutter.dev/get-started/install) (SDK compatível com Dart `^3.11.5`) e o navegador Chrome
 - Node.js 20 ou superior
-- JDK instalado e disponível no `PATH`
-- Uma conta/projeto Firebase configurado para desenvolvimento
-- Acesso autorizado ao cluster MongoDB Atlas utilizado pela equipe
+- JDK 21
+- Acesso autorizado ao cluster MongoDB Atlas da equipe
 
-Para executar a API com Atlas, cada integrante deve liberar o próprio IP em **MongoDB Atlas → Network Access**.
+Cada integrante precisa liberar o próprio IP em **MongoDB Atlas → Network Access**. Ao trocar de rede, é preciso liberar de novo (sintoma: `BANCO_INDISPONIVEL` na API).
 
 ## Como executar
 
-### 1. Clone e instale as dependências do aplicativo
+São quatro terminais, todos abertos na raiz do repositório. Os comandos abaixo são para macOS e Linux. No Windows (PowerShell), veja a observação no passo 2.
 
-```powershell
-git clone <URL_DO_REPOSITORIO>
-cd sentinela
+### 0. Clone e instale as dependências
+
+```bash
+git clone https://github.com/mariferrarezz/PI-IV-ES-Time9.git
+cd PI-IV-ES-Time9
 flutter pub get
-```
-
-### 2. Configure o Firebase
-
-O aplicativo está configurado para utilizar o **Firebase Auth Emulator** na porta `9099` durante o desenvolvimento. Inicie-o em outro terminal:
-
-```powershell
-npx firebase-tools emulators:start --only auth --project "ID_DO_SEU_PROJETO"
-```
-
-No emulador Android, o endereço padrão usado pelo app é `10.0.2.2`. Nas demais plataformas, é `127.0.0.1`. Para informar outro host, use a variável de compilação:
-
-```powershell
-flutter run --dart-define=FIREBASE_EMULATOR_HOST=SEU_HOST
-```
-
-### 3. Execute o aplicativo Flutter
-
-```powershell
-flutter run
-```
-
-### 4. Configure e execute a API (opcional para o desenvolvimento do app)
-
-Instale as dependências:
-
-```powershell
 npm ci --prefix backend
 ```
 
-Copie `backend/.env.example` para `backend/.env`, caso o arquivo ainda não exista, e preencha as variáveis locais:
+Copie `backend/.env.example` para `backend/.env` e preencha `MONGODB_URI` com a URI do Atlas (banco `sentinela`). **Nunca** versione o `.env`.
 
-```env
-MONGODB_URI=<URI_AUTORIZADA_DO_ATLAS>
-PORT=3000
-FIREBASE_PROJECT_ID=<ID_DO_PROJETO>
-FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099
+### 1. Emulador do Firebase Auth (terminal 1)
+
+```bash
+npx firebase-tools emulators:start --only auth --project projeto-integrador-4-8c129 --import=./firebase-export-sentinela --export-on-exit
 ```
 
-Depois, inicie a API:
+Aguarde `All emulators ready!`. A interface do emulador fica em http://127.0.0.1:4000.
 
-```powershell
-npm --prefix backend run dev
+- O `--import/--export-on-exit` guarda as contas de teste entre uma execução e outra. Sem ele, as contas somem ao reiniciar, mas os perfis continuam no Atlas. Desligue sempre com `Ctrl+C`.
+- Na primeira vez, se a pasta `firebase-export-sentinela` ainda não existir, use apenas `--export-on-exit=./firebase-export-sentinela`.
+
+### 2. Servidor Java (terminal 2)
+
+```bash
+rm -rf servidor-java/out
+mkdir -p servidor-java/out
+javac -encoding UTF-8 -d servidor-java/out $(find servidor-java/src/main/java -name "*.java")
+java -cp servidor-java/out sentinela.servidor.Servidor 7001
 ```
 
-A API disponibiliza `GET /health` para liveness e `GET /ready` para verificar a conexão configurada com o banco.
+Aguarde `Servidor aguardando conexões na porta 7001.`
 
-### 5. Compile e execute o serviço Java (quando necessário)
+- **Recompile sempre que trocar de branch ou o código Java mudar.** Um Java desatualizado responde "Pedido de validação inválido." no app.
+- A porta padrão é `7000`. No macOS ela costuma estar ocupada pelo Receptor AirPlay, por isso usamos `7001`. A porta escolhida precisa ser a mesma de `JAVA_PORT` no `backend/.env`.
+- No Windows (PowerShell), a compilação fica assim:
 
-Em outro terminal, na raiz do repositório:
+  ```powershell
+  $fontes = Get-ChildItem servidor-java/src/main/java -Recurse -Filter '*.java' | ForEach-Object FullName
+  New-Item -ItemType Directory -Path servidor-java/out -Force | Out-Null
+  javac -encoding UTF-8 -d servidor-java/out $fontes
+  java -cp servidor-java/out sentinela.servidor.Servidor 7001
+  ```
 
-```powershell
-$fontes = Get-ChildItem servidor-java/src/main/java -Recurse -Filter '*.java' | ForEach-Object FullName
-New-Item -ItemType Directory -Path servidor-java/out -Force | Out-Null
-javac -encoding UTF-8 -d servidor-java/out $fontes
-java -cp servidor-java/out sentinela.servidor.Servidor
+### 3. API (terminal 3)
+
+```bash
+cd backend
+npm run dev
 ```
 
-O serviço usa a porta `7000` por padrão. Para outra porta:
+Aguarde `API_INICIADA` (porta 3000). Para conferir se tudo está ligado:
 
-```powershell
-java -cp servidor-java/out sentinela.servidor.Servidor 8080
+```bash
+curl -s http://localhost:3000/ready; echo
 ```
+
+A resposta deve trazer `"status":"pronto"`. `GET /health` só indica que a API está no ar; `GET /ready` também confere o banco.
+
+### 4. Aplicativo (terminal 4)
+
+```bash
+flutter run -d chrome
+```
+
+- O app procura a API em `http://localhost:3000`. Para outro endereço: `flutter run -d chrome --dart-define=API_URL=http://SEU_HOST:3000`.
+- Para usar o emulador em outro host: `--dart-define=FIREBASE_EMULATOR_HOST=SEU_HOST`.
+- Depois de mudar imagens ou outros assets, reinicie o app com `R` maiúsculo.
 
 ## Testes
 
-### Flutter
+Use sempre dados fictícios (por exemplo, CPF `111.444.777-35` e celular `(19) 99876-5432`).
 
-```powershell
+### Aplicativo Flutter
+
+```bash
+flutter analyze
 flutter test
 ```
 
-### Backend
+### API
 
-Os scripts disponíveis e seus requisitos estão em [backend/README.md](backend/README.md). Exemplos:
-
-```powershell
-npm --prefix backend run test:talhoes
-npm --prefix backend run test:propriedades
-npm --prefix backend run test:java
+```bash
+cd backend
+npm test
 ```
 
-### Java
+`npm test` não precisa de banco nem do Java (usa dependências simuladas). Com o servidor Java ligado, há testes que usam o Java de verdade, por exemplo:
 
-Após compilar os fontes de produção, compile os testes e execute a classe desejada:
-
-```powershell
-$testes = Get-ChildItem servidor-java/src/test/java -Recurse -Filter '*.java' | ForEach-Object FullName
-javac -encoding UTF-8 -cp servidor-java/out -d servidor-java/out/testes $testes
-java -cp 'servidor-java/out;servidor-java/out/testes' sentinela.validacao.ValidadorTalhaoTest
+```bash
+npm run test:perfil:java
+npm run test:questionario:java
+npm run test:comunidade:publicacao:java
 ```
+
+A lista completa está em `backend/package.json` (scripts `test:*`).
+
+### Servidor Java
+
+Depois de compilar os fontes de produção, compile os testes e rode a classe desejada:
+
+```bash
+mkdir -p servidor-java/out/testes
+javac -encoding UTF-8 -cp servidor-java/out -d servidor-java/out/testes $(find servidor-java/src/test/java -name "*.java")
+java -cp servidor-java/out:servidor-java/out/testes sentinela.validacao.ValidadorPropriedadeTest
+```
+
+As classes de teste ficam em `servidor-java/src/test/java/sentinela/validacao/` (uma por assunto: propriedade, plantação, ocorrência, comunidade...). No Windows, o separador do `-cp` é `;` em vez de `:`.
 
 ## Estado das integrações
 
 | Recurso | Situação atual |
 |---|---|
-| Login | Integrado ao Firebase Authentication. |
-| Cadastro, recuperação de senha e questionário | Telas implementadas; a integração completa entre todas as etapas ainda está em evolução. |
-| Propriedades e talhões | API possui rotas e validações; as telas Flutter ainda precisam consumir todo o fluxo real. |
-| Plantações | API possui consulta e criação por talhão, com validação Java e persistência. |
-| Ocorrências, evolução e comunidade | Telas e validadores existem, mas endpoints e persistência completos ainda não foram implementados. |
-| Perfil, notificações e privacidade | Interface disponível; parte das preferências ainda não é persistida. |
+| Login, cadastro e questionário | Integrados de ponta a ponta (Firebase, API, Java e Atlas). |
+| Tela inicial | Integrada (`GET /home/resumo`). |
+| Perfil | Integrado: nome e iniciais vêm da API; o nome público é editável. Nome completo, CPF e telefone não mudam depois do cadastro. |
+| Propriedades, talhões e plantações | Integrados, incluindo o encerramento de plantação. |
+| Ocorrências, monitoramentos, tratamentos e avaliações | Integrados, com histórico por ocorrência. |
+| Catálogo | 40 fichas com imagens, abertas a partir da tela inicial e da lista do catálogo. |
+| Comunidade | Feed, detalhe, denúncia e compartilhamento a partir de uma ocorrência integrados. A publicação é aprovada automaticamente (não há moderação manual). Adoção de tratamento ainda não existe. |
+| Notificações e privacidade | Apenas interface: as preferências ainda não são salvas e nenhuma notificação é enviada. |
+| Upload de imagens | Fora do escopo: o app não envia fotos (perfil usa avatar com iniciais). |
 
-Essa separação evita apresentar como concluídas funcionalidades que hoje são apenas interfaces ou validações isoladas.
+O detalhamento por formulário está em [docs/estado-formularios-validacao.md](docs/estado-formularios-validacao.md).
 
 ## Documentação complementar
 
 - [Documentação da API](backend/README.md)
-- [Documentação do servidor Java](servidor-java/README.md)
+- [Documentação do servidor Java](servidor-java/README.md) e [regras da Comunidade no Java](servidor-java/comunidade.md)
 - [Configuração do banco de dados](database/README.md)
-- [Modelagem MongoDB](docs/modelagem-mongodb.md)
-- [Modelagem conceitual](docs/modelagem-conceitual.md)
-- [Levantamento das integrações do aplicativo](docs/levantamento-validacao-aplicativo.md)
+- [Modelagem MongoDB](docs/modelagem-mongodb.md) e [modelagem conceitual](docs/modelagem-conceitual.md)
+- [Estado dos formulários e validações](docs/estado-formularios-validacao.md)
+- [Lista inicial do catálogo de pragas e doenças](docs/catalogo-pragas-e-doencas.md)
+- Documentos do projeto (relatório, pitch, matriz SWOT, mapa da empatia, mapa mental, canvas e lista de funcionalidades): pasta [docs/](docs/)
 
 ## Segurança e boas práticas
 
-- Não versione arquivos `.env`, credenciais, tokens ou a URI do MongoDB Atlas.
-- Mantenha o Firebase e o MongoDB em ambientes de desenvolvimento autorizados.
-- O serviço Java atual é destinado à rede local controlada: ele não implementa TLS nem autenticação própria.
+- Não versione arquivos `.env`, credenciais, tokens, a URI do MongoDB Atlas nem arquivos pessoais.
+- CPF e telefone nunca aparecem em logs nem em mensagens de erro da API.
+- O servidor Java é destinado à rede local controlada: não tem TLS nem autenticação própria.
 
 ## Equipe
 
-Projeto desenvolvido pelo **Time 2** do Projeto Integrador IV. Os integrantes podem ser incluídos aqui com nome, função e, se desejarem, links para GitHub ou LinkedIn.
+Projeto desenvolvido pelo **Time 9** do Projeto Integrador IV.
 
----
+| Integrante | Responsabilidade |
+|---|---|
+| Mariana Ferrarez | API Node.js (back-end) |
+| Gabriel Santos | Aplicativo Flutter (telas) e documentação |
+| Julia Ferreira | Banco de dados e servidor Java |
+| Matheus Narducci | Testes do servidor Java |
 
-Para contribuir, crie uma branch para a alteração, mantenha os testes relevantes passando e descreva o que foi modificado no pull request.
+## Como contribuir
+
+1. Atualize a `main` (`git checkout main` e `git pull`) e crie uma branch no padrão `área/assunto`, por exemplo `backend/comunidade`.
+2. Mantenha os testes relevantes passando.
+3. Abra um pull request para a `main` descrevendo o que mudou e faça o merge com **"Create a merge commit"**.
