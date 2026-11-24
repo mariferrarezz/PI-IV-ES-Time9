@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sentinela/features/ocorrencias/tela_compartilhar_experiencia.dart';
 import 'package:sentinela/features/ocorrencias/tela_registroEvolucao.dart';
 import 'package:sentinela/services/api_sentinela.dart';
 import 'package:sentinela/services/data_sao_paulo.dart';
@@ -17,11 +18,13 @@ String tituloOcorrencia(Map o) {
 }
 
 class DetalheOcorrencia extends StatefulWidget {
-  const DetalheOcorrencia({super.key, required this.ocorrencia, required this.plantacaoId, required this.talhaoId, required this.propriedadeId, required this.plantacaoAtiva, required this.consultar});
+  const DetalheOcorrencia({super.key, required this.ocorrencia, required this.plantacaoId, required this.talhaoId, required this.propriedadeId, required this.plantacaoAtiva, required this.consultar, this.enviarComunidade});
   final Map ocorrencia;
   final String plantacaoId, talhaoId, propriedadeId;
   final bool plantacaoAtiva;
   final ConsultaOcorrencias consultar;
+  /// Usado só pela tela de compartilhar; nos testes pode ser simulado.
+  final EnviarApi? enviarComunidade;
   @override
   State<DetalheOcorrencia> createState() => _DetalheOcorrenciaState();
 }
@@ -89,6 +92,11 @@ class _DetalheOcorrenciaState extends State<DetalheOcorrencia> {
             await Navigator.push(context, MaterialPageRoute(builder: (_) => TelaRegistroEvolucao(propriedadeInicial: widget.propriedadeId, talhaoInicial: widget.talhaoId, plantacaoInicial: widget.plantacaoId, ocorrenciaInicial: widget.ocorrencia['_id'].toString())));
             if (mounted) _carregar();
           }, child: const Text('Registrar evolução ou tratamento')),
+          const SizedBox(height: 8),
+          OutlinedButton.icon(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TelaCompartilharExperiencia(
+            ocorrenciaId: widget.ocorrencia['_id'].toString(), tituloSugerido: tituloOcorrencia(widget.ocorrencia),
+            tratamentos: _dados!['tratamentos'] as List, enviar: widget.enviarComunidade))),
+            icon: const Icon(Icons.groups_outlined), label: const Text('Compartilhar na Comunidade')),
         ],
       ]),
     )));

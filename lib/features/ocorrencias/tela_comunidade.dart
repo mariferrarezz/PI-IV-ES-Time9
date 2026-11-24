@@ -705,7 +705,7 @@ class _TelaComunidadeState extends State<TelaComunidade> {
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Compartilhamento ainda não integrado.')));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Para compartilhar, abra uma ocorrência em Talhões e toque em "Compartilhar na Comunidade".')));
                     },
                     icon: const Icon(Icons.upload_rounded, size: 18),
                     label: const Text(

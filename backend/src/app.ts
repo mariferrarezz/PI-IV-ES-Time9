@@ -24,6 +24,7 @@ import { criarValidacaoCadastroRoutes } from './modules/auth/validacao-cadastro.
 import { AuthRepository } from './modules/auth/auth.repository';
 import { criarHomeRoutes } from './modules/home/home.routes';
 import { HomeService, homeService } from './modules/home/home.service';
+import { ComunidadeService } from './modules/comunidade/comunidade.service';
 
 // Dependências explícitas permitem testes isolados; não existe chave de ambiente para pular autenticação.
 export function criarApp(dependencias: {
@@ -31,6 +32,7 @@ export function criarApp(dependencias: {
   talhoesService?: TalhoesService;
   validacaoCadastroRepo?: AuthRepository;
   home?: HomeService;
+  comunidade?: ComunidadeService;
 } = {}) {
   const app = express();
   const bancoDisponivel = dependencias.bancoDisponivel || databaseReady;
@@ -58,7 +60,7 @@ export function criarApp(dependencias: {
   app.use('/plantacoes/:plantacaoId/ocorrencias', criarOcorrenciasRoutes());
   app.use('/plantacoes/:plantacaoId/monitoramentos', criarMonitoramentosRoutes());
   app.use('/plantacoes/:plantacaoId/ocorrencias/:ocorrenciaId/tratamentos', criarTratamentosRoutes());
-  app.use('/comunidade', criarComunidadeRoutes());
+  app.use('/comunidade', criarComunidadeRoutes(dependencias.comunidade));
   app.use((_req, _res, next) => next(new NotFoundError()));
   app.use(errorHandler);
   return app;

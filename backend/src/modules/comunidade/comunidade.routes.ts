@@ -7,14 +7,26 @@ import { authRepository } from '../auth/auth.repository';
 import { validarDenunciaComunidadeNoJava } from '../../services/validacao-java.service';
 import { z } from 'zod';
 import { executarIdempotente, respostaIdempotente } from '../../shared/idempotencia';
+import { ComunidadeService, comunidadeService } from './comunidade.service';
 
 // Sem fotos: sua entrega autenticada e revogável ainda não está implementada.
 const projecao = { _id: 1, versao: 1, nomePublico: 1, culturaId: 1, culturaNome: 1,
   problemaAgricolaId: 1, problemaNome: 1, tipoProblema: 1, statusOcorrencia: 1,
   titulo: 1, relato: 1, metodo: 1, resultadoRelatado: 1, regiao: 1, publicadoEm: 1 };
 
-export function criarComunidadeRoutes() {
+export function criarComunidadeRoutes(service: ComunidadeService = comunidadeService) {
   const router = Router();
+  // Publicar a partir de uma ocorrência própria; aprovação automática (23/11).
+  router.post('/experiencias', async (req, res) => {
+    res.status(201).json(await service.publicar(req.user!.uid, req.body, req.get('Idempotency-Key')));
+  });
+  // Experiências do próprio autor que ainda não foram retiradas.
+  router.get('/minhas-experiencias', async (req, res) => {
+    res.json(await service.minhas(req.user!.uid));
+  });
+  router.post('/experiencias/:experienciaId/retirar', async (req, res) => {
+    res.json(await service.retirar(req.user!.uid, String(req.params.experienciaId)));
+  });
   router.get('/experiencias', async (req, res) => {
     const filtro: Record<string, unknown> = { 'moderacao.status': 'aprovada' };
     for (const campo of ['culturaId', 'problemaAgricolaId']) {
