@@ -9,7 +9,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/local.test.ts tests/auth.test.ts tests/questionario.test.ts tests/home.test.ts",
+    "test": "tsx --test tests/local.test.ts tests/auth.test.ts tests/questionario.test.ts tests/home.test.ts tests/comunidade.test.ts",
     "test:talhoes": "tsx --test tests/talhoes.test.ts",
     "test:propriedades": "tsx --test tests/propriedades-java.test.ts",
     "test:propriedades:put": "tsx --test tests/propriedades-put.test.ts",
@@ -29,6 +29,7 @@
     "test:catalogos:java": "tsx --test tests/catalogos-java-real.test.ts",
     "test:problemas:java": "tsx --test tests/problemas-agricolas-java-real.test.ts",
     "test:comunidade:java": "tsx --test tests/comunidade-java-real.test.ts",
+    "test:comunidade:publicacao:java": "tsx --test tests/comunidade-publicacao-java-real.test.ts",
     "test:real": "node tests/integracao-real-bd8.cjs"
   },
   "dependencies": {

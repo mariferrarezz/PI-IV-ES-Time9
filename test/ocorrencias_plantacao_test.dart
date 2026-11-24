@@ -38,6 +38,7 @@ void main() {
     expect(find.text('Nenhum monitoramento.'), findsOneWidget);
     expect(find.text('Nenhum tratamento.'), findsOneWidget);
     expect(find.text('Registrar evolução ou tratamento'), findsOneWidget);
+    expect(find.text('Compartilhar na Comunidade'), findsOneWidget);
   });
 
   testWidgets('mostra ocorrência de plantação encerrada com seus dados', (tester) async {
